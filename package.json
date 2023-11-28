@@ -1,0 +1,18 @@
+{
+  "name": "adsmanagement",
+  "version": "1.0.0",
+  "description": "<style>   div p {     text-align: justify;     text-justify: inter-word;   }",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2"
+  }
+}
