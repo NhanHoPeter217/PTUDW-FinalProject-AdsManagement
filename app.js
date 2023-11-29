@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 //Static setup
-app.use('/static', express.static('static'))
+app.use('/public', express.static('public'))
 
 // Connection setup
 app.listen(port, () =>{
