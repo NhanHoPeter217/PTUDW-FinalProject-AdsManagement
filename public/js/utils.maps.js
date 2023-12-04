@@ -1,4 +1,5 @@
 import locations from "./locations.js";
+import { getLocation } from "./getClientLocation.js";
 
 // dynamic import gg map API
 ((g) => {
@@ -46,20 +47,32 @@ import locations from "./locations.js";
 // Initialize and add the map
 let map;
 
-const center_position = { lat: 10.773815, lng: 106.697059 };
-
 async function initMap() {
   // Request needed libraries.
   //@ts-ignore
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  let clientLat = 0;
+  let clientLng = 0;
+
+  await getLocation()
+    .then(({ latitude, longitude }) => {
+      clientLat = latitude;
+      clientLng = longitude;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  // Current location of the client
+  const clientLocation = { lat: clientLat, lng: clientLng };
 
   // The map, centered at center_position
   map = new Map(document.getElementById("map"), {
     zoom: 17,
     minZoom: 13,
     maxZoom: 19,
-    center: center_position,
+    center: clientLocation,
     mapId: "4fde48b8a0296373",
     keyboardShortcuts: false,
     disableDefaultUI: true,
