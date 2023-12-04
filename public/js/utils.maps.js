@@ -70,8 +70,8 @@ async function initMap() {
   // The map, centered at center_position
   map = new Map(document.getElementById("map"), {
     zoom: 17,
-    minZoom: 13,
-    maxZoom: 19,
+    minZoom: 12,
+    maxZoom: 100,
     center: clientLocation,
     mapId: "4fde48b8a0296373",
     keyboardShortcuts: false,
@@ -110,6 +110,9 @@ async function initMap() {
       title: location.title,
     });
   });
+
+  // Add a marker clusterer to manage the markers.
+  new markerClusterer.MarkerClusterer({ markers, map });
 }
 
 initMap();
