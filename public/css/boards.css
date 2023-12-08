@@ -1,4 +1,5 @@
-.ad-board, .info-board {
+.ad-board,
+.info-board {
   z-index: 1;
   border-radius: 7px;
   display: flex;
@@ -15,14 +16,15 @@
   font-weight: 700;
 }
 
-.ad-board .card-title, .info-board .card-title {
+.ad-board .card-title,
+.info-board .card-title {
   font-weight: 700;
 }
 
-.ad-board .card-text-location, .info-board .card-text-location {
+.ad-board .card-text-location,
+.info-board .card-text-location {
   font-weight: 600;
 }
-
 
 .button-font {
   font-family: Inter;

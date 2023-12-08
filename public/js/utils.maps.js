@@ -84,7 +84,7 @@ async function initMap() {
   // The markers of all locations
   let markers = Array(locations.length);
   let infoWindows = Array(locations.length);
-
+  let oldInfoWindow = undefined;
   const parser = new DOMParser();
 
   // Ads' locations have been planned already
@@ -104,13 +104,13 @@ async function initMap() {
     markers[index] = new AdvancedMarkerElement({
       map: map,
       position: {
-        lat: Number(location.coords.lat),
-        lng: Number(location.coords.lng),
+        lat: location.coords.lat,
+        lng: location.coords.lng,
       },
       content: QC,
       title: location.title,
     });
-    
+
     infoWindows[index] = new google.maps.InfoWindow({
       content: `<style>
       .info-board {
@@ -119,7 +119,7 @@ async function initMap() {
       }
     </style>
     
-    <div class="card info-board" style="width: 18rem;">
+    <div class="card info-board" style="width: 5rem;">
       <div class="card-body d-flex flex-row justify-content-around">
         <svg width="29" height="34" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g>
@@ -143,9 +143,15 @@ async function initMap() {
         anchor: markers[index],
         map,
       });
+
+      map.panTo(location.coords);
+      if (oldInfoWindow != undefined) {
+        oldInfoWindow.close();
+        oldInfoWindow = infoWindows[index];
+      } else {
+        oldInfoWindow = infoWindows[index];
+      }
     });
-
-
   });
 
   // Add a marker clusterer to manage the markers.
@@ -168,7 +174,7 @@ function initAutocomplete() {
   let markers = [];
 
   // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place. 
+  // more details for that place.
   searchBox.addListener("places_changed", () => {
     const places = searchBox.getPlaces();
 
