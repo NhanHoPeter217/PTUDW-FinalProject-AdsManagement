@@ -2,7 +2,7 @@ import getLocation from "/public/utils/getClientLocation.js";
 
 // dynamic import gg map API
 ((g) => {
-  var h,  
+  var h,
     a,
     k,
     p = "The Google Maps JavaScript API",
@@ -78,7 +78,7 @@ async function initMap() {
     streetView: false,
     streetViewCotrol: false,
     streetViewControlOptions: false,
-    clickableIcons: false
+    clickableIcons: false,
   });
 
   // The markers of all locations
@@ -224,16 +224,15 @@ function initAutocomplete() {
     map.fitBounds(bounds);
   });
 
-
   // Get places on click
   let place_info = new google.maps.InfoWindow();
   let geocoder = new google.maps.Geocoder();
   let place_marker = new google.maps.Marker({
-      map: null,
-    });
+    map: null,
+  });
   let place_service = new google.maps.places.PlacesService(map);
 
-  map.addListener('click', (event)=>{
+  map.addListener("click", (event) => {
     place_marker.setMap(null);
     geocodeLatLng(geocoder, map, event.latLng);
   });
@@ -253,20 +252,18 @@ function initAutocomplete() {
           let place_request = {
             placeId: address_id,
             fields: ["name"],
-          }
-          
+          };
+
           // getDetails to get the name of the place
-          place_service.getDetails(place_request, function(result, status) {
+          place_service.getDetails(place_request, function (result, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
               place_info.setContent(result.name);
               place_info.open(map, place_marker);
-            }
-            else{
+            } else {
               place_info.setContent(address);
               place_info.open(map, place_marker);
             }
           });
-
         } else {
           window.alert("Không tìm thấy địa chỉ cho điểm đã chọn");
         }
