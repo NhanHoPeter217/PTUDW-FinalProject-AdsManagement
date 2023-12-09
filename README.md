@@ -1,29 +1,3 @@
-<style>
-  div p {
-    text-align: justify;
-    text-justify: inter-word;
-  }
-  
-  mark {
-    background: none !important;
-    font-family: monospace;
-    color: #c0341d;
-    font-weight: bold;
-  }
-  
-  .markdown-body code {
-    color: #c0341d !important;
-    background-color: #fbe5e1 !important;
-    font-weight: bold;
-  }
-  
-  pre>code.hljs {
-    color: inherit !important;
-    background-color: inherit !important;
-    font-weight: inherit !important;
-  }
-</style>
-
 # PTUDW - Final Project - Ads Management
 
 :::info
