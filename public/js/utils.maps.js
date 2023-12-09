@@ -1,9 +1,8 @@
-import locations from "./locations.js";
-import { getLocation } from "./getClientLocation.js";
+import getLocation from "/public/utils/getClientLocation.js";
 
 // dynamic import gg map API
 ((g) => {
-  var h,
+  var h,  
     a,
     k,
     p = "The Google Maps JavaScript API",
@@ -269,7 +268,7 @@ function initAutocomplete() {
           });
 
         } else {
-          window.alert("No results found");
+          window.alert("Không tìm thấy địa chỉ cho điểm đã chọn");
         }
       })
       .catch((e) => window.alert("Geocoder failed due to: " + e));
