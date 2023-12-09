@@ -1,23 +1,53 @@
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const { UnauthenticatedError } = require("../errors");
+const CustomError = require('../errors');
+const { isTokenValid } = require('../utils');
+const Token = require('../models/Authentication/Token');
+const { attachCookiesToResponse } = require('../utils');
 
-const auth = async (req, res, next) => {
-  // check header
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
-    throw new UnauthenticatedError("Authentication invalid");
-  }
-  const token = authHeader.split(" ")[1];
+const authenticateUser = async (req, res, next) => {
+  const { refreshToken, accessToken } = req.signedCookies;
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    // attach the user to the job routes
-    req.user = { userId: payload.userId, name: payload.username };
+    if (accessToken) {
+      const payload = isTokenValid(accessToken);
+      req.user = payload.user;
+      return next();
+    }
+    const payload = isTokenValid(refreshToken);
+
+    const existingToken = await Token.findOne({
+      user: payload.user.userId,
+      refreshToken: payload.refreshToken,
+    });
+
+    if (!existingToken || !existingToken?.isValid) {
+      throw new CustomError.UnauthenticatedError('Authentication Invalid');
+    }
+
+    attachCookiesToResponse({
+      res,
+      user: payload.user,
+      refreshToken: existingToken.refreshToken,
+    });
+
+    req.user = payload.user;
     next();
   } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
+    throw new CustomError.UnauthenticatedError('Authentication Invalid');
   }
 };
 
-module.exports = auth;
+const authorizePermissions = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new CustomError.UnauthorizedError(
+        'Unauthorized to access this route'
+      );
+    }
+    next();
+  };
+};
+
+module.exports = {
+  authenticateUser,
+  authorizePermissions,
+};

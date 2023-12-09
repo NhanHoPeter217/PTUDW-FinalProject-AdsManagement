@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please provide password"],
-    minlength: [6, "Password must be at least 6 characters"],
+    minLength: [ 6, "Password must be at least 6 characters long"],
   },
   fullName: {
     type: String,
@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       "Please provide a valid email",
     ],
-    unique: true,
+    unique: [true, "Email already exists"],
   },
   phone: {
     type: String,

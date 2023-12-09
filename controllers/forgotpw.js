@@ -4,14 +4,16 @@ const { hashData } = require("../utils/hashData");
 
 const resetUserPassword = async ({ email, otp, newPassword }) => {
   try {
+    //const validOTP = await verifyOTP({ email, otp });
+    const {email, otp, newPassword} = req.body;
     const validOTP = await verifyOTP({ email, otp });
     if (!validOTP) {
       throw Error("Invalid code passed. Check your inbox.");
     }
-
     if (newPassword.length < 6) {
       throw Error("Password is too short!");
     }
+    
     const hashedNewPassword = await hashData(newPassword);
     await User.updateOne({ email }, { password: hashedNewPassword });
     await deleteOTP(email);
