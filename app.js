@@ -1,9 +1,8 @@
-import express from "express";
-import { engine } from "express-handlebars";
+const express = require("express");
+const engine = require("express-handlebars").engine;
 
 const app = express();
 const port = 3000;
-const mapAPIkey = "AIzaSyD6ALcSgO0gSbi49A6J0njXYvwatQ-7kf0";
 
 //Setup handlebars view engine
 app.engine(

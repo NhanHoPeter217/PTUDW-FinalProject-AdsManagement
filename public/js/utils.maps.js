@@ -1,9 +1,8 @@
-import locations from "./locations.js";
-import { getLocation } from "./getClientLocation.js";
+import getLocation from "/public/utils/getClientLocation.js";
 
 // dynamic import gg map API
 ((g) => {
-  var h,
+  var h,  
     a,
     k,
     p = "The Google Maps JavaScript API",
