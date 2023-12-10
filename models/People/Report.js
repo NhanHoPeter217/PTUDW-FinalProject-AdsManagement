@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const reportSchema = new Schema(
+const Report = new Schema(
   {
     reportType: {
       type: String,
@@ -14,7 +14,14 @@ const reportSchema = new Schema(
       required: true,
     },
     senderName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { 
+      type: String,
+      required: [true, "Please provide email"],
+      match: [
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Please provide a valid email",
+      ]
+    },
     phone: { type: String },
     content: { type: String, required: true },
     image1: [{ type: String }],
@@ -24,6 +31,5 @@ const reportSchema = new Schema(
   { timestamps: true },
 );
 
-const Report = mongoose.model("Report", reportSchema);
+module.exports = mongoose.model("Report", Report);
 
-module.exports = Report;
