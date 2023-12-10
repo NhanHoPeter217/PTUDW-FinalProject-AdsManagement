@@ -114,7 +114,7 @@
 
                 <div class="button-container">
                   <div id="recaptcha" class="g-recaptcha" data-sitekey="6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb" data-callback="onSubmit" data-size="invisible"></div>
-                  <button type="button" class="submit-btn" onclick="submitForm()">Gửi</button>
+                  <button id="submitButton" type="button" class="submit-btn">Gửi</button>
                 </div>
               </form>
             </div>
@@ -127,80 +127,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="../js/tinymce.js"></script>
-    
-    <script src="script.js"></script>
-    <script>
-      function onSubmit(token) {
-        var reportType = document.getElementById("reportType").value;
-        var senderName = document.getElementById("fullName").value;
-        var email = document.getElementById("email").value;
-        var phone = document.getElementById("phone").value;
-        var content = document.getElementById("reportContent").value;
-        var image1 = document.getElementById("image1").value;
-        var image2 = document.getElementById("image2").value;
-
-        // Gửi dữ liệu đến máy chủ
-        fetch("http://localhost:3000/api/v1/report", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            reportType: reportType,
-            senderName: senderName,
-            email: email,
-            phone: phone,
-            content: content,
-            image1: image1,
-            image2: image2,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            // Xử lý phản hồi từ máy chủ nếu cần
-            console.log(data);
-            alert("Báo cáo đã được gửi thành công!");
-          })
-          .catch((error) => {
-            // Xử lý lỗi nếu có
-            console.error("Lỗi khi gửi dữ liệu: ", error);
-          });
-      }
-
-      function validateForm() {
-        // Kiểm tra reportType
-        var reportType = document.getElementById("reportType").value;
-        if (!reportType) {
-          alert("Vui lòng chọn hình thức báo cáo");
-          return false;
-        }
-
-        // Kiểm tra senderName
-        var senderName = document.getElementById("fullName").value;
-        if (!senderName) {
-          alert("Vui lòng nhập họ và tên");
-          return false;
-        }
-
-        // Kiểm tra email
-        var email = document.getElementById("email").value;
-        var emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!email) {
-          alert("Vui lòng nhập địa chỉ email");
-          return false;
-        } else if (!emailRegex.test(email)) {
-          alert("Vui lòng nhập địa chỉ email hợp lệ");
-          return false;
-        }
-
-        return true;
-      }
-
-      function submitForm() {
-        if (validateForm()) {
-          grecaptcha.execute();
-        }
-      }
-    </script>
+    <script src="../js/report.js"></script>
   </body>
 </html>

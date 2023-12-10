@@ -2,9 +2,9 @@ tinymce.init({
     selector: '#reportContent',
     height: 300,
     plugins:[
-        'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'prewiew', 'anchor', 'pagebreak',
+        'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'anchor', 'pagebreak',
         'searchreplace', 'wordcount', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 
-        'table', 'emoticons', 'template', 'codesample'
+        'table', 'emoticons', 'codesample', 'preview'
     ],
     toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify |' + 
     'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
