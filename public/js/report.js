@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    submitButton = document.getElementById("submitButton");
-    submitButton.addEventListener("click", function () {
-        if(validateForm()){
-            grecaptcha.execute();
-        }
-    });
+  submitButton = document.getElementById("submitButton");
+  submitButton.addEventListener("click", function () {
+      if(validateForm()){
+          grecaptcha.execute();
+      }
+  });
     
   function validateForm() {
     let isValid = true;
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorSpan = document.getElementById(`${inputId}-error`);
     if (errorSpan) {
       errorSpan.textContent = errorMessage;
-      errorSpan.style.display = "block"; // Sử dụng "block" thay vì "visible"
+      errorSpan.style.display = "block"; 
     }
   }
   
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorSpan = document.getElementById(`${inputId}-error`);
     if (errorSpan) {
       errorSpan.textContent = "";
-      errorSpan.style.display = "none"; // Sử dụng "none" thay vì "hidden"
+      errorSpan.style.display = "none"; 
     }
   }
 });
@@ -66,33 +66,28 @@ function onSubmit(token) {
     var email = document.getElementById("email").value;
     var phone = document.getElementById("phone").value;
     var content = tinymce.get("reportContent").getContent();
-    var image1 = document.getElementById("image1").value;
-    var image2 = document.getElementById("image2").value;
-
+    const formData = new FormData();
+    formData.append('reportType', reportType);
+    formData.append('senderName', senderName);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('content', content);
+    formData.append('image1', document.getElementById('image1').files[0]);
+    formData.append('image2', document.getElementById('image2').files[0]);
+    console.log(formData);
     // Gửi dữ liệu đến máy chủ
     fetch("http://localhost:3000/api/v1/report", {
         method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-        reportType: reportType,
-        senderName: senderName,
-        email: email,
-        phone: phone,
-        content: content,
-        image1: image1,
-        image2: image2,
-        }),
+        body: formData,
     })
         .then((response) => response.json())
         .then((data) => {
-        // Xử lý phản hồi từ máy chủ nếu cần
-        console.log(data);
-        alert("Báo cáo đã được gửi thành công!");
+          // Xử lý phản hồi từ máy chủ nếu cần
+          console.log(data);
+          alert("Báo cáo đã được gửi thành công!");
         })
         .catch((error) => {
-        // Xử lý lỗi nếu có
-        console.error("Lỗi khi gửi dữ liệu: ", error);
+          // Xử lý lỗi nếu có
+          console.error("Lỗi khi gửi dữ liệu: ", error);
         });
 }
