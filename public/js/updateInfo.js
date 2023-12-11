@@ -1,5 +1,6 @@
+
 $(function () {
-  let datePicker = document.getElementById("birthDate");
+  let datePicker = document.getElementById("dateOfBirth");
   let picker = new Litepicker({
     element: datePicker,
     format: "DD/MM/YYYY",
@@ -13,45 +14,101 @@ function openUpdateModal() {
 function openChangePasswordModal() {
   $("#changePasswordModal").modal("show");
 }
+
+
+const fetchUserInfo = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/v1/updateInfo', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user info');
+    }
+
+    const data = await response.json();
+
+    // Fill form fields with user info
+    document.getElementById('fullName').value = data.infoUser.fullName || '';
+    document.getElementById('dateOfBirth').value = data.infoUser.dateOfBirth || '';
+    document.getElementById('email').value = data.infoUser.email || '';
+    document.getElementById('phone').value = data.infoUser.phone || '';
+  } catch (error) {
+    console.error('Error fetching user info:', error.message);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   const updateForm = document.querySelector('.update-form');
   const changePasswordForm = document.querySelector('.change-password-form');
+  
+  fetchUserInfo();
 
-  // updateForm.addEventListener('submit', function (event) {
-  //     event.preventDefault();
-  //     const fullName = document.getElementById('fullName').value;
-  //     const birthDate = document.getElementById('birthDate').value;
-  //     const email = document.getElementById('email').value;
-  //     const phone = document.getElementById('phone').value;
+  updateForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const fullName = document.getElementById('fullName').value;
+      const dateOfBirth = document.getElementById('dateOfBirth').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
 
-  //     // Prepare JSON data
-  //     const jsonData = JSON.stringify({
-  //         fullName,
-  //         birthDate,
-  //         email,
-  //         phone
-  //     });
+      
+      let isValid = true;
 
-  //     // Send PATCH request to update user info
-  //     fetch('http://localhost:3000/api/v1/updateinfo', {
-  //         method: 'PATCH',
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //         },
-  //         body: jsonData,
-  //     })
-  //         .then(response => {
-  //             if (response.ok) {
-  //                 alert('Update successful!');
-  //                 // You can perform additional actions or redirect here
-  //             } else {
-  //                 alert('Update failed. Please try again.');
-  //             }
-  //         })
-  //         .catch(error => {
-  //             console.error('Error:', error);
-  //         });
-  // });
+      // Kiểm tra tên
+      if (!fullName.value.trim()) {
+          showError('name', 'Please fill out your name');
+          isValid = false;
+      } else {
+          hideError('name');
+      }
+
+      // Kiểm tra email
+      if (!validateEmail(email.value) || !email.value.trim()) {
+          showError('email', 'Please fill out a valid email format');
+          isValid = false;
+      } else {
+          hideError('email');
+      }
+
+      // Nếu có lỗi, ngăn chặn việc gửi form
+      if (!isValid) {
+          event.preventDefault();
+      } else {
+          alert('Thank you for your information!');
+      }
+
+
+      // Prepare JSON data
+      const jsonData = JSON.stringify({
+          fullName,
+          dateOfBirth,
+          email,
+          phone
+      });
+
+      // Send PATCH request to update user info
+      fetch('http://localhost:3000/api/v1/updateinfo', {
+          method: 'PATCH',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: jsonData,
+      })
+          .then(response => {
+              if (response.ok) {
+                  alert('Update successful!');
+                  // You can perform additional actions or redirect here
+              } else {
+                  alert('Update failed. Please try again.');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+  });
 
   changePasswordForm.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -90,32 +147,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             console.error('Error:', error);
         });
-  });
+    }
+  
+  );
 
 
+  const dateOfBirthInput = document.getElementById("dateOfBirth");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const birthDateInput = document.getElementById("birthDate");
-
-  birthDateInput.addEventListener("input", function (event) {
+  dateOfBirthInput.addEventListener("input", function (event) {
     let inputValue = event.target.value;
 
     // Remove non-numeric characters
@@ -143,4 +182,26 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  function showError(inputId, errorMessage = 'required') {
+      const errorSpan = document.getElementById(`${inputId}-error`);
+      errorSpan.textContent = errorMessage;
+      errorSpan.style.visibility = 'visible';
+  }
+
+  function hideError(inputId) {
+      const errorSpan = document.getElementById(`${inputId}-error`);
+      errorSpan.textContent = '';
+      errorSpan.style.visibility = 'hidden';
+  }
+
+  function validateEmail(email) {
+      return String(email)
+          .toLowerCase()
+          .match(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+  }
+
+
 });
