@@ -4,8 +4,6 @@ const { hashData } = require("../utils/hashData");
 
 const resetUserPassword = async ({ email, otp, newPassword }) => {
   try {
-    //const validOTP = await verifyOTP({ email, otp });
-    const {email, otp, newPassword} = req.body;
     const validOTP = await verifyOTP({ email, otp });
     if (!validOTP) {
       throw Error("Invalid code passed. Check your inbox.");
