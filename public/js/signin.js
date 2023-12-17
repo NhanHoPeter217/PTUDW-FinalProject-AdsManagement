@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // Send POST request to your server
-      const response = await fetch("http://localhost:3000/api/v1/auth/login", {
+      const response = await fetch("api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to redirect to Forgot Password page
   function redirectToForgotPassword() {
-    window.location.href = "http://localhost:3000/public/html/forgotpw.html";
+    window.location.href = "/forgotPassword";
   }
 
   // Attach the function to the click event of the "Forgot Password" link

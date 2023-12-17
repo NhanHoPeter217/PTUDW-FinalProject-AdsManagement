@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         // Send POST request to your server
-        const response = await fetch("http://localhost:3000/api/v1/forgotpw", {
+        const response = await fetch("/api/v1/forgotpw", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -30,9 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if the response indicates a successful request
         if (response.ok) {
-          // Redirect to the resetpw.html page
-          window.location.href =
-            "http://localhost:3000/public/html/resetpw.html";
+          // Redirect to the /resetPassword page
+          return (window.location.href = "/resetPassword");
         } else {
           // Handle the case when the request was not successful (e.g., display an error message)
           console.error("Error:", response.status);
