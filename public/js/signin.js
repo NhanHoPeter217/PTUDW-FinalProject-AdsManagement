@@ -24,7 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
       // Handle the response, e.g., redirect or show a message
       const data = await response.json();
       console.log(data); // Handle the response data as needed
-      window.location.href = "/";
+      if (response.ok) {
+        // Redirect to the /resetPassword page
+        window.location.href = "/";
+      } else {
+        // Handle the case when the request was not successful (e.g., display an error message)
+        console.error("Error:", response.status);
+        // You can display an error message or perform other actions based on your application's requirements
+      }
     } catch (error) {
       console.error("Error:", error);
     }

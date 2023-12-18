@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Check if the response indicates a successful request
         if (response.ok) {
           // Redirect to the /resetPassword page
-          return (window.location.href = "/resetPassword");
+          window.location.href = "/resetPassword";
         } else {
           // Handle the case when the request was not successful (e.g., display an error message)
           console.error("Error:", response.status);
