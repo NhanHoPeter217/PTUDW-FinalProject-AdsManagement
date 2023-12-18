@@ -15,7 +15,9 @@ const advertisingPointSchema = new Schema({
   },
   images: [{ type: String }],
   planned: { type: Boolean, default: false },
-});
+},
+  { timestamps: true },
+);
 
 advertisingPointSchema.index({ location: "2dsphere" });
 

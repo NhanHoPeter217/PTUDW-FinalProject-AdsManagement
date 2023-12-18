@@ -6,7 +6,7 @@ const districtOfficerSchema = new Schema({
   password: { type: String, required: true },
   fullName: { type: String, required: true },
   assignedAreas: [{ type: String }],
-  role: { type: String, default: "Quan" },
+  role: { type: String, default: "Quận" },
 });
 
 const DistrictOfficer = mongoose.model(

@@ -12,6 +12,14 @@ const advertisingLicenseRequestSchema = new Schema({
     ref: "AdvertisingPoint",
     required: true,
   },
+  
+  advertisingContent: { 
+    type: String,
+    required: true 
+  },
+
+  illstrationImage: [{ type: String }],
+
   companyInfo: {
     name: { type: String, required: true },
     contact: {
@@ -20,14 +28,35 @@ const advertisingLicenseRequestSchema = new Schema({
       address: { type: String },
     },
   },
-  contractStartDate: { type: Date, required: true },
-  contractEndDate: { type: Date, required: true },
+
+  contractStartDate: {
+    type: Date,
+    required: true 
+  },
+
+  contractEndDate: { 
+    type: Date, 
+    required: true 
+  },
+  
   status: {
     type: String,
-    enum: ["Pending", "Approved", "Canceled"],
-    default: "Pending",
+    enum: ["Đang chờ, Đã duyệt, Hủy bỏ"],
+    default: "Đang chờ",
   },
-});
+
+  ward: {
+    type: "String",
+  },
+
+  district: {
+    type: "String",
+    required: true,
+  },
+  
+},
+  { timestamps: true },
+);
 
 const AdvertisingLicenseRequest = mongoose.model(
   "AdvertisingLicenseRequest",

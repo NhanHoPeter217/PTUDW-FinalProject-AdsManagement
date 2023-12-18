@@ -22,11 +22,15 @@ const Report = new Schema(
         "Please provide a valid email",
       ]
     },
-    phone: { type: String },
-    content: { type: String, required: true },
+    phone: { 
+      type: String,
+    },
+    content: { 
+      type: String, 
+      required: true 
+    },
     image1: [{ type: String }],
     image2: [{ type: String }],
-    processed: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

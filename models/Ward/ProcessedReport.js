@@ -3,12 +3,24 @@ const Schema = mongoose.Schema;
 
 const processedReportSchema = new Schema({
   report: { type: Schema.Types.ObjectId, ref: "Report", required: true },
+
+  ward: {
+    type: "String",
+  },
+
+  district: {
+    type: "String",
+    required: true,
+  },
+
   processingStatus: {
     type: String,
-    enum: ["Processing", "Processed"],
-    default: "Processing",
+    enum: ["Chưa xử lý", "Đang xử lý", "Đã xử lý"],
+    default: "Chưa xử lý",
   },
-  processingDetails: { type: String },
+
+  processingMethods: { type: String },
+  
 });
 
 const ProcessedReport = mongoose.model(
