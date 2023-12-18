@@ -24,17 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
       // Handle the response, e.g., redirect or show a message
       const data = await response.json();
       console.log(data); // Handle the response data as needed
+      window.location.href = "/";
     } catch (error) {
       console.error("Error:", error);
     }
   });
 
   // Function to redirect to Forgot Password page
-  function redirectToForgotPassword() {
-    window.location.href = "/forgotPassword";
-  }
+  // function redirectToForgotPassword() {
+  //   window.location.href = "/forgotPassword";
+  // }
 
-  // Attach the function to the click event of the "Forgot Password" link
-  const forgotPasswordLink = document.querySelector(".forgot-password");
-  forgotPasswordLink.addEventListener("click", redirectToForgotPassword);
+  // // Attach the function to the click event of the "Forgot Password" link
+  // const forgotPasswordLink = document.querySelector(".forgot-password");
+  // forgotPasswordLink.addEventListener("click", redirectToForgotPassword);
 });

@@ -2,7 +2,7 @@ const OTP = require("../models/Authentication/Otp");
 const generateOTP = require("../utils/generateOTP");
 const { hashData, verifyHashedData } = require("../utils/hashData");
 const sendEmail = require("../utils/sendEmail");
-// const fs = require("fs").promises;
+const fs = require("fs").promises;
 const path = require("path");
 
 const { AUTH_EMAIL } = process.env;

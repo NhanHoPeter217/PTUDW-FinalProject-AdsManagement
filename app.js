@@ -22,7 +22,7 @@ const reportRouter = require("./routes/report");
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
-
+const { lang } = require("moment");
 
 
 app.use(express.json());
@@ -59,8 +59,25 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+app.get("/forgotPassword", function (req, res) {
+  res.render("commonFeatures/forgotPassword", { layout: false });
+});
+
+app.get("/resetPassword", function (req, res) {
+  res.render("commonFeatures/resetPassword", { layout: false });
+});
+
+app.get("/updateInfo", function (req, res) {
+  res.render("commonFeatures/updateInfo", { layout: false });
+});
+
+app.get("/signin", function (req, res) {
+  res.render("commonFeatures/signin", { layout: false });
+});
+
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
+
 
 const port = process.env.PORT || 3000;
 
