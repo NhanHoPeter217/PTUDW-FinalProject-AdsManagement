@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const processedReportSchema = new Schema({
+const ReportProcessingSchema = new Schema({
   report: { type: Schema.Types.ObjectId, ref: "Report", required: true },
 
-  ward: {
-    type: "String",
-  },
-
-  district: {
-    type: "String",
-    required: true,
+  processedBy: { 
+    ward: {
+      type: "String",
+    },
+  
+    district: {
+      type: "String",
+      required: true,
+    },
   },
 
   processingStatus: {
@@ -20,11 +22,13 @@ const processedReportSchema = new Schema({
   },
 
   processingMethods: { type: String },
-});
-
-const ProcessedReport = mongoose.model(
-  "ProcessedReport",
-  processedReportSchema,
+  },
+  { timestamps: true },
 );
 
-module.exports = ProcessedReport;
+const ReportProcessing = mongoose.model(
+  "ReportProcessing",
+  ReportProcessingSchema,
+);
+
+module.exports = ReportProcessing;

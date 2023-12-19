@@ -8,11 +8,6 @@ const advertisingLicenseRequestSchema = new Schema(
       ref: "AdvertisingBoard",
       required: true,
     },
-    advertisingPoint: {
-      type: Schema.Types.ObjectId,
-      ref: "AdvertisingPoint",
-      required: true,
-    },
 
     advertisingContent: {
       type: String,
@@ -40,20 +35,28 @@ const advertisingLicenseRequestSchema = new Schema(
       required: true,
     },
 
-    status: {
+    ActiveStatus: {
       type: String,
-      enum: ["Đang chờ, Đã duyệt, Hủy bỏ"],
-      default: "Đang chờ",
+      enum: ["Đang tồn tại, Đã hủy bỏ"],
+      default: "Đang tồn tại",
     },
 
-    ward: {
-      type: "String",
+    requestApprovalStatus: {
+      type: String,
+      enum: ["Chưa được duyệt, Đã được duyệt"],
+      default: "Chưa được duyệt",
     },
+    
+    location: {
+      ward: {
+        type: "String",
+      },
 
-    district: {
-      type: "String",
-      required: true,
-    },
+      district: {
+        type: "String",
+        required: true,
+      },
+    }
   },
   { timestamps: true },
 );

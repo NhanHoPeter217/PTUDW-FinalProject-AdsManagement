@@ -1,53 +1,39 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const coordsSchema = new Schema({
-  lat: { type: Number, required: true },
-  lng: { type: Number, required: true },
-});
-
-const sizeSchema = new Schema({
-  w: { type: Number, required: true },
-  h: { type: Number, required: true },
-});
-
 const advertisingPointSchema = new Schema({
-  title: { type: String, required: true },
-  type: {
+  location: { 
+    type: Schema.Types.ObjectId, 
+    ref: "Location", 
+    required: true, 
+  },
+
+  locationType: {
     type: String,
     enum: [
-      "Chuyển hình Rolling",
-      "Biển quảng cáo động Trivision",
-      "Biển quảng cáo điện tử",
-      "Biển quảng cáo đèn LED",
-      "Pano ốp tường",
-      "Billboard - Biển lớn một cột",
-      "Lightbox - Biển hộp đèn",
+      "Đất công/Công viên/Hành lang an toàn giao thông",
+      "Đất tư nhân/Nhà ở riêng lẻ",
+      "Trung tâm thương mại",
+      "Chợ",
+      "Cây xăng",
+      "Nhà chờ xe buýt"
     ],
-    required: false,
+    required: true,
   },
-  info: {
-    type: String,
-    enum: [
-      "Cổ động chính trị",
-      "Thực phẩm",
-      "Dịch vụ",
-      "Giải trí",
-      "Thể thao",
-      "Nghỉ dưỡng",
-      "Vật dụng",
-      "Y tế",
-    ],
-    required: false,
+
+  advertisingFormat: {
+    type: Schema.Types.ObjectId,
+    ref: "AdvertisingFormat",
+    required: true,
   },
-  coords: coordsSchema,
-  address: { type: String, required: true },
-  ward: { type: String, required: true },
-  district: { type: String, required: true },
-  size: sizeSchema,
-  images: [{ type: String }],
-  status: { type: Boolean, default: false },
-  n: { type: Number, default: 1 },
-});
+
+  locationImages: [{ type: String }],
+
+  planningStatus: { type: String, enum: ["Đã quy hoạch", "Chưa quy hoạch"], default: "Chưa quy hoạch" },
+
+  },
+  { timestamps: true },
+);
+
 
 module.exports = mongoose.model("AdvertisingPoint", advertisingPointSchema);

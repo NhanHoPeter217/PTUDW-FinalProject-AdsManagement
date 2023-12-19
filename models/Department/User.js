@@ -46,7 +46,13 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Please provide role"],
     },
     assignedArea: {
-      type: String,
+      ward: {
+        type: String,
+      },
+      district: {
+        type: String,
+        required: [true, 'Please provide district'],
+      },
     },
   },
   { timestamps: true },

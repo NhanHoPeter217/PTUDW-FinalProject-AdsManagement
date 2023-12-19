@@ -1,18 +1,26 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Report = new Schema(
+const ReportSchema = new Schema(
   {
-    reportType: {
+    
+    relatedTo: {
+      type: Schema.Types.ObjectId,
+      refPath: 'relatedToType',
+    },
+    
+    relatedToType: {
       type: String,
-      enum: [
-        "Tố giác sai phạm",
-        "Đăng ký nội dung",
-        "Đóng góp ý kiến",
-        "Giải đáp thắc mắc",
-      ],
+      enum: ['AdvertisingBoard', 'AdvertisingPoint', 'Location'],
       required: true,
     },
+
+    reportFormat: {
+      type: Schema.Types.ObjectId,
+      ref: 'ReportFormat',
+      required: true,
+    },
+    
     senderName: { type: String, required: true },
     email: {
       type: String,
@@ -35,4 +43,4 @@ const Report = new Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Report", Report);
+module.exports = mongoose.model("Report", ReportSchema);
