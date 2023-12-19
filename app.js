@@ -7,7 +7,7 @@ const { engine } = require("express-handlebars");
 const app = express();
 
 const fileUpload = require("express-fileupload");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connect");
 
 // routers
@@ -23,7 +23,6 @@ const reportRouter = require("./routes/report");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const { lang } = require("moment");
-
 
 app.use(express.json());
 app.use("/public", express.static("public"));
@@ -77,7 +76,6 @@ app.get("/signin", function (req, res) {
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
-
 
 const port = process.env.PORT || 3000;
 

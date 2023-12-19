@@ -103,16 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // Send POST request to reset password
-      const response = await fetch(
-        "api/v1/forgotpw/reset",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: jsonData,
+      const response = await fetch("api/v1/forgotpw/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: jsonData,
+      });
 
       // Check if the response indicates a successful request (status code 200 OK)
       if (response.ok) {

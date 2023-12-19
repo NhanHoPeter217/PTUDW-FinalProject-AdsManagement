@@ -2,7 +2,7 @@ const express = require("express");
 const {
   authenticateUser,
   authorizePermissions,
-} = require('../middleware/authentication');
+} = require("../middleware/authentication");
 
 const router = express.Router();
 const {

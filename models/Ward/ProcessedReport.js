@@ -20,7 +20,6 @@ const processedReportSchema = new Schema({
   },
 
   processingMethods: { type: String },
-  
 });
 
 const ProcessedReport = mongoose.model(

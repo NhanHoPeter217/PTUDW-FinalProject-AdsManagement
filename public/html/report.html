@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -52,7 +52,11 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form class="report-form" id="reportForm" enctype="multipart/form-data">
+              <form
+                class="report-form"
+                id="reportForm"
+                enctype="multipart/form-data"
+              >
                 <div class="mb-3">
                   <label for="reportType" class="form-label">Hình thức</label>
                   <select class="form-select" id="reportType" required>
@@ -113,8 +117,16 @@
                 </div>
 
                 <div class="button-container">
-                  <div id="recaptcha" class="g-recaptcha" data-sitekey="6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb" data-callback="onSubmit" data-size="invisible"></div>
-                  <button id="submitButton" type="button" class="submit-btn">Gửi</button>
+                  <div
+                    id="recaptcha"
+                    class="g-recaptcha"
+                    data-sitekey="6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb"
+                    data-callback="onSubmit"
+                    data-size="invisible"
+                  ></div>
+                  <button id="submitButton" type="button" class="submit-btn">
+                    Gửi
+                  </button>
                 </div>
               </form>
             </div>

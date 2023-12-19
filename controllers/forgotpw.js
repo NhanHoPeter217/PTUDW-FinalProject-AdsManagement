@@ -11,7 +11,7 @@ const resetUserPassword = async ({ email, otp, newPassword }) => {
     if (newPassword.length < 6) {
       throw Error("Password is too short!");
     }
-    
+
     const hashedNewPassword = await hashData(newPassword);
     await User.updateOne({ email }, { password: hashedNewPassword });
     await deleteOTP(email);

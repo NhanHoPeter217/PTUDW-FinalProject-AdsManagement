@@ -15,27 +15,29 @@ const advertisingPointSchema = new Schema({
   title: { type: String, required: true },
   type: {
     type: String,
-    enum: ['Chuyển hình Rolling',
-    'Biển quảng cáo động Trivision',
-    'Biển quảng cáo điện tử',
-    'Biển quảng cáo đèn LED',
-    'Pano ốp tường',
-    'Billboard - Biển lớn một cột',
-    'Lightbox - Biển hộp đèn'
-   ],
+    enum: [
+      "Chuyển hình Rolling",
+      "Biển quảng cáo động Trivision",
+      "Biển quảng cáo điện tử",
+      "Biển quảng cáo đèn LED",
+      "Pano ốp tường",
+      "Billboard - Biển lớn một cột",
+      "Lightbox - Biển hộp đèn",
+    ],
     required: false,
   },
   info: {
     type: String,
-    enum: ['Cổ động chính trị',
-         'Thực phẩm',
-         'Dịch vụ',
-         'Giải trí',
-         'Thể thao',
-         'Nghỉ dưỡng',
-         'Vật dụng',
-         'Y tế'
-        ],
+    enum: [
+      "Cổ động chính trị",
+      "Thực phẩm",
+      "Dịch vụ",
+      "Giải trí",
+      "Thể thao",
+      "Nghỉ dưỡng",
+      "Vật dụng",
+      "Y tế",
+    ],
     required: false,
   },
   coords: coordsSchema,
@@ -48,10 +50,4 @@ const advertisingPointSchema = new Schema({
   n: { type: Number, default: 1 },
 });
 
-
-const AdvertisingPoint = mongoose.model(
-  "AdvertisingPoint",
-  advertisingPointSchema,
-);
-
-module.exports = AdvertisingPoint;
+module.exports = mongoose.model("AdvertisingPoint", advertisingPointSchema);
