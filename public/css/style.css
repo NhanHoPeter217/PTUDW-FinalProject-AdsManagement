@@ -1,34 +1,34 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url("colors.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('colors.css');
 
 .primary-background {
-  background-color: var(--LightBlue);
+    background-color: var(--LightBlue);
 }
 
 .secondary-background {
-  background-color: var(--LightGreen);
+    background-color: var(--LightGreen);
 }
 
 .report-background {
-  background-color: var(--LightRed);
+    background-color: var(--LightRed);
 }
 
 .primary-text {
-  color: var(--Blue2);
+    color: var(--Blue2);
 }
 
 .secondary-text {
-  color: var(--Green2);
+    color: var(--Green2);
 }
 
 .primary-icon {
-  color: var(--Blue);
+    color: var(--Blue);
 }
 
 .secondary-icon {
-  color: var(--Green);
+    color: var(--Green);
 }
 
 .drop-shadow {
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }

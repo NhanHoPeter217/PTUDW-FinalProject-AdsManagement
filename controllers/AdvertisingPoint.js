@@ -1,1 +1,1 @@
-const adPoint = require("../models/AdvertisingPoint");
+const adPoint = require('../models/AdvertisingPoint');

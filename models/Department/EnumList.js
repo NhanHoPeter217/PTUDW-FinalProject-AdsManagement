@@ -1,32 +1,31 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ReportFormat = new Schema(
-  {
-    name: {
-      type: String,
-      unique: true,
-      required: true,
+    {
+        name: {
+            type: String,
+            unique: true,
+            required: true
+        }
+        // 'Tố giác sai phạm','Đăng ký nội dung','Đóng góp ý kiến', 'Giải đáp thắc mắc',
     },
-    // 'Tố giác sai phạm','Đăng ký nội dung','Đóng góp ý kiến', 'Giải đáp thắc mắc',
-  },
-  { timestamps: true }
+    { timestamps: true }
 );
 
-
 const advertisingFormat = new Schema(
-  {
-    name: {
-      type: String,
-      unique: true,
-      required: true,
+    {
+        name: {
+            type: String,
+            unique: true,
+            required: true
+        }
+        // Cổ động chính trị, Quảng cáo thương mại, Xã hội hoá
     },
-    // Cổ động chính trị, Quảng cáo thương mại, Xã hội hoá
-  },
-  { timestamps: true }
+    { timestamps: true }
 );
 
 module.exports = {
-    ReportFormat: mongoose.model("ReportFormat", ReportFormat),
-    AdvertisingFormat: mongoose.model("AdvertisingFormat", advertisingFormat),
+    ReportFormat: mongoose.model('ReportFormat', ReportFormat),
+    AdvertisingFormat: mongoose.model('AdvertisingFormat', advertisingFormat)
 };

@@ -6,8 +6,8 @@
     "scripts": {
         "start": "node app.js",
         "dev": "nodemon app.js",
-        "pretty": "prettier --check \"./**/*.{js, jsx, json}\" \"./src/**/*.css\"",
-        "pretty-fix": "prettier --write \"./**/*.{js,jsx, json}\" \"./src/**/*.css\""
+        "pretty": "prettier --check \"./**/*.{js, jsx, json, hbs, html}\" \"./public/css/*.css\"",
+        "pretty-fix": "prettier --write \"./**/*.{js, jsx, json, hbs, html}\" \"./public/css/*.css\""
     },
     "author": "",
     "license": "ISC",
