@@ -10,9 +10,8 @@ const ReportFormat = new Schema(
     },
     // 'Tố giác sai phạm','Đăng ký nội dung','Đóng góp ý kiến', 'Giải đáp thắc mắc',
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-
 
 const advertisingFormat = new Schema(
   {
@@ -23,10 +22,10 @@ const advertisingFormat = new Schema(
     },
     // Cổ động chính trị, Quảng cáo thương mại, Xã hội hoá
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = {
-    ReportFormat: mongoose.model("ReportFormat", ReportFormat),
-    AdvertisingFormat: mongoose.model("AdvertisingFormat", advertisingFormat),
+  ReportFormat: mongoose.model("ReportFormat", ReportFormat),
+  AdvertisingFormat: mongoose.model("AdvertisingFormat", advertisingFormat),
 };

@@ -46,7 +46,7 @@ const advertisingLicenseRequestSchema = new Schema(
       enum: ["Chưa được duyệt, Đã được duyệt"],
       default: "Chưa được duyệt",
     },
-    
+
     location: {
       ward: {
         type: "String",
@@ -56,7 +56,7 @@ const advertisingLicenseRequestSchema = new Schema(
         type: "String",
         required: true,
       },
-    }
+    },
   },
   { timestamps: true },
 );

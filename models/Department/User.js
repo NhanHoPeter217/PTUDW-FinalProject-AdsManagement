@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema(
       },
       district: {
         type: String,
-        required: [true, 'Please provide district'],
+        required: [true, "Please provide district"],
       },
     },
   },

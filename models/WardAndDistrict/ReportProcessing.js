@@ -1,27 +1,67 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ReportProcessingSchema = new Schema({
-  report: { type: Schema.Types.ObjectId, ref: "Report", required: true },
-
-  processedBy: { 
-    ward: {
-      type: "String",
+const ReportProcessingSchema = new Schema(
+  {
+    relatedTo: {
+      type: Schema.Types.ObjectId,
+      refPath: "relatedToType",
     },
-  
-    district: {
-      type: "String",
+
+    relatedToType: {
+      type: String,
+      enum: ["AdvertisingBoard", "AdvertisingPoint", "Location"],
       required: true,
     },
-  },
 
-  processingStatus: {
-    type: String,
-    enum: ["Chưa xử lý", "Đang xử lý", "Đã xử lý"],
-    default: "Chưa xử lý",
-  },
+    reportFormat: {
+      type: Schema.Types.ObjectId,
+      ref: "ReportFormat",
+      required: true,
+    },
 
-  processingMethods: { type: String },
+    senderName: { type: String, required: true },
+
+    email: {
+      type: String,
+      required: [true, "Please provide email"],
+      match: [
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Please provide a valid email",
+      ],
+    },
+
+    phone: {
+      type: String,
+    },
+
+    content: {
+      type: String,
+      required: true,
+    },
+
+    image1: [{ type: String }],
+
+    image2: [{ type: String }],
+
+    processedBy: {
+      ward: {
+        type: "String",
+      },
+
+      district: {
+        type: "String",
+        required: true,
+      },
+    },
+
+    processingStatus: {
+      type: String,
+      enum: ["Chưa xử lý", "Đang xử lý", "Đã xử lý"],
+      default: "Chưa xử lý",
+    },
+
+    processingMethods: { type: String },
   },
   { timestamps: true },
 );

@@ -10,6 +10,32 @@ const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connect");
 
+// security and connection
+const morgan = require("morgan");
+const cors = require("cors");
+
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
+
+var whitelist = ["http://localhost:3000" /** other domains if any */];
+var corsOptions = {
+  credentials: true,
+  origin: whitelist,
+};
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
+  res.header("Cross-Origin-Resource-Policy", "same-site");
+  next();
+});
+
+app.use(cors(corsOptions));
+
 // routers
 const authRouter = require("./routes/auth");
 const jobsRouter = require("./routes/jobs");
@@ -24,10 +50,27 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const { lang } = require("moment");
 
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      imgSrc: ["'self'", "http://localhost:3000"],
+    },
+  }),
+);
+
 app.use(express.json());
 app.use("/public", express.static("public"));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(fileUpload());
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+// Data sanitization against XSS
+app.use(xss());
 
 // routes
 app.use("/api/v1/auth", authRouter);

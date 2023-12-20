@@ -3,24 +3,24 @@ const Schema = mongoose.Schema;
 
 const ReportSchema = new Schema(
   {
-    
+
     relatedTo: {
       type: Schema.Types.ObjectId,
-      refPath: 'relatedToType',
+      refPath: "relatedToType",
     },
-    
+
     relatedToType: {
       type: String,
-      enum: ['AdvertisingBoard', 'AdvertisingPoint', 'Location'],
-      required: true,
+      enum: ["AdvertisingBoard", "AdvertisingPoint", "Location"],
+      default: "Location",
     },
 
     reportFormat: {
       type: Schema.Types.ObjectId,
-      ref: 'ReportFormat',
+      ref: "ReportFormat",
       required: true,
     },
-    
+
     senderName: { type: String, required: true },
     email: {
       type: String,
