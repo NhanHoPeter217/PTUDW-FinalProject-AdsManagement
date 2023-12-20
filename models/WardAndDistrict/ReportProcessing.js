@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 
 const ReportProcessingSchema = new Schema(
   {
+    residentID: { type: String, required: true },
+
     relatedTo: {
       type: Schema.Types.ObjectId,
       refPath: "relatedToType",
@@ -10,7 +12,7 @@ const ReportProcessingSchema = new Schema(
 
     relatedToType: {
       type: String,
-      enum: ["AdvertisingBoard", "AdvertisingPoint", "Location"],
+      enum: ["AdsBoard", "AdsPoint", "Location"],
       required: true,
     },
 

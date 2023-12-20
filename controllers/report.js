@@ -1,7 +1,17 @@
-const Report = require("../models/People/Report");
+const Report = require("../models/Resident/Report");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const { handleFileUpload } = require("../utils/handleFileUpload");
+const ReportProcessing = require("../models/WardAndDistrict/ReportProcessing");
+
+const getAllReports = async (req, res) => {
+  try {
+    const reports = await ReportProcessing.find({ residentID: req.residentID }).sort("createdAt");
+    res.status(StatusCodes.OK).json({ reports });
+  } catch (error) {
+    throw new CustomError.BadRequestError(error.message);
+  }
+};
 
 const createReport = async (req, res) => {
   try {
@@ -27,5 +37,6 @@ const createReport = async (req, res) => {
 };
 
 module.exports = {
+  getAllReports,
   createReport,
 };

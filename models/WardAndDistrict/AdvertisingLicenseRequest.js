@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const advertisingLicenseRequestSchema = new Schema(
+const adsLicenseRequestSchema = new Schema(
   {
-    advertisingBoard: {
+    adsBoard: {
       type: Schema.Types.ObjectId,
-      ref: "AdvertisingBoard",
+      ref: "AdsBoard",
       required: true,
     },
 
-    advertisingContent: {
+    adsContent: {
       type: String,
       required: true,
     },
@@ -61,9 +61,9 @@ const advertisingLicenseRequestSchema = new Schema(
   { timestamps: true },
 );
 
-const AdvertisingLicenseRequest = mongoose.model(
-  "AdvertisingLicenseRequest",
-  advertisingLicenseRequestSchema,
+const AdsLicenseRequest = mongoose.model(
+  "AdsLicenseRequest",
+  adsLicenseRequestSchema,
 );
 
-module.exports = AdvertisingLicenseRequest;
+module.exports = AdsLicenseRequest;

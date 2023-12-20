@@ -3,20 +3,20 @@ const Schema = mongoose.Schema;
 
 const AdsInfoEditingRequestSchema = new Schema(
   {
-    advertisingObject: {
+    adsObject: {
       type: Schema.Types.ObjectId,
-      refPath: "advertisingType",
+      refPath: "adsType",
     },
 
-    advertisingType: {
+    adsType: {
       type: String,
-      enum: ["AdvertisingBoard", "AdvertisingPoint"],
+      enum: ["AdsBoard", "AdsPoint"],
       required: true,
     },
 
     newInfo: {
       type: Schema.Types.ObjectId,
-      ref: "AdvertisingPoint",
+      ref: "AdsPoint",
       required: true,
     },
 

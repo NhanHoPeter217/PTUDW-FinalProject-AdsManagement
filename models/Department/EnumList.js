@@ -13,7 +13,7 @@ const ReportFormat = new Schema(
   { timestamps: true },
 );
 
-const advertisingFormat = new Schema(
+const adsFormat = new Schema(
   {
     name: {
       type: String,
@@ -27,5 +27,5 @@ const advertisingFormat = new Schema(
 
 module.exports = {
   ReportFormat: mongoose.model("ReportFormat", ReportFormat),
-  AdvertisingFormat: mongoose.model("AdvertisingFormat", advertisingFormat),
+  AdsFormat: mongoose.model("AdsFormat", adsFormat),
 };

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const advertisingPointSchema = new Schema(
+const adsPointSchema = new Schema(
   {
     location: {
       type: Schema.Types.ObjectId,
@@ -22,9 +22,9 @@ const advertisingPointSchema = new Schema(
       required: true,
     },
 
-    advertisingFormat: {
+    adsFormat: {
       type: Schema.Types.ObjectId,
-      ref: "AdvertisingFormat",
+      ref: "AdsFormat",
       required: true,
     },
 
@@ -39,4 +39,4 @@ const advertisingPointSchema = new Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("AdvertisingPoint", advertisingPointSchema);
+module.exports = mongoose.model("AdsPoint", adsPointSchema);

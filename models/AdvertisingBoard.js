@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const advertisingBoardSchema = new Schema(
+const adsBoardSchema = new Schema(
   {
-    advertisingPoint: {
+    adsPoint: {
       type: Schema.Types.ObjectId,
-      ref: "AdvertisingPoint",
+      ref: "AdsPoint",
       required: true,
     },
 
-    advertisingBoardType: {
+    adsBoardType: {
       type: String,
       enum: [
         "Trụ bảng hiflex",
@@ -31,11 +31,11 @@ const advertisingBoardSchema = new Schema(
 
     quantity: { type: Number, required: true, default: 1 },
 
-    advertisingBoardImages: [{ type: String }],
+    adsBoardImages: [{ type: String }],
 
     contractEndDate: { type: Date, required: true },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model("AdvertisingBoard", advertisingBoardSchema);
+module.exports = mongoose.model("AdsBoard", adsBoardSchema);

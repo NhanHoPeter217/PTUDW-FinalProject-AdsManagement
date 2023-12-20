@@ -11,7 +11,7 @@ const ReportSchema = new Schema(
 
     relatedToType: {
       type: String,
-      enum: ["AdvertisingBoard", "AdvertisingPoint", "Location"],
+      enum: ["AdsBoard", "AdsPoint", "Location"],
       default: "Location",
     },
 
