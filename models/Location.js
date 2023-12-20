@@ -12,9 +12,10 @@ const locationSchema = new Schema(
 
     address: { type: String, required: true },
 
-    ward: { type: String, required: true },
-
-    district: { type: String, required: true },
+    wardAndDistrict: {
+      ward: { type: String, required: true },
+      district: { type: String, required: true },
+    },
   },
   { timestamps: true },
 );

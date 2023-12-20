@@ -64,6 +64,18 @@ const ReportProcessingSchema = new Schema(
     },
 
     processingMethods: { type: String },
+
+    wardAndDistrict: {
+      ward: {
+        type: "String",
+      },
+
+      district: {
+        type: "String",
+        required: true,
+      },
+    },
+    
   },
   { timestamps: true },
 );

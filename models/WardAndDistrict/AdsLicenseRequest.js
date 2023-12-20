@@ -47,7 +47,7 @@ const adsLicenseRequestSchema = new Schema(
       default: "Chưa được duyệt",
     },
 
-    location: {
+    wardAndDistrict: {
       ward: {
         type: "String",
       },

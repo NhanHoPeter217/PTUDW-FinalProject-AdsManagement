@@ -16,7 +16,7 @@ const AdsInfoEditingRequestSchema = new Schema(
 
     newInfo: {
       type: Schema.Types.ObjectId,
-      ref: "AdsPoint",
+      refPath: "adsType", 
       required: true,
     },
 

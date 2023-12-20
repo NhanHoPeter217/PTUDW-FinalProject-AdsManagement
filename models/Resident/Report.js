@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const ReportSchema = new Schema(
   {
-
     relatedTo: {
       type: Schema.Types.ObjectId,
       refPath: "relatedToType",
@@ -39,6 +38,7 @@ const ReportSchema = new Schema(
     },
     image1: [{ type: String }],
     image2: [{ type: String }],
+    
   },
   { timestamps: true },
 );
