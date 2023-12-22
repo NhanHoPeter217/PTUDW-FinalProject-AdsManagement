@@ -2,7 +2,6 @@ const ReportProcessing = require('../models/WardAndDistrict/ReportProcessing');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { handleFileUpload } = require('../utils/handleFileUpload');
-const ReportProcessing = require('../models/WardAndDistrict/ReportProcessing');
 
 const getAllReports = async (req, res) => {
     try {
