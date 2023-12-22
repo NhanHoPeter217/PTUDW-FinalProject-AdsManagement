@@ -9,6 +9,7 @@ const app = express();
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connect");
+const sectionHandler = require("./sections.js");
 
 // routers
 const authRouter = require("./routes/auth");
@@ -42,16 +43,38 @@ app.use("/api/v1/updatepw", updatepwRouter);
 
 // FRONT END
 //Setup handlebars view engine
+// sectionHandler(engine);
+
 app.engine(
   "hbs",
   engine({
     extname: "hbs",
-    defaultLayout: "main",
+    defaultLayout: "nguoidan",
+    helpers: {
+      section: function section(name, options) {
+        var helper = this;
+        if (!this._sections) {
+          this._sections = {};
+          this._sections._get = function (arg) {
+            if (typeof helper._sections[arg] === "undefined") {
+              throw new Error('The section "' + arg + '" is required.');
+            }
+            return helper._sections[arg];
+          };
+        }
+        if (!this._sections[name]) {
+          this._sections[name] = options.fn(this);
+        }
+
+        return null;
+      },
+    },
   }),
 );
+
 // Basic setup
 app.set("views", "./views");
-app.set("view engine", "hbs");
+app.set("view engine", ".hbs");
 app.set("title", "Ads Management");
 
 app.get("/", (req, res) => {
