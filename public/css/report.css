@@ -21,6 +21,12 @@ body {
     max-height: 80vh;
     overflow-y: auto;
 }
+.modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: var(--Red);
+}
 
 .report-form {
     max-width: 100%;
@@ -67,20 +73,19 @@ body {
     text-align: left;
 }
 
-#reportType,
-#fullName,
-#email,
-#phone,
-#reportContent,
-#image1,
-#image2 {
+.reportType,
+.fullNameReport,
+.reportEmail,
+.reportPhone,
+.reportContent,
+.reportImage {
     width: 100%;
     height: 38px;
     border-radius: 7px;
     background: #f0f0f0;
 }
 
-#boot-icon {
+.reportIcon {
     font-size: 25px;
     color: #d03535;
     margin-left: 175px;
