@@ -178,8 +178,8 @@ async function initMap() {
     >
       <div class="d-flex align-items-start">
         <div class="card-body ps-2" style="padding: 0px;">
-          <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600;">${location.title}</h5>
-          <p class="card-text-location" style="font-size: 16px; font-family: Inter; font-weight: 500; color: #999999">${location.address}</p>
+          <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">${location.title}</h5>
+          <p class="card-text-location" style="font-size: 16px; font-family: Inter; font-weight: 500; color: #999999; padding-bottom: 10px;">${location.address}</p>
           <p class="card-text">
             <span class="label">Kích thước:</span>
             <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${location.w}m x ${location.h}m</span>
