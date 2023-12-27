@@ -8,7 +8,7 @@
     ],
     "scripts": {
         "start": "node app.js",
-        "dev": "concurrently \"npm:dev-CANBO\" \"npm:dev-NGUOIDAN\"",
+        "dev": "concurrently -c \"red,cyan\" \"npm:dev-CANBO\" \"npm:dev-NGUOIDAN\"",
         "dev-CANBO": "cd ./CANBO && npm run dev",
         "dev-NGUOIDAN": "cd ./NGUOIDAN && npm run dev",
         "pretty": "prettier --check .",
