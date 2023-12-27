@@ -2,7 +2,7 @@
 
 Nguồn: [`HackMD - Khoa Ngô`](https://hackmd.io/nQ9oWyiERG2prM5K8Qt5Wg)  
 **Yêu cầu**: xây dựng bộ ứng dụng web **Quản lý bảng quảng cáo** cho thành phố X gồm các phân hệ &
-chức năng sau :::
+chức năng sau
 
 ## 1. Phân hệ người dân
 

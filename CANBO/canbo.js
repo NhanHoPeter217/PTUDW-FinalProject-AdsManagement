@@ -51,13 +51,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            imgSrc: ["'self'", 'http://localhost:3000']
-        }
-    })
-);
+// app.use(helmet());
 
 app.use(express.json());
 app.use('/public', express.static('public'));
@@ -88,7 +82,7 @@ app.engine(
     'hbs',
     engine({
         extname: 'hbs',
-        defaultLayout: 'nguoidan',
+        defaultLayout: 'canbo',
         helpers: {
             section: function section(name, options) {
                 var helper = this;
