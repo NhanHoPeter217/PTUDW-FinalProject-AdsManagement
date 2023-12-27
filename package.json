@@ -13,7 +13,14 @@
         "dev-NGUOIDAN": "cd ./NGUOIDAN && npm run dev",
         "pretty": "prettier --check .",
         "pretty-fix": "prettier --write .",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "precommit": "lint-staged"
+    },
+    "lint-staged": {
+        "*": [
+          "prettier --write",
+          "git add"
+        ]
     },
     "author": "",
     "license": "ISC",
@@ -28,6 +35,7 @@
     "devDependencies": {
         "concurrently": "^8.2.2",
         "husky": "^8.0.3",
+        "lint-staged": "^15.2.0",
         "nodemon": "^3.0.1",
         "prettier": "^3.1.0"
     }
