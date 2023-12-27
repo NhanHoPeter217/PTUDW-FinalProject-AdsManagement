@@ -160,8 +160,8 @@ async function initMap() {
     initAutocomplete();
 
     // Add points to left bar
-  locations.forEach((location, index) => {
-    $("#points-container").append(`
+    locations.forEach((location, index) => {
+        $('#points-container').append(`
     <!-- Adpoint${index} -->
     <style>
         #reportIcon {
@@ -222,7 +222,7 @@ async function initMap() {
         </div>
       </div>
     `);
-  });
+    });
 }
 
 function initAutocomplete() {
