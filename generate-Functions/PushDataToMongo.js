@@ -1,11 +1,11 @@
 const fs = require('fs');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const connectDB = require('./db/connect');
 
-const AdvertisingBoard = require('./models/AdvertisingBoard');
-const AdvertisingPoint = require('./models/AdvertisingPoint');
+const AdvertisingBoard = require('./models/AdsBoard');
+const AdvertisingPoint = require('./models/AdsPoint');
 const LocationModel = require('./models/Location');
-const { AdvertisingFormat } = require('./models/Department/EnumList');
+const AdvertisingFormat = require('./models/Department/AdsFormat');
 const mongoose = require('mongoose');
 
 /* Mô tả dữ liệu như sau:
@@ -29,8 +29,7 @@ async function getRandomFormatId() {
 }
 
 // Loop to create points
-let N = 50;
-let fullData = fs.readFileSync('./full.json', { encoding: 'utf8' });
+let fullData = fs.readFileSync('./full2.json', { encoding: 'utf8' });
 fullData = JSON.parse(fullData);
 
 connectDB(process.env.MONGO_URI).then(() => {
@@ -46,13 +45,12 @@ connectDB(process.env.MONGO_URI).then(() => {
         let n_boards = Math.floor(Math.random() * 4) + 1;
 
         // Create boards
-        let boards = [];
         let pointObjectId = new mongoose.Types.ObjectId();
         for (let i = 0; i < n_boards; i++) {
             let newBoard = new AdvertisingBoard({
-                advertisingPoint: pointObjectId,
-                advertisingBoardType:
-                    AdvertisingBoard.schema.path('advertisingBoardType').enumValues[
+                adsPoint: pointObjectId,
+                adsBoardType:
+                    AdvertisingBoard.schema.path('adsBoardType').enumValues[
                         Math.floor(Math.random() * 10)
                     ],
                 size: {
@@ -61,7 +59,6 @@ connectDB(process.env.MONGO_URI).then(() => {
                 },
                 contractEndDate: new Date(Date.now() + Math.floor(Math.random() * 1000000000))
             });
-            boards.push(newBoard._id);
             newBoard.save();
         }
 
@@ -84,12 +81,11 @@ connectDB(process.env.MONGO_URI).then(() => {
                 AdvertisingPoint.schema.path('locationType').enumValues[
                     Math.floor(Math.random() * 6)
                 ],
-            advertisingFormat: await getRandomFormatId(),
+            adsFormat: await getRandomFormatId(),
             planningStatus:
                 AdvertisingPoint.schema.path('planningStatus').enumValues[
                     Math.floor(Math.random() * 3)
-                ],
-            advertisingBoards: boards
+                ]
         });
 
         newLocation.save();
