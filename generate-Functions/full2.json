@@ -1,0 +1,202 @@
+[
+    {
+        "title": "Bệnh viện Mắt TP.HCM",
+        "coords": {
+            "lat": 10.7795948,
+            "lng": 106.680062
+        },
+        "address": "192 Hẻm 134/1 Cách Mạng Tháng 8, Khu phố 4, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "3"
+    },
+    {
+        "title": "Mega GS Cinemas - Lý Chính Thắng",
+        "coords": {
+            "lat": 10.7807003,
+            "lng": 106.6800377
+        },
+        "address": "66 Hẻm 62 Nguyễn Thông, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "9",
+        "district": "3"
+    },
+    {
+        "title": "Bảo tàng Phụ nữ Nam bộ",
+        "coords": {
+            "lat": 10.7821537,
+            "lng": 106.6797309
+        },
+        "address": "23/41B Đ. Nguyễn Thông, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "9",
+        "district": "3"
+    },
+    {
+        "title": "Bệnh Viện Tai Mũi Họng Tp. HCM",
+        "coords": {
+            "lat": 10.7821537,
+            "lng": 106.6797309
+        },
+        "address": "23/41B Đ. Nguyễn Thông, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "9",
+        "district": "3"
+    },
+    {
+        "title": "NVH.Phụ Nữ TPHCM",
+        "coords": {
+            "lat": 10.783057,
+            "lng": 106.6802569
+        },
+        "address": "120A Rạch Bùng Binh, Khu phố 2, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "3"
+    },
+    {
+        "title": "Chùa Minh Đạo",
+        "coords": {
+            "lat": 10.7830026,
+            "lng": 106.6811857
+        },
+        "address": "173 Đ. Kỳ Đồng, Phường 9, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "9",
+        "district": "3"
+    },
+    {
+        "title": "Trường THCS Lê Lợi",
+        "coords": {
+            "lat": 10.777361,
+            "lng": 106.6820353
+        },
+        "address": "1 Đ. Nguyễn Thượng Hiền, Phường 4, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "4",
+        "district": "3"
+    },
+    {
+        "title": "Nhà thờ Giáo xứ Tân Định",
+        "coords": {
+            "lat": 10.7868347,
+            "lng": 106.6861818
+        },
+        "address": "193/16 Đ. Nam Kỳ Khởi Nghĩa, Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "3"
+    },
+    {
+        "title": "Viện Pasteur Thành phố Hồ Chí Minh",
+        "coords": {
+            "lat": 10.7868347,
+            "lng": 106.6861818
+        },
+        "address": "193/16 Đ. Nam Kỳ Khởi Nghĩa, Võ Thị Sáu, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "3"
+    },
+    {
+        "title": "La Vela Saigon",
+        "coords": {
+            "lat": 10.7876744,
+            "lng": 106.6831962
+        },
+        "address": "816 Đ. Trường Sa, Phường 14, Quận 3, Thành phố Hồ Chí Minh 70000, Vietnam",
+        "ward": "14",
+        "district": "3"
+    },
+    {
+        "title": "Trường THPT Nguyễn Thị Diệu",
+        "coords": {
+            "lat": 10.7878212,
+            "lng": 106.6883078
+        },
+        "address": "72 Trần Quốc Toản, Phường 8, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "8",
+        "district": "3"
+    },
+    {
+        "title": "Bida Bảo Bình - Bảo Bình Billiards Club",
+        "coords": {
+            "lat": 10.7853761,
+            "lng": 106.6925779
+        },
+        "address": "170 Đ. Điện Biên Phủ, Phường 6, Quận 3, Thành phố Hồ Chí Minh 700000, Vietnam",
+        "ward": "6",
+        "district": "3"
+    },
+    {
+        "title": "Đại học Kiến trúc Thành phố Hồ Chí Minh (UAH)",
+        "coords": {
+            "lat": 10.7841852,
+            "lng": 106.6919985
+        },
+        "address": "224A Pasteur, Phường 6, Quận 3, Thành phố Hồ Chí Minh 727010, Vietnam",
+        "ward": "6",
+        "district": "3"
+    },
+    {
+        "title": "Đại học Kinh tế TP.HCM (UEH) - Cơ sở A",
+        "coords": {
+            "lat": 10.7841852,
+            "lng": 106.6919985
+        },
+        "address": "224A Pasteur, Phường 6, Quận 3, Thành phố Hồ Chí Minh 727010, Vietnam",
+        "ward": "6",
+        "district": "3"
+    },
+    {
+        "title": "Sân vận động Tao Đàn",
+        "coords": {
+            "lat": 10.7764913,
+            "lng": 106.6913226
+        },
+        "address": "10a Trương Định, Phường 6, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "6",
+        "district": "3"
+    },
+    {
+        "title": "Nhạc viện Thành phố Hồ Chí Minh",
+        "coords": {
+            "lat": 10.7730343,
+            "lng": 106.6915908
+        },
+        "address": "14C Đ. Cách Mạng Tháng 8, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1"
+    },
+    {
+        "title": "Tổng lãnh sự quán Hàn Quốc",
+        "coords": {
+            "lat": 10.7730343,
+            "lng": 106.6915908
+        },
+        "address": "14C Đ. Cách Mạng Tháng 8, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1"
+    },
+    {
+        "title": "Đền thờ Bà Mariamman",
+        "coords": {
+            "lat": 10.7730343,
+            "lng": 106.6915908
+        },
+        "address": "14C Đ. Cách Mạng Tháng 8, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1"
+    },
+    {
+        "title": "Sân Khấu Trống Đồng",
+        "coords": {
+            "lat": 10.7730343,
+            "lng": 106.6915908
+        },
+        "address": "14C Đ. Cách Mạng Tháng 8, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1"
+    },
+    {
+        "title": "Galaxy Nguyễn Du",
+        "coords": {
+            "lat": 10.7730343,
+            "lng": 106.6915908
+        },
+        "address": "14C Đ. Cách Mạng Tháng 8, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1"
+    }
+]

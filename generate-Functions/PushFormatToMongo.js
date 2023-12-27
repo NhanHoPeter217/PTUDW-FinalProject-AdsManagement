@@ -1,6 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const connectDB = require('./db/connect');
-const { AdvertisingFormat } = require('./models/Department/EnumList');
+const AdvertisingFormat = require('./models/Department/AdsFormat');
 const mongoose = require('mongoose');
 
 const list = ['Cổ động chính trị', 'Quảng cáo thương mại', 'Xã hội hoá'];
