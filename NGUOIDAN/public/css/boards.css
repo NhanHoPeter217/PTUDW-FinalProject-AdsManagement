@@ -1,0 +1,32 @@
+.ad-board,
+.info-board {
+    z-index: 1;
+    border-radius: 7px;
+    display: flex;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-weight: 500;
+    font-family: Inter;
+}
+
+.info-board {
+    background-color: var(--LightGreen);
+}
+
+.value {
+    font-weight: 700;
+}
+
+.ad-board .card-title,
+.info-board .card-title {
+    font-weight: 700;
+}
+
+.ad-board .card-text-location,
+.info-board .card-text-location {
+    font-weight: 600;
+}
+
+.button-font {
+    font-family: Inter;
+    font-weight: 400;
+}

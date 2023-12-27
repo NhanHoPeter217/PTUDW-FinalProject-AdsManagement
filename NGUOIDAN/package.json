@@ -1,0 +1,12 @@
+{
+    "name": "nguoidan",
+    "version": "1.0.0",
+    "description": "",
+    "main": "nguoidan.js",
+    "scripts": {
+        "start": "node nguoidan.js",
+        "dev": "nodemon nguoidan.js"
+    },
+    "author": "",
+    "license": "ISC"
+}

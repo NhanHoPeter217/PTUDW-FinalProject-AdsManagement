@@ -1,0 +1,51 @@
+$enable-shadows body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 400px auto;
+    width: 100vw;
+}
+
+#map {
+    height: 100vh;
+}
+
+#leftbar {
+    padding: 20px 20px;
+}
+
+#searchInput {
+    /* z-index: 1; */
+    color: var(--bs-black);
+}
+
+#searchBar > img {
+    height: 30px;
+    width: auto;
+}
+
+#report-canvas-button {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+}
+
+#points-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 100vh;
+    padding: 20px 20px;
+    overflow: auto;
+}
+
+.info-board {
+    background-color: var(--LightGreen);
+    font-family: Inter;
+}

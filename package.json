@@ -1,41 +1,33 @@
 {
-    "name": "06-jobs-api",
+    "name": "adsmanagement-hcmus-webdev",
     "version": "1.0.0",
     "description": "",
-    "main": "app.js",
+    "workspaces": [
+        "CANBO",
+        "NGUOIDAN"
+    ],
     "scripts": {
         "start": "node app.js",
-        "dev": "nodemon app.js",
-        "prettier": "prettier --write ."
+        "dev": "concurrently \"npm:dev-CANBO\" \"npm:dev-NGUOIDAN\"",
+        "dev-CANBO": "cd ./CANBO && npm run dev",
+        "dev-NGUOIDAN": "cd ./NGUOIDAN && npm run dev",
+        "pretty": "prettier --check .",
+        "pretty-fix": "prettier --write .",
+        "prepare": "husky install"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "bcryptjs": "^2.4.3",
-        "cookie-parser": "^1.4.6",
         "dotenv": "^10.0.0",
         "express": "^4.18.2",
         "express-async-errors": "^3.1.1",
         "express-fileupload": "^1.4.3",
         "express-handlebars": "^7.1.2",
-        "express-rate-limit": "^5.3.0",
-        "http-status-codes": "^2.1.4",
-        "joi": "^17.4.0",
-        "jsonwebtoken": "^9.0.2",
-        "moment": "^2.29.4",
-        "mongodb": "^6.3.0",
-        "mongoose": "^5.13.21",
-        "nodemailer": "^6.9.7",
-        "rate-limiter": "^0.2.0",
-        "cors": "^2.8.5",
-        "express-mongo-sanitize": "^2.2.0",
-        "faker": "^5.5.3",
-        "helmet": "^7.1.0",
-        "morgan": "^1.10.0",
-        "xss-clean": "^0.1.4"
+        "express-rate-limit": "^5.3.0"
     },
     "devDependencies": {
-        "@faker-js/faker": "^8.3.1",
+        "concurrently": "^8.2.2",
+        "husky": "^8.0.3",
         "nodemon": "^3.0.1",
         "prettier": "^3.1.0"
     }
