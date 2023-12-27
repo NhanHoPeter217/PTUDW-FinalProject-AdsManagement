@@ -88,7 +88,7 @@ app.engine(
     'hbs',
     engine({
         extname: 'hbs',
-        defaultLayout: 'nguoidan',
+        defaultLayout: 'canbo',
         helpers: {
             section: function section(name, options) {
                 var helper = this;
