@@ -18,7 +18,9 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 
-var whitelist = [`http://localhost:${process.env.PORT_NGUOIDAN || 3000}` /** other domains if any */];
+var whitelist = [
+    `http://localhost:${process.env.PORT_NGUOIDAN || 3000}` /** other domains if any */
+];
 var corsOptions = {
     credentials: true,
     origin: whitelist
