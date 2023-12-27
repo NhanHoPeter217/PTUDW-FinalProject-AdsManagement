@@ -34,7 +34,8 @@ const adsPointSchema = new Schema(
             type: String,
             enum: ['Đã quy hoạch', 'Chưa quy hoạch'],
             default: 'Chưa quy hoạch'
-        }
+        }, 
+        
     },
     { timestamps: true }
 );
