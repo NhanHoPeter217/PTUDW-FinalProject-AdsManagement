@@ -1,0 +1,596 @@
+[
+    {
+        "title": "Chợ Bến Thành",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Thực phẩm",
+        "coords": {
+            "lat": 10.772369,
+            "lng": 106.698731
+        },
+        "address": "95 Đ. Phan Bội Châu, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1",
+        "size": {
+            "w": 11,
+            "h": 19
+        },
+        "status": 0,
+        "n": 2
+    },
+    {
+        "title": "Bảo tàng Chứng tích Chiến tranh",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Dịch vụ",
+        "coords": {
+            "lat": 10.779381,
+            "lng": 106.692785
+        },
+        "address": "11 Võ Văn Tần, Phường 6, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "6",
+        "district": "3",
+        "size": {
+            "w": 8,
+            "h": 2
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Nhà thờ Đức Bà Sài Gòn",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Dịch vụ",
+        "coords": {
+            "lat": 10.779589,
+            "lng": 106.69889
+        },
+        "address": "QMHX+VG5, Công xã Paris, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 2,
+            "h": 4
+        },
+        "status": 1,
+        "n": 1
+    },
+    {
+        "title": "Bưu điện Trung tâm Sài Gòn",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Giải trí",
+        "coords": {
+            "lat": 10.779572,
+            "lng": 106.699755
+        },
+        "address": "Công Xã Paris - Cây Xanh Số 6 - Công Xã Paris - Phường Bến Nghé, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Nghé",
+        "district": "1",
+        "size": {
+            "w": 11,
+            "h": 16
+        },
+        "status": 1,
+        "n": 2
+    },
+    {
+        "title": "Tháp Tài chính Bitexco",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Giải trí",
+        "coords": {
+            "lat": 10.771958,
+            "lng": 106.70577
+        },
+        "address": "15th Floor, Bitexco Building, 19 Nguyen Hue, Dist 1,, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 14,
+            "h": 18
+        },
+        "status": 0,
+        "n": 4
+    },
+    {
+        "title": "Dinh Thống Nhất",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Thực phẩm",
+        "coords": {
+            "lat": 10.776507,
+            "lng": 106.694302
+        },
+        "address": "52 Huyền Trân Công Chúa, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1",
+        "size": {
+            "w": 8,
+            "h": 8
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Chùa Ngọc Hoàng",
+        "type": "Pano ốp tường",
+        "info": "Thực phẩm",
+        "coords": {
+            "lat": 10.791947,
+            "lng": 106.698177
+        },
+        "address": "104 Đ. Mai Thị Lựu, Đa Kao, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 6,
+            "h": 7
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Nhà hát Thành phố Sài Gòn",
+        "type": "Chuyển hình Rolling",
+        "info": "Cổ động chính trị",
+        "coords": {
+            "lat": 10.776386,
+            "lng": 106.702956
+        },
+        "address": "11C Công Trường Lam Sơn, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Nghé",
+        "district": "1",
+        "size": {
+            "w": 6,
+            "h": 7
+        },
+        "status": 1,
+        "n": 1
+    },
+    {
+        "title": "Phố đi bộ Nguyễn Huệ",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.77399,
+            "lng": 106.703572
+        },
+        "address": "QPF3+HC District 1, Ho Chi Minh City, Vietnam",
+        "ward": "",
+        "district": "",
+        "size": {
+            "w": 4,
+            "h": 2
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Quảng trường Notre-Dame Sài Gòn",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.779137,
+            "lng": 106.699715
+        },
+        "address": "1 Công xã Paris, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh 70000, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 7,
+            "h": 8
+        },
+        "status": 0,
+        "n": 5
+    },
+    {
+        "title": "Trung tâm Vincom",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Cổ động chính trị",
+        "coords": {
+            "lat": 10.778401,
+            "lng": 106.702021
+        },
+        "address": "72 Đ. Lê Thánh Tôn, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 13,
+            "h": 16
+        },
+        "status": 0,
+        "n": 2
+    },
+    {
+        "title": "Công viên 23/9",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.768634,
+            "lng": 106.692373
+        },
+        "address": "September 23rd Park, Đ. Phạm Ngũ Lão, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Phạm Ngũ Lão",
+        "district": "1",
+        "size": {
+            "w": 4,
+            "h": 6
+        },
+        "status": 1,
+        "n": 2
+    },
+    {
+        "title": "Nhà hát Rồng Vàng",
+        "type": "Chuyển hình Rolling",
+        "info": "Dịch vụ",
+        "coords": {
+            "lat": 10.776398,
+            "lng": 106.692531
+        },
+        "address": "55B Đ. Nguyễn Thị Minh Khai, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1",
+        "size": {
+            "w": 5,
+            "h": 2
+        },
+        "status": 0,
+        "n": 2
+    },
+    {
+        "title": "Phố đi bộ Bùi Viện",
+        "type": "Biển quảng cáo điện tử",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.76738,
+            "lng": 106.693987
+        },
+        "address": "84, 17 Đ. Bùi Viện, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Phạm Ngũ Lão",
+        "district": "1",
+        "size": {
+            "w": 5,
+            "h": 6
+        },
+        "status": 1,
+        "n": 5
+    },
+    {
+        "title": "Uỷ ban Nhân dân Thành phố Hồ Chí Minh",
+        "type": "Chuyển hình Rolling",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.776534,
+            "lng": 106.701126
+        },
+        "address": "209 Đ. Đồng Khởi, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 3,
+            "h": 7
+        },
+        "status": 0,
+        "n": 3
+    },
+    {
+        "title": "Khu vui chơi trẻ em Tao Đàn",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.774498,
+            "lng": 106.691076
+        },
+        "address": "57 Đ. Nguyễn Thị Minh Khai, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1",
+        "size": {
+            "w": 3,
+            "h": 3
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Bảo tàng Mỹ thuật Sài Gòn",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.770005,
+            "lng": 106.699415
+        },
+        "address": "97 P. Đức Chính, Phường Nguyễn Thái Bình, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Nguyễn Thái Bình",
+        "district": "1",
+        "size": {
+            "w": 5,
+            "h": 6
+        },
+        "status": 1,
+        "n": 1
+    },
+    {
+        "title": "Công viên Lê Văn Tám",
+        "type": "Chuyển hình Rolling",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.779825,
+            "lng": 106.69403
+        },
+        "address": "43 Võ Văn Tần, Phường 6, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "6",
+        "district": "3",
+        "size": {
+            "w": 2,
+            "h": 8
+        },
+        "status": 0,
+        "n": 1
+    },
+    {
+        "title": "Công viên Tao Đàn",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.774669,
+            "lng": 106.69247
+        },
+        "address": "80 Trương Định, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Thành",
+        "district": "1",
+        "size": {
+            "w": 14,
+            "h": 20
+        },
+        "status": 0,
+        "n": 2
+    },
+    {
+        "title": "Tầng nhìn Saigon Skydeck",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.771413,
+            "lng": 106.704088
+        },
+        "address": "43 Đ. Hồ Tùng Mậu, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 6,
+            "h": 7
+        },
+        "status": 1,
+        "n": 1
+    },
+    {
+        "title": "SG Waterbus",
+        "type": "Biển quảng cáo điện tử",
+        "info": "Nghỉ dưỡng",
+        "coords": {
+            "lat": 10.775364,
+            "lng": 106.707018
+        },
+        "address": "Số 10B Đ. Tôn Đức Thắng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 2,
+            "h": 3
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Chùa Thiên Hậu",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Giải trí",
+        "coords": {
+            "lat": 10.755006,
+            "lng": 106.722202
+        },
+        "address": "KC1(Chua Ba Thien Hau) Huỳnh Tấn Phát, Tân Thuận Tây, Quận 7, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "7",
+        "size": {
+            "w": 4,
+            "h": 6
+        },
+        "status": 1,
+        "n": 2
+    },
+    {
+        "title": "Ga Bạch Đằng",
+        "type": "Biển quảng cáo điện tử",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.775214,
+            "lng": 106.707166
+        },
+        "address": "Ga Tàu Thuỷ Bạch Đằng - Tôn Đức Thắng - Phường Bến Nghé, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "Bến Nghé",
+        "district": "1",
+        "size": {
+            "w": 4,
+            "h": 3
+        },
+        "status": 1,
+        "n": 2
+    },
+    {
+        "title": "Trung tâm Thương mại Saigon Tax",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.784278,
+            "lng": 106.703463
+        },
+        "address": "47 Đ. Tôn Đức Thắng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 7,
+            "h": 3
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Chùa Vĩnh Nghiêm",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Cổ động chính trị",
+        "coords": {
+            "lat": 10.790801,
+            "lng": 106.682615
+        },
+        "address": "145 Đ. Nam Kỳ Khởi Nghĩa, Phường 14, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "14",
+        "district": "3",
+        "size": {
+            "w": 3,
+            "h": 3
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Quảng trường Nguyễn Huệ",
+        "type": "Billboard - Biển lớn một cột",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.774395,
+            "lng": 106.70324
+        },
+        "address": "97 Mạc Thị Bưởi, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 15,
+            "h": 18
+        },
+        "status": 1,
+        "n": 1
+    },
+    {
+        "title": "Nhà thờ Tân Định",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.78869,
+            "lng": 106.690813
+        },
+        "address": "Chợ Tân Định - 295 Hai Bà Trưng, Quận 3, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "3",
+        "size": {
+            "w": 4,
+            "h": 8
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Trường Đại học Mỹ thuật",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Y tế",
+        "coords": {
+            "lat": 10.802448641853811,
+            "lng": 106.69541845022655
+        },
+        "address": "5 Phan Đăng Lưu, Phường 3, Bình Thạnh, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "3",
+        "district": "",
+        "size": {
+            "w": 3,
+            "h": 3
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Công viên Lê Văn Tám",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Thể thao",
+        "coords": {
+            "lat": 10.78805172495685,
+            "lng": 106.69363926666249
+        },
+        "address": "QMQV+6GM, Đ. Võ Thị Sáu, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Vietnam",
+        "ward": "",
+        "district": "1",
+        "size": {
+            "w": 5,
+            "h": 3
+        },
+        "status": 1,
+        "n": 4
+    },
+    {
+        "title": "Bảo tàng FITO (Bảo tàng Y học dân dụ)",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Cổ động chính trị",
+        "coords": {
+            "lat": 10.77613835428472,
+            "lng": 106.67186772114394
+        },
+        "address": "39 Hoàng Dư Khương, Phường 12, Quận 10, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "12",
+        "district": "10",
+        "size": {
+            "w": 8,
+            "h": 6
+        },
+        "status": 1,
+        "n": 5
+    },
+    {
+        "title": "Trung tâm thương mại Saigon Paragon",
+        "type": "Biển quảng cáo đèn LED",
+        "info": "Cổ động chính trị",
+        "coords": {
+            "lat": 10.729504090270787,
+            "lng": 106.72184634560051
+        },
+        "address": "3 Nguyễn Lương Bằng, Tân Phú, Quận 7, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "7",
+        "size": {
+            "w": 2,
+            "h": 5
+        },
+        "status": 1,
+        "n": 3
+    },
+    {
+        "title": "Trung tâm Hội chợ và Triển lãm Sài Gòn (SECC)",
+        "type": "Lightbox - Biển hộp đèn",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.73058396137865,
+            "lng": 106.7213482670389
+        },
+        "address": "799 Đ. Nguyễn Văn Linh, Tân Phú, Quận 7, Thành phố Hồ Chí Minh, Vietnam",
+        "ward": "",
+        "district": "7",
+        "size": {
+            "w": 3,
+            "h": 8
+        },
+        "status": 1,
+        "n": 2
+    },
+    {
+        "title": "Cầu Ánh Sao",
+        "type": "Biển quảng cáo động Trivision",
+        "info": "Vật dụng",
+        "coords": {
+            "lat": 10.724607957943292,
+            "lng": 106.71883296171413
+        },
+        "address": "PPF9+VCR, Khu đô thị Phú Mỹ Hưng, District 7, Ho Chi Minh City, Vietnam",
+        "ward": "",
+        "district": "",
+        "size": {
+            "w": 8,
+            "h": 6
+        },
+        "status": 0,
+        "n": 1
+    }
+]
