@@ -160,56 +160,69 @@ async function initMap() {
     initAutocomplete();
 
     // Add points to left bar
-    locations.forEach((location, index) => {
-        $('#points-container').append(`    
+  locations.forEach((location, index) => {
+    $("#points-container").append(`
     <!-- Adpoint${index} -->
-
+    <style>
+        #reportIcon {
+            transition: filter 0.1s ease-in-out; /* Add a transition effect */
+        }
+    
+        #reportIcon:hover {
+            filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
+        }
+  </style>
     <div
-      class="card ad-board primary-background primary-text shadow"
-      style="width: 20rem;"
+      class="card ad-board default-background primary-text"
+      style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
     >
       <div class="d-flex align-items-start">
-        <span
-          id="boot-iconBoard${index}"
-          class="bi bi-info-circle mt-3 ms-1 me-1 primary-icon"
-          style="font-size: 20px; -webkit-text-stroke-width: 1px;"
-        ></span>
-        <div class="card-body ps-2">
-          <h5 class="card-title">${location.title}</h5>
-          <p class="card-text-location">${location.address}</p>
+        <div class="card-body ps-2" style="padding: 0px;">
+          <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600;">${location.title}</h5>
+          <p class="card-text-location" style="font-size: 16px; font-family: Inter; font-weight: 500; color: #999999">${location.address}</p>
           <p class="card-text">
             <span class="label">Kích thước:</span>
-            <span class="value">${location.w}m x ${location.h}m</span>
+            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${location.w}m x ${location.h}m</span>
           </p>
           <p class="card-text">
             <span class="label">Số lượng:</span>
-            <span class="value">${location.n} trụ / bảng</span>
+            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${location.n} trụ / bảng</span>
           </p>
           <p class="card-text">
             <span class="label">Hình thức:</span>
-            <span class="value">${location.info}</span>
+            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${location.info}</span>
           </p>
           <p class="card-text">
             <span class="label">Phân loại:</span>
-            <span class="value">${location.type}</span>
+            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${location.type}</span>
           </p>
         </div>
       </div>
 
 
         <!-- Button to trigger the modal -->
-        <button
-          type="button"
-          class="btn btn-outline-danger mb-3 ms-5 me-5 report-background"
-          data-bs-toggle="modal"
-          data-bs-target="#reportModal"
-        >
-        <i class="bi bi-info-circle-fill me-1" style="font-size: 20px;"></i>
-        <span id="buttonName${index}" class="button-font">Báo cáo vi phạm</span>
-        </button>      
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none">
+            <path d="M14.2501 8.74994H16.7501V11.2499H14.2501V8.74994ZM14.2501 13.7499H16.7501V21.2499H14.2501V13.7499ZM15.5001 2.49994C8.60006 2.49994 3.00006 8.09994 3.00006 14.9999C3.00006 21.8999 8.60006 27.4999 15.5001 27.4999C22.4001 27.4999 28.0001 21.8999 28.0001 14.9999C28.0001 8.09994 22.4001 2.49994 15.5001 2.49994ZM15.5001 24.9999C9.98756 24.9999 5.50006 20.5124 5.50006 14.9999C5.50006 9.48744 9.98756 4.99994 15.5001 4.99994C21.0126 4.99994 25.5001 9.48744 25.5001 14.9999C25.5001 20.5124 21.0126 24.9999 15.5001 24.9999Z" fill="#1C89D0"/>
+          </svg>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#reportModal"
+            style="display: flex; justify-content: center; align-items: center;"
+          >
+            <div style="display: flex; justify-content: center; align-items: center; column-gap: 7px;" id="reportIcon">
+              <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+              <span id="buttonNamePlaceholder" style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                BÁO CÁO VI PHẠM
+              </span>
+            </div>
+          </button>
+        </div>
       </div>
     `);
-    });
+  });
 }
 
 function initAutocomplete() {
