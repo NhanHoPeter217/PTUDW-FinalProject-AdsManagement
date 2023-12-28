@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
     createLocation,
-    deleteLocation,
+    deleteLocation
 } = require('../../controllers/Department/adsBoardController');
 
 router.route('/').post(createLocation);
