@@ -96,9 +96,6 @@ app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
 app.use('/api/v1/location', locationRouter);
 
-
-
-
 // FRONT END
 //Setup handlebars view engine
 // sectionHandler(engine);

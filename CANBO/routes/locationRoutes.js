@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {
-    createLocation,
-    deleteLocation
-} = require('../controllers/locationController');
+const { createLocation, deleteLocation } = require('../controllers/locationController');
 
 const { authenticateUser, authorizePermissions } = require('../middleware/authentication');
 

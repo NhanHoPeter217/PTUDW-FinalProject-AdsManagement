@@ -83,10 +83,11 @@ const createReport = async (req, res) => {
 const sendReportStatusNotification = async (req, res) => {
     try {
         const { id: reportProcessingId } = req.params;
-        const reportProcessing = await ReportProcessing.findById(reportProcessingId)
-            .populate('relatedTo reportFormat');
+        const reportProcessing =
+            await ReportProcessing.findById(reportProcessingId).populate('relatedTo reportFormat');
 
-        const { relatedTo, relatedToType, reportFormat, senderName, email, phone, content } = reportProcessing;
+        const { relatedTo, relatedToType, reportFormat, senderName, email, phone, content } =
+            reportProcessing;
 
         const subject = 'New announcement: The status and processing method of your report';
 
@@ -94,7 +95,7 @@ const sendReportStatusNotification = async (req, res) => {
             path.join(__dirname, '../../public/html/reportStatusNotificationEmail.html'),
             'utf8'
         );
-        
+
         let locationName, address;
 
         if (relatedToType === 'Location') {
@@ -106,14 +107,14 @@ const sendReportStatusNotification = async (req, res) => {
         }
 
         const replacedHTML = htmlContent
-        .replace('{{locationName}}', locationName)
-        .replace('{{address}}', address)
-        .replace('{{reportFormat}}', reportFormat)
-        .replace('{{senderName}}', senderName)
-        .replace('{{phone}}', phone)
-        .replace('{{content}}', content)
-        .replace('{{processingStatus}}', req.body.processingStatus)
-        .replace('{{processingMethod}}', req.body.processingMethod);
+            .replace('{{locationName}}', locationName)
+            .replace('{{address}}', address)
+            .replace('{{reportFormat}}', reportFormat)
+            .replace('{{senderName}}', senderName)
+            .replace('{{phone}}', phone)
+            .replace('{{content}}', content)
+            .replace('{{processingStatus}}', req.body.processingStatus)
+            .replace('{{processingMethod}}', req.body.processingMethod);
 
         const mailOptions = {
             from: AUTH_EMAIL,
@@ -124,7 +125,9 @@ const sendReportStatusNotification = async (req, res) => {
         await sendEmail(mailOptions);
 
         if (!reportProcessing) {
-            throw new CustomError.NotFoundError(`No ReportProcessing with id: ${reportProcessingId}`);
+            throw new CustomError.NotFoundError(
+                `No ReportProcessing with id: ${reportProcessingId}`
+            );
         }
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
