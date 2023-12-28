@@ -5,7 +5,7 @@ const {
     createReportFormat,
     updateReportFormat,
     deleteReportFormat
-} = require('../../controllers/Department/adsFormatController');
+} = require('../../controllers/Department/reportFormatController');
 
 router.route('/').get(getAllReportFormats);
 router.route('/').post(createReportFormat);

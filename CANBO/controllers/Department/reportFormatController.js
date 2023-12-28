@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const ReportFormat = require('../../models/ReportFormat');
+const ReportFormat = require('../../models/Department/ReportFormat');
 const CustomError = require('../../errors');
 
 const getAllReportFormats = async (req, res) => {

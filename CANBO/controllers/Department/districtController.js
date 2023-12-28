@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const District = require('../../models/District');
+const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
 
 const getAllDistricts = async (req, res) => {

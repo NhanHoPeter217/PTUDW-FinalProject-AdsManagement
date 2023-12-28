@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const Ward = require('../../models/Ward');
+const Ward = require('../../models/Department/Ward');
 const CustomError = require('../../errors');
 
 const getAllWards = async (req, res) => {

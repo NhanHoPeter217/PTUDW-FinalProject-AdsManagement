@@ -39,7 +39,21 @@ const jobsRouter = require('./routes/jobs');
 const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
-const reportRouter = require('./routes/report');
+const reportRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
+
+const adsBoardRouter = require('./routes/Department/adsBoardRoutes');
+const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
+const adsPointRouter = require('./routes/Department/adsPointRoutes');
+const districtRouter = require('./routes/Department/districtRoutes');
+const wardRouter = require('./routes/Department/wardRoutes');
+const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
+
+const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
+const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
+const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
+
+
+
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -66,7 +80,7 @@ app.use(xss());
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/forgotpw', forgotpwRouter);
-app.use('/api/v1/report', reportRouter);
+app.use('/api/v1/report', reportProcessingRouter);
 
 // routes after login
 app.use('/api/v1/jobs', jobsRouter);

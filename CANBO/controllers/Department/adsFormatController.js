@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const AdsFormat = require('../../models/AdsFormat');
+const AdsFormat = require('../../models/Department/AdsFormat');
 const CustomError = require('../../errors');
 
 const getAllAdsFormats = async (req, res) => {
