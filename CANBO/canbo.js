@@ -52,9 +52,6 @@ const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEdi
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
 const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
 
-
-
-
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
