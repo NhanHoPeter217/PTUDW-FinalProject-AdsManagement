@@ -43,6 +43,10 @@ const updatepwRouter = require('./routes/updatepw');
 const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
 const reportRouter = require('./routes/report');
+const adsPointRoute = require('./routes/ads-point.route');
+// import adsBoardRoute from './routes/ads-board.route.js';
+// import wardRoute from './routes/ward.route.js';
+// import districtRoute from './routes/district.route.js';
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -77,7 +81,7 @@ app.use('/api/v1/updateInfo', updateInfoRouter);
 app.use('/api/v1/updatepw', updatepwRouter);
 
 // FRONT END
-//Setup handlebars view engine
+// Setup handlebars view engine
 // sectionHandler(engine);
 
 app.engine(
@@ -108,8 +112,8 @@ app.engine(
 );
 
 // Basic setup
+app.set('view engine', 'hbs');
 app.set('views', './views');
-app.set('view engine', '.hbs');
 app.set('title', 'Ads Management');
 
 app.get('/', (req, res) => {
@@ -131,6 +135,12 @@ app.get('/updateInfo', function (req, res) {
 app.get('/signin', function (req, res) {
     res.render('commonFeatures/signin', { layout: false });
 });
+
+// view engine setup
+app.use('/admin/adspoint', adsPointRoute);
+// app.use('/admin', adsBoardRoute);
+// app.use('/admin', wardRoute);
+// app.use('/admin', districtRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
