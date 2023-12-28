@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateUser, authorizePermissions } = require('../../middleware/authentication');
 const {
     createAdsPoint,
     getAllAdsPoints,
@@ -9,11 +10,11 @@ const {
     deleteAdsPoint
 } = require('../../controllers/Department/adsPointController');
 
-router.route('/').post(createAdsPoint);
+router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
 router.route('/').get(getAllAdsPoints);
-router.route('/area/:area').get(getAllAdsPointsByAssignedArea);
+router.route('/').get(authenticateUser, getAllAdsPointsByAssignedArea);
 router.route('/:id').get(getSingleAdsPoint);
-router.route('/:id').patch(updateAdsPoint);
-router.route('/:id').delete(deleteAdsPoint);
+router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), updateAdsPoint);
+router.route('/:id').delete(authenticateUser, authorizePermissions('Sở VH-TT'), deleteAdsPoint);
 
 module.exports = router;

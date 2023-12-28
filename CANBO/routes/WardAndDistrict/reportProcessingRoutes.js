@@ -9,11 +9,15 @@ const {
     updateReport
 } = require('../../controllers/WardAndDistrict/reportProcessingController');
 
-router.route('/').get(getAllReports);
-router.route('/area/:area').get(getAllReportsByAssignedArea);
-router.route('/ward/:ward').get(getAllReportsByWardAndDistrict);
-router.route('/:id').get(getSingleReport);
+const { authenticateResident, authenticateUser, authorizePermissions } = require('../../middleware/authentication');
+
+router.use(authenticateUser);
+
+router.route('/').get(authorizePermissions('Sở VH-TT'), getAllReports);
+router.route('/').get(authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
+router.route('dist/:dist/ward/:ward').get(authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
+router.route('/:id').get(authorizePermissions('Sở VH-TT'), getSingleReport);
 router.route('/').post(createReport);
-router.route('/:id').patch(updateReport);
+router.route('/:id').patch(authorizePermissions('Phường', 'Quận'), updateReport);
 
 module.exports = router;

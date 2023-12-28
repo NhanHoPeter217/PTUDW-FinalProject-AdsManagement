@@ -52,7 +52,7 @@ const ReportProcessingSchema = new Schema(
             default: 'Chưa xử lý'
         },
 
-        processingMethods: { type: String },
+        processingMethod: { type: String },
 
         wardAndDistrict: {
             ward: {

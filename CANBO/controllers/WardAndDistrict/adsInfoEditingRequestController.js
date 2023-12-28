@@ -31,12 +31,12 @@ const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
         const adsInfoEditingRequests = await AdsInfoEditingRequest.find({
             $or: [
                 {
-                    'adsObject.adsPoint.location.ward': ward,
-                    'adsObject.adsPoint.location.district': district
+                    'adsObject.location.ward': ward,
+                    'adsObject.location.district': district
                 },
                 {
-                    'adsObject.adsBoard.adsPoint.location.ward': ward,
-                    'adsObject.adsBoard.adsPoint.location.district': district
+                    'adsObject.adsPoint.location.ward': ward,
+                    'adsObject.adsPoint.location.district': district
                 }
             ]
         });
@@ -109,6 +109,7 @@ const updateAdsInfoEditingRequest = async (req, res) => {
 module.exports = {
     createAdsInfoEditingRequest,
     getAllAdsInfoEditingRequests,
+    // getAllAdsInfoEditingRequestsByAssignedArea,
     getSingleAdsInfoEditingRequest,
     updateAdsInfoEditingRequest
     // deleteAdsInfoEditingRequest

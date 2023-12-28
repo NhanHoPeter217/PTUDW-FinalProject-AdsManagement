@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateUser, authorizePermissions } = require('../../middleware/authentication');
 const {
     getAllDistricts,
     createDistrict,
     updateDistrict,
     deleteDistrict
 } = require('../../controllers/Department/districtController');
+
+router.use(authenticateUser);
+router.use(authorizePermissions('Sở VH-TT'));
 
 router.route('/').get(getAllDistricts);
 router.route('/').post(createDistrict);

@@ -3,6 +3,7 @@ const ReportProcessing = require('../../models/WardAndDistrict/ReportProcessing'
 const Location = require('../../models/Location');
 const CustomError = require('../../errors');
 const { handleFileUpload } = require('../../utils/handleFileUpload');
+const sendEmail = require('../../utils/sendEmail');
 
 const getAllReports = async (req, res) => {
     try {
@@ -79,6 +80,57 @@ const createReport = async (req, res) => {
     }
 };
 
+const sendReportStatusNotification = async (req, res) => {
+    try {
+        const { id: reportProcessingId } = req.params;
+        const reportProcessing = await ReportProcessing.findById(reportProcessingId)
+            .populate('relatedTo reportFormat');
+
+        const { relatedTo, relatedToType, reportFormat, senderName, email, phone, content } = reportProcessing;
+
+        const subject = 'New announcement: The status and processing method of your report';
+
+        const htmlContent = await fs.readFile(
+            path.join(__dirname, '../../public/html/reportStatusNotificationEmail.html'),
+            'utf8'
+        );
+        
+        let locationName, address;
+
+        if (relatedToType === 'Location') {
+            ({ locationName, address } = relatedTo);
+        } else if (relatedToType === 'AdsPoint') {
+            ({ locationName, address } = relatedTo.location);
+        } else if (relatedToType === 'AdsBoard') {
+            ({ locationName, address } = relatedTo.adsPoint.location);
+        }
+
+        const replacedHTML = htmlContent
+        .replace('{{locationName}}', locationName)
+        .replace('{{address}}', address)
+        .replace('{{reportFormat}}', reportFormat)
+        .replace('{{senderName}}', senderName)
+        .replace('{{phone}}', phone)
+        .replace('{{content}}', content)
+        .replace('{{processingStatus}}', req.body.processingStatus)
+        .replace('{{processingMethod}}', req.body.processingMethod);
+
+        const mailOptions = {
+            from: AUTH_EMAIL,
+            to: email,
+            subject,
+            html: replacedHTML
+        };
+        await sendEmail(mailOptions);
+
+        if (!reportProcessing) {
+            throw new CustomError.NotFoundError(`No ReportProcessing with id: ${reportProcessingId}`);
+        }
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 const updateReport = async (req, res) => {
     try {
         const { id: reportProcessingId } = req.params;
@@ -86,7 +138,7 @@ const updateReport = async (req, res) => {
             { _id: reportProcessingId },
             {
                 processingStatus: req.body.processingStatus,
-                processingMethods: req.body.processingMethods
+                processingMethod: req.body.processingMethod
             },
             { new: true, runValidators: true }
         );
@@ -96,6 +148,8 @@ const updateReport = async (req, res) => {
                 `No report processing with id: ${reportProcessingId}`
             );
         }
+
+        sendReportStatusNotification(req, res);
 
         res.status(StatusCodes.OK).json({ reportProcessing });
     } catch (error) {

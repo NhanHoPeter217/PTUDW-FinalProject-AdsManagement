@@ -51,6 +51,7 @@ const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
 const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
+const locationRouter = require('./routes/locationRoutes');
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -82,6 +83,21 @@ app.use('/api/v1/report', reportProcessingRouter);
 // routes after login
 app.use('/api/v1/jobs', jobsRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/report', reportRouter);
+
+app.use('/api/v1/adsBoard', adsBoardRouter);
+app.use('/api/v1/adsFormat', adsFormatRouter);
+app.use('/api/v1/adsPoint', adsPointRouter);
+app.use('/api/v1/district', districtRouter);
+app.use('/api/v1/ward', wardRouter);
+app.use('/api/v1/reportFormat', reportFormatRouter);
+app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
+app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
+app.use('/api/v1/reportProcessing', reportProcessingRouter);
+app.use('/api/v1/location', locationRouter);
+
+
+
 
 // FRONT END
 //Setup handlebars view engine
