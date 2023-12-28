@@ -18,7 +18,9 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 
-var whitelist = ['http://localhost:3000' /** other domains if any */];
+var whitelist = [
+    `http://localhost:${process.env.PORT_NGUOIDAN || 3000}` /** other domains if any */
+];
 var corsOptions = {
     credentials: true,
     origin: whitelist
@@ -51,13 +53,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            imgSrc: ["'self'", 'http://localhost:3000']
-        }
-    })
-);
+// app.use(helmet());
 
 app.use(express.json());
 app.use('/public', express.static('public'));
@@ -88,7 +84,7 @@ app.engine(
     'hbs',
     engine({
         extname: 'hbs',
-        defaultLayout: 'nguoidan',
+        defaultLayout: 'canbo',
         helpers: {
             section: function section(name, options) {
                 var helper = this;
@@ -139,7 +135,7 @@ app.get('/signin', function (req, res) {
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT_CANBO || 4000;
 
 const start = async () => {
     try {

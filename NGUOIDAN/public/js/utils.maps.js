@@ -1,6 +1,5 @@
 import getLocation from '/public/utils/getClientLocation.js';
 import { locations } from './locations.js';
-import { QCBlueSvgString, QCRedSvgString, CurrentPositionIcon } from '/public/images/AdsPoint.js';
 
 // dynamic import gg map API
 ((g) => {
@@ -73,9 +72,12 @@ async function initMap() {
     const parser = new DOMParser();
     // Current location of the client
     const clientLocation = { lat: clientLat, lng: clientLng };
+    let clientMarkerElement = document.createElement('img');
+    clientMarkerElement.src = 'public/assets/icons/ClientLocation.svg';
+
     let clientMarker = new AdvancedMarkerElement({
         position: clientLocation,
-        content: parser.parseFromString(CurrentPositionIcon, 'image/svg+xml').documentElement
+        content: clientMarkerElement
     });
 
     // The map, centered at center_position
@@ -99,10 +101,9 @@ async function initMap() {
     let infoWindow = new google.maps.InfoWindow();
 
     locations.map((location, index) => {
-        const QC = parser.parseFromString(
-            location.status ? QCBlueSvgString : QCRedSvgString,
-            'image/svg+xml'
-        ).documentElement;
+        // Create the marker
+        let img = document.createElement('img');
+        img.src = `public/assets/icons/${location.status ? 'QCBlue.svg' : 'QCRed.svg'}`;
 
         markers[index] = new AdvancedMarkerElement({
             map: map,
@@ -110,7 +111,7 @@ async function initMap() {
                 lat: location.coords.lat,
                 lng: location.coords.lng
             },
-            content: QC,
+            content: img,
             title: location.title
         });
 
