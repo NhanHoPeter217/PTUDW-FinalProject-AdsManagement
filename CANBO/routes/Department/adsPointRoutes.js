@@ -24,15 +24,10 @@ const getAllAdsPointsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user.assignedArea;
     const { ward, district } = assignedArea;
     try {
-        let query = {
+        const adsPoints = await AdsPoint.find({
+            'location.ward': ward,
             'location.district': district
-        };
-
-        if (ward !== '*') {
-            query['location.ward'] = ward;
-        }
-        const adsPoints = await AdsPoint.find(query);
-
+        });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

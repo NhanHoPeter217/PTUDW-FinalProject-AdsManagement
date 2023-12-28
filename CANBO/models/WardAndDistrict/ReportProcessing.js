@@ -46,17 +46,6 @@ const ReportProcessingSchema = new Schema(
 
         image2: [{ type: String }],
 
-        processedBy: {
-            ward: {
-                type: 'String'
-            },
-
-            district: {
-                type: 'String',
-                required: true
-            }
-        },
-
         processingStatus: {
             type: String,
             enum: ['Chưa xử lý', 'Đang xử lý', 'Đã xử lý'],

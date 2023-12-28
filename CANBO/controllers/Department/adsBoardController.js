@@ -23,16 +23,23 @@ const getAllAdsBoards = async (req, res) => {
 const getAllAdsBoardsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user.assignedArea;
     const { ward, district } = assignedArea;
+
     try {
-        const adsBoards = await AdsBoard.find({
-            'adsPoint.location.wardAndDistrict.ward': ward,
-            'adsPoint.location.wardAndDistrict.district': district
-        });
+        let query = {
+            'adsPoint.location.district': district
+        };
+
+        if (ward !== '*') {
+            query['adsPoint.location.ward'] = ward;
+        }
+
+        const adsBoards = await AdsBoard.find(query);
         res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
 
 const getSingleAdsBoard = async (req, res) => {
     try {

@@ -36,8 +36,7 @@ app.use(cors(corsOptions));
 // routers
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
-const updateInfoRouter = require('./routes/updateInfo');
-const updatepwRouter = require('./routes/updatepw');
+const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
 const reportRouter = require('./routes/report');
@@ -71,8 +70,7 @@ app.use('/api/v1/report', reportRouter);
 
 // routes after login
 app.use('/api/v1/jobs', jobsRouter);
-app.use('/api/v1/updateInfo', updateInfoRouter);
-app.use('/api/v1/updatepw', updatepwRouter);
+app.use('/api/v1/user', userRouter);
 
 // FRONT END
 //Setup handlebars view engine
