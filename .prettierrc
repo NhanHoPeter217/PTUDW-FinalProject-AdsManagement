@@ -8,13 +8,5 @@
     "bracketSameLine": true,
     "bracketSpacing": true,
     "semi": true,
-    "endOfLine": "crlf",
-    "overrides": [
-        {
-            "files": "**/*.{hbs}",
-            "options": {
-                "parser": "glimmer"
-            }
-        }
-    ]
+    "endOfLine": "crlf"
 }
