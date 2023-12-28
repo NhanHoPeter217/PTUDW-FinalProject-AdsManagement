@@ -14,7 +14,10 @@ const createAdsInfoEditingRequest = async (req, res) => {
 const getAllAdsInfoEditingRequests = async (req, res) => {
     try {
         const adsInfoEditingRequests = await AdsInfoEditingRequest.find({});
-        res.status(StatusCodes.OK).json({ adsInfoEditingRequests, count: adsInfoEditingRequests.length });
+        res.status(StatusCodes.OK).json({
+            adsInfoEditingRequests,
+            count: adsInfoEditingRequests.length
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -38,7 +41,10 @@ const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
             ]
         });
 
-        res.status(StatusCodes.OK).json({ adsInfoEditingRequests, count: adsInfoEditingRequests.length });
+        res.status(StatusCodes.OK).json({
+            adsInfoEditingRequests,
+            count: adsInfoEditingRequests.length
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -47,10 +53,14 @@ const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
 const getSingleAdsInfoEditingRequest = async (req, res) => {
     try {
         const { id: adsInfoEditingRequestId } = req.params;
-        const adsInfoEditingRequest = await AdsInfoEditingRequest.findOne({ _id: adsInfoEditingRequestId });
+        const adsInfoEditingRequest = await AdsInfoEditingRequest.findOne({
+            _id: adsInfoEditingRequestId
+        });
 
         if (!adsInfoEditingRequest) {
-            throw new CustomError.NotFoundError(`No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`);
+            throw new CustomError.NotFoundError(
+                `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
+            );
         }
 
         res.status(StatusCodes.OK).json({ adsInfoEditingRequest });
@@ -69,7 +79,9 @@ const updateAdsInfoEditingRequest = async (req, res) => {
         );
 
         if (!adsInfoEditingRequest) {
-            throw new CustomError.NotFoundError(`No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`);
+            throw new CustomError.NotFoundError(
+                `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
+            );
         }
 
         res.status(StatusCodes.OK).json({ adsInfoEditingRequest });
@@ -98,6 +110,6 @@ module.exports = {
     createAdsInfoEditingRequest,
     getAllAdsInfoEditingRequests,
     getSingleAdsInfoEditingRequest,
-    updateAdsInfoEditingRequest,
+    updateAdsInfoEditingRequest
     // deleteAdsInfoEditingRequest
 };

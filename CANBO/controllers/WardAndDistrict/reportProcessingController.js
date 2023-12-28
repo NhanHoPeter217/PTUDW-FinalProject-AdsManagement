@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const ReportProcessing = require('../../models/WardAndDistrict/ReportProcessing');
 const Location = require('../../models/Location');
 const CustomError = require('../../errors');
-const { handleFileUpload } = require('../utils/handleFileUpload');
+const { handleFileUpload } = require('../../utils/handleFileUpload');
 
 const getAllReports = async (req, res) => {
     try {
@@ -84,12 +84,17 @@ const updateReport = async (req, res) => {
         const { id: reportProcessingId } = req.params;
         const reportProcessing = await ReportProcessing.findOneAndUpdate(
             { _id: reportProcessingId },
-            { processingStatus: req.body.processingStatus, processingMethods: req.body.processingMethods },
+            {
+                processingStatus: req.body.processingStatus,
+                processingMethods: req.body.processingMethods
+            },
             { new: true, runValidators: true }
         );
 
         if (!reportProcessing) {
-            throw new CustomError.NotFoundError(`No report processing with id: ${reportProcessingId}`);
+            throw new CustomError.NotFoundError(
+                `No report processing with id: ${reportProcessingId}`
+            );
         }
 
         res.status(StatusCodes.OK).json({ reportProcessing });
@@ -121,6 +126,6 @@ module.exports = {
     getSingleReport,
     getAllReportsByWardAndDistrict,
     createReport,
-    updateReport,
+    updateReport
     // deleteReport
 };

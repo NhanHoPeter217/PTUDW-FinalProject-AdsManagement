@@ -49,8 +49,6 @@ const updateUserInfo = async (req, res) => {
     }
 };
 
-
-
 const updatePassword = async (req, res) => {
     const {
         body: { currentPassword, newPassword },

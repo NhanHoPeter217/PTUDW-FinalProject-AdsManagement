@@ -40,7 +40,6 @@ const getAllAdsBoardsByAssignedArea = async (req, res) => {
     }
 };
 
-
 const getSingleAdsBoard = async (req, res) => {
     try {
         const { id: adsBoardId } = req.params;

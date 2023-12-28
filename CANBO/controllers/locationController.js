@@ -68,7 +68,10 @@ const createLocation = async (req, res) => {
 const updateLocation = async (req, res) => {
     try {
         const { id: locationId } = req.params;
-        const location = await Location.findOneAndUpdate({ _id: locationId }, req.body, { new: true, runValidators: true });
+        const location = await Location.findOneAndUpdate({ _id: locationId }, req.body, {
+            new: true,
+            runValidators: true
+        });
 
         if (!location) {
             throw new CustomError.NotFoundError(`No location with id: ${locationId}`);

@@ -6,12 +6,15 @@ const { authenticateResident } = require('../middleware/authentication');
 const {
     getAllReports,
     getAllReportsByAssignedArea,
-    createReportProcessing
-} = require('../controllers/report');
+    getSingleReport,
+    getAllReportsByWardAndDistrict,
+    createReport,
+    updateReport
+} = require('../controllers/WardAndDistrict/reportProcessingController');
 
 router.route('/').get(getAllReports);
 // router.route('/').post(authenticateResident, createReport);
 router.route('/').get(getAllReportsByAssignedArea);
-router.route('/').get(createReportProcessing);
+router.route('/').get(createReport);
 
 module.exports = router;

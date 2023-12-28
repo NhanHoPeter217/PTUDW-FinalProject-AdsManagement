@@ -27,7 +27,9 @@ const getSingleAdsLicenseRequest = async (req, res) => {
         const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId });
 
         if (!adsLicenseRequest) {
-            throw new CustomError.NotFoundError(`No AdsLicenseRequest with id: ${adsLicenseRequestId}`);
+            throw new CustomError.NotFoundError(
+                `No AdsLicenseRequest with id: ${adsLicenseRequestId}`
+            );
         }
 
         res.status(StatusCodes.OK).json({ adsLicenseRequest });
@@ -78,7 +80,9 @@ const updateAdsLicenseRequest = async (req, res) => {
         );
 
         if (!adsLicenseRequest) {
-            throw new CustomError.NotFoundError(`No Ads License Request with id: ${adsLicenseRequestId}`);
+            throw new CustomError.NotFoundError(
+                `No Ads License Request with id: ${adsLicenseRequestId}`
+            );
         }
 
         res.status(StatusCodes.OK).json({ adsLicenseRequest });
@@ -104,14 +108,12 @@ const updateAdsLicenseRequest = async (req, res) => {
 //     }
 // };
 
-
-
 module.exports = {
     createAdsLicenseRequest,
     getAllAdsLicenseRequests,
     getSingleAdsLicenseRequest,
     getAdsLicenseRequestsByAssignedArea,
     getAdsLicenseRequestsByWardAndDistrict,
-    updateAdsLicenseRequest,
+    updateAdsLicenseRequest
     // deleteAdsLicenseRequest
 };

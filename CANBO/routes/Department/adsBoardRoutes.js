@@ -10,7 +10,7 @@ const {
 } = require('../../controllers/Department/adsBoardController');
 
 router.route('/').post(createAdsBoard);
-router.route('/').get(getAllAdsBoards); 
+router.route('/').get(getAllAdsBoards);
 router.route('/area/:area').get(getAllAdsBoardsByAssignedArea);
 router.route('/:id').get(getSingleAdsBoard);
 router.route('/:id').patch(updateAdsBoard);
