@@ -1,5 +1,9 @@
-import express from 'express';
+const express = require('express');
 
 const router = express.Router();
 
-export default router;
+router.route('/list').get(function (req, res) {
+    res.render('vwAdsBoard/listAdsBoard');
+});
+
+module.exports = router;

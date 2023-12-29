@@ -68,7 +68,122 @@
 </div>
 
 <!-- Report Modal -->
-{{> Report}}
+<div
+    class='modal fade'
+    id='reportModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <img
+                    src='public/assets/icons/Report_icon.svg'
+                    alt='report-icon'
+                    style='height: 30px; width: 30px;'
+                />
+                <h5 class='modal-title' id='reportModalLabel'>Báo cáo vi phạm</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Hình
+                            thức</label>
+                        <select class='form-select reportType' id='reportType' required>
+                            <option value='' disabled selected>
+                                -- Chọn hình thức báo cáo --
+                            </option>
+                            <option value='Tố giác sai phạm'>Tố giác sai phạm</option>
+                            <option value='Đăng ký nội dung'>Đăng ký nội dung</option>
+                            <option value='Đóng góp ý kiến'>Đóng góp ý kiến</option>
+                            <option value='Giải đáp thắc mắc'>Giải đáp thắc mắc</option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='fullName' class='form-label' style='font-family: Inter;'>Họ và
+                            tên</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Email</label>
+                        <input type='email' class='form-control reportEmail' id='email' required />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='phone' class='form-label' style='font-family: Inter;'>Số điện
+                            thoại liên lạc</label>
+                        <input type='tel' class='form-control reportPhone' id='phone' required />
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='reportContent'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Nội dung</label>
+                        <textarea
+                            id='reportContent'
+                            class='form-control reportContent'
+                            required
+                        ></textarea>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            1</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image1'
+                            accept='image/*'
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image2' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            2</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image2'
+                            accept='image/*'
+                        />
+                    </div>
+
+                    <div class='button-container justify-content-center'>
+                        <div
+                            id='recaptcha'
+                            class='g-recaptcha'
+                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                            data-callback='onSubmit'
+                            data-size='invisible'
+                        ></div>
+                        <button
+                            id='submitButton'
+                            type='button'
+                            class='submit-btn'
+                            style='font-family: Inter;'
+                        >
+                            GỬI
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{#section 'js'}}
     {{! Marker Clusterer }}

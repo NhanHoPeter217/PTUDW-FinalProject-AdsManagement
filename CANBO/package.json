@@ -1,11 +1,11 @@
 {
     "name": "canbo",
     "version": "1.0.0",
-    "description": "",
     "main": "canbo.js",
     "scripts": {
         "start": "node canbo.js",
-        "dev": "nodemon canbo.js"
+        "dev": "nodemon canbo.js",
+        "build": "webpack --config webpack.config.js"
     },
     "author": "",
     "license": "ISC",
@@ -31,5 +31,7 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^8.3.1"
-    }
+    },
+    "keywords": [],
+    "description": ""
 }
