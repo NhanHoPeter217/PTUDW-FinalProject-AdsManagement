@@ -44,7 +44,7 @@ const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
 const reportRouter = require('./routes/report');
 const adsPointRoute = require('./routes/ads-point.route');
-// import adsBoardRoute from './routes/ads-board.route.js';
+const adsBoardRoute = require('./routes/ads-board.route');
 // import wardRoute from './routes/ward.route.js';
 // import districtRoute from './routes/district.route.js';
 
@@ -138,7 +138,7 @@ app.get('/signin', function (req, res) {
 
 // view engine setup
 app.use('/admin/adspoint', adsPointRoute);
-// app.use('/admin', adsBoardRoute);
+app.use('/admin/adsboard', adsBoardRoute);
 // app.use('/admin', wardRoute);
 // app.use('/admin', districtRoute);
 

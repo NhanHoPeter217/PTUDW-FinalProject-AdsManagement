@@ -1,0 +1,112 @@
+    {{> navbar}}
+
+    {{#section 'css'}}
+        <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
+        <link rel='stylesheet' href='../../public/css/report.css' />
+    {{/section}}
+
+    {{#section 'js'}}
+        <script src="https://unpkg.com/js-datepicker"></script>
+        <script> 
+            const picker1 = datepicker('#dateExpired', {
+                formatter: (input, date, instance) => {
+                    const value = date.toLocaleDateString()
+                    input.value = value // => '1/25/2099'
+                },
+                overlayPlaceholder: 'Nhập năm',
+                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S'],
+            });
+            const picker2 = datepicker('#dateInput', {
+                formatter: (input, date, instance) => {
+                    const value = date.toLocaleDateString()
+                    input.value = value // => '1/25/2099'
+                },
+                overlayPlaceholder: 'Nhập năm',
+                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S'],
+            });
+        </script>
+    {{/section}}
+
+    <div class="container-fluid my-2">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="card w-100">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold mb-4">Danh sách các bảng đặt quảng cáo của Thanh Đa</h5>
+                    <div class="table-responsive">
+                    <table class="table text-nowrap mb-0 align-middle">
+                        <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">#</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Bảng quảng cáo</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Kích thước</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Số lượng</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Quận</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Hết hạn hợp đồng</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
+                            <td class="border-bottom-0">
+                                <button type="button" class="btn btn-link m-1" data-bs-toggle="modal" data-bs-target="#detailAdsBoardModal">OMG</button>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">Trụ bảng hiflex</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">2</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">7</p>
+                            </td>
+                            <td class="border-bottom-0">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                            </div>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#requestEditAdsBoardModal">Yêu cầu chỉnh sửa</button>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#requestLicenseAdsBoardModal">Yêu cầu cấp phép</button>
+                            </td>
+                        </tr>                  
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{{> detailAdsBoard}}
+{{> requestEditAdsBoard}}
+{{> requestLicenseAdsBoard}}

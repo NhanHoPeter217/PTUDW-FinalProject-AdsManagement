@@ -1,0 +1,212 @@
+<div
+    class='modal fade'
+    id='requestLicenseAdsBoardModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-license-title' id='reportModalLabel'>Yêu cầu cấp phép quảng cáo</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="OMG"
+                            disabled
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <details>
+                            <summary>
+                                <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
+                                <input
+                                    type='text'
+                                    class='form-control fullNameReport'
+                                    id='fullName'
+                                    value="Thanh Đa"
+                                    disabled
+                                />
+                            </summary>
+                            <p class='p-2 grid gap-0 row-gap-3'>
+                                <div class='form-label p-2 g-col-6'>
+                                    <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
+                                    <input
+                                        type='text'
+                                        class='form-control fullNameReport'
+                                        id='fullName'
+                                        value="Thanh Đa"
+                                        disabled
+                                    />
+                                </div>
+                                <div class='form-label p-2 g-col-6'>
+                                    <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
+                                    <input
+                                        type='text'
+                                        class='form-control fullNameReport'
+                                        id='fullName'
+                                        value="Thanh Đa"
+                                        disabled
+                                    />
+                                </div>
+                            </p>
+                        </details>
+                        {{!-- <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="Thanh Đa"
+                            disabled
+                        /> --}}
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Địa chỉ</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM"
+                            disabled
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Loại vị trí</label>
+                        <select class='form-select reportType' id='reportType' disabled required>
+                            <option value='Đất công/Công viên/Hành lang an toàn giao thông' selected>
+                                Đất công/Công viên/Hành lang an toàn giao thông
+                            </option>
+                            <option value='Đất tư nhân/Nhà ở riêng lẻ'>Đất tư nhân/Nhà ở riêng lẻ</option>
+                            <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+                            <option value='Chợ'>Chợ</option>
+                            <option value='Cây xăng'>Cây xăng</option>
+                            <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Hình thức quảng cáo</label>
+                        <select class='form-select reportType' id='reportType' disabled required>
+                            <option value='Cổ động chính trị' selected>
+                                Cổ động chính trị
+                            </option>
+                            <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
+                            <option value='Xã hội hóa'>Xã hội hóa</option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Trạng thái địa điểm</label>
+                        <select class='form-select reportType' id='reportType' disabled required>
+                            <option value='Đã quy hoạch' selected>
+                                Đã quy hoạch
+                            </option>
+                            <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Loại bảng quảng cáo</label>
+                        <select class='form-select reportType' id='reportType' disabled required>
+                            <option value='Đã quy hoạch' selected>
+                                Trụ bảng hiflex
+                            </option>
+                            <option value='Trụ màn hình điện tử LED'>Trụ màn hình điện tử LED</option>
+                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Chiều cao</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="10m"
+                            disabled
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Chiều rộng</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="20m"
+                            disabled
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Số lượng</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value="2"
+                            disabled
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='dateInput' class='form-label' style='font-family: Inter;'>Ngày hết hạn của hợp đồng quảng cáo</label>
+                        <input type="text" class="form-control" value="30/12/2023" disabled/>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image'
+                            accept='image/*'
+                        />
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <div
+                            id='recaptcha'
+                            class='g-recaptcha'
+                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                            data-callback='onSubmit'
+                            data-size='invisible'
+                        ></div>
+                        <div class="d-grid gap-2 col-3 mx-auto">
+                            <button
+                                id='submitButton'
+                                type='button'
+                                class='btn btn-success m-1'
+                                style='font-family: Inter;'
+                            >
+                                GỬI
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
