@@ -64,15 +64,15 @@ $('.viewReport').on('click', (event) => {
         $('#reportModalLabel').text(`${reportTemplate.reportType}`);
         $('#reportModalLabel').addClass(`text-${getColor(reportTemplate.reportType)}`);
 
-        $('#schema').prop('disabled', true).val(reportTemplate.schema);
-        $('#location').prop('disabled', true).val(reportTemplate.location);
-        $('#address').prop('disabled', true).val(reportTemplate.address);
+        $('#schema').val(reportTemplate.schema);
+        $('#location').val(reportTemplate.location);
+        $('#address').val(reportTemplate.address);
 
         $('#reportContent').prop('srcdoc', reportTemplate.content);      
-        $('#status').prop('disabled', true).val(reportTemplate.status);
-        $('#fullName').prop('disabled', true).val(reportTemplate.fullName);
-        $('#phone').prop('disabled', true).val(reportTemplate.phoneNumber);
-        $('#email').prop('disabled', true).val(reportTemplate.email);
+        $('#status').val(reportTemplate.status);
+        $('#fullName').val(reportTemplate.fullName);
+        $('#phone').val(reportTemplate.phoneNumber);
+        $('#email').val(reportTemplate.email);
     }
     reportModal.show();
 });
