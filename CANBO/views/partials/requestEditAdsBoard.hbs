@@ -9,7 +9,7 @@
         <div class='modal-content'>
             <div class='modal-header'>
                 <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                    Chỉnh sửa thông tin bảng OMG
+                    Chỉnh sửa thông tin
                 </h5>
                 <button
                     type='button'
@@ -21,8 +21,17 @@
             <div class='modal-body'>
                 <form class='report-form' id='reportForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Điểm
-                            quảng cáo</label>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            value='OMG'
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter'>Điểm quảng cáo</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
@@ -32,15 +41,13 @@
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Địa
-                            chỉ</label>
-                        <input
-                            type='text'
+                        <label for='reportAddress' class='form-label' style='font-family: Inter'>Địa chỉ</label>
+                        <textarea
                             class='form-control fullNameReport'
-                            id='fullName'
-                            value='227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM'
+                            id='reportAddress'
+                            style="height: 100px;"
                             required
-                        />
+                        >227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</textarea>
                     </div>
                     <div class='mb-3'>
                         <label for='email' class='form-label' style='font-family: Inter'>Loại vị trí</label>
@@ -88,38 +95,38 @@
                             <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
                         </select>
                     </div>
-                    <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Chiều
-                            cao</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='fullName'
-                            value='10m'
-                            required
-                        />
-                    </div>
-                    <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Chiều
-                            rộng</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='fullName'
-                            value='20m'
-                            required
-                        />
-                    </div>
-                    <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Số
-                            lượng</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='fullName'
-                            value='2'
-                            required
-                        />
+                    <div class="d-flex flex-row column-gap-3">
+                        <div class='mb-3'>
+                            <label for='reportType' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
+                            <input
+                                type='text'
+                                class='form-control fullNameReport'
+                                id='fullName'
+                                value='10m'
+                                required
+                            />
+                        </div>
+                        <div class='mb-3'>
+                            <label for='reportType' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
+                            <input
+                                type='text'
+                                class='form-control fullNameReport'
+                                id='fullName'
+                                value='20m'
+                                required
+                            />
+                        </div>
+                        <div class='mb-3'>
+                            <label for='reportType' class='form-label' style='font-family: Inter'>Số
+                                lượng</label>
+                            <input
+                                type='text'
+                                class='form-control fullNameReport'
+                                id='fullName'
+                                value='2'
+                                required
+                            />
+                        </div>
                     </div>
                     <div class='mb-3'>
                         <label for='dateExpired' class='form-label' style='font-family: Inter'>Ngày
