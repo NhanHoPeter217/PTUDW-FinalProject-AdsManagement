@@ -67,7 +67,8 @@ $('.viewReport').on('click', (event) => {
         $('#schema').prop('disabled', true).val(reportTemplate.schema);
         $('#location').prop('disabled', true).val(reportTemplate.location);
         $('#address').prop('disabled', true).val(reportTemplate.address);
-        $('#reportContent').prop('disabled', true).val(reportTemplate.content);
+
+        $('#reportContent').prop('srcdoc', reportTemplate.content);      
         $('#status').prop('disabled', true).val(reportTemplate.status);
         $('#fullName').prop('disabled', true).val(reportTemplate.fullName);
         $('#phone').prop('disabled', true).val(reportTemplate.phoneNumber);
