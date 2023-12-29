@@ -1,5 +1,9 @@
 {{> navbar}}
 
+{{#section 'css'}}
+<link rel="stylesheet" href="../../public/css/report.css" />
+{{/section}}
+
 <div class="container-fluid my-2">
     <div class="row">
         <div class="col-md-1"></div>
@@ -46,7 +50,13 @@
                                         <h6 class="fw-semibold mb-0">1</h6>
                                     </td>
                                     <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-1">Thanh Đa</h6>
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsPointModal">
+                                            Thanh Đa
+                                        </button>
                                     </td>
                                     <td class="border-bottom-0">
                                         <p class="mb-0 fw-normal">Trung tâm thương mại</p>
@@ -69,21 +79,31 @@
                                     </td>
                                     <td class="border-bottom-0">
                                         <button type="button" class="btn btn-primary m-1">
-                                            Xem chi tiết
+                                            Các bảng quảng cáo
                                         </button>
                                     </td>
                                     <td class="border-bottom-0">
-                                        <button type="button" class="btn btn-outline-warning m-1">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestEditAdsPointModal">
                                             Yêu cầu chỉnh sửa
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
+                                {{!-- <tr>
                                     <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">1</h6>
+                                        <h6 class="fw-semibold mb-0">2</h6>
                                     </td>
                                     <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-1">Thanh Đa</h6>
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsPointModal">
+                                            Thanh Đa
+                                        </button>
                                     </td>
                                     <td class="border-bottom-0">
                                         <p class="mb-0 fw-normal">Trung tâm thương mại</p>
@@ -106,7 +126,7 @@
                                     </td>
                                     <td class="border-bottom-0">
                                         <button type="button" class="btn btn-primary m-1">
-                                            Xem chi tiết
+                                            Các bảng quảng cáo
                                         </button>
                                     </td>
                                     <td class="border-bottom-0">
@@ -114,7 +134,7 @@
                                             Yêu cầu chỉnh sửa
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>
@@ -123,3 +143,5 @@
         </div>
     </div>
 </div>
+
+{{> requestEditAdsPoint}}
