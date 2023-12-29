@@ -7,23 +7,20 @@ const reportTemplate = {
     address: '135 Nam Kỳ Khởi Nghĩa, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh',
     lat: 10.779422,
     lng: 106.699018,
-    images: [
-        'https://i.imgur.com/3Z4t1ZS.jpg',
-        'https://i.imgur.com/3Z4t1ZS.jpg',
-    ],
+    images: ['https://i.imgur.com/3Z4t1ZS.jpg', 'https://i.imgur.com/3Z4t1ZS.jpg'],
     content: 'Đây là nội dung báo cáo',
     status: 'Đã xử lý',
     fullName: 'Nguyễn Văn A',
     phoneNumber: '0123456789',
     email: 'abc@gmail.com',
     createdAt: '2021-10-10T00:00:00.000Z',
-    updatedAt: '2021-10-10T00:00:00.000Z',
+    updatedAt: '2021-10-10T00:00:00.000Z'
 };
 
 const reportModal = new bootstrap.Modal($('#reportModal'));
 
-function getColor(reportType){
-    switch(reportType){
+function getColor(reportType) {
+    switch (reportType) {
         case 'Đăng ký nội dung':
             return 'primary';
         case 'Tố giác sai phạm':
@@ -49,7 +46,9 @@ tableBody.append(`                        <tr>
 </td>
 <td class="border-bottom-0">
     <div class="d-flex align-items-center gap-2">
-    <span class="badge bg-${getColor(reportTemplate.reportType)} rounded-3 fw-semibold">${reportTemplate.reportType}</span>
+    <span class="badge bg-${getColor(reportTemplate.reportType)} rounded-3 fw-semibold">${
+        reportTemplate.reportType
+    }</span>
     </div>
 </td>
 <td class="border-bottom-0">
@@ -57,8 +56,8 @@ tableBody.append(`                        <tr>
 </td>
 </tr>`);
 
-$('.viewReport').on('click',(event) => {
-    if (event.currentTarget.id){
+$('.viewReport').on('click', (event) => {
+    if (event.currentTarget.id) {
         const id = Number(event.currentTarget.id.match(/^report(.*)$/)[0]);
 
         // Set label of the report modal
@@ -73,7 +72,6 @@ $('.viewReport').on('click',(event) => {
         $('#fullName').prop('disabled', true).val(reportTemplate.fullName);
         $('#phone').prop('disabled', true).val(reportTemplate.phoneNumber);
         $('#email').prop('disabled', true).val(reportTemplate.email);
-
     }
-    reportModal.show()
+    reportModal.show();
 });
