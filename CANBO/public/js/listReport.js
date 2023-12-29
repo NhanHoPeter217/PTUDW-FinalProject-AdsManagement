@@ -68,7 +68,7 @@ $('.viewReport').on('click', (event) => {
         $('#location').val(reportTemplate.location);
         $('#address').val(reportTemplate.address);
 
-        $('#reportContent').prop('srcdoc', reportTemplate.content);      
+        $('#reportContent').prop('srcdoc', reportTemplate.content);
         $('#status').val(reportTemplate.status);
         $('#fullName').val(reportTemplate.fullName);
         $('#phone').val(reportTemplate.phoneNumber);
