@@ -8,8 +8,8 @@ router.get('/:distName', (req, res) => {
     console.log(distName);
     const dists = ['1', '3'];
     const wards = {
-        '1': ['Hoà Bình', 'Tân Phú'],
-        '3': ['Ông Lãnh', 'Thanh Đa']
+        1: ['Hoà Bình', 'Tân Phú'],
+        3: ['Ông Lãnh', 'Thanh Đa']
     };
 
     res.render('vwDepartment/manageWardDistrict.hbs', {
