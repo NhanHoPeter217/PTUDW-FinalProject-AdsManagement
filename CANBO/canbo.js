@@ -46,6 +46,7 @@ const reportRouter = require('./routes/report');
 
 const reportRoute = require('./routes/report-ward.route');
 const adsPointRoute = require('./routes/ads-point.route');
+const wardListRoute = require('./routes/ward-list.route');
 const adsBoardRoute = require('./routes/ads-board.route');
 // import wardRoute from './routes/ward.route.js';
 // import districtRoute from './routes/district.route.js';
@@ -141,6 +142,7 @@ app.get('/signin', function (req, res) {
 // view engine setup
 app.use('/admin/adspoint', adsPointRoute);
 app.use('/admin/report', reportRoute);
+app.use('/admin/dist', wardListRoute);
 app.use('/admin/adsboard', adsBoardRoute);
 // app.use('/admin', wardRoute);
 // app.use('/admin', districtRoute);
