@@ -64,6 +64,15 @@
         overlayPlaceholder: 'Nhập năm',
         customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
     });
+    const picker4 = datepicker('#createAccount_DOB', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+
 </script>
 {{/section}}
 

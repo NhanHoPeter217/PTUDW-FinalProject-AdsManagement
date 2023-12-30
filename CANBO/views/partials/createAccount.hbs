@@ -19,9 +19,9 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                <form class='report-form' id='createAccountForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter;'>Họ và tên Cán bộ</label>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Họ và tên</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
@@ -34,7 +34,7 @@
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='userName'
                             required
                         />
                     </div>
@@ -67,15 +67,15 @@
                         </div>
                     </div>
                     <div class='mb-3'>
-                        <label for='dateExpired' class='form-label' style='font-family: Inter'>Ngày sinh</label>
-                        <input type='text' id='dateExpired' class='form-control' required />
+                        <label for='createAccount_DOB' class='form-label' style='font-family: Inter'>Ngày sinh</label>
+                        <input type='text' id='createAccount_DOB' class='form-control' required />
                     </div>
                     <div class='mb-3'>
                         <label for='reportType' class='form-label' style='font-family: Inter'>Email</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='email'
                             required
                         />
                     </div>
@@ -84,13 +84,13 @@
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='phoneNumber'
                             required
                         />
                     </div>
                     <div class='mb-3'>
                         <label for='email' class='form-label' style='font-family: Inter'>Vai trò cán bộ</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <select class='form-select reportType' id='role' required>
                             <option
                                 value='Phường'
                                 selected
@@ -104,7 +104,7 @@
                     </div>
                     <div class='mb-3'>
                         <label for='email' class='form-label' style='font-family: Inter'>Quận</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <select class='form-select reportType' id='district' required>
                             <option
                                 value='1'
                                 selected
@@ -119,7 +119,7 @@
                     </div>
                     <div class='mb-3'>
                         <label for='email' class='form-label' style='font-family: Inter'>Phường</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <select class='form-select reportType' id='ward' required>
                             <option
                                 value='1'
                                 selected
@@ -142,7 +142,7 @@
                         ></div>
                         <div class='d-grid gap-2 col-3 mx-auto'>
                             <button
-                                id='submitButton'
+                                id='createAccountButton'
                                 type='button'
                                 class='btn btn-primary'
                                 style='font-family: Inter'

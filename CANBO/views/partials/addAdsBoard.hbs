@@ -19,37 +19,37 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                <form class='report-form' id='addAdsBoardForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
+                        <label for='adsBoardName' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='adsBoardName'
                             required
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter'>Điểm quảng cáo</label>
+                        <label for='adsPointName' class='form-label' style='font-family: Inter'>Điểm quảng cáo</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='adsPointName'
                             required
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportAddress' class='form-label' style='font-family: Inter'>Địa chỉ</label>
+                        <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
                         <textarea
                             class='form-control fullNameReport'
-                            id='reportAddress'
+                            id='address'
                             style="height: 100px;"
                             required
                         ></textarea>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Loại vị trí</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='locationType' class='form-label' style='font-family: Inter'>Loại vị trí</label>
+                        <select class='form-select reportType' id='locationType' required>
                             <option
                                 disabled
                                 selected
@@ -70,9 +70,9 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Hình thức
+                        <label for='adsType' class='form-label' style='font-family: Inter'>Hình thức
                             quảng cáo</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <select class='form-select reportType' id='adsType' required>
                             <option
                                 disabled
                                 selected
@@ -84,8 +84,8 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='locationState' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
+                        <select class='form-select reportType' id='locationState' required>
                             <option
                                 disabled
                                 selected
@@ -96,9 +96,9 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Loại bảng
+                        <label for='adsBoardType' class='form-label' style='font-family: Inter'>Loại bảng
                             quảng cáo</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <select class='form-select reportType' id='adsBoardType' required>
                             <option
                                 disabled
                                 selected
@@ -113,30 +113,29 @@
                     </div>
                     <div class="d-flex flex-row column-gap-3">
                         <div class='mb-3'>
-                            <label for='reportType' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
+                            <label for='height' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
                             <input
                                 type='text'
                                 class='form-control fullNameReport'
-                                id='fullName'
+                                id='height'
                                 required
                             />
                         </div>
                         <div class='mb-3'>
-                            <label for='reportType' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
+                            <label for='width' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
                             <input
                                 type='text'
                                 class='form-control fullNameReport'
-                                id='fullName'
+                                id='width'
                                 required
                             />
                         </div>
                         <div class='mb-3'>
-                            <label for='reportType' class='form-label' style='font-family: Inter'>Số
-                                lượng</label>
+                            <label for='countNumber' class='form-label' style='font-family: Inter'>Số lượng</label>
                             <input
                                 type='text'
                                 class='form-control fullNameReport'
-                                id='fullName'
+                                id='countNumber'
                                 required
                             />
                         </div>
@@ -147,11 +146,11 @@
                         <input type='text' id='dateExpired_add' class='form-control' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='image1' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                        <label for='image' class='form-label' style='font-family: Inter'>Hình ảnh</label>
                         <input
                             type='file'
                             class='form-control reportImage'
-                            id='image'
+                            id='addAdsBoard_image'
                             accept='image/*'
                         />
                     </div>
@@ -165,7 +164,7 @@
                         ></div>
                         <div class='d-grid gap-2 col-3 mx-auto'>
                             <button
-                                id='submitButton'
+                                id='addButton'
                                 type='button'
                                 class='btn btn-success m1'
                                 style='font-family: Inter'
