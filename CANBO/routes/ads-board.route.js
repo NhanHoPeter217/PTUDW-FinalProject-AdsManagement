@@ -9,6 +9,11 @@ router.route('/list').get(function (req, res) {
 router.route('/license/list').get(function (req, res) {
     res.render('vwAdsBoard/listLicenseAdsBoard');
 });
+
+router.route('/license/list/manage').get(function (req, res) {
+    res.render('vwAdsBoard/manageLicenseAdsBoard');
+});
+
 router.route('/list/manage').get(function (req, res) {
     res.render('vwAdsBoard/manageAdsBoard');
 });

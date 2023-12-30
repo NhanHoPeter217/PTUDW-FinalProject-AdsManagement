@@ -1,0 +1,209 @@
+
+{{> navbar}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+<link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
+    <style>
+        #buttonStyle {
+            transition: filter 0.1s ease-in-out;
+        }
+        #buttonStyle:hover {
+            filter: brightness(0) invert(1);
+        }
+  </style>
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://unpkg.com/js-datepicker"></script>
+<script>
+    const picker1 = datepicker('#dateExpired', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+    const picker2 = datepicker('#startContract', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+    const picker3 = datepicker('#endContract', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+</script>
+{{/section}}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <h5 class="card-title fw-semibold mb-4">Các phân loại</h5>
+            <div class="card w-100 mt-3">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-semibold mb-4">
+                            Các loại hình quảng cáo
+                        </h5>
+                        <button
+                        type="button"
+                        class="btn btn-outline-success m-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addAdsTypeModal">
+                            <div id="buttonStyle">
+                                <img src="../../../public/assets/icons/Add_icon.svg" alt="" width="24" height="24" />
+                                Thêm loại hình quảng cáo
+                            </div>
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">#</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Sample</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editAdsTypeModal">
+                                            <div id="buttonStyle">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Chỉnh sửa
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">China Banana</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editAdsTypeModal">
+                                            <div id="buttonStyle">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Chỉnh sửa
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card w-100 mt-3">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-semibold mb-4">
+                            Các loại hình thức báo cáo
+                        </h5>
+                        <button
+                        type="button"
+                        class="btn btn-outline-success m-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addReportTypeModal">
+                            <div id="buttonStyle">
+                                <img src="../../../public/assets/icons/Add_icon.svg" alt="" width="24" height="24" />
+                                Thêm hình thức báo cáo
+                            </div>
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">#</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Sample</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editReportTypeModal">
+                                            <div id="buttonStyle">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Chỉnh sửa
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">China Banana</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editReportTypeModal">
+                                            <div id="buttonStyle">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Chỉnh sửa
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<title>Danh sách các phân loại</title>
+
+{{> detailAdsBoard}}
+{{> detailAdsPoint}}
+{{> detailLicenseAdsBoard}}
+{{> requestEditAdsBoard}}
+{{> addAdsType}}
+{{> addReportType}}
+{{> editAdsType}}
+{{> editReportType}}
