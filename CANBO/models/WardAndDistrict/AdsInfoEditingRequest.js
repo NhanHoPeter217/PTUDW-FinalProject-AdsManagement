@@ -28,6 +28,17 @@ const AdsInfoEditingRequestSchema = new Schema(
             type: String,
             enum: ['Chưa được duyệt, Đã được duyệt'],
             default: 'Chưa được duyệt'
+        },
+
+        wardAndDistrict: {
+            ward: {
+                type: 'String'
+            },
+
+            district: {
+                type: 'String',
+                required: true
+            }
         }
     },
     { timestamps: true }

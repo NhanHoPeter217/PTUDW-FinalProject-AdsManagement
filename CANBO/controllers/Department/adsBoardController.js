@@ -13,37 +13,48 @@ const createAdsBoard = async (req, res) => {
 
 const getAllAdsBoards = async (req, res) => {
     try {
-        const adsBoards = await AdsBoard.find({});
+        const adsBoards = await AdsBoard.find({}).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'location',
+                model: 'Location',
+                select: 'ward district'
+            },
+        });
+
         res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
-const getAllAdsBoardsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
-    const { ward, district } = assignedArea;
-
+const getAllAdsBoardsByAdsPointId = async (req, res) => {
+    const { id: adsPointId } = req.params;
     try {
-        let query = {
-            'adsPoint.location.district': district
-        };
+        const adsBoards = await AdsBoard.find({ adsPoint: adsPointId }).populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        });
 
-        if (ward !== '*') {
-            query['adsPoint.location.ward'] = ward;
-        }
-
-        const adsBoards = await AdsBoard.find(query);
         res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
-};
+}
 
 const getSingleAdsBoard = async (req, res) => {
     try {
         const { id: adsBoardId } = req.params;
-        const adsBoard = await AdsBoard.findOne({ _id: adsBoardId });
+        const adsBoard = await AdsBoard.findOne({ _id: adsBoardId }).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'location',
+                model: 'Location',
+                select: 'ward district'
+            },
+        });
 
         if (!adsBoard) {
             throw new CustomError.NotFoundError(`No ads board with id : ${adsBoardId}`);
@@ -92,7 +103,7 @@ const deleteAdsBoard = async (req, res) => {
 module.exports = {
     createAdsBoard,
     getAllAdsBoards,
-    getAllAdsBoardsByAssignedArea,
+    getAllAdsBoardsByAdsPointId,
     getSingleAdsBoard,
     updateAdsBoard,
     deleteAdsBoard

@@ -47,7 +47,8 @@ const UserSchema = new mongoose.Schema(
         },
         assignedArea: {
             ward: {
-                type: String
+                type: String,
+                required: [true, 'Please provide district']
             },
             district: {
                 type: String,

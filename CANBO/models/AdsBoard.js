@@ -35,7 +35,22 @@ const adsBoardSchema = new Schema(
 
         contractEndDate: { type: Date, required: true }
     },
-    { timestamps: true }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }  }
 );
+
+// adsBoardSchema.pre(/^find/, function (next) {
+
+//     this.populate({
+//         path: 'adsPoint',
+//         model: 'AdsPoint',
+//         populate: {
+//             path: 'adsPoint.location',
+//             model: 'Location',
+//             select: 'ward district'
+//         },
+//     });
+//     console.log('Middleware pre-find of AdsBoard executed before find operation');
+//     next();
+// });
 
 module.exports = mongoose.model('AdsBoard', adsBoardSchema);

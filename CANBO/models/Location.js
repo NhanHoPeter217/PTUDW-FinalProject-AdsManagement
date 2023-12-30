@@ -16,7 +16,27 @@ const locationSchema = new Schema(
 
         district: { type: String, required: true }
     },
-    { timestamps: true }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+locationSchema.virtual('adsPoint', {
+    ref: 'AdsPoint',
+    localField: '_id',
+    foreignField: 'location',
+    justOne: true
+});
+
+// locationSchema.pre(/^find/, function(next) {
+//     this.populate({
+//         path: 'adsPoint',
+//         model: 'AdsPoint',
+//         populate: {
+//             path: 'adsBoard',
+//             model: 'AdsBoard'
+//         }
+//     });
+//     console.log('Middleware pre-find of Location executed before find operation');
+//     next();
+// });
 
 module.exports = mongoose.model('Location', locationSchema);

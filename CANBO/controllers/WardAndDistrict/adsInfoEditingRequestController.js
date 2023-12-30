@@ -24,21 +24,14 @@ const getAllAdsInfoEditingRequests = async (req, res) => {
 };
 
 const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
+    const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
-
+    
     try {
+
         const adsInfoEditingRequests = await AdsInfoEditingRequest.find({
-            $or: [
-                {
-                    'adsObject.location.ward': ward,
-                    'adsObject.location.district': district
-                },
-                {
-                    'adsObject.adsPoint.location.ward': ward,
-                    'adsObject.adsPoint.location.district': district
-                }
-            ]
+            'wardAndDistrict.ward': ward,
+            'wardAndDistrict.district': district
         });
 
         res.status(StatusCodes.OK).json({
@@ -49,6 +42,7 @@ const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
 
 const getSingleAdsInfoEditingRequest = async (req, res) => {
     try {

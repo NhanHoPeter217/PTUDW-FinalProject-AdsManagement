@@ -17,7 +17,7 @@ const getAllReports = async (req, res) => {
 };
 
 const getAllReportsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
+    const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
     try {
         const reports = await Report.find({

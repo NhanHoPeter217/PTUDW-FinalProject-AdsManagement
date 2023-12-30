@@ -3,34 +3,33 @@ const Location = require('../models/Location');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 
-// Get all locations
 const getAllLocations = async (req, res) => {
     try {
-        const locations = await Location.find({});
+        const locations = await Location.find({}).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            }
+        });
         res.status(StatusCodes.OK).json({ locations, count: locations.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
-// Get all locations by assigned area
-const getAllLocationsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
-    const { ward, district } = assignedArea;
-
-    try {
-        const locations = await Location.find({ ward, district });
-        res.status(StatusCodes.OK).json({ locations, count: locations.length });
-    } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
-    }
-};
-
-// Get single location
 const getSingleLocation = async (req, res) => {
     try {
         const { id: locationId } = req.params;
-        const location = await Location.findOne({ _id: locationId });
+        const location = await Location.findOne({ _id: locationId }).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            }
+        });
 
         if (!location) {
             throw new CustomError.NotFoundError(`No location with id: ${locationId}`);
@@ -42,19 +41,75 @@ const getSingleLocation = async (req, res) => {
     }
 };
 
-// Get all locations by ward and district
-const getAllLocationsByWardAndDistrict = async (req, res) => {
-    const { ward, district } = req.params;
-
+const getAllLocationsByAssignedArea = async (req, res) => {
+    const { assignedArea } = req.user;
+    const { ward, district } = assignedArea;
     try {
-        const locations = await Location.find({ ward, district });
+        let query = {};
+
+        if (ward !== '*') {
+            query['ward'] = ward;
+        }
+
+        if (district !== '*') {
+            query['district'] = district;
+        }
+
+        const adsInfo = await Location.find(query).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            }
+        });
+
+        res.status(StatusCodes.OK).json({ adsInfo, count: adsInfo.length});
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllLocationsByWardList = async (req, res) => {
+    const { assignedArea } = req.user;
+    const district = assignedArea.district;
+    const wardList = req.body.wardList;
+    try {
+        const locations = await Location.find({
+            district,
+            ward: { $in: wardList }
+        }).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            }
+        });
+
         res.status(StatusCodes.OK).json({ locations, count: locations.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
-// Create a new location
+const getAllLocationsByWardAndDistrict = async (req, res) => {
+    const { wardId, distId } = req.params;
+    try {
+        const locations = await Location.find({ ward: wardId, district: distId }).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            }
+        });
+        res.status(StatusCodes.OK).json({ locations, count: locations.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 const createLocation = async (req, res) => {
     try {
         const location = await Location.create(req.body);
@@ -64,7 +119,6 @@ const createLocation = async (req, res) => {
     }
 };
 
-// Update a location
 const updateLocation = async (req, res) => {
     try {
         const { id: locationId } = req.params;
@@ -83,7 +137,6 @@ const updateLocation = async (req, res) => {
     }
 };
 
-// Delete a location
 const deleteLocation = async (req, res) => {
     try {
         const { id: locationId } = req.params;
@@ -101,11 +154,12 @@ const deleteLocation = async (req, res) => {
 };
 
 module.exports = {
-    // getAllLocations,
-    // getAllLocationsByAssignedArea,
-    // getSingleLocation,
-    // getAllLocationsByWardAndDistrict,
+    getAllLocations,
+    getSingleLocation,
+    getAllLocationsByAssignedArea,
+    getAllLocationsByWardAndDistrict,
+    getAllLocationsByWardList,
     createLocation,
-    // updateLocation,
+    updateLocation,
     deleteLocation
 };

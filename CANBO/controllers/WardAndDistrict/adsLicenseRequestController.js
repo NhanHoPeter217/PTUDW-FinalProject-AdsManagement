@@ -39,7 +39,7 @@ const getSingleAdsLicenseRequest = async (req, res) => {
 };
 
 const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
+    const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
 
     try {

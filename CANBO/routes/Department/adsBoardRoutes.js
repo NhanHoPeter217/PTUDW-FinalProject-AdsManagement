@@ -5,14 +5,16 @@ const {
     createAdsBoard,
     getAllAdsBoards,
     getAllAdsBoardsByAssignedArea,
+    getAllAdsBoardsByAdsPointId,
     getSingleAdsBoard,
     updateAdsBoard,
     deleteAdsBoard
 } = require('../../controllers/Department/adsBoardController');
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsBoard);
-router.route('/').get(getAllAdsBoards);
-router.route('/').get(authenticateUser, getAllAdsBoardsByAssignedArea);
+router.route('/allBoards').get(getAllAdsBoards);
+// router.route('/assignedArea').get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllAdsBoardsByAssignedArea);
+router.route('/adsPoint/:id').get(authenticateUser, getAllAdsBoardsByAdsPointId);
 router.route('/:id').get(getSingleAdsBoard);
 router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), updateAdsBoard);
 router.route('/:id').delete(authenticateUser, authorizePermissions('Sở VH-TT'), deleteAdsBoard);

@@ -13,36 +13,43 @@ const createAdsPoint = async (req, res) => {
 
 const getAllAdsPoints = async (req, res) => {
     try {
-        const adsPoints = await AdsPoint.find({});
+        const adsPoints = await AdsPoint.find({}).populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+        });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
-const getAllAdsPointsByAssignedArea = async (req, res) => {
-    const { assignedArea } = req.user.assignedArea;
-    const { ward, district } = assignedArea;
-    try {
-        let query = {
-            'location.district': district
-        };
+// const getAllAdsPointsByAssignedArea = async (req, res) => {
+//     const { assignedArea } = req.user;
+//     const { ward, district } = assignedArea;
+//     try {
+//         let query = {
+//             'adsBoard.location.district': district
+//         };
 
-        if (ward !== '*') {
-            query['location.ward'] = ward;
-        }
-        const adsPoints = await AdsPoint.find(query);
+//         if (ward !== '*') {
+//             query['adsBoard.location.ward'] = ward;
+//         }
 
-        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
-    } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
-    }
-};
+//         const adsPoints = await AdsPoint.find(query);
+
+//         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
+//     }
+// };
 
 const getSingleAdsPoint = async (req, res) => {
     try {
         const { id: adsPointId } = req.params;
-        const adsPoint = await AdsPoint.findOne({ _id: adsPointId });
+        const adsPoint = await AdsPoint.findOne({ _id: adsPointId }).populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        });
 
         if (!adsPoint) {
             throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
@@ -91,7 +98,7 @@ const deleteAdsPoint = async (req, res) => {
 module.exports = {
     createAdsPoint,
     getAllAdsPoints,
-    getAllAdsPointsByAssignedArea,
+    // getAllAdsPointsByAssignedArea,
     getSingleAdsPoint,
     updateAdsPoint,
     deleteAdsPoint

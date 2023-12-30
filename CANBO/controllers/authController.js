@@ -6,12 +6,17 @@ const { attachCookiesToResponse, createTokenUser } = require('../utils');
 const crypto = require('crypto');
 
 const register = async (req, res) => {
-    const user = await User.create({ ...req.body });
-    res.status(StatusCodes.CREATED)
-        .json({
-            user: { username: user.username }
-        })
-        .message('Register successfully');
+    try {
+        const user = await User.create({ ...req.body });
+        res.status(StatusCodes.CREATED).json({
+            user: {
+                username: user.username,
+            },
+            message: 'Register successfully',
+        });
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Registration failed' });
+    }
 };
 
 const login = async (req, res) => {
@@ -75,7 +80,10 @@ const logout = async (req, res) => {
         httpOnly: true,
         expires: new Date(Date.now())
     });
-    res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
+    res.status(StatusCodes.OK).json({
+        message: 'Logout successfully',
+    });
+    
 };
 
 module.exports = {
