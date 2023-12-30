@@ -26,9 +26,8 @@ const getAllAdsInfoEditingRequests = async (req, res) => {
 const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
-    
-    try {
 
+    try {
         const adsInfoEditingRequests = await AdsInfoEditingRequest.find({
             'wardAndDistrict.ward': ward,
             'wardAndDistrict.district': district
@@ -42,7 +41,6 @@ const getAllAdsInfoEditingRequestsByAssignedArea = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
-
 
 const getSingleAdsInfoEditingRequest = async (req, res) => {
     try {

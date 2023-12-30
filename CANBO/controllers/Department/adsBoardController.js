@@ -20,7 +20,7 @@ const getAllAdsBoards = async (req, res) => {
                 path: 'location',
                 model: 'Location',
                 select: 'ward district'
-            },
+            }
         });
 
         res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
@@ -41,7 +41,7 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
-}
+};
 
 const getSingleAdsBoard = async (req, res) => {
     try {
@@ -53,7 +53,7 @@ const getSingleAdsBoard = async (req, res) => {
                 path: 'location',
                 model: 'Location',
                 select: 'ward district'
-            },
+            }
         });
 
         if (!adsBoard) {

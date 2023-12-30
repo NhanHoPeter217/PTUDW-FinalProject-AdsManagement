@@ -14,8 +14,8 @@ const createAdsPoint = async (req, res) => {
 const getAllAdsPoints = async (req, res) => {
     try {
         const adsPoints = await AdsPoint.find({}).populate({
-                path: 'adsBoard',
-                model: 'AdsBoard'
+            path: 'adsBoard',
+            model: 'AdsBoard'
         });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {

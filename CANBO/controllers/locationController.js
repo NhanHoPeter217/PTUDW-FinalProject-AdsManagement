@@ -64,7 +64,7 @@ const getAllLocationsByAssignedArea = async (req, res) => {
             }
         });
 
-        res.status(StatusCodes.OK).json({ adsInfo, count: adsInfo.length});
+        res.status(StatusCodes.OK).json({ adsInfo, count: adsInfo.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }

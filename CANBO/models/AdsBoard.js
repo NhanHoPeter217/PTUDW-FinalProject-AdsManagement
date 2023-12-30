@@ -35,7 +35,7 @@ const adsBoardSchema = new Schema(
 
         contractEndDate: { type: Date, required: true }
     },
-    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }  }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 // adsBoardSchema.pre(/^find/, function (next) {

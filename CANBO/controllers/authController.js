@@ -10,9 +10,9 @@ const register = async (req, res) => {
         const user = await User.create({ ...req.body });
         res.status(StatusCodes.CREATED).json({
             user: {
-                username: user.username,
+                username: user.username
             },
-            message: 'Register successfully',
+            message: 'Register successfully'
         });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Registration failed' });
@@ -81,9 +81,8 @@ const logout = async (req, res) => {
         expires: new Date(Date.now())
     });
     res.status(StatusCodes.OK).json({
-        message: 'Logout successfully',
+        message: 'Logout successfully'
     });
-    
 };
 
 module.exports = {

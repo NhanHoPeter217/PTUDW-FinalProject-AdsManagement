@@ -36,23 +36,23 @@ const adsPointSchema = new Schema(
             default: 'Chưa quy hoạch'
         }
     },
-    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }}
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 adsPointSchema.virtual('adsBoard', {
     ref: 'AdsBoard',
     localField: '_id',
-    foreignField: 'adsPoint',
+    foreignField: 'adsPoint'
 });
 
 // adsPointSchema.pre(/^find/, function(next) {
-    
+
 //     if (this.options._recursed) {
 //         return next();
 //     }
 
-//     this.populate({ 
-//         path: "location", 
+//     this.populate({
+//         path: "location",
 //         model: "Location",
 //         select: "ward district",
 //         options: { _recursed: true }
