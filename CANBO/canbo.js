@@ -45,7 +45,6 @@ const adsBoardRouter = require('./routes/Department/adsBoardRoutes');
 const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
-const wardRouter = require('./routes/Department/wardRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
@@ -89,7 +88,6 @@ app.use('/api/v1/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/adsPoint', adsPointRouter);
 app.use('/api/v1/district', districtRouter);
-app.use('/api/v1/ward', wardRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
