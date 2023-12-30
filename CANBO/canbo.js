@@ -49,6 +49,7 @@ const adsPointRoute = require('./routes/ads-point.route');
 const wardListRoute = require('./routes/ward-list.route');
 const adsBoardRoute = require('./routes/ads-board.route');
 const requestRoute = require('./routes/request.route');
+const typeRoute = require('./routes/type.route');
 // import wardRoute from './routes/ward.route.js';
 // import districtRoute from './routes/district.route.js';
 
@@ -146,6 +147,7 @@ app.use('/admin/report', reportRoute);
 app.use('/admin/dist', wardListRoute);
 app.use('/admin/adsboard', adsBoardRoute);
 app.use('/admin/request', requestRoute);
+app.use('/admin/type', typeRoute);
 // app.use('/admin', wardRoute);
 // app.use('/admin', districtRoute);
 
