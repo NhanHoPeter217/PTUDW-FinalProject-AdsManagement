@@ -166,22 +166,20 @@ app.get('/signin', function (req, res) {
 });
 
 app.get('/admin/adsboard/list', function (req, res) {
-    console.log(1);
-    res.render('vwAdsBoard/listAdsBoard');
-    console.log(1);
-});
-
-app.get('/admin/adsboard/license/list', function (req, res) {
     res.render('vwAdsBoard/listAdsBoard');
 });
 
-app.get('/admin/adsboard/license/list/manage', function (req, res) {
-    res.render('vwAdsBoard/listAdsBoard');
-});
+// app.get('/admin/adsboard/license/list', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
 
-app.get('/admin/adsboard/list/manage', function (req, res) {
-    res.render('vwAdsBoard/listAdsBoard');
-});
+// app.get('/admin/adsboard/license/list/manage', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
+
+// app.get('/admin/adsboard/list/manage', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
 
 app.use('/admin/adspoint', adsPointRoute);
 app.use('/admin/report', reportRoute);
