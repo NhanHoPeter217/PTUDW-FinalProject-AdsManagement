@@ -78,7 +78,11 @@
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <span id='boot-icon' class='bi bi-exclamation-triangle reportIcon'></span>
+                <img
+                    src='public/assets/icons/Report_icon.svg'
+                    alt='report-icon'
+                    style='height: 30px; width: 30px;'
+                />
                 <h5 class='modal-title' id='reportModalLabel'>Báo cáo vi phạm</h5>
                 <button
                     type='button'
@@ -90,7 +94,8 @@
             <div class='modal-body'>
                 <form class='report-form' id='reportForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label'>Hình thức</label>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Hình
+                            thức</label>
                         <select class='form-select reportType' id='reportType' required>
                             <option value='' disabled selected>
                                 -- Chọn hình thức báo cáo --
@@ -102,7 +107,8 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='fullName' class='form-label'>Họ và tên</label>
+                        <label for='fullName' class='form-label' style='font-family: Inter;'>Họ và
+                            tên</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
@@ -111,27 +117,52 @@
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label'>Email</label>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Email</label>
                         <input type='email' class='form-control reportEmail' id='email' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='phone' class='form-label reportPhone'>Số điện thoại liên lạc</label>
-                        <input type='tel' class='form-control' id='phone' required />
+                        <label for='phone' class='form-label' style='font-family: Inter;'>Số điện
+                            thoại liên lạc</label>
+                        <input type='tel' class='form-control reportPhone' id='phone' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportContent' class='form-label reportContent'>Nội dung</label>
-                        <textarea id='reportContent' required></textarea>
+                        <label
+                            for='reportContent'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Nội dung</label>
+                        <textarea
+                            id='reportContent'
+                            class='form-control reportContent'
+                            required
+                        ></textarea>
                     </div>
                     <div class='mb-3'>
-                        <label for='image1' class='form-label reportImage'>Hình ảnh 1</label>
-                        <input type='file' class='form-control' id='image1' accept='image/*' />
+                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            1</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image1'
+                            accept='image/*'
+                        />
                     </div>
                     <div class='mb-3'>
-                        <label for='image2' class='form-label reportImage'>Hình ảnh 2</label>
-                        <input type='file' class='form-control' id='image2' accept='image/*' />
+                        <label for='image2' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            2</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image2'
+                            accept='image/*'
+                        />
                     </div>
 
-                    <div class='button-container'>
+                    <div class='button-container justify-content-center'>
                         <div
                             id='recaptcha'
                             class='g-recaptcha'
@@ -139,8 +170,13 @@
                             data-callback='onSubmit'
                             data-size='invisible'
                         ></div>
-                        <button id='submitButton' type='button' class='submit-btn'>
-                            Gửi
+                        <button
+                            id='submitButton'
+                            type='button'
+                            class='submit-btn'
+                            style='font-family: Inter;'
+                        >
+                            GỬI
                         </button>
                     </div>
                 </form>
@@ -153,16 +189,6 @@
     {{! Marker Clusterer }}
     <script src='https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'></script>
 
-    {{! Google Maps Places API
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I&libraries=places&callback=initMap">
-</script> }}
-
     {{! Google Maps Functions }}
     <script src='public/js/utils.maps.js' type='module'></script>
 {{/section}}
-
-<!-- Bootstrap JS and Popper.js -->
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
-<!-- jQuery -->
-<script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>

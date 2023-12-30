@@ -1,16 +1,108 @@
-<style>
-    input { z-index: 1; } .search-bar { width: 30%; position: absolute; margin-left: 1.5%; }
-</style>
-<nav>
-    <div>
-        <form class='d-flex' role='search'>
-            <input
-                id='searchInput'
-                class='search-bar form-control mt-3 mr-sm-2 shadow'
-                type='text'
-                placeholder='Search'
-                aria-label='Search'
-            />
-        </form>
+{{#section 'css'}}
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+<link rel="stylesheet" href="../../../public/css/report.css" />
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+    });
+</script>
+{{/section}}
+
+{{#section 'js'}}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/js-datepicker"></script>
+<script type="module">
+    $(document).ready(function(){
+        $('.navbar-nav .nav-link').on('click', function(){
+            $('.navbar-nav .nav-link').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+    const picker1 = datepicker('#dateExpired', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+    const picker2 = datepicker('#startContract', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+    const picker3 = datepicker('#endContract', {
+        formatter: (input, date, instance) => {
+            const value = date.toLocaleDateString();
+            input.value = value; // => '1/25/2099'
+        },
+        overlayPlaceholder: 'Nhập năm',
+        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+    });
+</script>
+{{/section}}
+
+<nav class='navbar navbar-expand-lg navbar-light bg-light shadow-sm'>
+    <div class='container'>
+        <a class='navbar-brand' href='#'>Navbar</a>
+        <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>
+            <span class='navbar-toggler-icon'></span>
+        </button>
+        <div class='collapse navbar-collapse justify-content-end' id='navbarNavDropdown'>
+            <ul class='navbar-nav'>
+                <li class='nav-item'>
+                    <a class='nav-link' href='/'>Bản đồ</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href='#'>Báo cáo</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href='/admin/adsboard/license/list'>Cấp phép</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href=''>Yêu cầu</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href=''>Quản lý Quận/Phường</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href=''>Quản lý phân loại</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href=''>Danh sách tài khoản</a>
+                </li>
+                <li class='nav-item'>
+                    <button type='button' class='btn btn-outline-primary me-2' data-bs-toggle='modal' data-bs-target='#createAccountModal'>Tạo tài khoản</button>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
+
+
+{{> createAccount}}
