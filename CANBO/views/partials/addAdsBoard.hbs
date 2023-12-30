@@ -1,6 +1,6 @@
 <div
     class='modal fade'
-    id='requestEditAdsBoardModal'
+    id='addAdsBoardModal'
     tabindex='-1'
     aria-labelledby='reportModalLabel'
     aria-hidden='true'
@@ -9,7 +9,7 @@
         <div class='modal-content'>
             <div class='modal-header'>
                 <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                    Chỉnh sửa thông tin
+                    Thêm bảng quảng cáo
                 </h5>
                 <button
                     type='button'
@@ -26,7 +26,6 @@
                             type='text'
                             class='form-control fullNameReport'
                             id='fullName'
-                            value='OMG'
                             required
                         />
                     </div>
@@ -36,7 +35,6 @@
                             type='text'
                             class='form-control fullNameReport'
                             id='fullName'
-                            value='Thanh Đa'
                             required
                         />
                     </div>
@@ -47,14 +45,18 @@
                             id='reportAddress'
                             style="height: 100px;"
                             required
-                        >227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</textarea>
+                        ></textarea>
                     </div>
                     <div class='mb-3'>
                         <label for='email' class='form-label' style='font-family: Inter'>Loại vị trí</label>
                         <select class='form-select reportType' id='reportType' required>
                             <option
-                                value='Đất công/Công viên/Hành lang an toàn giao thông'
+                                disabled
                                 selected
+                            > --- Chọn loại vị trí ---
+                            </option>
+                            <option
+                                value='Đất công/Công viên/Hành lang an toàn giao thông'
                             >
                                 Đất công/Công viên/Hành lang an toàn giao thông
                             </option>
@@ -71,16 +73,25 @@
                         <label for='email' class='form-label' style='font-family: Inter'>Hình thức
                             quảng cáo</label>
                         <select class='form-select reportType' id='reportType' required>
-                            <option value='Cổ động chính trị' selected>Cổ động chính trị</option>
+                            <option
+                                disabled
+                                selected
+                            > --- Chọn hình thức ---
+                            </option>
+                            <option value='Cổ động chính trị'>Cổ động chính trị</option>
                             <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
                             <option value='Xã hội hóa'>Xã hội hóa</option>
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Trạng thái
-                            địa điểm</label>
+                        <label for='email' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
                         <select class='form-select reportType' id='reportType' required>
-                            <option value='Đã quy hoạch' selected>Đã quy hoạch</option>
+                            <option
+                                disabled
+                                selected
+                            > --- Chọn trạng thái ---
+                            </option>
+                            <option value='Đã quy hoạch'>Đã quy hoạch</option>
                             <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
                         </select>
                     </div>
@@ -88,7 +99,12 @@
                         <label for='email' class='form-label' style='font-family: Inter'>Loại bảng
                             quảng cáo</label>
                         <select class='form-select reportType' id='reportType' required>
-                            <option value='Đã quy hoạch' selected>Trụ bảng hiflex</option>
+                            <option
+                                disabled
+                                selected
+                            > --- Chọn loại bảng quảng cáo ---
+                            </option>
+                            <option value='Đã quy hoạch'>Trụ bảng hiflex</option>
                             <option value='Trụ màn hình điện tử LED'>
                                 Trụ màn hình điện tử LED
                             </option>
@@ -102,7 +118,6 @@
                                 type='text'
                                 class='form-control fullNameReport'
                                 id='fullName'
-                                value='10m'
                                 required
                             />
                         </div>
@@ -112,7 +127,6 @@
                                 type='text'
                                 class='form-control fullNameReport'
                                 id='fullName'
-                                value='20m'
                                 required
                             />
                         </div>
@@ -123,14 +137,14 @@
                                 type='text'
                                 class='form-control fullNameReport'
                                 id='fullName'
-                                value='2'
                                 required
                             />
                         </div>
                     </div>
                     <div class='mb-3'>
-                        <label for='dateExpired' class='form-label' style='font-family: Inter'>Ngày hết hạn của hợp đồng quảng cáo</label>
-                        <input type='text' id='dateExpired' class='form-control' required />
+                        <label for='dateExpired_add' class='form-label' style='font-family: Inter'>Ngày
+                            hết hạn của hợp đồng quảng cáo</label>
+                        <input type='text' id='dateExpired_add' class='form-control' required />
                     </div>
                     <div class='mb-3'>
                         <label for='image1' class='form-label' style='font-family: Inter'>Hình ảnh</label>
@@ -153,10 +167,10 @@
                             <button
                                 id='submitButton'
                                 type='button'
-                                class='btn btn-warning'
+                                class='btn btn-success m1'
                                 style='font-family: Inter'
                             >
-                                GỬI
+                                THÊM
                             </button>
                         </div>
                     </div>
