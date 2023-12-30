@@ -1,7 +1,16 @@
 {{> navbar}}
 
 {{#section 'css'}}
-<link rel="stylesheet" href="../../public/css/report.css" />
+<link rel="stylesheet" href="../../../public/css/report.css" />
+    <style>
+        #addIcon {
+            transition: filter 0.1s ease-in-out; /* Add a transition effect */
+        }
+    
+        #addIcon:hover {
+            filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
+        }
+  </style>
 {{/section}}
 
 <div class="container-fluid mt-3">
@@ -10,7 +19,15 @@
         <div class="col-md-10">
             <div class="card w-100">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Danh sách các điểm đặt quảng cáo của Phường 1, Quận 2</h5>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-semibold mb-4">Danh sách các điểm đặt quảng cáo của Phường 1, Quận 2</h5>
+                        <button type="button" class="btn btn-outline-success m-1">
+                            <div id="addIcon">
+                                <img src="../../../public/assets/icons/Add_icon.svg" alt="" width="24" height="24" />
+                                Thêm điểm đặt quảng cáo
+                            </div>
+                        </button>
+                    </div>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
@@ -87,8 +104,11 @@
                                             type="button"
                                             class="btn btn-outline-warning m-1"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsPointModal">
-                                            Yêu cầu chỉnh sửa
+                                            data-bs-target="#editAdsPointModal">
+                                            <div id="addIcon">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Chỉnh sửa
+                                            </div>
                                         </button>
                                     </td>
                                 </tr>
@@ -147,4 +167,4 @@
 <title>Danh sách điểm quảng cáo</title>
 
 {{> detailAdsPoint}}
-{{> requestEditAdsPoint}}
+{{> editAdsPoint}}
