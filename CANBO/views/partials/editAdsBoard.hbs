@@ -1,6 +1,6 @@
 <div
     class='modal fade'
-    id='requestEditAdsBoardModal'
+    id='editAdsBoardModal'
     tabindex='-1'
     aria-labelledby='reportModalLabel'
     aria-hidden='true'
@@ -129,8 +129,9 @@
                         </div>
                     </div>
                     <div class='mb-3'>
-                        <label for='dateExpired' class='form-label' style='font-family: Inter'>Ngày hết hạn của hợp đồng quảng cáo</label>
-                        <input type='text' id='dateExpired' class='form-control' required />
+                        <label for='dateExpired_edit' class='form-label' style='font-family: Inter'>Ngày
+                            hết hạn của hợp đồng quảng cáo</label>
+                        <input type='text' id='dateExpired_edit' class='form-control' required />
                     </div>
                     <div class='mb-3'>
                         <label for='image1' class='form-label' style='font-family: Inter'>Hình ảnh</label>
@@ -149,15 +150,27 @@
                             data-callback='onSubmit'
                             data-size='invisible'
                         ></div>
-                        <div class='d-grid gap-2 col-3 mx-auto'>
-                            <button
-                                id='submitButton'
-                                type='button'
-                                class='btn btn-warning'
-                                style='font-family: Inter'
-                            >
-                                GỬI
-                            </button>
+                        <div class="d-flex">
+                            <div class='d-grid gap-2 col-3 mx-auto'>
+                                <button
+                                    id='submitButton'
+                                    type='button'
+                                    class='btn btn-outline-danger m1'
+                                    style='font-family: Inter'
+                                >
+                                    XÓA
+                                </button>
+                            </div>
+                            <div class='d-grid gap-2 col-3 mx-auto'>
+                                <button
+                                    id='submitButton'
+                                    type='button'
+                                    class='btn btn-success m1'
+                                    style='font-family: Inter'
+                                >
+                                    LƯU
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
