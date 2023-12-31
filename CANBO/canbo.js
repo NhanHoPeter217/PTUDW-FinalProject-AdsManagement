@@ -58,9 +58,10 @@ const locationRouter = require('./routes/locationRoutes');
 const reportRoute = require('./routes/report-ward.route');
 const adsPointRoute = require('./routes/ads-point.route');
 const wardListRoute = require('./routes/ward-list.route');
-const adsBoardRoute = require('./routes/ads-board.route');
+// const adsBoardRoute = require('./routes/ads-board.route');
 const requestRoute = require('./routes/request.route');
 const typeRoute = require('./routes/type.route');
+const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 // import wardRoute from './routes/ward.route.js';
 // import districtRoute from './routes/district.route.js';
 
@@ -143,8 +144,9 @@ app.set('view engine', 'hbs');
 app.set('views', './views');
 app.set('title', 'Ads Management');
 
+// Get pages
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home', { hideNavbar: true });
 });
 
 app.get('/forgotPassword', function (req, res) {
@@ -163,15 +165,27 @@ app.get('/signin', function (req, res) {
     res.render('commonFeatures/signin', { layout: false });
 });
 
-// view engine setup
+app.get('/admin/adsboard/list', function (req, res) {
+    res.render('vwAdsBoard/listAdsBoard', {});
+});
+
+// app.get('/admin/adsboard/license/list', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
+
+// app.get('/admin/adsboard/license/list/manage', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
+
+// app.get('/admin/adsboard/list/manage', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard');
+// });
+
 app.use('/admin/adspoint', adsPointRoute);
 app.use('/admin/report', reportRoute);
 app.use('/admin/dist', wardListRoute);
-app.use('/admin/adsboard', adsBoardRoute);
 app.use('/admin/request', requestRoute);
 app.use('/admin/type', typeRoute);
-// app.use('/admin', wardRoute);
-// app.use('/admin', districtRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
