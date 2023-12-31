@@ -21,14 +21,14 @@
             <div class='modal-body'>
                 <form class='report-form' id='requestEditAdsBoardForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='adsBoardName' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='adsBoardName'
-                            value='OMG'
-                            required
-                        />
+                        <label for='adsBoardType' class='form-label' style='font-family: Inter'>Loại bảng quảng cáo</label>
+                        <select class='form-select reportType' id='adsBoardType' required>
+                            <option value='Trụ bảng hiflex' selected>Trụ bảng hiflex</option>
+                            <option value='Trụ màn hình điện tử LED'>
+                                Trụ màn hình điện tử LED
+                            </option>
+                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+                        </select>
                     </div>
                     <div class='mb-3'>
                         <label for='adsPointName' class='form-label' style='font-family: Inter'>Điểm quảng cáo</label>
@@ -68,8 +68,7 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='adsType' class='form-label' style='font-family: Inter'>Hình thức
-                            quảng cáo</label>
+                        <label for='adsType' class='form-label' style='font-family: Inter'>Hình thức quảng cáo</label>
                         <select class='form-select reportType' id='adsType' required>
                             <option value='Cổ động chính trị' selected>Cổ động chính trị</option>
                             <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
@@ -82,17 +81,6 @@
                         <select class='form-select reportType' id='stateType' required>
                             <option value='Đã quy hoạch' selected>Đã quy hoạch</option>
                             <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
-                        </select>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='adsBoardType' class='form-label' style='font-family: Inter'>Loại bảng
-                            quảng cáo</label>
-                        <select class='form-select reportType' id='adsBoardType' required>
-                            <option value='Đã quy hoạch' selected>Trụ bảng hiflex</option>
-                            <option value='Trụ màn hình điện tử LED'>
-                                Trụ màn hình điện tử LED
-                            </option>
-                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
                         </select>
                     </div>
                     <div class="d-flex flex-row column-gap-3">
