@@ -4,6 +4,14 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="../../public/css/report.css" />
+    <style>
+        #buttonStyle {
+            transition: filter 0.1s ease-in-out;
+        }
+        #buttonStyle:hover {
+            filter: brightness(0) invert(1);
+        }
+    </style>
 {{/section}}
 
 {{#section 'js'}}
@@ -35,6 +43,10 @@
                     <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
                         <div class='modal-content'>
                             <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/Info_icon.svg'
+                                    style='height: 40px; width: 40px;'
+                                />
                                 <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
                                 <button
                                     type='button'
@@ -126,7 +138,13 @@
                     <div class='modal-dialog'>
                         <div class='modal-content'>
                             <div class='modal-header'>
-                                <h5 class='modal-license-title' id='reportModalLabel'>Yêu cầu cấp phép quảng cáo</h5>
+                                <img
+                                    src='../../../public/assets/icons/License_icon_green.svg'
+                                    style='height: 50px; width: 50px;'
+                                />
+                                <h5 class='modal-license-title' id='reportModalLabel'>
+                                    Yêu cầu cấp phép quảng cáo
+                                </h5>
                                 <button
                                     type='button'
                                     class='btn-close'
@@ -337,6 +355,10 @@
                     <div class='modal-dialog'>
                         <div class='modal-content'>
                             <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                    style='height: 40px; width: 40px;'
+                                />
                                 <h5 class='modal-requestEdit-title' id='reportModalLabel'>
                                     Chỉnh sửa thông tin
                                 </h5>
@@ -357,7 +379,10 @@
                                             </div>
                                         </label>
                                         <select class='form-select reportType' id='edit_adsBoardType' required>
-                                            <option value='Trụ bảng hiflex' selected>Trụ bảng hiflex</option>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn loại bảng quảng cáo --
+                                            </option>
+                                            <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
                                             <option value='Trụ màn hình điện tử LED'>
                                                 Trụ màn hình điện tử LED
                                             </option>
@@ -402,9 +427,11 @@
                                             </div>
                                         </label>
                                         <select class='form-select reportType' id='edit_locationType' required>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn loại vị trí --
+                                            </option>
                                             <option
                                                 value='Đất công/Công viên/Hành lang an toàn giao thông'
-                                                selected
                                             >
                                                 Đất công/Công viên/Hành lang an toàn giao thông
                                             </option>
@@ -425,7 +452,10 @@
                                             </div>
                                         </label>
                                         <select class='form-select reportType' id='edit_adsFormat' required>
-                                            <option value='Cổ động chính trị' selected>Cổ động chính trị</option>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn hình thức quảng cáo --
+                                            </option>
+                                            <option value='Cổ động chính trị'>Cổ động chính trị</option>
                                             <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
                                             <option value='Xã hội hóa'>Xã hội hóa</option>
                                         </select>
@@ -438,7 +468,10 @@
                                             </div>
                                         </label>
                                         <select class='form-select reportType' id='edit_planningStatus' required>
-                                            <option value='Đã quy hoạch' selected>Đã quy hoạch</option>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn trạng thái --
+                                            </option>
+                                            <option value='Đã quy hoạch'>Đã quy hoạch</option>
                                             <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
                                         </select>
                                     </div>
@@ -592,7 +625,10 @@
                                     class="btn btn-success m-1"
                                     data-bs-toggle="modal"
                                     data-bs-target="#requestLicenseAdsBoardModal-${i}">
-                                    Yêu cầu cấp phép
+                                    <div>
+                                        <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
+                                        Yêu cầu cấp phép
+                                    </div>
                                 </button>
                             </td>
                             <td class="border-bottom-0">
@@ -601,7 +637,10 @@
                                     class="btn btn-outline-warning m-1"
                                     data-bs-toggle="modal"
                                     data-bs-target="#requestEditAdsBoardModal-${i}">
-                                    Yêu cầu chỉnh sửa
+                                    <div id="buttonStyle">
+                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                        Yêu cầu chỉnh sửa
+                                    </div>
                                 </button>
                             </td>
                         </tr>`);
@@ -683,6 +722,7 @@
             <div class="card w-100">
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold mb-4" id="tableName">
+                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
                     </h5>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
