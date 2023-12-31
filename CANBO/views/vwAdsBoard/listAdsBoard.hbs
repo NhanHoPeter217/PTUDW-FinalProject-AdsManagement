@@ -1,6 +1,4 @@
 
-{{!-- {{> navbar}} --}}
-
 {{#section 'css'}}
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="../../public/css/report.css" />
@@ -732,7 +730,7 @@
         });
 
         function initializeDatepicker(inputId) {
-            const pickerr = datepicker(inputId, {
+            const picker = datepicker(inputId, {
                 formatter: (input, date, instance) => {
                     const value = date.toLocaleDateString();
                     input.value = value; // => '1/25/2099'

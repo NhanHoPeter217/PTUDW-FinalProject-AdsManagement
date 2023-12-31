@@ -1,7 +1,14 @@
-{{> navbar}}
 
 {{#section 'css'}}
 <link rel="stylesheet" href="../../public/css/report.css" />
+    <style>
+        #buttonStyle {
+            transition: filter 0.1s ease-in-out;
+        }
+        #buttonStyle:hover {
+            filter: brightness(0) invert(1);
+        }
+    </style>
 {{/section}}
 
 <div class="container-fluid mt-3">

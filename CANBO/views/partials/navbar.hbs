@@ -4,6 +4,22 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+<style>
+    #buttonStyle {
+        transition: filter 0.1s ease-in-out;
+    }
+    #buttonStyle:hover {
+        filter: brightness(0) invert(1);
+    }
+</style>
+
+
+{{/section}}
+
+{{#section 'js'}}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/js-datepicker"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const togglePassword = document.getElementById('togglePassword');
@@ -27,20 +43,6 @@
         });
     });
 </script>
-    <style>
-        #buttonStyle {
-            transition: filter 0.1s ease-in-out;
-        }
-        #buttonStyle:hover {
-            filter: brightness(0) invert(1);
-        }
-    </style>
-{{/section}}
-
-{{#section 'js'}}
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/js-datepicker"></script>
 <script type="module">
     $(document).ready(function(){
         $('.navbar-nav .nav-link').on('click', function(){
@@ -48,7 +50,7 @@
             $(this).addClass('active');
         });
     });
-    const picker1 = datepicker('#dateExpired', {
+    const picker = datepicker('#register_DOB', {
         formatter: (input, date, instance) => {
             const value = date.toLocaleDateString();
             input.value = value; // => '1/25/2099'
@@ -56,39 +58,6 @@
         overlayPlaceholder: 'Nhập năm',
         customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
     });
-    const picker2 = datepicker('#startContract', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker3 = datepicker('#endContract', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker4 = datepicker('#createAccount_DOB', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker5 = datepicker('#contractEndDate', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-
 </script>
 {{/section}}
 
