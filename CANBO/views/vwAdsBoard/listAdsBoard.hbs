@@ -8,9 +8,438 @@
 
 {{#section 'js'}}
 <script>
-    console.log(2);
-    console.log(1);
-    console.log(1);
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/v1/adsPoint/658c2947dd95230a08d06aa8', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((adsPoint_data) => {
+            if (!adsPoint_data) {
+                return;
+            }
+            console.log(adsPoint_data.adsPoint);
+
+            // detailAdsBoardModal
+            for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                $('#modalAddition').append(`<div
+                    class='modal fade'
+                    id="detailAdsBoardModal-${i}"
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel-${i}'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-detail-body'>
+                                <form class='report-form' id='detailAdsBoardForm' enctype='multipart/form-data'>
+                                    <div class='mb-3 d-grid gap-2'>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Loại bảng quảng cáo</h5>
+                                                <p class='mb-0 text-primary fw-semibold' id="adsBoardType-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Địa điểm:</h5>
+                                                <p class='mb-0' id="locationName-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                <p class='mb-0' id="address-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Loại vị trí</h5>
+                                                <p class='mb-0' id="locationType-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Hình thức quảng cáo</h5>
+                                                <p class='mb-0' id="adsFormat-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
+                                                <p class='mb-0' id="planningStatus-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Kích thước</h5>
+                                                <p class='mb-0' id="size-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Số lượng</h5>
+                                                <p class='mb-0' id="quantity-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
+                                                <p class='mb-0' id="adsBoardImages-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold mb-4'>Ngày hết hạn của hợp đồng quảng cáo</h5>
+                                                <p class='mb-0' id="contractEndDate-${i}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+            }
+
+            // requestLicenseAdsBoardModal
+            for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                $('#modalAddition').append(`<div
+                    class='modal fade'
+                    id='requestLicenseAdsBoardModal-${i}'
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel-${i}'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-license-title' id='reportModalLabel'>Yêu cầu cấp phép quảng cáo</h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-body'>
+                                <form class='report-form' id='requestLicenseAdsBoardForm-${i}' enctype='multipart/form-data'>
+                                    <div class='mb-3'>
+                                        <label for='adsBoardName' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameReport'
+                                            id='adsBoardName'
+                                            value='OMG'
+                                            disabled
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <details>
+                                            <summary>
+                                                <label
+                                                    for='adsPointName'
+                                                    class='form-label'
+                                                    style='font-family: Inter;'
+                                                >Điểm quảng cáo</label>
+                                                <input
+                                                    type='text'
+                                                    class='form-control fullNameReport'
+                                                    id='adsPointName'
+                                                    value='Thanh Đa'
+                                                    disabled
+                                                />
+                                            </summary>
+                                            <p class='p-2 grid gap-0 row-gap-3'>
+                                                <div class='form-label p-1 g-col-6'>
+                                                    <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
+                                                    <textarea
+                                                        class='form-control fullNameReport'
+                                                        id='address'
+                                                        style="height: 100px;"
+                                                        disabled
+                                                    >227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</textarea>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='locationType' class='form-label' style='font-family: Inter;'>Loại vị trí</label>
+                                                    <select class='form-select reportType' id='locationType' disabled required>
+                                                        <option
+                                                            value='Đất công/Công viên/Hành lang an toàn giao thông'
+                                                            selected
+                                                        >
+                                                            Đất công/Công viên/Hành lang an toàn giao thông
+                                                        </option>
+                                                        <option value='Đất tư nhân/Nhà ở riêng lẻ'>Đất tư nhân/Nhà ở riêng lẻ</option>
+                                                        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+                                                        <option value='Chợ'>Chợ</option>
+                                                        <option value='Cây xăng'>Cây xăng</option>
+                                                        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+                                                    </select>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='adsType' class='form-label' style='font-family: Inter;'>Hình thức
+                                                        quảng cáo</label>
+                                                    <select class='form-select reportType' id='adsType' disabled required>
+                                                        <option value='Cổ động chính trị' selected>
+                                                            Cổ động chính trị
+                                                        </option>
+                                                        <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
+                                                        <option value='Xã hội hóa'>Xã hội hóa</option>
+                                                    </select>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='stateType' class='form-label' style='font-family: Inter;'>Trạng thái
+                                                        địa điểm</label>
+                                                    <select class='form-select reportType' id='stateType' disabled required>
+                                                        <option value='Đã quy hoạch' selected>
+                                                            Đã quy hoạch
+                                                        </option>
+                                                        <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                                    </select>
+                                                </div>
+                                            </p>
+                                        </details>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='adsBoardType' class='form-label' style='font-family: Inter;'>Loại bảng
+                                            quảng cáo</label>
+                                        <select class='form-select reportType' id='adsBoardType' disabled required>
+                                            <option value='Đã quy hoạch' selected>
+                                                Trụ bảng hiflex
+                                            </option>
+                                            <option value='Trụ màn hình điện tử LED'>Trụ màn hình điện tử LED</option>
+                                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3'>
+                                            <label for='height' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='height'
+                                                value='10m'
+                                                required
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='width' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='width'
+                                                value='20m'
+                                                required
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='countNumber' class='form-label' style='font-family: Inter'>Số
+                                                lượng</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='countNumber'
+                                                value='2'
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='dateInput' class='form-label' style='font-family: Inter;'>Ngày
+                                            hết hạn của hợp đồng quảng cáo hiện tại</label>
+                                        <input type='text' class='form-control' value='30/12/2023' disabled />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh</label>
+                                        <input
+                                            type='file'
+                                            class='form-control reportImage'
+                                            id='requestLicenseAdsBoard_image'
+                                            accept='image/*'
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='companyName' class='form-label' style='font-family: Inter'>Tên công ty đặt quảng cáo</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='companyName'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3'>
+                                            <label for='startContract' class='form-label' style='font-family: Inter'>Ngày bắt đầu hợp đồng</label>
+                                            <input type='text' id='startContract' class='form-control' required />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='endContract' class='form-label' style='font-family: Inter'>Ngày kết thúc hợp đồng</label>
+                                            <input type='text' id='endContract' class='form-control' required />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='email' class='form-label' style='font-family: Inter;'>Email công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='email'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='reportType' class='form-label' style='font-family: Inter;'>Điện thoại công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='fullName'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='compnanyAddress' class='form-label' style='font-family: Inter'>Địa chỉ công ty</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='compnanyAddress'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='button-container justify-content-center'>
+                                        <div
+                                            id='recaptcha'
+                                            class='g-recaptcha'
+                                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                            data-callback='onSubmit'
+                                            data-size='invisible'
+                                        ></div>
+                                        <div class='d-grid gap-2 col-3 mx-auto'>
+                                            <button
+                                                id='submitLicenseButton'
+                                                type='button'
+                                                class='btn btn-success m-1'
+                                                style='font-family: Inter;'
+                                            >
+                                                GỬI
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+            }
+
+            fetch(`/api/v1/location/` + adsPoint_data.adsPoint.location, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => response.json())
+            .then((location_data) => {
+                if (!location_data) {
+                    return;
+                }
+                console.log(location_data);
+
+                $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`)
+
+                for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                    const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
+
+                    // Formate date
+                    const contractEndDate = new Date(adsBoard.contractEndDate);
+
+                    const day = contractEndDate.getDate();
+                    const month = contractEndDate.getMonth() + 1;
+                    const year = contractEndDate.getFullYear();
+
+                    const contractEndDateFormat = `${(day < 10 ? '0' : '') + day}/${(month < 10 ? '0' : '') + month}/${year}`;
+                    
+                    $('#body').append(`
+                        <tr>
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">${i + 1}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button
+                                    type="button"
+                                    class="btn btn-link m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailAdsBoardModal-${i}">
+                                    ${adsBoard.adsBoardType}
+                                </button>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${adsPoint_data.adsPoint.adsFormat}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${adsBoard.size.width}m x ${adsBoard.size.height}m</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${adsBoard.quantity}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${location_data.location.ward}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${contractEndDateFormat}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button
+                                    type="button"
+                                    class="btn btn-success m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#requestLicenseAdsBoardModal">
+                                    Yêu cầu cấp phép
+                                </button>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-warning m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#requestEditAdsBoardModal">
+                                    Yêu cầu chỉnh sửa
+                                </button>
+                            </td>
+                        </tr>`);
+
+                    // detailAdsBoardModal
+                    document.getElementById(`adsBoardType-${i}`).textContent = adsBoard.adsBoardType;
+                    document.getElementById(`locationName-${i}`).textContent = location_data.location.locationName;
+                    document.getElementById(`address-${i}`).textContent = location_data.location.address;
+                    document.getElementById(`locationType-${i}`).textContent = adsPoint_data.adsPoint.locationType;
+                    document.getElementById(`adsFormat-${i}`).textContent = adsPoint_data.adsPoint.adsFormat;
+                    document.getElementById(`planningStatus-${i}`).textContent = adsPoint_data.adsPoint.planningStatus;
+                    document.getElementById(`size-${i}`).textContent = `${adsBoard.size.width}m x ${adsBoard.size.height}m`;
+                    document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
+                    document.getElementById(`adsBoardImages-${i}`).textContent = adsBoard.adsBoardImages;
+                    document.getElementById(`contractEndDate-${i}`).textContent = contractEndDateFormat;
+                    const modal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
+                }
+            })
+            .catch((error) => {
+                console.error('Lỗi khi gửi dữ liệu vị trí: ', error);
+            });
+
+        })
+        .catch((error) => {
+            console.error('Lỗi khi gửi dữ liệu điểm quảng cáo: ', error);
+        });
+    });
 </script>
 {{/section}}
 
@@ -21,8 +450,7 @@
         <div class="col-md-10">
             <div class="card w-100">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">
-                        Danh sách các bảng đặt quảng cáo của Thanh Đa
+                    <h5 class="card-title fw-semibold mb-4" id="tableName">
                     </h5>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
@@ -32,10 +460,10 @@
                                         <h6 class="fw-semibold mb-0">#</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Bảng quảng cáo</h6>
+                                        <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
+                                        <h6 class="fw-semibold mb-0">Hình thức</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Kích thước</h6>
@@ -57,58 +485,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">1</h6>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-link m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailAdsBoardModal">
-                                            OMG
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Trụ bảng hiflex</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">2</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">7</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-primary rounded-3 fw-semibold"
-                                                >Đã quy hoạch</span
-                                            >
-                                        </div>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-success m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestLicenseAdsBoardModal">
-                                            Yêu cầu cấp phép
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-warning m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsBoardModal">
-                                            Yêu cầu chỉnh sửa
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="body">
                             </tbody>
                         </table>
                     </div>
@@ -120,6 +497,8 @@
 
 <title>Danh sách bảng quảng cáo</title>
 
-{{> detailAdsBoard}}
+<div id="modalAddition">
+    
+</div>
 {{> requestEditAdsBoard}}
 {{> requestLicenseAdsBoard}}

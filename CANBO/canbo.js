@@ -146,7 +146,7 @@ app.set('title', 'Ads Management');
 
 // Get pages
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home', { hideNavbar: true });
 });
 
 app.get('/forgotPassword', function (req, res) {
@@ -166,7 +166,7 @@ app.get('/signin', function (req, res) {
 });
 
 app.get('/admin/adsboard/list', function (req, res) {
-    res.render('vwAdsBoard/listAdsBoard');
+    res.render('vwAdsBoard/listAdsBoard', {});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {

@@ -18,7 +18,9 @@
     </head>
 
     <body>
-        {{> navbar}}
+        {{#unless hideNavbar}}
+            {{> navbar}}
+        {{/unless}}
         {{{body}}}
 
         <!-- Bootstrap JS and Popper.js -->
