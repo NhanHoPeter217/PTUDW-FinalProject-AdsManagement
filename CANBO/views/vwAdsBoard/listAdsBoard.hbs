@@ -136,12 +136,11 @@
                             <div class='modal-body'>
                                 <form class='report-form' id='requestLicenseAdsBoardForm-${i}' enctype='multipart/form-data'>
                                     <div class='mb-3'>
-                                        <label for='adsBoardName' class='form-label' style='font-family: Inter;'>Tên bảng quảng cáo</label>
+                                        <label for='adsBoardType' class='form-label' style='font-family: Inter;'>Loại bảng quảng cáo</label>
                                         <input
                                             type='text'
                                             class='form-control fullNameReport'
-                                            id='adsBoardName'
-                                            value='OMG'
+                                            id='license_adsBoardType-${i}'
                                             disabled
                                         />
                                     </div>
@@ -149,15 +148,14 @@
                                         <details>
                                             <summary>
                                                 <label
-                                                    for='adsPointName'
+                                                    for='locationName'
                                                     class='form-label'
                                                     style='font-family: Inter;'
                                                 >Điểm quảng cáo</label>
                                                 <input
                                                     type='text'
                                                     class='form-control fullNameReport'
-                                                    id='adsPointName'
-                                                    value='Thanh Đa'
+                                                    id='license_locationName-${i}'
                                                     disabled
                                                 />
                                             </summary>
@@ -166,14 +164,14 @@
                                                     <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
                                                     <textarea
                                                         class='form-control fullNameReport'
-                                                        id='address'
+                                                        id='license_address-${i}'
                                                         style="height: 100px;"
                                                         disabled
-                                                    >227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</textarea>
+                                                    ></textarea>
                                                 </div>
                                                 <div class='form-label p-2 g-col-6'>
                                                     <label for='locationType' class='form-label' style='font-family: Inter;'>Loại vị trí</label>
-                                                    <select class='form-select reportType' id='locationType' disabled required>
+                                                    <select class='form-select reportType' id='license_locationType-${i}' disabled required>
                                                         <option
                                                             value='Đất công/Công viên/Hành lang an toàn giao thông'
                                                             selected
@@ -188,9 +186,8 @@
                                                     </select>
                                                 </div>
                                                 <div class='form-label p-2 g-col-6'>
-                                                    <label for='adsType' class='form-label' style='font-family: Inter;'>Hình thức
-                                                        quảng cáo</label>
-                                                    <select class='form-select reportType' id='adsType' disabled required>
+                                                    <label for='adsFormat' class='form-label' style='font-family: Inter;'>Hình thức quảng cáo</label>
+                                                    <select class='form-select reportType' id='license_adsFormat-${i}' disabled required>
                                                         <option value='Cổ động chính trị' selected>
                                                             Cổ động chính trị
                                                         </option>
@@ -199,9 +196,8 @@
                                                     </select>
                                                 </div>
                                                 <div class='form-label p-2 g-col-6'>
-                                                    <label for='stateType' class='form-label' style='font-family: Inter;'>Trạng thái
-                                                        địa điểm</label>
-                                                    <select class='form-select reportType' id='stateType' disabled required>
+                                                    <label for='planningStatus' class='form-label' style='font-family: Inter;'>Trạng thái địa điểm</label>
+                                                    <select class='form-select reportType' id='license_planningStatus-${i}' disabled required>
                                                         <option value='Đã quy hoạch' selected>
                                                             Đã quy hoạch
                                                         </option>
@@ -211,26 +207,15 @@
                                             </p>
                                         </details>
                                     </div>
-                                    <div class='mb-3'>
-                                        <label for='adsBoardType' class='form-label' style='font-family: Inter;'>Loại bảng
-                                            quảng cáo</label>
-                                        <select class='form-select reportType' id='adsBoardType' disabled required>
-                                            <option value='Đã quy hoạch' selected>
-                                                Trụ bảng hiflex
-                                            </option>
-                                            <option value='Trụ màn hình điện tử LED'>Trụ màn hình điện tử LED</option>
-                                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
-                                        </select>
-                                    </div>
                                     <div class="d-flex flex-row column-gap-3">
                                         <div class='mb-3'>
                                             <label for='height' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
                                             <input
                                                 type='text'
                                                 class='form-control fullNameReport'
-                                                id='height'
-                                                value='10m'
-                                                required
+                                                id='license_height-${i}'
+                                                disabled
+                                                
                                             />
                                         </div>
                                         <div class='mb-3'>
@@ -238,34 +223,30 @@
                                             <input
                                                 type='text'
                                                 class='form-control fullNameReport'
-                                                id='width'
-                                                value='20m'
-                                                required
+                                                id='license_width-${i}'
+                                                disabled
                                             />
                                         </div>
                                         <div class='mb-3'>
-                                            <label for='countNumber' class='form-label' style='font-family: Inter'>Số
-                                                lượng</label>
+                                            <label for='quantity' class='form-label' style='font-family: Inter'>Số lượng</label>
                                             <input
                                                 type='text'
                                                 class='form-control fullNameReport'
-                                                id='countNumber'
-                                                value='2'
-                                                required
+                                                id='license_quantity-${i}'
+                                                disabled
                                             />
                                         </div>
                                     </div>
                                     <div class='mb-3'>
-                                        <label for='dateInput' class='form-label' style='font-family: Inter;'>Ngày
-                                            hết hạn của hợp đồng quảng cáo hiện tại</label>
-                                        <input type='text' class='form-control' value='30/12/2023' disabled />
+                                        <label for='contractEndDate' class='form-label' style='font-family: Inter;'>Ngày hết hạn của hợp đồng quảng cáo hiện tại</label>
+                                        <input type='text' class='form-control' id="license_contractEndDate-${i}" disabled />
                                     </div>
                                     <div class='mb-3'>
-                                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh</label>
+                                        <label for='adsBoardImages' class='form-label' style='font-family: Inter;'>Hình ảnh</label>
                                         <input
                                             type='file'
                                             class='form-control reportImage'
-                                            id='requestLicenseAdsBoard_image'
+                                            id='license_adsBoardImages-${i}'
                                             accept='image/*'
                                         />
                                     </div>
@@ -289,28 +270,28 @@
                                         </div>
                                     </div>
                                     <div class='mb-3'>
-                                        <label for='email' class='form-label' style='font-family: Inter;'>Email công ty</label>
+                                        <label for='companyEmail' class='form-label' style='font-family: Inter;'>Email công ty</label>
                                         <input
                                             type='text'
                                             class='form-control fullNameCompany'
-                                            id='email'
+                                            id='companyEmail'
                                             required
                                         />
                                     </div>
                                     <div class='mb-3'>
-                                        <label for='reportType' class='form-label' style='font-family: Inter;'>Điện thoại công ty</label>
+                                        <label for='companyPhone' class='form-label' style='font-family: Inter;'>Điện thoại công ty</label>
                                         <input
                                             type='text'
                                             class='form-control fullNameCompany'
-                                            id='fullName'
+                                            id='companyPhone'
                                             required
                                         />
                                     </div>
                                     <div class='mb-3'>
-                                        <label for='compnanyAddress' class='form-label' style='font-family: Inter'>Địa chỉ công ty</label>
+                                        <label for='companyAddress' class='form-label' style='font-family: Inter'>Địa chỉ công ty</label>
                                         <textarea
                                             class='form-control fullNameReport'
-                                            id='compnanyAddress'
+                                            id='companyAddress'
                                             style="height: 100px;"
                                             required
                                         ></textarea>
@@ -402,7 +383,7 @@
                                     type="button"
                                     class="btn btn-success m-1"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#requestLicenseAdsBoardModal">
+                                    data-bs-target="#requestLicenseAdsBoardModal-${i}">
                                     Yêu cầu cấp phép
                                 </button>
                             </td>
@@ -428,7 +409,21 @@
                     document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
                     document.getElementById(`adsBoardImages-${i}`).textContent = adsBoard.adsBoardImages;
                     document.getElementById(`contractEndDate-${i}`).textContent = contractEndDateFormat;
-                    const modal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
+                    const detailAdsBoardModal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
+
+                    // requestLicenseAdsBoardModal
+                    document.getElementById(`license_adsBoardType-${i}`).value = adsBoard.adsBoardType;
+                    document.getElementById(`license_locationName-${i}`).value = location_data.location.locationName;
+                    document.getElementById(`license_address-${i}`).value = location_data.location.address;
+                    document.getElementById(`license_locationType-${i}`).value = adsPoint_data.adsPoint.locationType;
+                    document.getElementById(`license_adsFormat-${i}`).value = adsPoint_data.adsPoint.adsFormat;
+                    document.getElementById(`license_planningStatus-${i}`).value = adsPoint_data.adsPoint.planningStatus;
+                    document.getElementById(`license_height-${i}`).value = adsBoard.size.height;
+                    document.getElementById(`license_width-${i}`).value = adsBoard.size.width;
+                    document.getElementById(`license_quantity-${i}`).value = adsBoard.quantity;
+                    document.getElementById(`license_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
+                    document.getElementById(`license_contractEndDate-${i}`).value = contractEndDateFormat;
+                    const requestLicenseAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestLicenseAdsBoardModal-${i}`));
                 }
             })
             .catch((error) => {
@@ -500,5 +495,5 @@
 <div id="modalAddition">
     
 </div>
+
 {{> requestEditAdsBoard}}
-{{> requestLicenseAdsBoard}}
