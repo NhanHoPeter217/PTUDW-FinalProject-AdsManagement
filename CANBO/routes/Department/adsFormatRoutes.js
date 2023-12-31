@@ -8,8 +8,8 @@ const {
     deleteAdsFormat
 } = require('../../controllers/Department/adsFormatController');
 
-router.use(authenticateUser);
-router.use(authorizePermissions('Sở VH-TT'));
+// router.use(authenticateUser);
+// router.use(authorizePermissions('Sở VH-TT'));
 
 router.route('/').get(getAllAdsFormats);
 router.route('/').post(createAdsFormat);
