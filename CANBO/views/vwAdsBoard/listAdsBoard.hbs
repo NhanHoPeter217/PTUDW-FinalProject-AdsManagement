@@ -371,25 +371,27 @@
                             </div>
                             <div class='modal-body'>
                                 <form class='report-form' id='requestEditAdsBoardForm' enctype='multipart/form-data'>
-                                    <div class='mb-3'>
-                                        <label for='adsBoardType' class='form-label' style='font-family: Inter'>
-                                            <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
-                                                <div>Loại bảng quảng cáo</div>
-                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_adsBoardType-${i}'></p>    
-                                            </div>
-                                        </label>
-                                        <select class='form-select reportType' id='edit_adsBoardType' required>
-                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
-                                                    -- Chọn loại bảng quảng cáo --
-                                            </option>
-                                            <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
-                                            <option value='Trụ màn hình điện tử LED'>
-                                                Trụ màn hình điện tử LED
-                                            </option>
-                                            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
-                                            <option value='Cổng chào'>Cổng chào</option>
-                                            <option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
-                                        </select>
+                                    <div class='mb-3' id='adsboard_type-${i}'>
+                                        <div>
+                                            <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
+                                                    <div>Loại bảng quảng cáo</div>
+                                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_adsBoardType-${i}'></p>    
+                                                </div>
+                                            </label>
+                                            <select class='form-select reportType' id='edit_adsBoardType' required>
+                                                <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                        -- Chọn loại bảng quảng cáo --
+                                                </option>
+                                                <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
+                                                <option value='Trụ màn hình điện tử LED'>
+                                                    Trụ màn hình điện tử LED
+                                                </option>
+                                                <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+                                                <option value='Cổng chào'>Cổng chào</option>
+                                                <option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class='mb-3'>
                                         <label for='adsPointName' class='form-label' style='font-family: Inter'>
@@ -444,21 +446,7 @@
                                             <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
                                         </select>
                                     </div>
-                                    <div class='mb-3'>
-                                        <label for='adsType' class='form-label' style='font-family: Inter'>
-                                            <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
-                                                <div>Hình thức quảng cáo</div>
-                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_adsFormat-${i}'></p>    
-                                            </div>
-                                        </label>
-                                        <select class='form-select reportType' id='edit_adsFormat' required>
-                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
-                                                    -- Chọn hình thức quảng cáo --
-                                            </option>
-                                            <option value='Cổ động chính trị'>Cổ động chính trị</option>
-                                            <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
-                                            <option value='Xã hội hóa'>Xã hội hóa</option>
-                                        </select>
+                                    <div class='mb-3' id='adsformat_type-${i}'>
                                     </div>
                                     <div class='mb-3'>
                                         <label for='edit_planningStatus' class='form-label' style='font-family: Inter'>
@@ -563,133 +551,176 @@
                 </div>`);
             }
 
-            fetch(`/api/v1/location/` + adsPoint_data.adsPoint.location, {
+            fetch('/api/v1/adsFormat', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            .then((response) => response.json())
-            .then((location_data) => {
-                if (!location_data) {
+            .then((response) => {
+                return response.json();
+            })
+            .then((adsFormat_data) => {
+                if (!adsFormat_data) {
                     return;
                 }
-                console.log(location_data);
-
-                $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`)
+                console.log(adsFormat_data);
 
                 for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                    const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
+                    $(`#adsformat_type-${i}`).append(`<div>
+                        <label for='adsFormat' class='form-label' style='font-family: Inter'>
+                            <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
+                                <div>Hình thức quảng cáo</div>
+                                <p class='mb-0 text-black-50 fw-nomral' id='edit_adsFormat-${i}'></p>    
+                            </div>
+                        </label>
+                        <select class='form-select reportType' id='adsformat_type_list-${i}' required>
+                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                    -- Chọn hình thức quảng cáo --
+                            </option>
+                        </select></div>`
+                    );
 
-                    // Formate date
-                    const contractEndDate = new Date(adsBoard.contractEndDate);
-
-                    const day = contractEndDate.getDate();
-                    const month = contractEndDate.getMonth() + 1;
-                    const year = contractEndDate.getFullYear();
-
-                    const contractEndDateFormat = `${(month < 10 ? '0' : '') + month}/${(day < 10 ? '0' : '') + day}/${year}`;
-                    
-                    $('#body').append(`
-                        <tr>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-semibold mb-0">${i + 1}</h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button
-                                    type="button"
-                                    class="btn btn-link m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#detailAdsBoardModal-${i}">
-                                    ${adsBoard.adsBoardType}
-                                </button>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsPoint_data.adsPoint.adsFormat}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsBoard.size.width}m x ${adsBoard.size.height}m</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsBoard.quantity}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${location_data.location.ward}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${contractEndDateFormat}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button
-                                    type="button"
-                                    class="btn btn-success m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#requestLicenseAdsBoardModal-${i}">
-                                    <div>
-                                        <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
-                                        Yêu cầu cấp phép
-                                    </div>
-                                </button>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-warning m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#requestEditAdsBoardModal-${i}">
-                                    <div id="buttonStyle">
-                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                        Yêu cầu chỉnh sửa
-                                    </div>
-                                </button>
-                            </td>
-                        </tr>`);
-
-                    // detailAdsBoardModal
-                    document.getElementById(`adsBoardType-${i}`).textContent = adsBoard.adsBoardType;
-                    document.getElementById(`locationName-${i}`).textContent = location_data.location.locationName;
-                    document.getElementById(`address-${i}`).textContent = location_data.location.address;
-                    document.getElementById(`locationType-${i}`).textContent = adsPoint_data.adsPoint.locationType;
-                    document.getElementById(`adsFormat-${i}`).textContent = adsPoint_data.adsPoint.adsFormat;
-                    document.getElementById(`planningStatus-${i}`).textContent = adsPoint_data.adsPoint.planningStatus;
-                    document.getElementById(`size-${i}`).textContent = `${adsBoard.size.width}m x ${adsBoard.size.height}m`;
-                    document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
-                    document.getElementById(`adsBoardImages-${i}`).textContent = adsBoard.adsBoardImages;
-                    document.getElementById(`contractEndDate-${i}`).textContent = contractEndDateFormat;
-                    const detailAdsBoardModal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
-
-                    // requestLicenseAdsBoardModal
-                    document.getElementById(`license_adsBoardType-${i}`).value = adsBoard.adsBoardType;
-                    document.getElementById(`license_locationName-${i}`).value = location_data.location.locationName;
-                    document.getElementById(`license_address-${i}`).value = location_data.location.address;
-                    document.getElementById(`license_locationType-${i}`).value = adsPoint_data.adsPoint.locationType;
-                    document.getElementById(`license_adsFormat-${i}`).value = adsPoint_data.adsPoint.adsFormat;
-                    document.getElementById(`license_planningStatus-${i}`).value = adsPoint_data.adsPoint.planningStatus;
-                    document.getElementById(`license_height-${i}`).value = adsBoard.size.height;
-                    document.getElementById(`license_width-${i}`).value = adsBoard.size.width;
-                    document.getElementById(`license_quantity-${i}`).value = adsBoard.quantity;
-                    document.getElementById(`license_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
-                    document.getElementById(`license_contractEndDate-${i}`).value = contractEndDateFormat;
-                    const requestLicenseAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestLicenseAdsBoardModal-${i}`));
-
-                    // requestEditAdsBoardModal
-                    // document.getElementById(`edit_adsBoardType-${i}`).value = adsBoard.adsBoardType;
-                    document.getElementById(`edit_adsBoardType-${i}`).textContent = `(${adsBoard.adsBoardType})`;
-                    document.getElementById(`edit_locationName-${i}`).textContent = `(${location_data.location.locationName})`;
-                    document.getElementById(`edit_address-${i}`).textContent = `(${location_data.location.address})`;
-                    document.getElementById(`edit_locationType-${i}`).textContent = `(${adsPoint_data.adsPoint.locationType})`;
-                    document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsPoint_data.adsPoint.adsFormat})`;
-                    document.getElementById(`edit_planningStatus-${i}`).textContent = `(${adsPoint_data.adsPoint.planningStatus})`;
-                    document.getElementById(`edit_height-${i}`).textContent = `(${adsBoard.size.height})`;
-                    document.getElementById(`edit_width-${i}`).textContent = `(${adsBoard.size.width})`;
-                    document.getElementById(`edit_quantity-${i}`).textContent = `(${adsBoard.quantity})`;
-                    document.getElementById(`edit_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
-                    document.getElementById(`edit_contractEndDate-${i}`).textContent = `(${contractEndDateFormat})`;
-                    const requestEditAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestEditAdsBoardModal-${i}`));
-                    initializeDatepicker(`#license_contractEndDate_new-${i}`);
-                    initializeDatepicker(`#license_contractStartDate_new-${i}`);
-                    initializeDatepicker(`#edit_contractEndDate_new-${i}`);
+                    for (let j = 0; j < adsFormat_data.count; j++) {
+                        const adsFormat = adsFormat_data.adsFormats[j];
+                        $(`#adsformat_type_list-${i}`).append(
+                            `<option value=${adsFormat.name}>${adsFormat.name}</option>`
+                        );
+                    }
                 }
+
+                fetch(`/api/v1/location/` + adsPoint_data.adsPoint.location, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((res) => res.json())
+                .then((location_data) => {
+                    if (!location_data) {
+                        return;
+                    }
+                    console.log(location_data);
+
+                    console.log(document.getElementById('adsformat_type-0'));
+
+                    $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`)
+
+                    for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                        const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
+
+                        // Formate date
+                        const contractEndDate = new Date(adsBoard.contractEndDate);
+
+                        const day = contractEndDate.getDate();
+                        const month = contractEndDate.getMonth() + 1;
+                        const year = contractEndDate.getFullYear();
+
+                        const contractEndDateFormat = `${(month < 10 ? '0' : '') + month}/${(day < 10 ? '0' : '') + day}/${year}`;
+                        
+                        $('#body').append(`
+                            <tr>
+                                <td class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">${i + 1}</h6>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <button
+                                        type="button"
+                                        class="btn btn-link m-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailAdsBoardModal-${i}">
+                                        ${adsBoard.adsBoardType}
+                                    </button>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <p class="mb-0 fw-normal">${adsPoint_data.adsPoint.adsFormat}</p>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <p class="mb-0 fw-normal">${adsBoard.size.width}m x ${adsBoard.size.height}m</p>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <p class="mb-0 fw-normal">${adsBoard.quantity}</p>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <p class="mb-0 fw-normal">${location_data.location.ward}</p>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <p class="mb-0 fw-normal">${contractEndDateFormat}</p>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <button
+                                        type="button"
+                                        class="btn btn-success m-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#requestLicenseAdsBoardModal-${i}">
+                                        <div>
+                                            <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
+                                            Yêu cầu cấp phép
+                                        </div>
+                                    </button>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-warning m-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#requestEditAdsBoardModal-${i}">
+                                        <div id="buttonStyle">
+                                            <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                            Yêu cầu chỉnh sửa
+                                        </div>
+                                    </button>
+                                </td>
+                            </tr>`);
+
+                        // detailAdsBoardModal
+                        document.getElementById(`adsBoardType-${i}`).textContent = adsBoard.adsBoardType;
+                        document.getElementById(`locationName-${i}`).textContent = location_data.location.locationName;
+                        document.getElementById(`address-${i}`).textContent = location_data.location.address;
+                        document.getElementById(`locationType-${i}`).textContent = adsPoint_data.adsPoint.locationType;
+                        document.getElementById(`adsFormat-${i}`).textContent = adsPoint_data.adsPoint.adsFormat;
+                        document.getElementById(`planningStatus-${i}`).textContent = adsPoint_data.adsPoint.planningStatus;
+                        document.getElementById(`size-${i}`).textContent = `${adsBoard.size.width}m x ${adsBoard.size.height}m`;
+                        document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
+                        document.getElementById(`adsBoardImages-${i}`).textContent = adsBoard.adsBoardImages;
+                        document.getElementById(`contractEndDate-${i}`).textContent = contractEndDateFormat;
+                        const detailAdsBoardModal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
+
+                        // requestLicenseAdsBoardModal
+                        document.getElementById(`license_adsBoardType-${i}`).value = adsBoard.adsBoardType;
+                        document.getElementById(`license_locationName-${i}`).value = location_data.location.locationName;
+                        document.getElementById(`license_address-${i}`).value = location_data.location.address;
+                        document.getElementById(`license_locationType-${i}`).value = adsPoint_data.adsPoint.locationType;
+                        document.getElementById(`license_adsFormat-${i}`).value = adsPoint_data.adsPoint.adsFormat;
+                        document.getElementById(`license_planningStatus-${i}`).value = adsPoint_data.adsPoint.planningStatus;
+                        document.getElementById(`license_height-${i}`).value = adsBoard.size.height;
+                        document.getElementById(`license_width-${i}`).value = adsBoard.size.width;
+                        document.getElementById(`license_quantity-${i}`).value = adsBoard.quantity;
+                        document.getElementById(`license_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
+                        document.getElementById(`license_contractEndDate-${i}`).value = contractEndDateFormat;
+                        const requestLicenseAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestLicenseAdsBoardModal-${i}`));
+
+                        // requestEditAdsBoardModal
+                        document.getElementById(`edit_adsBoardType-${i}`).textContent = `(${adsBoard.adsBoardType})`;
+                        document.getElementById(`edit_locationName-${i}`).textContent = `(${location_data.location.locationName})`;
+                        document.getElementById(`edit_address-${i}`).textContent = `(${location_data.location.address})`;
+                        document.getElementById(`edit_locationType-${i}`).textContent = `(${adsPoint_data.adsPoint.locationType})`;
+                        document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsPoint_data.adsPoint.adsFormat})`;
+                        document.getElementById(`edit_planningStatus-${i}`).textContent = `(${adsPoint_data.adsPoint.planningStatus})`;
+                        document.getElementById(`edit_height-${i}`).textContent = `(${adsBoard.size.height})`;
+                        document.getElementById(`edit_width-${i}`).textContent = `(${adsBoard.size.width})`;
+                        document.getElementById(`edit_quantity-${i}`).textContent = `(${adsBoard.quantity})`;
+                        document.getElementById(`edit_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
+                        document.getElementById(`edit_contractEndDate-${i}`).textContent = `(${contractEndDateFormat})`;
+                        const requestEditAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestEditAdsBoardModal-${i}`));
+                        initializeDatepicker(`#license_contractEndDate_new-${i}`);
+                        initializeDatepicker(`#license_contractStartDate_new-${i}`);
+                        initializeDatepicker(`#edit_contractEndDate_new-${i}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi gửi dữ liệu hình thức quảng cáo: ', error);
+                });
 
             })
             .catch((error) => {
