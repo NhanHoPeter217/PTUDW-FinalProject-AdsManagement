@@ -13,7 +13,7 @@ function getWardFromAddress(addressString) {
         const parts = addressString.split(', ');
         for (let i = 0; i < parts.length - 1; i++) {
             if (parts[i + 1].includes('Quận')) {
-                wardInfo = parts[i].split(' ')[1];
+                wardInfo = parts[i];
                 break;
             }
         }
