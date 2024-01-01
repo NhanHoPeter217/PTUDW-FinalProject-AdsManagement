@@ -11,8 +11,11 @@ const {
 // Người dân có thể lấy AdsFormat
 router.route('/').get(getAllAdsFormats);
 
-router.use(authenticateUser);
-router.use(authorizePermissions('Sở VH-TT'));
+// Người dân có thể lấy AdsFormat
+router.route('/').get(getAllAdsFormats);
+
+// router.use(authenticateUser);
+// router.use(authorizePermissions('Sở VH-TT'));
 
 router.route('/').post(createAdsFormat);
 router.route('/:id').patch(updateAdsFormat);

@@ -19,7 +19,7 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                <form class='report-form' id='editAdsPointForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
                         <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
                         <input
@@ -31,17 +31,17 @@
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportAddress' class='form-label' style='font-family: Inter'>Địa chỉ</label>
+                        <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
                         <textarea
                             class='form-control fullNameReport'
-                            id='reportAddress'
+                            id='address'
                             style="height: 100px;"
                             required
                         >227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</textarea>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Loại vị trí</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='locationType' class='form-label' style='font-family: Inter'>Loại vị trí</label>
+                        <select class='form-select reportType' id='locationType' required>
                             <option
                                 value='Đất công/Công viên/Hành lang an toàn giao thông'
                                 selected
@@ -58,16 +58,16 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Hình thức quảng cáo</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='adsType' class='form-label' style='font-family: Inter'>Hình thức quảng cáo</label>
+                        <select class='form-select reportType' id='adsType' required>
                             <option value='Cổ động chính trị' selected>Cổ động chính trị</option>
                             <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
                             <option value='Xã hội hóa'>Xã hội hóa</option>
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='stateType' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
+                        <select class='form-select reportType' id='stateType' required>
                             <option value='Đã quy hoạch' selected>Đã quy hoạch</option>
                             <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
                         </select>
@@ -77,7 +77,7 @@
                         <input
                             type='file'
                             class='form-control reportImage'
-                            id='image'
+                            id='editInfoAdsPoint_image'
                             accept='image/*'
                         />
                     </div>

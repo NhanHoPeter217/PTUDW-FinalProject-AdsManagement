@@ -4,6 +4,22 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+<style>
+    #buttonStyle {
+        transition: filter 0.1s ease-in-out;
+    }
+    #buttonStyle:hover {
+        filter: brightness(0) invert(1);
+    }
+</style>
+
+
+{{/section}}
+
+{{#section 'js'}}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/js-datepicker"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const togglePassword = document.getElementById('togglePassword');
@@ -27,12 +43,6 @@
         });
     });
 </script>
-{{/section}}
-
-{{#section 'js'}}
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/js-datepicker"></script>
 <script type="module">
     $(document).ready(function(){
         $('.navbar-nav .nav-link').on('click', function(){
@@ -40,23 +50,7 @@
             $(this).addClass('active');
         });
     });
-    const picker1 = datepicker('#dateExpired', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker2 = datepicker('#startContract', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker3 = datepicker('#endContract', {
+    const picker = datepicker('#register_DOB', {
         formatter: (input, date, instance) => {
             const value = date.toLocaleDateString();
             input.value = value; // => '1/25/2099'
@@ -69,15 +63,19 @@
 
 <nav class='navbar navbar-expand-lg navbar-light bg-light shadow-sm'>
     <div class='container'>
-        <a class='navbar-brand' href='#'>Navbar</a>
+        <a class='navbar-brand' href='/'>
+        <div class="d-flex gap-1">
+            <img
+            src='../../public/assets/icons/Map_icon.svg'
+            alt='report-icon'/>
+            <div class="text-primary fw-bold">Bản đồ</div>
+        </div>
+        </a>
         <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>
             <span class='navbar-toggler-icon'></span>
         </button>
         <div class='collapse navbar-collapse justify-content-end' id='navbarNavDropdown'>
             <ul class='navbar-nav'>
-                <li class='nav-item'>
-                    <a class='nav-link' href='/'>Bản đồ</a>
-                </li>
                 <li class='nav-item'>
                     <a class='nav-link' href='#'>Báo cáo</a>
                 </li>
@@ -97,7 +95,12 @@
                     <a class='nav-link' href=''>Danh sách tài khoản</a>
                 </li>
                 <li class='nav-item'>
-                    <button type='button' class='btn btn-outline-primary me-2' data-bs-toggle='modal' data-bs-target='#createAccountModal'>Tạo tài khoản</button>
+                    <button type='button' class='btn btn-outline-primary me-2' data-bs-toggle='modal' data-bs-target='#createAccountModal'>
+                        <div id="buttonStyle">
+                            <img src="../../../public/assets/icons/CreateAccount_icon.svg" alt="" width="24" height="24" />
+                            Tạo tài khoản
+                        </div>
+                    </button>
                 </li>
             </ul>
         </div>
