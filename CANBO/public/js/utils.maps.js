@@ -213,7 +213,7 @@ async function initMap() {
             style="display: flex; justify-content: center; align-items: center;"
           >
             <div style="display: flex; justify-content: center; align-items: center; column-gap: 7px;" id="reportIcon">
-              <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+              <img src='/public/assets/icons/Report_icon.svg' fill="none"/>
               <span id="buttonNamePlaceholder" style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
                 BÁO CÁO VI PHẠM
               </span>
