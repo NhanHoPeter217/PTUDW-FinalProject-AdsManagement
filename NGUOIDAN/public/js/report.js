@@ -1,6 +1,19 @@
-document.addEventListener('DOMContentLoaded', function () {
-    submitButton = document.getElementById('submitReportButton');
+async function getAllReportFormats() {
+    const res = await axios.get(`http://localhost:4000/api/v1/reportFormat`);
+
+    const reportFormats = res.data.reportFormats;
+    reportFormats.forEach((reportFormat) => {
+        $('.modal-body select').append(
+            `<option value="${reportFormat._id}">${reportFormat.name}</option>`
+        );
+    });
+}
+getAllReportFormats();
+
+document.addEventListener('DOMContentLoaded', async function () {
+    const submitButton = document.getElementById('submitButton');
     submitButton.addEventListener('click', function () {
+        console.log('submit button clicked');
         if (validateForm()) {
             grecaptcha.execute();
         }
@@ -9,13 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateForm() {
         let isValid = true;
 
-        // Kiểm tra reportType
-        var reportType = document.getElementById('reportType').value;
-        if (!reportType) {
-            showError('reportType', 'Vui lòng chọn hình thức báo cáo');
+        // Kiểm tra reportFormat
+        var reportFormat = document.getElementById('reportFormat').value;
+        if (!reportFormat) {
+            showError('reportFormat', 'Vui lòng chọn hình thức báo cáo');
             isValid = false;
         } else {
-            hideError('reportType');
+            hideError('reportFormat');
         }
 
         // Kiểm tra senderName
@@ -61,34 +74,83 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Add event handler to the Report button
+function reportButtonHandler(event) {
+    event.preventDefault();
+
+    // Lấy data từ nút Báo cáo đỏ
+    const relatedToType = event.currentTarget.getAttribute('data-relatedToType');
+    const relatedTo = event.currentTarget.getAttribute('data-relatedTo');
+    const ward = event.currentTarget.getAttribute('data-ward');
+    const district = event.currentTarget.getAttribute('data-district');
+
+    // Bỏ data đó vào nút Submit của Report Modal
+    const submitButton = $('#submitButton');
+    submitButton.attr('data-relatedToType', relatedToType);
+    submitButton.attr('data-relatedTo', relatedTo);
+    submitButton.attr('data-ward', ward);
+    submitButton.attr('data-district', district);
+
+    $('.modal-body .alert b').text(relatedToType);
+    $('#reportModal').modal('show');
+}
+
 function onSubmit(token) {
-    var reportType = document.getElementById('reportType').value;
     var senderName = document.getElementById('fullName').value;
     var email = document.getElementById('email').value;
     var phone = document.getElementById('phone').value;
     var content = tinymce.get('reportContent').getContent();
+
+    const submitButton = $('#submitButton');
+    let reportFormat = $('#reportFormat').val();
+    let relatedToType = submitButton.attr('data-relatedToType');
+    let relatedTo = submitButton.attr('data-relatedTo');
+    let ward = submitButton.attr('data-ward');
+    let district = submitButton.attr('data-district');
+
     const formData = new FormData();
-    formData.append('reportType', reportType);
+
+    if (relatedToType === 'Location') {
+        relatedTo = JSON.parse(relatedTo);
+        Object.keys(relatedTo).forEach((key) => {
+            console.log(key, relatedTo[key]);
+            formData.append(key, relatedTo[key]);
+        });
+    } else {
+        formData.append('relatedTo', relatedTo);
+        if (ward && ward.length > 0) formData.append('ward', ward);
+        formData.append('district', district);
+    }
+
+    formData.append('relatedToType', relatedToType);
+    formData.append('reportFormat', reportFormat);
     formData.append('senderName', senderName);
     formData.append('email', email);
     formData.append('phone', phone);
     formData.append('content', content);
     formData.append('image1', document.getElementById('image1').files[0]);
     formData.append('image2', document.getElementById('image2').files[0]);
-    console.log(formData);
+
+    // Display the key/value pairs
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
     // Gửi dữ liệu đến máy chủ
-    fetch('http://localhost:3000/api/v1/report', {
+    axios('http://localhost:4000/api/v1/reportProcessing', {
         method: 'POST',
-        body: formData
+        data: formData
     })
-        .then((response) => response.json())
-        .then((data) => {
+        .then((res) => {
             // Xử lý phản hồi từ máy chủ nếu cần
-            console.log(data);
+            console.log(res.data);
             alert('Báo cáo đã được gửi thành công!');
+            $('#reportModal').modal('hide');
+            $('#reportForm').trigger('reset');
         })
         .catch((error) => {
             // Xử lý lỗi nếu có
-            console.error('Lỗi khi gửi dữ liệu: ', error);
+            console.error('Lỗi khi gửi dữ liệu: ', error, error.response.data);
         });
+    grecaptcha.reset();
 }

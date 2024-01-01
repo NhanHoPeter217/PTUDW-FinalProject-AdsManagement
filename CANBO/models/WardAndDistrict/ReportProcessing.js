@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ReportProcessingSchema = new Schema(
     {
-        residentID: { type: String, required: true },
+        residentID: { type: String /*, required: true */ },
 
         relatedTo: {
             type: Schema.Types.ObjectId,
@@ -54,15 +54,13 @@ const ReportProcessingSchema = new Schema(
 
         processingMethod: { type: String },
 
-        wardAndDistrict: {
-            ward: {
-                type: 'String'
-            },
+        ward: {
+            type: 'String'
+        },
 
-            district: {
-                type: 'String',
-                required: true
-            }
+        district: {
+            type: 'String',
+            required: true
         }
     },
     { timestamps: true }

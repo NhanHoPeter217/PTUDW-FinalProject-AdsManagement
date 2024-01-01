@@ -8,10 +8,15 @@ const {
     deleteAdsFormat
 } = require('../../controllers/Department/adsFormatController');
 
+// Người dân có thể lấy AdsFormat
+router.route('/').get(getAllAdsFormats);
+
+// Người dân có thể lấy AdsFormat
+router.route('/').get(getAllAdsFormats);
+
 // router.use(authenticateUser);
 // router.use(authorizePermissions('Sở VH-TT'));
 
-router.route('/').get(getAllAdsFormats);
 router.route('/').post(createAdsFormat);
 router.route('/:id').patch(updateAdsFormat);
 router.route('/:id').delete(deleteAdsFormat);
