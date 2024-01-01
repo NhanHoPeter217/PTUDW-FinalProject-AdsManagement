@@ -108,26 +108,21 @@ function onSubmit(token) {
     let ward = submitButton.attr('data-ward');
     let district = submitButton.attr('data-district');
 
+    const formData = new FormData();
+
     if (relatedToType === 'Location') {
         relatedTo = JSON.parse(relatedTo);
-        console.log(relatedTo);
-        const arr = Object.keys(relatedTo);
-        console.log(arr);
-        arr.forEach((key) => {
-            console.log(key);
-            console.log(relatedTo[key]);
+        Object.keys(relatedTo).forEach((key) => {
+            console.log(key, relatedTo[key]);
             formData.append(key, relatedTo[key]);
         });
+    } else {
+        formData.append('relatedTo', relatedTo);
+        if (ward && ward.length > 0) formData.append('ward', ward);
+        formData.append('district', district);
     }
 
-    console.log(relatedTo);
-
-    const formData = new FormData();
     formData.append('relatedToType', relatedToType);
-    formData.append('relatedTo', relatedTo);
-    if (ward && ward.length > 0) formData.append('ward', ward);
-    formData.append('district', district);
-
     formData.append('reportFormat', reportFormat);
     formData.append('senderName', senderName);
     formData.append('email', email);
@@ -144,10 +139,7 @@ function onSubmit(token) {
     // Gửi dữ liệu đến máy chủ
     axios('http://localhost:4000/api/v1/reportProcessing', {
         method: 'POST',
-        data: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+        data: formData
     })
         .then((res) => {
             // Xử lý phản hồi từ máy chủ nếu cần

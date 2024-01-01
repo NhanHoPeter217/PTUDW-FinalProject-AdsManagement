@@ -55,9 +55,9 @@ async function initMap() {
     // await google.maps.importLibrary("core");
 
     // The markers of all locations
-    const { locations, count } = await getAllLocations();
+    const { locations } = await getAllLocations();
 
-    let markers = Array(count);
+    let markers = Array(locations.length);
 
     const { Map } = await google.maps.importLibrary('maps');
     const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
@@ -372,7 +372,7 @@ function initAutocomplete() {
                     }
 
                     // Create a Location object
-                    const location = {
+                    let location = {
                         ...latlng.toJSON(),
                         locationName: address,
                         address: address,
@@ -388,6 +388,7 @@ function initAutocomplete() {
                     // getDetails to get the name of the place
                     place_service.getDetails(place_request, function (result, status) {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            location.locationName = result.name;
                             place_info.setContent(`
               <div class="d-flex justify-content-around align-items-center row-gap-1 info-board">
                 <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">

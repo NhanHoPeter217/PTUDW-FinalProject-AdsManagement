@@ -78,7 +78,6 @@ const createReport = async (req, res) => {
                 ward: req.body.ward,
                 district: req.body.district
             };
-            console.log(locationObj);
             const location = await Location.create(locationObj);
             req.body.relatedTo = location._id;
         }
