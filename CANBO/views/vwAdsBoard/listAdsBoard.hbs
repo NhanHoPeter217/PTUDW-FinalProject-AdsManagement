@@ -16,7 +16,7 @@
 <script src="https://unpkg.com/js-datepicker"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/api/v1/adsPoint/658c2947dd95230a08d06aa8', {
+        fetch('/api/v1/adsPoint/659308481321817df4a7d019', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,7 +31,7 @@
 
             // detailAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id="detailAdsBoardModal-${i}"
                     tabindex='-1'
@@ -126,7 +126,7 @@
 
             // requestLicenseAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id='requestLicenseAdsBoardModal-${i}'
                     tabindex='-1'
@@ -343,7 +343,7 @@
 
             // requestEditAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id='requestEditAdsBoardModal-${i}'
                     tabindex='-1'
@@ -600,9 +600,7 @@
                     }
                     console.log(location_data);
 
-                    console.log(document.getElementById('adsformat_type-0'));
-
-                    $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`)
+                    $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`);
 
                     for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
                         const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
@@ -798,4 +796,4 @@
 
 <title>Danh sách bảng quảng cáo</title>
 
-<div id="modalAddition"></div>
+<div id="listAdsBoard_modalAddition"></div>
