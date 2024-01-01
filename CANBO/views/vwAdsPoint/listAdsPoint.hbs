@@ -17,6 +17,7 @@
         const locationName = [];
         const planningStatus = [];
         const locationAddress = [];
+        const adsFormats = [];
         fetch('/api/v1/adsPoint/allPoints', {
             method: 'GET',
             headers: {
@@ -40,6 +41,8 @@
 
             // get n - 1 locationName of all AdsPoint
             for (let i = 0; i < listAdsPoint_data.count - 1; ++i) {
+
+
                 fetch(`/api/v1/location/` + listAdsPoint_data.adsPoints[i].location, {
                     method: 'GET',
                     headers: {
@@ -51,13 +54,14 @@
                     if (!location_data) {
                         return;
                     }
-                    
                     locationName.push(location_data.location.locationName);
                     locationAddress.push(location_data.location.address);
+                    
                 })
                 .catch((error) => {
                     console.error('Lỗi khi gửi dữ liệu vị trí: ', error);
                 })
+                
             }
 
             // detailAdsPointModal
@@ -304,6 +308,10 @@
                         $(`#adsformat_type_list-${i}`).append(
                             `<option value=${adsFormat.name}>${adsFormat.name}</option>`
                         );
+
+                        if (listAdsPoint_data.adsPoints[i].adsFormat === adsFormat._id) {
+                            adsFormats.push(adsFormat.name);
+                        }
                     }
                 }
 
@@ -349,7 +357,7 @@
                                 <p class="mb-0 fw-normal">${adsPoint.locationType}</p>
                             </td>
                             <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsPoint.adsFormat}</p>
+                                <p class="mb-0 fw-normal">${adsFormats[i]}</p>
                             </td>
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
@@ -379,7 +387,7 @@
                         document.getElementById(`locationName-${i}`).textContent = locationName[i];
                         document.getElementById(`address-${i}`).textContent = locationAddress[i];
                         document.getElementById(`locationType-${i}`).textContent = adsPoint.locationType;
-                        document.getElementById(`adsFormat-${i}`).textContent = adsPoint.adsFormat;
+                        document.getElementById(`adsFormat-${i}`).textContent = adsFormats[i];
                         document.getElementById(`planningStatus-${i}`).innerHTML = planningStatus[i];
                         document.getElementById(`locationImages-${i}`).innerHTML = `<img src="${adsPoint.locationImages}" alt="" width="100%" height="100%" />`;
                     }
