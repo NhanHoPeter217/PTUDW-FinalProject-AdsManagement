@@ -47,17 +47,16 @@ import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAdd
 
 // Initialize and add the map
 let map;
+let markers = null;
 
 async function initMap() {
     // Request needed libraries.
-    //@ts-ignore
     await google.maps.importLibrary('places');
-    // await google.maps.importLibrary("core");
 
     // The markers of all locations
     const { locations } = await getAllLocations();
 
-    let markers = Array(locations.length);
+    markers = Array(locations.length);
 
     const { Map } = await google.maps.importLibrary('maps');
     const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
@@ -196,6 +195,7 @@ async function initMap() {
 
         <!-- location.locationName -->
         <h5>${item.locationName}</h5>
+        <meta name="planningStatus" content="${item.adsPoint.planningStatus}"></meta>
 
         <!-- adsPoint.locationType -->
         <h6>${item.adsPoint.locationType}</h6>
@@ -389,7 +389,8 @@ $(document).ready(function () {
         else
             markers.forEach((marker, index) => {
                 // Hide Quy hoach markers
-                marker.setMap(locations[index].status ? null : map);
+                const bool = marker.content.querySelector('meta[name="planningStatus"]').content === 'Đã quy hoạch';
+                marker.setMap(bool ? null : map);
             });
     });
 });
