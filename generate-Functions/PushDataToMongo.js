@@ -1,12 +1,12 @@
 const fs = require('fs');
 require('dotenv').config({ path: '../.env' });
-const connectDB = require('./db/connect');
+const connectDB = require('../CANBO/db/connect');
 
-const AdvertisingBoard = require('./models/AdsBoard');
-const AdvertisingPoint = require('./models/AdsPoint');
-const LocationModel = require('./models/Location');
-const AdvertisingFormat = require('./models/Department/AdsFormat');
-const mongoose = require('mongoose');
+const AdvertisingBoard = require('../CANBO/models/AdsBoard');
+const AdvertisingPoint = require('../CANBO/models/AdsPoint');
+const LocationModel = require('../CANBO/models/Location');
+const AdvertisingFormat = require('../CANBO/models/Department/AdsFormat');
+const mongoose = require('../CANBO/node_modules/mongoose');
 
 /* Mô tả dữ liệu như sau:
 
@@ -29,7 +29,7 @@ async function getRandomFormatId() {
 }
 
 // Loop to create points
-let fullData = fs.readFileSync('./full2.json', { encoding: 'utf8' });
+let fullData = fs.readFileSync('./full3.json', { encoding: 'utf8' });
 fullData = JSON.parse(fullData);
 
 connectDB(process.env.MONGO_URI).then(() => {
@@ -84,7 +84,7 @@ connectDB(process.env.MONGO_URI).then(() => {
             adsFormat: await getRandomFormatId(),
             planningStatus:
                 AdvertisingPoint.schema.path('planningStatus').enumValues[
-                    Math.floor(Math.random() * 3)
+                    Math.random() < 0.65 ? 0 : 1
                 ]
         });
 
