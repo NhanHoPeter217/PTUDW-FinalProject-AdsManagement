@@ -68,7 +68,18 @@ const createReport = async (req, res) => {
         req.body.image2 = image2;
 
         if (req.body.relatedToType === 'Location') {
-            const location = await Location.create(req.body.relatedTo);
+            const locationObj = {
+                coords: {
+                    lat: req.body.lat,
+                    lng: req.body.lng
+                },
+                locationName: req.body.locationName,
+                address: req.body.address,
+                ward: req.body.ward,
+                district: req.body.district
+            };
+            console.log(locationObj);
+            const location = await Location.create(locationObj);
             req.body.relatedTo = location._id;
         }
 

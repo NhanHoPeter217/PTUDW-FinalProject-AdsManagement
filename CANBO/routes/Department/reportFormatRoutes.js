@@ -8,10 +8,12 @@ const {
     deleteReportFormat
 } = require('../../controllers/Department/reportFormatController');
 
+// Người dân có thể lấy ReportFormat
+router.route('/').get(getAllReportFormats);
+
 router.use(authenticateUser);
 router.use(authorizePermissions('Sở VH-TT'));
 
-router.route('/').get(getAllReportFormats);
 router.route('/').post(createReportFormat);
 router.route('/:id').patch(updateReportFormat);
 router.route('/:id').delete(deleteReportFormat);
