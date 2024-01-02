@@ -8,6 +8,30 @@
         #buttonStyle:hover {
             filter: brightness(0) invert(1);
         }
+        .limited-width {
+            max-width: 150px;
+            overflow: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .limited-width-locationType {
+            max-width: 210px;
+            overflow: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .limited-width-adsFormat {
+            max-width: 180px;
+            overflow: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        p {
+            white-space: normal;
+        }
     </style>
 {{/section}}
 
@@ -15,6 +39,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const locationName = [];
+        const planningStatus_html = [];
         const planningStatus = [];
         const locationAddress = [];
         const adsFormats = [];
@@ -33,9 +58,11 @@
             // get planningStatus of all AdsPoint
             for (let i = 0; i < listAdsPoint_data.count; ++i) {
                 if (listAdsPoint_data.adsPoints[i].planningStatus === 'Đã quy hoạch') {
-                    planningStatus.push(`<span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>`);
+                    planningStatus.push('Đã quy hoạch');
+                    planningStatus_html.push(`<span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>`);
                 } else {
-                    planningStatus.push(`<span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>`);
+                    planningStatus.push('Chưa quy hoạch');
+                    planningStatus_html.push(`<span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>`);
                 }
             }
 
@@ -164,29 +191,23 @@
                             <div class='modal-body'>
                                 <form class='report-form' id='requestEditAdsPointForm' enctype='multipart/form-data'>
                                     <div class='mb-3' id='location_type-${i}'>
-                                        <label for='locationType' class='form-label' style='font-family: Inter;'>
+                                        <label for='locationName' class='form-label' style='font-family: Inter;'>
                                             <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
                                                 <div>Điểm quảng cáo</div>
-                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_locationType-${i}'></p>    
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_locationName-${i}'></p>    
                                             </div>
                                         </label>
-        <select class='form-select reportType' id='edit_adsBoardType' required>
-            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
-                    -- Chọn loại bảng quảng cáo --
-            </option>
-            <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
-            <option value='Trụ màn hình điện tử LED'>
-                Trụ màn hình điện tử LED
-            </option>
-            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
-            <option value='Cổng chào'>Cổng chào</option>
-            <option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
-        </select>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameReport'
+                                            id='edit_locationName'
+                                            required
+                                        />
                                     </div>
                                     <div class='mb-3'>
                                         <label for='address' class='form-label' style='font-family: Inter'>
                                             <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
-                                                <div style="width: 15%;">Địa chỉ</div>
+                                                <div style="width: 17%;">Địa chỉ</div>
                                                 <p class='mb-0 text-black-50 fw-nomral' id='edit_address-${i}'></p>    
                                             </div>
                                         </label>
@@ -347,27 +368,27 @@
                             <td class="border-bottom-0">
                                 <button
                                     type="button"
-                                    class="btn btn-link m-1"
+                                    class="btn btn-link m-1 limited-width"
                                     data-bs-toggle="modal"
                                     data-bs-target="#detailAdsPointModal-${i}">
-                                    ${locationName[i]}
+                                    <p>${locationName[i]}</p>
                                 </button>
                             </td>
-                            <td class="border-bottom-0">
+                            <td class="border-bottom-0 limited-width-locationType">
                                 <p class="mb-0 fw-normal">${adsPoint.locationType}</p>
                             </td>
                             <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsFormats[i]}</p>
+                                <p class="mb-0 fw-normal limited-width-adsFormat">${adsFormats[i]}</p>
                             </td>
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
-                                    ${planningStatus[i]}
+                                    ${planningStatus_html[i]}
                                 </div>
                             </td>
                             <td class="border-bottom-0">
-                                <button type="button" class="btn btn-primary m-1">
-                                    Các bảng quảng cáo
-                                </button>
+                            <button type="button" class="btn btn-primary m-1" onclick="window.location.href='/admin/adsboard/byAdspoint/${adsPoint._id}'">
+                                Các bảng quảng cáo
+                            </button>
                             </td>
                             <td class="border-bottom-0">
                                 <button
@@ -390,6 +411,14 @@
                         document.getElementById(`adsFormat-${i}`).textContent = adsFormats[i];
                         document.getElementById(`planningStatus-${i}`).innerHTML = planningStatus[i];
                         document.getElementById(`locationImages-${i}`).innerHTML = `<img src="${adsPoint.locationImages}" alt="" width="100%" height="100%" />`;
+
+                        // requestEditAdsPointModal
+                        document.getElementById(`edit_locationName-${i}`).textContent = `(${locationName[i]})`;
+                        document.getElementById(`edit_address-${i}`).textContent = `(${locationAddress[i]})`;
+                        document.getElementById(`edit_locationType-${i}`).textContent = `(${adsPoint.locationType})`;
+                        document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsFormats[i]})`;
+                        document.getElementById(`edit_planningStatus-${i}`).innerHTML = `(${planningStatus[i]})`;
+                        document.getElementById(`edit_locationImages-${i}`).innerHTML = `<img src="${adsPoint.locationImages}" alt="" width="100%" height="100%" />`;
                     }
 
                 })
@@ -418,7 +447,7 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">#</h6>
                                     </th>
-                                    <th class="border-bottom-0">
+                                    <th class="border-bottom-0 limited-width">
                                         <h6 class="fw-semibold mb-0">Điểm quảng cáo</h6>
                                     </th>
                                     <th class="border-bottom-0">
