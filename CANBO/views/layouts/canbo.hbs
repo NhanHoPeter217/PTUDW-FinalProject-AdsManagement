@@ -37,6 +37,48 @@
 
         {{!-- Axios --}}
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://unpkg.com/js-datepicker"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const togglePassword = document.getElementById('togglePassword');
+                const password = document.getElementById('password');
+
+                togglePassword.addEventListener('click', function() {
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('bi-eye');
+                    this.querySelector('i').classList.toggle('bi-eye-slash');
+                });
+
+                const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+                const confirmPassword = document.getElementById('confirmPassword');
+
+                toggleConfirmPassword.addEventListener('click', function() {
+                    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPassword.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('bi-eye');
+                    this.querySelector('i').classList.toggle('bi-eye-slash');
+                });
+            });
+        </script>
+        <script type="module">
+            $(document).ready(function(){
+                $('.navbar-nav .nav-link').on('click', function(){
+                    $('.navbar-nav .nav-link').removeClass('active');
+                    $(this).addClass('active');
+                });
+            });
+            const picker = datepicker('#register_DOB', {
+                formatter: (input, date, instance) => {
+                    const value = date.toLocaleDateString();
+                    input.value = value; // => '1/25/2099'
+                },
+                overlayPlaceholder: 'Nhập năm',
+                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+            });
+        </script>
         
         {{{_sections.js}}}
     </body>

@@ -1,7 +1,7 @@
 
 {{#section 'css'}}
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
-<link rel="stylesheet" href="../../public/css/report.css" />
+<link rel="stylesheet" href="../../../public/css/report.css" />
     <style>
         #buttonStyle {
             transition: filter 0.1s ease-in-out;
@@ -16,7 +16,8 @@
 <script src="https://unpkg.com/js-datepicker"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/api/v1/adsPoint/658c2947dd95230a08d06aa8', {
+        const adsFormats = [];
+        fetch(`/api/v1/adsPoint/{{id}}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,7 +32,7 @@
 
             // detailAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id="detailAdsBoardModal-${i}"
                     tabindex='-1'
@@ -126,7 +127,7 @@
 
             // requestLicenseAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id='requestLicenseAdsBoardModal-${i}'
                     tabindex='-1'
@@ -343,7 +344,7 @@
 
             // requestEditAdsBoardModal
             for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
-                $('#modalAddition').append(`<div
+                $('#listAdsBoard_modalAddition').append(`<div
                     class='modal fade'
                     id='requestEditAdsBoardModal-${i}'
                     tabindex='-1'
@@ -408,7 +409,7 @@
                                     <div class='mb-3'>
                                         <label for='address' class='form-label' style='font-family: Inter'>
                                             <div class='d-flex flex-row mb-3 grid gap-0 column-gap-1'>
-                                                <div style="width: 15%;">Địa chỉ</div>
+                                                <div style="width: 17%;">Địa chỉ</div>
                                                 <p class='mb-0 text-black-50 fw-nomral' id='edit_address-${i}'></p>    
                                             </div>
                                         </label>
@@ -584,6 +585,10 @@
                         $(`#adsformat_type_list-${i}`).append(
                             `<option value=${adsFormat.name}>${adsFormat.name}</option>`
                         );
+
+                        if (adsPoint_data.adsPoint.adsFormat === adsFormat._id) {
+                            adsFormats.push(adsFormat.name);
+                        }
                     }
                 }
 
@@ -600,9 +605,7 @@
                     }
                     console.log(location_data);
 
-                    console.log(document.getElementById('adsformat_type-0'));
-
-                    $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`)
+                    $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`);
 
                     for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
                         const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
@@ -631,19 +634,13 @@
                                     </button>
                                 </td>
                                 <td class="border-bottom-0">
-                                    <p class="mb-0 fw-normal">${adsPoint_data.adsPoint.adsFormat}</p>
-                                </td>
-                                <td class="border-bottom-0">
                                     <p class="mb-0 fw-normal">${adsBoard.size.width}m x ${adsBoard.size.height}m</p>
                                 </td>
                                 <td class="border-bottom-0">
                                     <p class="mb-0 fw-normal">${adsBoard.quantity}</p>
                                 </td>
                                 <td class="border-bottom-0">
-                                    <p class="mb-0 fw-normal">${location_data.location.ward}</p>
-                                </td>
-                                <td class="border-bottom-0">
-                                    <p class="mb-0 fw-normal">${contractEndDateFormat}</p>
+                                    <p class="mb-0 fw-normal">${location_data.location.district}</p>
                                 </td>
                                 <td class="border-bottom-0">
                                     <button
@@ -676,7 +673,7 @@
                         document.getElementById(`locationName-${i}`).textContent = location_data.location.locationName;
                         document.getElementById(`address-${i}`).textContent = location_data.location.address;
                         document.getElementById(`locationType-${i}`).textContent = adsPoint_data.adsPoint.locationType;
-                        document.getElementById(`adsFormat-${i}`).textContent = adsPoint_data.adsPoint.adsFormat;
+                        document.getElementById(`adsFormat-${i}`).textContent = adsFormats[i];
                         document.getElementById(`planningStatus-${i}`).textContent = adsPoint_data.adsPoint.planningStatus;
                         document.getElementById(`size-${i}`).textContent = `${adsBoard.size.width}m x ${adsBoard.size.height}m`;
                         document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
@@ -689,7 +686,7 @@
                         document.getElementById(`license_locationName-${i}`).value = location_data.location.locationName;
                         document.getElementById(`license_address-${i}`).value = location_data.location.address;
                         document.getElementById(`license_locationType-${i}`).value = adsPoint_data.adsPoint.locationType;
-                        document.getElementById(`license_adsFormat-${i}`).value = adsPoint_data.adsPoint.adsFormat;
+                        document.getElementById(`license_adsFormat-${i}`).value = adsFormats[i];
                         document.getElementById(`license_planningStatus-${i}`).value = adsPoint_data.adsPoint.planningStatus;
                         document.getElementById(`license_height-${i}`).value = adsBoard.size.height;
                         document.getElementById(`license_width-${i}`).value = adsBoard.size.width;
@@ -703,7 +700,7 @@
                         document.getElementById(`edit_locationName-${i}`).textContent = `(${location_data.location.locationName})`;
                         document.getElementById(`edit_address-${i}`).textContent = `(${location_data.location.address})`;
                         document.getElementById(`edit_locationType-${i}`).textContent = `(${adsPoint_data.adsPoint.locationType})`;
-                        document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsPoint_data.adsPoint.adsFormat})`;
+                        document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsFormats[i]})`;
                         document.getElementById(`edit_planningStatus-${i}`).textContent = `(${adsPoint_data.adsPoint.planningStatus})`;
                         document.getElementById(`edit_height-${i}`).textContent = `(${adsBoard.size.height})`;
                         document.getElementById(`edit_width-${i}`).textContent = `(${adsBoard.size.width})`;
@@ -764,9 +761,6 @@
                                         <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Hình thức</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Kích thước</h6>
                                     </th>
                                     <th class="border-bottom-0">
@@ -774,9 +768,6 @@
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Quận</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Hết hạn hợp đồng</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">&nbsp;</h6>
@@ -798,4 +789,4 @@
 
 <title>Danh sách bảng quảng cáo</title>
 
-<div id="modalAddition"></div>
+<div id="listAdsBoard_modalAddition"></div>

@@ -166,7 +166,20 @@ app.get('/signin', function (req, res) {
 });
 
 app.get('/admin/adsboard/list', function (req, res) {
+    // console.log(1);
     res.render('vwAdsBoard/listAdsBoard', {});
+});
+
+app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
+    const id = req.params.id;
+    const idString = id.toString();
+    console.log(id);
+    res.render('vwAdsBoard/listAdsBoard', {id: id});
+});
+
+app.get('/admin/adspoint/list', function (req, res) {
+    // console.log(1);
+    res.render('vwAdsPoint/listAdsPoint', {});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
@@ -181,7 +194,7 @@ app.get('/admin/adsboard/list', function (req, res) {
 //     res.render('vwAdsBoard/listAdsBoard');
 // });
 
-app.use('/admin/adspoint', adsPointRoute);
+// app.use('/admin/adspoint', adsPointRoute);
 app.use('/admin/report', reportRoute);
 app.use('/admin/dist', wardListRoute);
 app.use('/admin/request', requestRoute);
