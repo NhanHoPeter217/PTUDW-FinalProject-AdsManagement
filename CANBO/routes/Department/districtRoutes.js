@@ -8,8 +8,8 @@ const {
     deleteDistrict
 } = require('../../controllers/Department/districtController');
 
-router.use(authenticateUser);
-router.use(authorizePermissions('Sở VH-TT'));
+// router.use(authenticateUser);
+// router.use(authorizePermissions('Sở VH-TT'));
 
 router.route('/').get(getAllDistricts);
 router.route('/').post(createDistrict);
