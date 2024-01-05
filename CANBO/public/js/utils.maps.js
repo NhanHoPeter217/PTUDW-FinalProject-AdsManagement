@@ -361,10 +361,10 @@ function initAutocomplete() {
                 </div>
               </div>
               `);
-                            place_info.open(map, place_marker);
+                        place_info.open({map: map, shouldFocus: false}, place_marker);
                         } else {
                             place_info.setContent(address);
-                            place_info.open(map, place_marker);
+                            place_info.open({map: map, shouldFocus: false}, place_marker);
                         }
                     });
                 } else {
