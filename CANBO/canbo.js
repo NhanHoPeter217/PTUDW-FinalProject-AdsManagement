@@ -166,7 +166,6 @@ app.get('/signin', function (req, res) {
 });
 
 app.get('/admin/adsboard/list', function (req, res) {
-    // console.log(1);
     res.render('vwAdsBoard/listAdsBoard', {});
 });
 
@@ -178,8 +177,11 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
 });
 
 app.get('/admin/adspoint/list', function (req, res) {
-    // console.log(1);
     res.render('vwAdsPoint/listAdsPoint', {});
+});
+
+app.get('/admin/type/list', function (req, res) {
+    res.render('vwType/listType', {});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
@@ -195,10 +197,10 @@ app.get('/admin/adspoint/list', function (req, res) {
 // });
 
 // app.use('/admin/adspoint', adsPointRoute);
+
 app.use('/admin/report', reportRoute);
 app.use('/admin/dist', wardListRoute);
 app.use('/admin/request', requestRoute);
-app.use('/admin/type', typeRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
