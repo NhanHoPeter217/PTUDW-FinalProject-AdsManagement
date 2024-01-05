@@ -28,7 +28,7 @@ tinymce.init({
         'forecolor backcolor emoticons',
     menu: {
         favs: {
-            title: 'menu',
+            title: 'Menu',
             items: 'code visualaid | searchreplace | emoticons'
         }
     },
