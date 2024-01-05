@@ -13,6 +13,11 @@
 {{/section}}
 
 {{#section 'js'}}
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <script src="https://unpkg.com/js-datepicker"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -747,6 +752,12 @@
         <div class="col-md-10">
             <div class="card w-100">
                 <div class="card-body p-4">
+                    <button type="button" class="btn btn-outline-dark mb-4">
+                        <div id="buttonStyle" onclick="goBack()">
+                            <img src="../../../public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
+                            Trở về
+                        </div>
+                    </button>
                     <h5 class="card-title fw-semibold mb-4" id="tableName">
                         <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
                     </h5>
