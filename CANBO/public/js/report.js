@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    submitButton = document.getElementById('submitButton');
+    submitButton = document.getElementById('submitReportButton');
     submitButton.addEventListener('click', function () {
         if (validateForm()) {
             grecaptcha.execute();

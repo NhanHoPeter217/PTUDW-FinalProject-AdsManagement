@@ -11,7 +11,7 @@ async function getAllReportFormats() {
 getAllReportFormats();
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const submitButton = document.getElementById('submitButton');
+    const submitButton = document.getElementById('submitReportButton');
     submitButton.addEventListener('click', function () {
         console.log('submit button clicked');
         if (validateForm()) {
@@ -85,7 +85,7 @@ function reportButtonHandler(event) {
     const district = event.currentTarget.getAttribute('data-district');
 
     // Bỏ data đó vào nút Submit của Report Modal
-    const submitButton = $('#submitButton');
+    const submitButton = $('#submitReportButton');
     submitButton.attr('data-relatedToType', relatedToType);
     submitButton.attr('data-relatedTo', relatedTo);
     submitButton.attr('data-ward', ward);
@@ -101,7 +101,7 @@ function onSubmit(token) {
     var phone = document.getElementById('phone').value;
     var content = tinymce.get('reportContent').getContent();
 
-    const submitButton = $('#submitButton');
+    const submitButton = $('#submitReportButton');
     let reportFormat = $('#reportFormat').val();
     let relatedToType = submitButton.attr('data-relatedToType');
     let relatedTo = submitButton.attr('data-relatedTo');
