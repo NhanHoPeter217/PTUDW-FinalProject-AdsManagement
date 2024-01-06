@@ -13,6 +13,159 @@
 
 {{#section 'js'}}
 <script>
+    // Create, Edit, Delete Ads Format
+    // Create Ads Format
+    $(document).ready(function() {
+        $('#addAdsTypeForm').submit(function(e) {
+            e.preventDefault();
+
+            const name = $('#adsTypeFormName').val();
+
+            const data = {
+                name: name,
+            };
+
+            fetch('/api/v1/adsFormat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Lỗi khi thêm hình thức quảng cáo:', error);
+            });
+        });
+    });
+    
+    // Edit & Delete Ads Format
+    $(document).ready(function() {
+        $(document).on('submit', '#editAdsTypeForm', function(e) {
+            e.preventDefault();
+
+            const submitedButtonId = $(document.activeElement).attr('id');
+            const id = $(this).find('#edit_adsFormatName').attr('data-id');
+
+            if (submitedButtonId === 'deleteAdsTypeButton') {
+                fetch(`/api/v1/adsFormat/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi xóa loại hình thức quảng cáo:', error);
+                });
+            }
+            else {
+                const name = $(this).find('#edit_adsFormatName').val();
+                const data = {
+                    name: name,
+                };
+
+                fetch(`/api/v1/adsFormat/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi chỉnh sửa hình thức quảng cáo:', error);
+                });
+            }
+        });
+    });
+
+    // Create, Edit, Delete Report Format
+    // Create Report Format
+    $(document).ready(function() {
+        $('#addReportTypeForm').submit(function(e) {
+            e.preventDefault();
+
+            const name = $('#reportTypeName').val();
+
+            const data = {
+                name: name,
+            };
+
+            fetch('/api/v1/reportFormat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Lỗi khi thêm hình thức báo cáo:', error);
+            });
+        });
+    });
+    
+    // Edit & Delete Report Format
+    $(document).ready(function() {
+        $(document).on('submit', '#editReportTypeForm', function(e) {
+            e.preventDefault();
+
+            const submitedButtonId = $(document.activeElement).attr('id');
+            const id = $(this).find('#edit_reportFormatName').attr('data-id');
+
+            if (submitedButtonId === 'deleteReportTypeButton') {
+                fetch(`/api/v1/reportFormat/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi xóa loại hình thức báo cáo:', error);
+                });
+            }
+            else {
+                const name = $(this).find('#edit_reportFormatName').val();
+                const data = {
+                    name: name,
+                };
+
+                fetch(`/api/v1/reportFormat/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi chỉnh sửa hình thức báo cáo:', error);
+                });
+            }
+        });
+    });
+</script>
+<script>
 
     function formatDate(date) {
         const date_ = new Date(date);
@@ -73,16 +226,17 @@
                                     ></button>
                                 </div>
                                 <div class='modal-body'>
-                                    <form class='report-form' id='editAdsType' enctype='multipart/form-data'>
+                                    <form class='report-form' id='editAdsTypeForm' enctype='multipart/form-data'>
                                         <div class='mb-3'>
                                             <label for='adsFormatName' class='form-label' style='font-family: Inter;'>Loại hình quảng cáo</label>
-                                            <input
-                                                type='text'
-                                                class='form-control fullNameReport'
-                                                id='edit_adsFormatName'
-                                                value="${adsFormat.name}"
-                                                required
-                                            />
+                                                <input
+                                                    type='text'
+                                                    class='form-control fullNameReport'
+                                                    id='edit_adsFormatName'
+                                                    value="${adsFormat.name}"
+                                                    data-id="${adsFormat._id}"
+                                                    required
+                                                />
                                         </div>
                                         <div class='button-container justify-content-center'>
                                             <div
@@ -95,8 +249,8 @@
                                             <div class="d-flex justify-content-center">
                                                 <div class='d-grid col-md-3 mx-2'>
                                                     <button
-                                                        id='deleteButton'
-                                                        type='button'
+                                                        id='deleteAdsTypeButton'
+                                                        type='submit'
                                                         class='btn btn-outline-danger btn-block'
                                                         style='font-family: Inter'
                                                     >
@@ -105,8 +259,8 @@
                                                 </div>
                                                 <div class='d-grid col-md-3 mx-2'>
                                                     <button
-                                                        id='saveButton'
-                                                        type='button'
+                                                        id='saveAdsTypeButton'
+                                                        type='submit'
                                                         class='btn btn-success btn-block'
                                                         style='font-family: Inter'
                                                     >
@@ -207,6 +361,7 @@
                                                 class='form-control fullNameReport'
                                                 id='edit_reportFormatName'
                                                 value="${reportFormat.name}"
+                                                data-id="${reportFormat._id}"
                                                 required
                                             />
                                         </div>
@@ -221,8 +376,8 @@
                                             <div class="d-flex justify-content-center">
                                                 <div class='d-grid col-md-3 mx-2'>
                                                     <button
-                                                        id='deleteButton'
-                                                        type='button'
+                                                        id='deleteReportTypeButton'
+                                                        type='submit'
                                                         class='btn btn-outline-danger btn-block'
                                                         style='font-family: Inter'
                                                     >
@@ -231,8 +386,8 @@
                                                 </div>
                                                 <div class='d-grid col-md-3 mx-2'>
                                                     <button
-                                                        id='saveButton'
-                                                        type='button'
+                                                        id='saveReportTypeButton'
+                                                        type='submit'
                                                         class='btn btn-success btn-block'
                                                         style='font-family: Inter'
                                                     >

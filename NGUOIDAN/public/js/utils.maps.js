@@ -416,10 +416,10 @@ function initAutocomplete() {
                   </span>
               </button>
               `);
-                            place_info.open({map: map, shouldFocus: false}, place_marker);
+                            place_info.open({ map: map, shouldFocus: false }, place_marker);
                         } else {
                             place_info.setContent(address);
-                            place_info.open({map: map, shouldFocus: false}, place_marker);
+                            place_info.open({ map: map, shouldFocus: false }, place_marker);
                         }
                     });
                 } else {
@@ -445,7 +445,9 @@ $(document).ready(function () {
         else
             markers.forEach((marker, index) => {
                 // Hide Quy hoach markers
-                const bool = marker.content.querySelector('meta[name="planningStatus"]').content === 'Đã quy hoạch';
+                const bool =
+                    marker.content.querySelector('meta[name="planningStatus"]').content ===
+                    'Đã quy hoạch';
                 marker.setMap(bool ? null : map);
             });
     });

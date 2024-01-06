@@ -173,7 +173,7 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     const id = req.params.id;
     const idString = id.toString();
     console.log(id);
-    res.render('vwAdsBoard/listAdsBoard', {id: id});
+    res.render('vwAdsBoard/listAdsBoard', { id: id });
 });
 
 app.get('/admin/adspoint/list', function (req, res) {
