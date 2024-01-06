@@ -180,7 +180,7 @@ app.get('/admin/adspoint/list', function (req, res) {
     res.render('vwAdsPoint/listAdsPoint', {});
 });
 
-app.get('/admin/type/list', function (req, res) {
+app.get('/admin/types/list', function (req, res) {
     res.render('vwType/listType', {});
 });
 
