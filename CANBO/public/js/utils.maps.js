@@ -140,7 +140,7 @@ async function initMap() {
             markerView.content.classList.add('highlight');
             if (prevMarker && prevMarker.content.classList.contains('highlight'))
                 prevMarker.content.classList.remove('highlight');
-            markerView.zIndex = google.maps.Marker.MAX_ZINDEX;
+            markerView.zIndex = google.maps.Marker.MAX_ZINDEX + 100;
             prevMarker = markerView;
 
             // Add data to left bar

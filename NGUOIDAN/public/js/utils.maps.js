@@ -140,7 +140,7 @@ async function initMap() {
             markerView.content.classList.add('highlight');
             if (prevMarker && prevMarker.content.classList.contains('highlight'))
                 prevMarker.content.classList.remove('highlight');
-            markerView.zIndex = google.maps.Marker.MAX_ZINDEX;
+            markerView.zIndex = google.maps.Marker.MAX_ZINDEX + 100;
             prevMarker = markerView;
 
             // Add data to left bar
@@ -426,7 +426,7 @@ function initAutocomplete() {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
                             location.locationName = result.name;
                             place_info.setContent(`
-              <div class="d-flex justify-content-around align-items-center column-gap-2 info-board">
+              <div class="d-flex align-items-center column-gap-2 info-board mb-2">
                 <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>

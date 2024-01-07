@@ -53,6 +53,7 @@ $enable-shadows body {
 }
 
 .info-board {
+    max-width: 400px;
     color: var(--Green2);
     font-family: Inter;
 }
