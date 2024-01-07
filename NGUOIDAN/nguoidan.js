@@ -10,14 +10,12 @@ app.use(express.json());
 app.use('/public', express.static('public'));
 
 // FRONT END
-//  Setup handlebars view engine
-// sectionHandler(engine);
 
 app.engine(
     'hbs',
     engine({
         extname: 'hbs',
-        defaultLayout: 'nguoidan',
+        defaultLayout: 'nguoidanLayout',
         helpers: {
             section: function section(name, options) {
                 var helper = this;
@@ -45,9 +43,7 @@ app.set('views', './views');
 app.set('view engine', '.hbs');
 app.set('title', 'Ads Management');
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
+app.use('/', require('./home.route'));
 
 const port = process.env.PORT_NGUOIDAN || 3000;
 

@@ -1,0 +1,141 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="/public/css/report.css">
+{{/section}}
+{{> navbar}}
+<div class="container-fluid mt-3">
+    <div class="row align-items-center">
+        <div class="col-2"></div>
+        {{!-- Left Side bar --}}
+        <div class="col-2">
+            <h3>Danh sách các quận</h3>
+            <div class="list-group">
+            </div>
+        </div>
+
+        {{!-- Right Content --}}
+        <div class="col-6">
+            <div class="card w-100 shadow">
+              <div class="card-body p-4">
+                <h5 class="card-title fw-semibold mb-4">Các phường của quận {{currentDist}}</h5>
+                <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                      <tr>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">#</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Tên phường</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Thao tác</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                  
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<title>{{ title }}</title>
+
+
+<div
+    class='modal fade'
+    id='reportModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title text-success' id='reportModalLabel'>Chỉnh sửa phường</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                    <div class='mb-3 d-inline-flex align-items-baseline'>
+                        <label for='fullName' class='form-label p-2'>Phường</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='newWardName'
+                            required
+                        />
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <button
+                            id='verifyButton'
+                            type='button'
+                            class='submit-btn'
+                            style='width: 140px'
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{#section 'js'}}
+<script>
+    $(document).ready(function() {
+        const districtsString = '{{dists}}';
+        const wardsString = '{{wards}}';
+
+        const dists = districtsString.split(',');
+        const wards = wardsString.split(',');
+
+        dists.forEach(dist => {
+            $('.list-group').append(`<a href="/admin/dist/${dist}" class="list-group-item list-group-item-action">Quận ${dist}</a>`)
+        });
+
+        wards.forEach((ward, index) => {
+            $('tbody').append(`
+                <tr>
+                    <td class="border-bottom-0"><h6 class="fw-semibold mb-0">${index + 1}</h6></td>
+                    <td class="border-bottom-0">
+                        <h6 class="fw-semibold mb-1">Phường ${ward}</h6>
+                    </td>
+                    <td class="border-bottom-0">
+                    <button class="btn btn-success">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    </td>
+                </tr>                     
+            `)
+            $('.btn-success').prop('data-name', ward)
+        })
+
+        const modal = new bootstrap.Modal(document.getElementById('reportModal'));
+
+        $('.btn-success').click(function(event) {
+            event.preventDefault();
+            $('#newWardName').prop('placeholder', event.currentTarget['data-name']);
+            modal.show();
+        })
+
+
+
+    });
+</script>
+{{/section}}

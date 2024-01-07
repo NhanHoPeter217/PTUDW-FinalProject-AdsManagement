@@ -1,6 +1,6 @@
 import getLocation from '/public/utils/getClientLocation.js';
-import { locations } from './locations.js';
-import { QCBlueSvgString, QCRedSvgString, CurrentPositionIcon } from '/public/images/AdsPoint.js';
+import { getAllLocations, getSingleAdsPoint } from '/public/utils/getData.js';
+import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
 
 // dynamic import gg map API
 ((g) => {
@@ -47,14 +47,16 @@ import { QCBlueSvgString, QCRedSvgString, CurrentPositionIcon } from '/public/im
 
 // Initialize and add the map
 let map;
-// The markers of all locations
-let markers = Array(locations.length);
+let markers = null;
 
 async function initMap() {
     // Request needed libraries.
-    //@ts-ignore
     await google.maps.importLibrary('places');
-    // await google.maps.importLibrary("core");
+
+    // The markers of all locations
+    const { locations } = await getAllLocations();
+
+    markers = Array(locations.length);
 
     const { Map } = await google.maps.importLibrary('maps');
     const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
@@ -70,12 +72,14 @@ async function initMap() {
             console.error(error);
         });
 
-    const parser = new DOMParser();
     // Current location of the client
     const clientLocation = { lat: clientLat, lng: clientLng };
+    let clientMarkerElement = document.createElement('img');
+    clientMarkerElement.src = 'public/assets/icons/ClientLocation.svg';
+
     let clientMarker = new AdvancedMarkerElement({
         position: clientLocation,
-        content: parser.parseFromString(CurrentPositionIcon, 'image/svg+xml').documentElement
+        content: clientMarkerElement
     });
 
     // The map, centered at center_position
@@ -98,118 +102,116 @@ async function initMap() {
     // Initial Infowindow for places
     let infoWindow = new google.maps.InfoWindow();
 
-    locations.map((location, index) => {
-        const QC = parser.parseFromString(
-            location.status ? QCBlueSvgString : QCRedSvgString,
-            'image/svg+xml'
-        ).documentElement;
+    locations.forEach((item, index) => {
+        if (item.adsPoint == undefined) return;
 
+        // Create the marker
         markers[index] = new AdvancedMarkerElement({
             map: map,
             position: {
-                lat: location.coords.lat,
-                lng: location.coords.lng
+                lat: item.coords.lat,
+                lng: item.coords.lng
             },
-            content: QC,
-            title: location.title
+            content: buildContent(item),
+            title: item.title
         });
 
-        markers[index].addListener('click', () => {
-            // Close old Infowindow
-            infoWindow.close();
-            infoWindow = new google.maps.InfoWindow({
-                content: `<style>
-        .info-board {
-          background-color: var(--LightGreen);
-          font-family: Inter;
-        }
-      </style>
-      
-      <div class="card info-board" style="width: 300px;, min-height: 100px;">
-        <div class="card-body d-flex flex-row justify-content-around">
-          <svg width="29" height="34" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g>
-              <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              <path id="" d="M14.2727 18.3636C16.532 18.3636 18.3636 16.5321 18.3636 14.2727C18.3636 12.0134 16.532 10.1818 14.2727 10.1818C12.0133 10.1818 10.1818 12.0134 10.1818 14.2727C10.1818 16.5321 12.0133 18.3636 14.2727 18.3636Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-          </svg>
-      
-          <div class="d-flex flex-column">
-            <h5 class="card-title">Chưa có dữ liệu</h5>
-            <p class="card-text">Vui lòng chọn địa điểm khác</p>
-          </div>
-        </div>
-      
-      </div>`,
-                ariaLabel: location.title
-            });
-
-            infoWindow.open({
-                anchor: markers[index],
-                map
-            });
-
-            // Pan the map to the info window location
-            map.panToBounds(map.getBounds(), 1500);
-        });
+        // Add event listener to the marker
+        markers[index].addListener('click', () =>
+            handleMarkerClick(
+                markers[index],
+                item.adsPoint,
+                item.locationName,
+                item.ward,
+                item.district
+            )
+        );
     });
+
+    function handleMarkerClick(markerView, adsPoint, name, ward, district) {
+        if (markerView.content.classList.contains('highlight')) {
+            markerView.content.classList.remove('highlight');
+            markerView.zIndex = null;
+        } else {
+            markerView.content.classList.add('highlight');
+            markerView.zIndex = 1;
+
+            // Add data to left bar
+            $('#boards-container').empty();
+            adsPoint.adsBoard.forEach((board, index) => {
+                $('#boards-container').append(`
+            <!-- Adboard${index} -->
+            <style>
+                #reportIcon {
+                    transition: filter 0.1s ease-in-out; /* Add a transition effect */
+                }
+            
+                #reportIcon:hover {
+                    filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
+                }
+          </style>
+            <div
+              class="card ad-board default-background primary-text"
+              style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
+            >
+              <div class="d-flex align-items-start">
+                <div class="card-body ps-2" style="padding: 0px;">
+                  <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">${board.adsBoardType}</h5>
+                  <p class="card-text-location" style="font-size: 16px; font-family: Inter; font-weight: 500; color: #999999; padding-bottom: 10px;">${name}</p>
+                  <p class="card-text">
+                    <span class="label">Kích thước:</span>
+                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${board.size.width}m x ${board.size.height}m</span>
+                  </p>
+                  <p class="card-text">
+                    <span class="label">Số lượng:</span>
+                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${board.quantity} trụ / bảng</span>
+                  </p>
+                  <p class="card-text">
+                    <span class="label">Hình thức:</span>
+                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${adsPoint.adsFormat}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          `);
+            });
+        }
+    }
+
+    function buildContent(item) {
+        let markerContent = $(
+            `<div class="d-flex adpointInfo adPoint${
+                item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+            }"></div>`
+        );
+        markerContent.html(`
+      <img src="/public/assets/icons/QC${
+          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+      }.svg" class="markerPlaceholder" alt="" srcset="">
+      <img src="/public/assets/icons/Info_icon_${
+          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+      }.svg" class="icon" alt="" srcset="">
+      <div class="details">
+
+        <!-- location.locationName -->
+        <h5>${item.locationName}</h5>
+        <meta name="planningStatus" content="${item.adsPoint.planningStatus}"></meta>
+
+        <!-- adsPoint.locationType -->
+        <h6>${item.adsPoint.locationType}</h6>
+
+        <!-- location.address -->
+        <p>Phường <b>${item.ward}</b>\t Quận <b>${item.district}</b></p>
+
+      </div>`);
+
+        return markerContent[0];
+    }
 
     // Add a marker clusterer to manage the markers.
     new markerClusterer.MarkerClusterer({ markers, map });
 
     initAutocomplete();
-
-    // Add points to left bar
-    locations.forEach((location, index) => {
-        $('#points-container').append(`    
-    <!-- Adpoint${index} -->
-
-    <div
-      class="card ad-board primary-background primary-text shadow"
-      style="width: 20rem;"
-    >
-      <div class="d-flex align-items-start">
-        <span
-          id="boot-iconBoard${index}"
-          class="bi bi-info-circle mt-3 ms-1 me-1 primary-icon"
-          style="font-size: 20px; -webkit-text-stroke-width: 1px;"
-        ></span>
-        <div class="card-body ps-2">
-          <h5 class="card-title">${location.title}</h5>
-          <p class="card-text-location">${location.address}</p>
-          <p class="card-text">
-            <span class="label">Kích thước:</span>
-            <span class="value">${location.w}m x ${location.h}m</span>
-          </p>
-          <p class="card-text">
-            <span class="label">Số lượng:</span>
-            <span class="value">${location.n} trụ / bảng</span>
-          </p>
-          <p class="card-text">
-            <span class="label">Hình thức:</span>
-            <span class="value">${location.info}</span>
-          </p>
-          <p class="card-text">
-            <span class="label">Phân loại:</span>
-            <span class="value">${location.type}</span>
-          </p>
-        </div>
-      </div>
-
-
-        <!-- Button to trigger the modal -->
-        <button
-          type="button"
-          class="btn btn-outline-danger mb-3 ms-5 me-5 report-background"
-          data-bs-toggle="modal"
-          data-bs-target="#reportModal"
-        >
-        <i class="bi bi-info-circle-fill me-1" style="font-size: 20px;"></i>
-        <span id="buttonName${index}" class="button-font">Báo cáo vi phạm</span>
-        </button>      
-      </div>
-    `);
-    });
 }
 
 function initAutocomplete() {
@@ -301,6 +303,40 @@ function initAutocomplete() {
 
                     let address_id = response.results[0].place_id;
                     let address = response.results[0].formatted_address;
+                    let ward, district;
+
+                    // Extract ward and district from address components
+                    for (const result of response.results) {
+                        for (const addrComponent of result.address_components) {
+                            // Get the ward
+                            if (addrComponent.types.includes('administrative_area_level_3')) {
+                                ward = addrComponent.long_name;
+                            } else {
+                                // console.log('[Google Maps API] Fail to find ward in ', address);
+                                ward = getWardFromAddress(address);
+                            }
+
+                            // Get the district
+                            if (addrComponent.types.includes('administrative_area_level_2')) {
+                                district = addrComponent.long_name;
+                            } else {
+                                // console.log('[Google Maps API] Fail to find district in ', address);
+                                district = getDistrictFromAddress(address);
+                            }
+                        }
+
+                        // Break the loop if both ward and district are found
+                        if (ward !== undefined && district !== undefined) break;
+                    }
+
+                    // Create a Location object
+                    let location = {
+                        ...latlng.toJSON(),
+                        locationName: address,
+                        address: address,
+                        ward: ward,
+                        district: district
+                    };
 
                     let place_request = {
                         placeId: address_id,
@@ -310,25 +346,25 @@ function initAutocomplete() {
                     // getDetails to get the name of the place
                     place_service.getDetails(place_request, function (result, status) {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            place_info.setContent(`      <div class="card info-board" style="width: 200px;, min-height: 100px;">
-              <div class="card-body d-flex flex-row justify-content-around">
-                <svg width="29" height="34" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            location.locationName = result.name;
+                            place_info.setContent(`
+              <div class="d-flex align-items-center column-gap-2 info-board">
+                <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                     <path id="" d="M14.2727 18.3636C16.532 18.3636 18.3636 16.5321 18.3636 14.2727C18.3636 12.0134 16.532 10.1818 14.2727 10.1818C12.0133 10.1818 10.1818 12.0134 10.1818 14.2727C10.1818 16.5321 12.0133 18.3636 14.2727 18.3636Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                   </g>
                 </svg>
-            
                 <div class="d-flex flex-column">
-                  <h6 class="card-title">${result.name}</h6>
+                    <h6 class="mb-1">${result.name}</h6>
+                    <p>Phường <b>${ward}</b>\t Quận <b>${district}</b></p>
                 </div>
               </div>
-            
-            </div>`);
-                            place_info.open(map, place_marker);
+              `);
+                        place_info.open({map: map, shouldFocus: false}, place_marker);
                         } else {
                             place_info.setContent(address);
-                            place_info.open(map, place_marker);
+                            place_info.open({map: map, shouldFocus: false}, place_marker);
                         }
                     });
                 } else {
@@ -342,7 +378,6 @@ function initAutocomplete() {
 initMap();
 
 // Add event listener to the Filter button
-
 $(document).ready(function () {
     // Add event listener to the switch
     $('#filterButton').change(function () {
@@ -354,7 +389,8 @@ $(document).ready(function () {
         else
             markers.forEach((marker, index) => {
                 // Hide Quy hoach markers
-                marker.setMap(locations[index].status ? null : map);
+                const bool = marker.content.querySelector('meta[name="planningStatus"]').content === 'Đã quy hoạch';
+                marker.setMap(bool ? null : map);
             });
     });
 });

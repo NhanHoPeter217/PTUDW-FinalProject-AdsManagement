@@ -15,6 +15,9 @@ const {
     authorizePermissions
 } = require('../../middleware/authentication');
 
+// Người dân có thể tạo Report
+router.route('/').post(createReport);
+
 router.use(authenticateUser);
 
 router.route('/').get(authorizePermissions('Sở VH-TT'), getAllReports);
@@ -23,7 +26,6 @@ router
     .route('dist/:dist/ward/:ward')
     .get(authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
 router.route('/:id').get(authorizePermissions('Sở VH-TT'), getSingleReport);
-router.route('/').post(createReport);
 router.route('/:id').patch(authorizePermissions('Phường', 'Quận'), updateReport);
 
 module.exports = router;

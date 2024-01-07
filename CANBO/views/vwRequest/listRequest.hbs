@@ -1,0 +1,328 @@
+{{> navbar}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="../../public/css/report.css" />
+{{/section}}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <h5 class="card-title fw-semibold mb-4">Danh sách các yêu cầu</h5>
+            <div class="card w-100 mt-3">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold mb-4">Bảng quảng cáo</h5>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">#</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Bảng quảng cáo</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Kích thước</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Số lượng</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Quận</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Hết hạn hợp đồng</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsBoardRequestModal">
+                                            OMG
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Trụ bảng hiflex</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">2</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">7</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-3 fw-semibold"
+                                                >Đã quy hoạch</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-warning rounded-3 fw-semibold"
+                                                >Đang chờ duyệt</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#">
+                                            Duyệt
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-danger m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestEditAdsBoardModal">
+                                            Không duyệt
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card w-100 mt-3">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold mb-4">Điểm quảng cáo</h5>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">#</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Điểm quảng cáo</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Loại vị trí</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Hình thức quảng cáo</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Phường</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Quận</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái quy hoạch</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsPointRequestModal">
+                                            Thanh Đa
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">2</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">7</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-3 fw-semibold"
+                                                >Đã quy hoạch</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-success rounded-3 fw-semibold"
+                                                >Đã duyệt</span
+                                            >
+                                        </div>
+                                    </td>
+                                    {{!-- <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#">
+                                            Duyệt
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-danger m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestEditAdsPointModal">
+                                            Không duyệt
+                                        </button>
+                                    </td> --}}
+                                </tr>
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsPointRequestModal">
+                                            Thanh Đa
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">2</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">7</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-3 fw-semibold"
+                                                >Đã quy hoạch</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-warning rounded-3 fw-semibold"
+                                                >Đang chờ duyệt</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#">
+                                            Duyệt
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-danger m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestEditAdsPointModal">
+                                            Không duyệt
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{!-- <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">2</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsPointModal">
+                                            Thanh Đa
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">2</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">7</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-danger rounded-3 fw-semibold"
+                                                >Chưa quy hoạch</span
+                                            >
+                                        </div>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button type="button" class="btn btn-primary m-1">
+                                            Các bảng quảng cáo
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button type="button" class="btn btn-outline-warning m-1">
+                                            Yêu cầu chỉnh sửa
+                                        </button>
+                                    </td>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<title>Danh sách điểm quảng cáo</title>
+
+{{> detailAdsPoint}}
+{{> detailAdsBoardRequest}}
+{{> detailAdsPointRequest}}
+{{> requestEditAdsPoint}}

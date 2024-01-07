@@ -1,10 +1,11 @@
 {{#section 'css'}}
     <link href='public/css/utils.maps.css' rel='stylesheet' />
     <link rel='stylesheet' href='public/css/report.css' />
+    <link rel="stylesheet" href="/public/css/adpointInfo.css">
 {{/section}}
 
 <div id='root'>
-    <div id='points-container' class='col'>
+    <div id='left-bar' class='col'>
         <div class='input-group mb-3 flex-nowrap shadow-sm'>
             <button
                 class='btn btn-outline-secondary default-background'
@@ -20,7 +21,8 @@
                 id='searchInput'
             />
         </div>
-        <h3>Danh sách điểm quảng cáo</h3>
+        <h3>Các bảng quảng cáo</h3>
+        <div id="boards-container"></div>
     </div>
     <div id='map'>
     </div>
@@ -78,8 +80,12 @@
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <span id='boot-icon' class='bi bi-exclamation-triangle reportIcon'></span>
-                <h5 class='modal-title' id='reportModalLabel'>Báo cáo vi phạm</h5>
+                <img
+                    src='public/assets/icons/Report_icon.svg'
+                    alt='report-icon'
+                    style='height: 30px; width: 30px;'
+                />
+                <h5 class='modal-title' id='reportModalLabel'>Báo cáo</h5>
                 <button
                     type='button'
                     class='btn-close'
@@ -88,21 +94,20 @@
                 ></button>
             </div>
             <div class='modal-body'>
+                <div class="alert alert-success" role="alert">Bạn đang báo cáo cho một <b></b></div>
                 <form class='report-form' id='reportForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label'>Hình thức</label>
-                        <select class='form-select reportType' id='reportType' required>
+                        <label for='reportFormat' class='form-label' style='font-family: Inter;'>Hình
+                            thức</label>
+                        <select class='form-select reportType' id='reportFormat' required>
                             <option value='' disabled selected>
                                 -- Chọn hình thức báo cáo --
                             </option>
-                            <option value='Tố giác sai phạm'>Tố giác sai phạm</option>
-                            <option value='Đăng ký nội dung'>Đăng ký nội dung</option>
-                            <option value='Đóng góp ý kiến'>Đóng góp ý kiến</option>
-                            <option value='Giải đáp thắc mắc'>Giải đáp thắc mắc</option>
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='fullName' class='form-label'>Họ và tên</label>
+                        <label for='fullName' class='form-label' style='font-family: Inter;'>Họ và
+                            tên</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
@@ -111,36 +116,64 @@
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label'>Email</label>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Email</label>
                         <input type='email' class='form-control reportEmail' id='email' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='phone' class='form-label reportPhone'>Số điện thoại liên lạc</label>
-                        <input type='tel' class='form-control' id='phone' required />
+                        <label for='phone' class='form-label' style='font-family: Inter;'>Số điện
+                            thoại liên lạc</label>
+                        <input type='tel' class='form-control reportPhone' id='phone' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='reportContent' class='form-label reportContent'>Nội dung</label>
-                        <textarea id='reportContent' required></textarea>
+                        <label
+                            for='reportContent'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Nội dung</label>
+                        <textarea
+                            id='reportContent'
+                            class='form-control reportContent'
+                            required
+                        ></textarea>
                     </div>
                     <div class='mb-3'>
-                        <label for='image1' class='form-label reportImage'>Hình ảnh 1</label>
-                        <input type='file' class='form-control' id='image1' accept='image/*' />
+                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            1</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image1'
+                            accept='image/*'
+                        />
                     </div>
                     <div class='mb-3'>
-                        <label for='image2' class='form-label reportImage'>Hình ảnh 2</label>
-                        <input type='file' class='form-control' id='image2' accept='image/*' />
+                        <label for='image2' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            2</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image2'
+                            accept='image/*'
+                        />
                     </div>
 
-                    <div class='button-container'>
-                        <div
-                            id='recaptcha'
-                            class='g-recaptcha'
-                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                            data-callback='onSubmit'
-                            data-size='invisible'
+                    <div class='button-container justify-content-center'>
+                        <div class="g-recaptcha" id="recaptcha"
+                            data-sitekey="6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb"
+                            data-callback="onSubmit"
+                            data-size="invisible"
                         ></div>
-                        <button id='submitButton' type='button' class='submit-btn'>
-                            Gửi
+                        <button
+                            id='submitReportButton'
+                            type='button'
+                            class='submit-btn'
+                            style='font-family: Inter;'
+                        >
+                            GỬI
                         </button>
                     </div>
                 </form>
@@ -153,16 +186,16 @@
     {{! Marker Clusterer }}
     <script src='https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'></script>
 
-    {{! Google Maps Places API
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I&libraries=places&callback=initMap">
-</script> }}
+    <script src="/public/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="/public/js/tinymce.js"></script>
+
+    {{!-- Report processing --}}
+    <script src="/public/js/report.js"></script>
+
+    <script src="https://www.google.com/recaptcha/api.js"
+        async defer>
+    </script>
 
     {{! Google Maps Functions }}
     <script src='public/js/utils.maps.js' type='module'></script>
 {{/section}}
-
-<!-- Bootstrap JS and Popper.js -->
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
-<!-- jQuery -->
-<script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>

@@ -1,11 +1,11 @@
 {
     "name": "canbo",
     "version": "1.0.0",
-    "description": "",
     "main": "canbo.js",
     "scripts": {
         "start": "node canbo.js",
-        "dev": "nodemon canbo.js"
+        "dev": "nodemon canbo.js",
+        "build": "webpack --config webpack.config.js"
     },
     "author": "",
     "license": "ISC",
@@ -25,16 +25,14 @@
         "mongoose": "^5.13.21",
         "morgan": "^1.10.0",
         "nodemailer": "^6.9.7",
+        "nodemon": "^3.0.2",
         "rate-limiter": "^0.2.0",
-        "cors": "^2.8.5",
-        "express-mongo-sanitize": "^2.2.0",
-        "faker": "^5.5.3",
-        "helmet": "^7.1.0",
-        "morgan": "^1.10.0",
         "xss-clean": "^0.1.4",
-        "nodemon": "^3.0.1"
+        "crypto": "^1.0.1"
     },
     "devDependencies": {
         "@faker-js/faker": "^8.3.1"
-    }
+    },
+    "keywords": [],
+    "description": ""
 }

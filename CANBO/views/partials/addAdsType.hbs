@@ -1,0 +1,55 @@
+<div
+    class='modal fade'
+    id='addAdsTypeModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                    Thêm thông tin
+                </h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form' id='addAdsTypeForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='reportType' class='form-label' style='font-family: Inter;'>Loại hình quảng cáo</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            required
+                        />
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <div
+                            id='recaptcha'
+                            class='g-recaptcha'
+                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                            data-callback='onSubmit'
+                            data-size='invisible'
+                        ></div>
+                        <div class='d-grid gap-2 col-3 mx-auto'>
+                            <button
+                                id='submitButton'
+                                type='button'
+                                class='btn btn-success m1'
+                                style='font-family: Inter'
+                            >
+                                THÊM
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

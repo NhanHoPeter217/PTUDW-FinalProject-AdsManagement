@@ -1,0 +1,180 @@
+{{#section 'css'}}
+    <link rel='stylesheet' href='http://localhost:4000/public/css/report.css' />
+{{/section}}
+
+<div class="container-fluid my-2">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card w-100">
+                <div class="card-body p-4">
+                <h5 class="card-title fw-semibold mb-4">Báo cáo đã nhận</h5>
+                <div class="table-responsive">
+                    <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                        <tr>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">#</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Địa điểm</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Loại</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Hình thức báo cáo</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-1">Dinh Độc Lập</h6>
+                                {{!-- <span class="fw-normal">Web Designer</span>                           --}}
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">Điểm quảng cáo</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary rounded-3 fw-semibold">Đăng ký nội dung</span>
+                                </div>
+                            </td>
+                            <td class="border-bottom-0">
+                                <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">2</h6></td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
+                            {{!-- <span class="fw-normal">Project Manager</span>                           --}}
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-normal">Bảng quảng cáo</p>
+                        </td>
+                        <td class="border-bottom-0">
+                            <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-secondary rounded-3 fw-semibold">Đóng góp ý kiến</span>
+                            </div>
+                        </td>
+                        <td class="border-bottom-0">
+                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>                        </td>
+                        </tr> 
+                        <tr>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">3</h6></td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
+                            {{!-- <span class="fw-normal">Project Manager</span>                           --}}
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-normal">Điểm ngẫu nhiên</p>
+                        </td>
+                        <td class="border-bottom-0">
+                            <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-danger rounded-3 fw-semibold">Tố giác sai phạm</span>
+                            </div>
+                        </td>
+                        <td class="border-bottom-0">
+                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>                        </td>
+                        </tr>      
+                        <tr>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">4</h6></td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
+                            {{!-- <span class="fw-normal">Frontend Engineer</span>                           --}}
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-normal">Bảng quảng cáo</p>
+                        </td>
+                        <td class="border-bottom-0">
+                            <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-success rounded-3 fw-semibold">Giải đáp thắc mắc</span>
+                            </div>
+                        </td>
+                        <td class="border-bottom-0">
+                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>
+                        </td>
+                        </tr>                       
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Report Modal View only-->
+<div
+    class='modal fade'
+    id='reportModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title' id='reportModalLabel'></h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='schema' class='form-label'>Đối tượng</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='schema'
+                            required disabled
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='fullName' class='form-label'>Họ và tên</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            required disabled
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='email' class='form-label'>Email</label>
+                        <input type='email' class='form-control reportEmail' id='email' required disabled/>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='phone' class='form-label'>Số điện thoại liên lạc</label>
+                        <input type='tel' class='form-control' id='phone' required disabled/>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='reportContent' class='form-label'>Nội dung</label>
+                        <iframe id="reportContent" frameborder="0" style="width: 100%;"></iframe>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image1' class='form-label'>Hình ảnh 1</label>
+                        <input type='file' class='form-control' id='image1' accept='image/*' disabled/>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image2' class='form-label'>Hình ảnh 2</label>
+                        <input type='file' class='form-control' id='image2' accept='image/*' disabled/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#section 'js'}}
+<script src="http://localhost:4000/public/js/listReport.js"></script>
+{{/section}}
