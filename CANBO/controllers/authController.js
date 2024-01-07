@@ -84,7 +84,6 @@ const logout = async (req, res) => {
     res.status(StatusCodes.OK).json({
         message: 'Logout successfully'
     });
-
 };
 
 module.exports = {
