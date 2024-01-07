@@ -8,8 +8,12 @@
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                    Thêm thông tin
+                <img
+                    src='../../../public/assets/icons/Add_icon.svg'
+                    style='height: 35px; width: 35px;'
+                />
+                <h5 class='modal-green-title' id='reportModalLabel'>
+                    Thêm hình thức báo cáo
                 </h5>
                 <button
                     type='button'
@@ -21,11 +25,11 @@
             <div class='modal-body'>
                 <form class='report-form' id='addReportTypeForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
-                        <label for='reportType' class='form-label' style='font-family: Inter;'>Hình thức báo cáo</label>
+                        <label for='reportTypeName' class='form-label' style='font-family: Inter;'>Hình thức báo cáo</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='reportTypeName'
                             required
                         />
                     </div>
@@ -39,8 +43,8 @@
                         ></div>
                         <div class='d-grid gap-2 col-3 mx-auto'>
                             <button
-                                id='submitButton'
-                                type='button'
+                                id='addReportTypeButton'
+                                type='submit'
                                 class='btn btn-success m1'
                                 style='font-family: Inter'
                             >
