@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env' });
 require('express-async-errors');
 
 const express = require('express');
-const { engine } = require('express-handlebars');
+const engineWithHelpers = require('./handlebars');
 
 const app = express();
 
@@ -47,7 +47,6 @@ const adsBoardRouter = require('./routes/Department/adsBoardRoutes');
 const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
-const wardRouter = require('./routes/Department/wardRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
@@ -89,7 +88,7 @@ app.use(xss());
 // routes
 app.use('/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
-app.use('/api/v1/forgotpw', forgotpwRouter);
+app.use('/api/v1/forgotpassword', forgotpwRouter);
 app.use('/api/v1/report', reportProcessingRouter);
 
 // routes after login
@@ -101,7 +100,6 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/api/v1/district', districtRouter);
-app.use('/api/v1/ward', wardRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
@@ -112,38 +110,7 @@ app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 // Setup handlebars view engine
 // sectionHandler(engine);
 
-app.engine(
-    'hbs',
-    engine({
-        extname: 'hbs',
-        defaultLayout: 'canbo',
-        helpers: {
-            section: function section(name, options) {
-                var helper = this;
-                if (!this._sections) {
-                    this._sections = {};
-                    this._sections._get = function (arg) {
-                        if (typeof helper._sections[arg] === 'undefined') {
-                            throw new Error('The section "' + arg + '" is required.');
-                        }
-                        return helper._sections[arg];
-                    };
-                }
-                if (!this._sections[name]) {
-                    this._sections[name] = options.fn(this);
-                }
-
-                return null;
-            },
-            create_order(val) {
-                return val + 1;
-            },
-            equal(a, b) {
-                return a === b;
-            }
-        }
-    })
-);
+app.engine('hbs', engineWithHelpers);
 
 // Basic setup
 app.set('view engine', 'hbs');
@@ -152,7 +119,7 @@ app.set('title', 'Ads Management');
 
 // Get pages
 app.get('/', (req, res) => {
-    res.render('home', { hideNavbar: true });
+    res.render('home', { hideNavbar: false });
 });
 
 app.get('/forgotPassword', function (req, res) {

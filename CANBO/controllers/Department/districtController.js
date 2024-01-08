@@ -4,7 +4,7 @@ const CustomError = require('../../errors');
 
 const getAllDistricts = async (req, res) => {
     try {
-        const districts = await District.find({});
+        const districts = await District.find({}).sort({ districtName: 1 });
         res.status(StatusCodes.OK).json({ districts, count: districts.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

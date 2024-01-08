@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
 const crypto = require('crypto');
+const { readdir } = require('fs');
 
 const register = async (req, res) => {
     try {

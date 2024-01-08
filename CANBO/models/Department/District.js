@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const districtSchema = new mongoose.Schema({
     districtName: { type: String, required: true },
-    wards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ward' }]
+    wards: [{ type: String, required: true }]
 });
 
 const District = mongoose.model('District', districtSchema);

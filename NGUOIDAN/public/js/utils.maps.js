@@ -128,13 +128,20 @@ async function initMap() {
         );
     });
 
+    // Previous Marker
+    let prevMarker = null;
+
     function handleMarkerClick(markerView, adsPoint, name, ward, district) {
         if (markerView.content.classList.contains('highlight')) {
             markerView.content.classList.remove('highlight');
-            markerView.zIndex = null;
+            markerView.zIndex = 1;
+            prevMarker = null;
         } else {
             markerView.content.classList.add('highlight');
-            markerView.zIndex = 1;
+            if (prevMarker && prevMarker.content.classList.contains('highlight'))
+                prevMarker.content.classList.remove('highlight');
+            markerView.zIndex = google.maps.Marker.MAX_ZINDEX + 100;
+            prevMarker = markerView;
 
             // Add data to left bar
             $('#boards-container').empty();
@@ -249,8 +256,38 @@ async function initMap() {
         return markerContent[0];
     }
 
+    const ClusterRenderrer = {
+        render: function ({ count, position }, stats, map) {
+            // change color if this cluster has more markers than the mean cluster
+            const color = count > Math.max(10, stats.clusters.markers.mean) ? '#ff0000' : '#0000ff';
+            // create svg literal with fill color
+            const svg = `<svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="50" height="50">
+        <circle cx="120" cy="120" opacity=".6" r="70" />
+        <circle cx="120" cy="120" opacity=".3" r="90" />
+        <circle cx="120" cy="120" opacity=".2" r="110" />
+        <text x="50%" y="50%" style="fill:#fff" text-anchor="middle" font-size="50" dominant-baseline="middle" font-family="roboto,arial,sans-serif">${count}</text>
+        </svg>`;
+            const title = `Cluster of ${count} markers`,
+                // adjust zIndex to be above other markers
+                zIndex = count;
+
+            // create cluster SVG element
+            const parser = new DOMParser();
+            const svgEl = parser.parseFromString(svg, 'image/svg+xml').documentElement;
+            svgEl.setAttribute('transform', 'translate(0 25)');
+            const clusterOptions = {
+                map,
+                position,
+                zIndex,
+                title,
+                content: svgEl
+            };
+            return new google.maps.marker.AdvancedMarkerElement(clusterOptions);
+        }
+    };
+
     // Add a marker clusterer to manage the markers.
-    new markerClusterer.MarkerClusterer({ markers, map });
+    new markerClusterer.MarkerClusterer({ markers, map, renderer: ClusterRenderrer });
 
     initAutocomplete();
 }
@@ -389,7 +426,7 @@ function initAutocomplete() {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
                             location.locationName = result.name;
                             place_info.setContent(`
-              <div class="d-flex justify-content-around align-items-center column-gap-2 info-board">
+              <div class="d-flex align-items-center column-gap-2 info-board mb-2">
                 <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>

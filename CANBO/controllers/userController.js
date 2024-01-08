@@ -10,7 +10,7 @@ const getUserInfo = async (req, res) => {
     try {
         const infoUser = await User.findOne({
             _id: userId
-        }).select('fullName dateOfBirth email phone');
+        }).select('-password');
 
         if (!infoUser) {
             throw new NotFoundError(`No user with id ${userId}`);
@@ -29,6 +29,13 @@ const updateUserInfo = async (req, res) => {
     } = req;
 
     try {
+        if (email) {
+            const user = await User.findOne({ email });
+            if (user && user._id.toString() !== userId) {
+                throw new BadRequestError('Email already taken');
+            }
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
             { _id: userId },
             { fullName, dateOfBirth, email, phone },

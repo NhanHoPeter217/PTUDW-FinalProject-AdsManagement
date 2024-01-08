@@ -8,19 +8,19 @@ $enable-shadows body {
     margin: 0;
     display: grid;
     grid-template-columns: 400px auto;
-    width: 100vw;
+    width: 100%;
 }
 
-#map {
-    height: 100vh;
-}
-
-#leftbar {
+#left-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     padding: 20px 20px;
+    overflow: auto;
 }
 
 #searchInput {
-    /* z-index: 1; */
     color: var(--bs-black);
 }
 
@@ -35,15 +35,6 @@ $enable-shadows body {
     top: 30px;
 }
 
-#left-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    height: 100vh;
-    padding: 20px 20px;
-    overflow: auto;
-}
 #boards-container {
     display: flex;
     flex-direction: column;
@@ -53,6 +44,7 @@ $enable-shadows body {
 }
 
 .info-board {
+    max-width: 400px;
     color: var(--Green2);
     font-family: Inter;
 }
