@@ -103,11 +103,11 @@
                                         <p class="mb-0 fw-normal limited-width-adsFormat">{{adsFormat.name}}</p>
                                     </td>
                                     <td class="border-bottom-0">
-                                        {{#if (equal planningStatus 'Đã quy hoạch')}}
+                                        {{#ifCond planningStatus "===" "Đã quy hoạch"}}
                                         <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
                                         {{else}}
                                         <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
-                                        {{/if}}
+                                        {{/ifCond}}
                                     </td>
                                     <td class="border-bottom-0">
                                     <button type="button" class="btn btn-primary m-1" onclick="window.location.href='/admin/adsboard/byAdspoint/${adsPoint._id}'">
@@ -191,11 +191,11 @@
                                                         <div class='card border'>
                                                             <div class='card-body'>
                                                                 <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
-                                                                {{#if (equal planningStatus 'Đã quy hoạch')}}
+                                                                {{#ifCond planningStatus "===" "Đã quy hoạch"}}
                                                                 <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
                                                                 {{else}}
                                                                 <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
-                                                                {{/if}}
+                                                                {{/ifCond}}
                                                             </div>
                                                         </div>
                                                         <div class='card border'>
