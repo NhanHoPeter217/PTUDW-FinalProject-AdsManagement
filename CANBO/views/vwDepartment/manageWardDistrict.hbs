@@ -1,14 +1,34 @@
-{{#section 'css'}}
-<link rel="stylesheet" href="/public/css/report.css">
-{{/section}}
-
 <div class="container-fluid mt-3">
-    <div class="row align-items-center">
+    <div class="row align-items-start">
         <div class="col-2"></div>
         {{!-- Left Side bar --}}
         <div class="col-2">
             <h3>Danh sách các quận</h3>
+            <button
+                id='add-dist-button'
+                type='button'
+                class='btn btn-primary my-3'
+                style='width: 100%'
+                data-bs-toggle="modal"
+                data-bs-target="#addDistModal"
+            >
+                <i class="bi bi-building-add"></i>
+                Thêm quận mới
+            </button>
+
             <div class="list-group">
+            {{#each dists}}
+                {{#ifCond districtName '==' ../currentDistName}}
+                <a href="/admin/dist/{{districtName}}" class="list-group-item d-flex list-group-item-action justify-content-around align-items-baseline active">
+                    <span>Quận {{districtName}}</span>
+                    <button class="btn btn-light edit-dist" data-name="{{districtName}}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </a>
+                {{else}}
+                <a href="/admin/dist/{{districtName}}" class="list-group-item list-group-item-action">Quận {{districtName}}</a>
+                {{/ifCond}}
+            {{/each}}
             </div>
         </div>
 
@@ -16,7 +36,18 @@
         <div class="col-6">
             <div class="card w-100 shadow">
               <div class="card-body p-4">
-                <h5 class="card-title fw-semibold mb-4">Các phường của quận {{currentDist}}</h5>
+                <div class="d-flex justify-content-between align-items-baseline">
+                    <h5 class="card-title fw-semibold mb-4">Các phường của quận {{currentDistName}}</h5>
+                    <button
+                        id='add-ward-button'
+                        type='button'
+                        class='btn btn-success add-ward'
+                        style='width: fit-content'
+                    >
+                        <i class="bi bi-building-add"></i>
+                        Thêm phường mới
+                    </button>
+                </div>
                 <div class="table-responsive">
                   <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
@@ -36,7 +67,23 @@
                       </tr>
                     </thead>
 
-                    <tbody></tbody>
+                    <tbody>
+                    {{#each wards}}
+                      <tr>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{inc @index}}</h6></td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-1">Phường {{this}}</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                        <button class="btn btn-success edit-ward" data-name="{{this}}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        </td>
+                      </tr>
+                    {{else}}
+                    <p>Không có phường</p>       
+                    {{/each}}
+                    </tbody>
                   
                   </table>
                 </div>
@@ -48,10 +95,10 @@
 
 <title>{{ title }}</title>
 
-
+{{!-- Add / Edit / Remove Ward Modal --}}
 <div
     class='modal fade'
-    id='reportModal'
+    id='wardModal'
     tabindex='-1'
     aria-labelledby='reportModalLabel'
     aria-hidden='true'
@@ -68,21 +115,28 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                <form class='report-form d-flex flex-column align-items-center' id='wardForm' enctype='multipart/form-data'>
                     <div class='mb-3 d-inline-flex align-items-baseline'>
-                        <label for='fullName' class='form-label p-2'>Phường</label>
+                        <label for='newWardValue' class='form-label p-2'>Phường</label>
                         <input
                             type='text'
-                            class='form-control fullNameReport'
-                            id='newWardName'
+                            class='form-control'
+                            id='newWardValue'
                             required
                         />
                     </div>
-                    <div class='button-container justify-content-center'>
+                    <div class='d-inline-flex justify-content-center column-gap-3'>
                         <button
-                            id='verifyButton'
+                            id="remove-ward-button"
                             type='button'
-                            class='submit-btn'
+                            class='btn btn-danger'
+                            style='width: 140px'
+                        >
+                            Xoá phường
+                        </button>
+                        <button
+                            type='submit'
+                            class='btn btn-success'
                             style='width: 140px'
                         >
                             Xác nhận
@@ -95,47 +149,279 @@
 </div>
 
 
+{{!-- Edit District Modal --}}
+<div
+    class='modal fade'
+    id='editDistModal'
+    tabindex='-1'
+    aria-labelledby='editDistModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title text-primary' id='editDistModalLabel'>Chỉnh sửa quận</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form d-flex flex-column align-items-center' id='editDistForm' enctype='multipart/form-data'>
+                    <div class='mb-3 d-inline-flex align-items-baseline'>
+                        <label for='newDistValue' class='form-label p-2'>Quận</label>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='newDistValue'
+                            required
+                        />
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <button
+                            type='submit'
+                            class='btn btn-primary'
+                            style='width: 140px'
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{!-- Add District Modal --}}
+<div
+    class='modal fade'
+    id='addDistModal'
+    tabindex='-1'
+    aria-labelledby='addDistModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title text-primary' id='addDistModalLabel'>Thêm quận</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form d-flex flex-column align-items-stretch' id='addDistForm' enctype='multipart/form-data'>
+                    <div class='mb-3 d-inline-flex align-items-baseline'>
+                        <label for='newDistName' class='form-label p-2'>Quận</label>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='newDistName'
+                            placeholder="Tên quận mới"
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for="wardList" class="form-label p-2">Danh sách các phường</label>
+                        <textarea class="form-control" placeholder="Phường A" id="wardList" rows="5"></textarea>
+                        <div class="form-text">Nhập danh sách các phường vào đây, nhấn enter để thêm phường.</div>
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <button
+                            type='submit'
+                            class='btn btn-primary'
+                            style='width: 140px'
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {{#section 'js'}}
 <script>
     $(document).ready(function() {
-        const districtsString = '{{dists}}';
-        const wardsString = '{{wards}}';
+        let wards = '{{ wards }}'.split(',');
+        let currentDist = '{{ currentDistName }}';
 
-        const dists = districtsString.split(',');
-        const wards = wardsString.split(',');
+        const wardModal = new bootstrap.Modal(document.getElementById('wardModal'));
+        const wardForm = $('#wardForm');
 
-        dists.forEach(dist => {
-            $('.list-group').append(`<a href="/admin/dist/${dist}" class="list-group-item list-group-item-action">Quận ${dist}</a>`)
-        });
-
-        wards.forEach((ward, index) => {
-            $('tbody').append(`
-                <tr>
-                    <td class="border-bottom-0"><h6 class="fw-semibold mb-0">${index + 1}</h6></td>
-                    <td class="border-bottom-0">
-                        <h6 class="fw-semibold mb-1">Phường ${ward}</h6>
-                    </td>
-                    <td class="border-bottom-0">
-                    <button class="btn btn-success">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    </td>
-                </tr>                     
-            `)
-            $('.btn-success').prop('data-name', ward)
-        })
-
-        const modal = new bootstrap.Modal(document.getElementById('reportModal'));
-
-        $('.btn-success').click(function(event) {
+        // Edit ward button handler
+        $('.edit-ward').click(function(event) {
             event.preventDefault();
-            $('#newWardName').prop('placeholder', event.currentTarget['data-name']);
-            modal.show();
+
+            // Set placeholder của input thành tên phường cần sửa
+            $('#newWardValue').prop('placeholder', event.currentTarget.getAttribute('data-name'));
+            $('#remove-ward-button').show();
+
+            // Set mode cho form
+            wardForm.attr('data-mode', 'edit-ward');
+            wardModal.show();
+        })
+
+        // Add ward button handler
+        $('.add-ward').click(function(event) {
+            event.preventDefault();
+
+            // Reset placeholder trống
+            $('#newWardValue').prop('placeholder', '');
+            $('#remove-ward-button').hide();
+
+            // Set mode cho form
+            wardForm.attr('data-mode', 'add-ward');
+            wardModal.show();
         })
 
 
 
+        function verifyWardName(wardName) {
+            if (wards.includes(wardName)) {
+                alert('Tên phường đã tồn tại');
+                return false;
+            }
+            return true;
+        }
+
+        // Add Ward submit handler
+        wardForm.on("submit", function(event) {
+            event.preventDefault();
+            
+            const newWardName = $('#newWardValue').val();
+            if (!verifyWardName(newWardName)) return;
+
+            const currentWard = $('#newWardValue').prop('placeholder');
+
+            switch (wardForm.attr('data-mode')) {
+                // Thêm tên phường vào array
+                case 'add-ward':
+                    wards.push(newWardName);
+                    break;
+
+                // Sửa tên phường trong array
+                case 'edit-ward':
+                    wards[wards.indexOf(currentWard)] = newWardName;
+                    break;
+                default:
+                    alert("Unknown Form mode");
+                    break;
+            }
+
+            const data = {
+                _id: '{{ currentDistId }}',
+                districtName: currentDist,
+                wards: wards
+            }
+
+            axios.patch(`./`, data)
+            .then(response => {
+                window.location.reload();
+            })
+            .catch(error => {
+                // Handle the error here
+                console.error(error);
+                alert('Sửa thất bại');
+            });
+        })
+
+        // Remove ward button handler
+        $('#remove-ward-button').click(function(event) {
+            event.preventDefault();
+
+            const currentWard = $('#newWardValue').prop('placeholder');
+
+            if (confirm(`Bạn có chắc chắn muốn xoá phường ${currentWard} không?`)) {
+                wards.splice(wards.indexOf(currentWard), 1);
+
+                const data = {
+                    _id: '{{ currentDistId }}',
+                    districtName: currentDist,
+                    wards: wards
+                }
+
+                axios.patch(`./`, data)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    // Handle the error here
+                    console.error(error);
+                    alert('Xoá thất bại');
+                });
+            }
+        })
+
+        const distNames = '{{ distNames }}'.split(',');
+        const distModal = new bootstrap.Modal(document.getElementById('editDistModal'));
+        const distForm = $('#editDistForm');
+
+        // Edit district button handler
+        $('.edit-dist').click(function(event) {
+            event.preventDefault();
+
+            // Set placeholder của input thành tên quận cần sửa
+            $('#newDistValue').prop('placeholder', event.currentTarget.getAttribute('data-name'));
+
+            // Set mode cho form
+            distForm.attr('data-mode', 'edit-dist');
+            distModal.show();
+        })
+
+        function verifyDistricName(distName) {
+            if (distNames.includes(distName)) {
+                alert('Tên quận đã tồn tại');
+                return false;
+            }
+            return true;
+        }
+
+
+        // ADD DISTRICT MODAL
+        const addDistModal = new bootstrap.Modal(document.getElementById('addDistModal'));
+        const addDistForm = $('#addDistForm');
+
+        // Add District submit handler
+        addDistForm.on("submit", function(event) {
+            event.preventDefault();
+            
+            // Lấy tên quận
+            const newDistName = $('#newDistName').val();
+            if (!verifyDistricName(newDistName)) return;
+
+            // Lấy danh sách các phường, bỏ các dòng trống và trim 2 đầu
+            const wardList = $('#wardList').val().split('\n').map(s => s.trim()).filter(Boolean);
+
+            const data = {
+                districtName: newDistName,
+                wards: wardList
+            }
+            console.log(data);
+
+            axios.post(`./`, data)
+            .then(response => {
+                window.location.href = `/admin/dist/`;
+            })
+            .catch(error => {
+                // Handle the error here
+                console.error(error);
+                alert('Thêm Quận thất bại');
+            });
+        })
+
+
+        // focus vào input khi modal show
+        $('.modal.fade').on('shown.bs.modal', function () {
+            $(this).find('input').focus();
+        })
     });
 </script>
 {{/section}}
