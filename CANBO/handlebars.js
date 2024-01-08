@@ -59,7 +59,10 @@ const engineWithHelpers = engine({
                 default:
                     return options.inverse(this);
             }
-        }
+        },
+        create_order(val) {
+            return val + 1;
+        },
     }
 });
 
