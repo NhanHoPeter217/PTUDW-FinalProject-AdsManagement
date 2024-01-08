@@ -95,7 +95,7 @@
 
 <title>{{ title }}</title>
 
-{{!-- Add / Edit Ward Modal --}}
+{{!-- Add / Edit / Remove Ward Modal --}}
 <div
     class='modal fade'
     id='wardModal'
@@ -125,7 +125,15 @@
                             required
                         />
                     </div>
-                    <div class='button-container justify-content-center'>
+                    <div class='d-inline-flex justify-content-center column-gap-3'>
+                        <button
+                            id="remove-ward-button"
+                            type='button'
+                            class='btn btn-danger'
+                            style='width: 140px'
+                        >
+                            Xoá phường
+                        </button>
                         <button
                             type='submit'
                             class='btn btn-success'
@@ -254,6 +262,7 @@
 
             // Set placeholder của input thành tên phường cần sửa
             $('#newWardValue').prop('placeholder', event.currentTarget.getAttribute('data-name'));
+            $('#remove-ward-button').show();
 
             // Set mode cho form
             wardForm.attr('data-mode', 'edit-ward');
@@ -266,6 +275,7 @@
 
             // Reset placeholder trống
             $('#newWardValue').prop('placeholder', '');
+            $('#remove-ward-button').hide();
 
             // Set mode cho form
             wardForm.attr('data-mode', 'add-ward');
@@ -321,6 +331,33 @@
                 console.error(error);
                 alert('Sửa thất bại');
             });
+        })
+
+        // Remove ward button handler
+        $('#remove-ward-button').click(function(event) {
+            event.preventDefault();
+
+            const currentWard = $('#newWardValue').prop('placeholder');
+
+            if (confirm(`Bạn có chắc chắn muốn xoá phường ${currentWard} không?`)) {
+                wards.splice(wards.indexOf(currentWard), 1);
+
+                const data = {
+                    _id: '{{ currentDistId }}',
+                    districtName: currentDist,
+                    wards: wards
+                }
+
+                axios.patch(`./`, data)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    // Handle the error here
+                    console.error(error);
+                    alert('Xoá thất bại');
+                });
+            }
         })
 
         const distNames = '{{ distNames }}'.split(',');

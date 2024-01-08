@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
+const textSort = require('../../utils/textSort');
 
 const getAllDistricts = async (req, res) => {
     try {
@@ -32,13 +33,17 @@ const createDistrict = async (req, res) => {
 const updateDistrict = async (req, res) => {
     try {
         const _id = req.body._id;
-        const district = await District.findOneAndUpdate({ _id: _id }, {
-            districtName: req.body.districtName,
-            wards: req.body.wards
-        }, {
-            new: true,
-            runValidators: true
-        });
+        const district = await District.findOneAndUpdate(
+            { _id: _id },
+            {
+                districtName: req.body.districtName,
+                wards: textSort(req.body.wards)
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
 
         if (!district) {
             throw new CustomError.NotFoundError(`No district with name : ${_id}`);
