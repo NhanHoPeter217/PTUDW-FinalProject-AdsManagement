@@ -22,8 +22,8 @@ const getAllDistricts = async (req, res) => {
 
 const createDistrict = async (req, res) => {
     try {
-        const district = await District.create(req.body);
-        res.status(StatusCodes.CREATED).json({ district });
+        await District.create(req.body);
+        res.status(StatusCodes.CREATED).send();
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }

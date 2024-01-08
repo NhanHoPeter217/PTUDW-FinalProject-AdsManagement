@@ -9,6 +9,8 @@
                 type='button'
                 class='btn btn-primary my-3'
                 style='width: 100%'
+                data-bs-toggle="modal"
+                data-bs-target="#addDistModal"
             >
                 <i class="bi bi-building-add"></i>
                 Thêm quận mới
@@ -115,10 +117,10 @@
             <div class='modal-body'>
                 <form class='report-form d-flex flex-column align-items-center' id='wardForm' enctype='multipart/form-data'>
                     <div class='mb-3 d-inline-flex align-items-baseline'>
-                        <label for='fullName' class='form-label p-2'>Phường</label>
+                        <label for='newWardValue' class='form-label p-2'>Phường</label>
                         <input
                             type='text'
-                            class='form-control fullNameReport'
+                            class='form-control'
                             id='newWardValue'
                             required
                         />
@@ -161,10 +163,10 @@
             <div class='modal-body'>
                 <form class='report-form d-flex flex-column align-items-center' id='editDistForm' enctype='multipart/form-data'>
                     <div class='mb-3 d-inline-flex align-items-baseline'>
-                        <label for='fullName' class='form-label p-2'>Quận</label>
+                        <label for='newDistValue' class='form-label p-2'>Quận</label>
                         <input
                             type='text'
-                            class='form-control fullNameReport'
+                            class='form-control'
                             id='newDistValue'
                             required
                         />
@@ -183,6 +185,59 @@
         </div>
     </div>
 </div>
+
+
+{{!-- Add District Modal --}}
+<div
+    class='modal fade'
+    id='addDistModal'
+    tabindex='-1'
+    aria-labelledby='addDistModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title text-primary' id='addDistModalLabel'>Thêm quận</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='report-form d-flex flex-column align-items-stretch' id='addDistForm' enctype='multipart/form-data'>
+                    <div class='mb-3 d-inline-flex align-items-baseline'>
+                        <label for='newDistName' class='form-label p-2'>Quận</label>
+                        <input
+                            type='text'
+                            class='form-control'
+                            id='newDistName'
+                            placeholder="Tên quận mới"
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for="wardList" class="form-label p-2">Danh sách các phường</label>
+                        <textarea class="form-control" placeholder="Phường A" id="wardList" rows="5"></textarea>
+                        <div class="form-text">Nhập danh sách các phường vào đây, nhấn enter để thêm phường.</div>
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <button
+                            type='submit'
+                            class='btn btn-primary'
+                            style='width: 140px'
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {{#section 'js'}}
 <script>
@@ -292,31 +347,43 @@
             return true;
         }
 
+
+        // ADD DISTRICT MODAL
+        const addDistModal = new bootstrap.Modal(document.getElementById('addDistModal'));
+        const addDistForm = $('#addDistForm');
+
         // Add District submit handler
-        distForm.on("submit", function(event) {
+        addDistForm.on("submit", function(event) {
             event.preventDefault();
             
-            const newDistName = $('#newDistValue').val();
+            // Lấy tên quận
+            const newDistName = $('#newDistName').val();
             if (!verifyDistricName(newDistName)) return;
 
-            const currentDist = $('#newDistValue').prop('placeholder');
-            distNames[distNames.indexOf(currentDist)] = newDistName;
+            // Lấy danh sách các phường, bỏ các dòng trống và trim 2 đầu
+            const wardList = $('#wardList').val().split('\n').map(s => s.trim()).filter(Boolean);
 
             const data = {
-                _id: '{{ currentDistId }}',
                 districtName: newDistName,
-                wards: wards
+                wards: wardList
             }
+            console.log(data);
 
-            axios.patch(`./`, data)
+            axios.post(`./`, data)
             .then(response => {
-                window.location.href = `/admin/dist/${newDistName}`;
+                window.location.href = `/admin/dist/`;
             })
             .catch(error => {
                 // Handle the error here
                 console.error(error);
-                alert('Sửa Quận thất bại');
+                alert('Thêm Quận thất bại');
             });
+        })
+
+
+        // focus vào input khi modal show
+        $('.modal.fade').on('shown.bs.modal', function () {
+            $(this).find('input').focus();
         })
     });
 </script>
