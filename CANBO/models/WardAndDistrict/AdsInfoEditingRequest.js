@@ -41,7 +41,7 @@ const AdsInfoEditingRequestSchema = new Schema(
             }
         }
     },
-    { timestamps: true }
+    { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
 
 const AdsInfoEditingRequest = mongoose.model('AdsInfoEditingRequest', AdsInfoEditingRequestSchema);

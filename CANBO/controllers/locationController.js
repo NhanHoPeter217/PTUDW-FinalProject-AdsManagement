@@ -29,13 +29,14 @@ const getSingleLocation = async (req, res) => {
                 path: 'adsBoard',
                 model: 'AdsBoard'
             }
-        });
+        }).lean();
 
         if (!location) {
             throw new CustomError.NotFoundError(`No location with id: ${locationId}`);
         }
 
-        res.status(StatusCodes.OK).json({ location });
+        return location;
+        // res.status(StatusCodes.OK).json({ location });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
