@@ -1,8 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const AdsPoint = require('../../models/AdsPoint');
 const CustomError = require('../../errors');
-const { getSingleLocation } = require('../locationController');
-const { getAllAdsFormats } = require('./adsFormatController');
+const AdsFormat = require('../../models/Department/AdsFormat');
+const District = require('../../models/Department/District');
 
 const createAdsPoint = async (req, res) => {
     try {
@@ -15,31 +15,23 @@ const createAdsPoint = async (req, res) => {
 
 const getAllAdsPoints = async (req, res) => {
     try {
-        const adsPoints = await AdsPoint.find({}).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        }).populate('adsFormat').populate('location').lean();
+        const adsPoints = await AdsPoint.find({})
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate('adsFormat')
+            .populate('location')
+            .lean();
 
-        const locationIds = adsPoints.map(point => point.location);
-        console.log(adsPoints);
-        // const adsFormatsResponse = await getAllAdsFormats(req, res);
-        // const { adsFormats } = adsFormatsResponse;
-        // console.log(adsFormatsResponse);
-
-        // const locations = await Promise.all(locationIds.map(async (id) => {
-        //     try {
-        //         return await getSingleLocation(id);
-        //     } catch (error) {
-        //         return null;
-        //     }
-        // }));
-
-        // console.log(locations);
+        const adsFormats = await AdsFormat.find({}).lean();
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         res.render('vwAdsPoint/listAdsPoint', { 
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
-            locations: locationIds,
+            adsFormats: adsFormats,
+            districts: districts,
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

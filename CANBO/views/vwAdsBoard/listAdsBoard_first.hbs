@@ -1,0 +1,934 @@
+
+{{#section 'css'}}
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+<link rel="stylesheet" href="../../../public/css/report.css" />
+    <style>
+        #buttonStyle {
+            transition: filter 0.1s ease-in-out;
+        }
+        #buttonStyle:hover {
+            filter: brightness(0) invert(1);
+        }
+    </style>
+{{/section}}
+
+{{#section 'js'}}
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script src="https://unpkg.com/js-datepicker"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const adsFormats = [];
+        fetch(`/api/v1/adsPoint/{{id}}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((adsPoint_data) => {
+            if (!adsPoint_data) {
+                return;
+            }
+            console.log(adsPoint_data.adsPoint);
+
+            // detailAdsBoardModal
+            for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                $('#listAdsBoard_modalAddition').append(`<div
+                    class='modal fade'
+                    id="detailAdsBoardModal-${i}"
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel-${i}'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/Info_icon.svg'
+                                    style='height: 40px; width: 40px;'
+                                />
+                                <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-detail-body'>
+                                <form class='report-form' id='detailAdsBoardForm' enctype='multipart/form-data'>
+                                    <div class='mb-3 d-grid gap-2'>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
+                                                <p class='mb-0 text-primary fw-semibold' id="adsBoardType-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Địa điểm:</h5>
+                                                <p class='mb-0' id="locationName-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Quận:</h5>
+                                                <p class='mb-0' id="district-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Phường:</h5>
+                                                <p class='mb-0' id="ward-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Địa chỉ</h5>
+                                                <p class='mb-0' id="address-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Loại vị trí</h5>
+                                                <p class='mb-0' id="locationType-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Hình thức quảng cáo</h5>
+                                                <p class='mb-0' id="adsFormat-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Trạng thái địa điểm</h5>
+                                                <p class='mb-0' id="planningStatus-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Kích thước</h5>
+                                                <p class='mb-0' id="size-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Số lượng</h5>
+                                                <p class='mb-0' id="quantity-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Hình ảnh</h5>
+                                                <p class='mb-0' id="adsBoardImages-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <div class='card border'>
+                                            <div class='card-body'>
+                                                <h5 class='card-title fw-semibold'>Ngày hết hạn của hợp đồng quảng cáo</h5>
+                                                <p class='mb-0' id="contractEndDate-${i}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+            }
+
+            // requestLicenseAdsBoardModal
+            for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                $('#listAdsBoard_modalAddition').append(`<div
+                    class='modal fade'
+                    id='requestLicenseAdsBoardModal-${i}'
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel-${i}'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/License_icon_green.svg'
+                                    style='height: 50px; width: 50px;'
+                                />
+                                <h5 class='modal-green-title' id='reportModalLabel'>
+                                    Yêu cầu cấp phép quảng cáo
+                                </h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-body'>
+                                <form class='report-form' id='requestLicenseAdsBoardForm-${i}' enctype='multipart/form-data'>
+                                    <div class='mb-3'>
+                                        <label for='adsBoardType' class='form-label' style='font-family: Inter;'>
+                                            Loại bảng quảng cáo
+                                        </label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameReport'
+                                            id='license_adsBoardType-${i}'
+                                            disabled
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <details>
+                                            <summary>
+                                                <label
+                                                    for='locationName'
+                                                    class='form-label'
+                                                    style='font-family: Inter;'
+                                                >Điểm quảng cáo</label>
+                                                <input
+                                                    type='text'
+                                                    class='form-control fullNameReport'
+                                                    id='license_locationName-${i}'
+                                                    disabled
+                                                />
+                                            </summary>
+                                            <p class='p-2 grid gap-0 row-gap-3'>
+                                                <div class="d-flex flex-row column-gap-3">
+                                                    <div class='mb-3'>
+                                                        <label for='license_district' class='form-label' style='font-family: Inter'>
+                                                            <div>Quận</div>
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            class='form-control fullNameReport'
+                                                            id='license_district-${i}'
+                                                            disabled
+                                                        />
+                                                    </div>
+                                                    <div class='mb-3'>
+                                                        <label for='license_ward' class='form-label' style='font-family: Inter'>
+                                                            <div>Phường</div>
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            class='form-control fullNameReport'
+                                                            id='license_ward-${i}'
+                                                            disabled
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class='form-label p-1 g-col-6'>
+                                                    <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
+                                                    <textarea
+                                                        class='form-control fullNameReport'
+                                                        id='license_address-${i}'
+                                                        style="height: 100px;"
+                                                        disabled
+                                                    ></textarea>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='locationType' class='form-label' style='font-family: Inter;'>Loại vị trí</label>
+                                                    <select class='form-select reportType' id='license_locationType-${i}' disabled required>
+                                                        <option
+                                                            value='Đất công/Công viên/Hành lang an toàn giao thông'
+                                                            selected
+                                                        >
+                                                            Đất công/Công viên/Hành lang an toàn giao thông
+                                                        </option>
+                                                        <option value='Đất tư nhân/Nhà ở riêng lẻ'>Đất tư nhân/Nhà ở riêng lẻ</option>
+                                                        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+                                                        <option value='Chợ'>Chợ</option>
+                                                        <option value='Cây xăng'>Cây xăng</option>
+                                                        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+                                                    </select>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='adsFormat' class='form-label' style='font-family: Inter;'>Hình thức quảng cáo</label>
+                                                    <select class='form-select reportType' id='license_adsFormat-${i}' disabled required>
+                                                        <option value='Cổ động chính trị' selected>
+                                                            Cổ động chính trị
+                                                        </option>
+                                                        <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
+                                                        <option value='Xã hội hóa'>Xã hội hóa</option>
+                                                    </select>
+                                                </div>
+                                                <div class='form-label p-2 g-col-6'>
+                                                    <label for='planningStatus' class='form-label' style='font-family: Inter;'>Trạng thái địa điểm</label>
+                                                    <select class='form-select reportType' id='license_planningStatus-${i}' disabled required>
+                                                        <option value='Đã quy hoạch' selected>
+                                                            Đã quy hoạch
+                                                        </option>
+                                                        <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                                    </select>
+                                                </div>
+                                            </p>
+                                        </details>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3'>
+                                            <label for='height' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_height-${i}'
+                                                disabled
+                                                
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='width' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_width-${i}'
+                                                disabled
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='quantity' class='form-label' style='font-family: Inter'>Số lượng</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_quantity-${i}'
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='license_contractEndDate' class='form-label' style='font-family: Inter;'>Ngày hết hạn của hợp đồng quảng cáo hiện tại</label>
+                                        <input type='text' class='form-control' id="license_contractEndDate-${i}" disabled />
+                                    </div>
+                                    <h5 class='card-title fw-semibold mb-2'>Hình ảnh</h5>
+                                    <div class='card border mb-3'>
+                                        <div class='card-body'>
+                                            <p class='mb-0' id="license_adsBoardImages-${i}"></p>
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='companyName' class='form-label' style='font-family: Inter'>Tên công ty đặt quảng cáo</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='companyName'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3'>
+                                            <label for='license_contractStartDate_new' class='form-label' style='font-family: Inter'>Ngày bắt đầu hợp đồng</label>
+                                            <input type='text' id='license_contractStartDate_new-${i}' class='form-control' required />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='license_contractEndDate_new' class='form-label' style='font-family: Inter'>Ngày kết thúc hợp đồng</label>
+                                            <input type='text' id='license_contractEndDate_new-${i}' class='form-control' required />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='companyEmail' class='form-label' style='font-family: Inter;'>Email công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='companyEmail'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='companyPhone' class='form-label' style='font-family: Inter;'>Điện thoại công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='companyPhone'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='companyAddress' class='form-label' style='font-family: Inter'>Địa chỉ công ty</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='companyAddress'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='button-container justify-content-center'>
+                                        <div
+                                            id='recaptcha'
+                                            class='g-recaptcha'
+                                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                            data-callback='onSubmit'
+                                            data-size='invisible'
+                                        ></div>
+                                        <div class='d-grid gap-2 col-3 mx-auto'>
+                                            <button
+                                                id='submitLicenseButton'
+                                                type='button'
+                                                class='btn btn-success m-1'
+                                                style='font-family: Inter;'
+                                            >
+                                                GỬI
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+            }
+
+            // requestEditAdsBoardModal
+            for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                $('#listAdsBoard_modalAddition').append(`<div
+                    class='modal fade'
+                    id='requestEditAdsBoardModal-${i}'
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel-${i}'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                    style='height: 40px; width: 40px;'
+                                />
+                                <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                    Chỉnh sửa thông tin
+                                </h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-body'>
+                                <form class='report-form' id='requestEditAdsBoardForm' enctype='multipart/form-data'>
+                                    <div class='mb-3' id='adsboard_type-${i}'>
+                                        <div>
+                                            <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                    <div>Loại bảng quảng cáo</div>
+                                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_adsBoardType-${i}'></p>    
+                                                </div>
+                                            </label>
+                                            <select class='form-select reportType' id='edit_adsBoardType' required>
+                                                <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                        -- Chọn loại bảng quảng cáo --
+                                                </option>
+                                                <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
+                                                <option value='Trụ màn hình điện tử LED'>
+                                                    Trụ màn hình điện tử LED
+                                                </option>
+                                                <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+                                                <option value='Cổng chào'>Cổng chào</option>
+                                                <option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='adsPointName' class='form-label' style='font-family: Inter'>
+                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                <div>Điểm quảng cáo</div>
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_locationName-${i}'></p>    
+                                            </div>
+                                        </label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameReport'
+                                            id='edit_locationName'
+                                            required
+                                        />
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3' id='district_choice-${i}'>
+                                        </div>
+                                        <div class='mb-3' id='ward_choice-${i}'>
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='address' class='form-label' style='font-family: Inter'>
+                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                <div style="width: 17%;">Địa chỉ</div>
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_address-${i}'></p>    
+                                            </div>
+                                        </label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='edit_address'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='locationType' class='form-label' style='font-family: Inter'>
+                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                <div>Loại vị trí</div>
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_locationType-${i}'></p>    
+                                            </div>
+                                        </label>
+                                        <select class='form-select reportType' id='edit_locationType' required>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn loại vị trí --
+                                            </option>
+                                            <option
+                                                value='Đất công/Công viên/Hành lang an toàn giao thông'
+                                            >
+                                                Đất công/Công viên/Hành lang an toàn giao thông
+                                            </option>
+                                            <option value='Đất tư nhân/Nhà ở riêng lẻ'>
+                                                Đất tư nhân/Nhà ở riêng lẻ
+                                            </option>
+                                            <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+                                            <option value='Chợ'>Chợ</option>
+                                            <option value='Cây xăng'>Cây xăng</option>
+                                            <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+                                        </select>
+                                    </div>
+                                    <div class='mb-3' id='adsformat_type-${i}'>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='edit_planningStatus' class='form-label' style='font-family: Inter'>
+                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                <div>Trạng thái địa điểm</div>
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_planningStatus-${i}'></p>    
+                                            </div>
+                                        </label>
+                                        <select class='form-select reportType' id='edit_planningStatus' required>
+                                            <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                                    -- Chọn trạng thái --
+                                            </option>
+                                            <option value='Đã quy hoạch'>Đã quy hoạch</option>
+                                            <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3'>
+                                            <label for='edit_height' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                    <div>Chiều cao (m)</div>
+                                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_height-${i}'></p>    
+                                                </div>
+                                            </label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='edit_height'
+                                                required
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='edit_width' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                    <div>Chiều rộng (m)</div>
+                                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_width-${i}'></p>    
+                                                </div>
+                                            </label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='edit_width'
+                                                required
+                                            />
+                                        </div>
+                                        <div class='mb-3'>
+                                            <label for='quantity' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                    <div>Số lượng</div>
+                                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_quantity-${i}'></p>    
+                                                </div>
+                                            </label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='edit_quantity'
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='edit_contractEndDate_new' class='form-label' style='font-family: Inter'>
+                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                <div>Ngày hết hạn của hợp đồng quảng cáo</div>
+                                                <p class='mb-0 text-black-50 fw-nomral' id='edit_contractEndDate-${i}'></p>    
+                                            </div>
+                                        </label>
+                                        <input type='text' id='edit_contractEndDate_new-${i}' class='form-control' required />
+                                    </div>
+                                    <div class='mb-3'>
+                                        <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                                        <div class='card border mb-3'>
+                                            <div class='card-body'>
+                                                <p class='mb-0' id="edit_adsBoardImages-${i}"></p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type='file'
+                                            class='form-control reportImage'
+                                            id="edit_adsBoardImages"
+                                            accept='image/*'
+                                        />
+                                    </div>
+                                    <div class='button-container justify-content-center'>
+                                        <div
+                                            id='recaptcha'
+                                            class='g-recaptcha'
+                                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                            data-callback='onSubmit'
+                                            data-size='invisible'
+                                        ></div>
+                                        <div class='d-grid gap-2 col-3 mx-auto'>
+                                            <button
+                                                id='submitEditButton'
+                                                type='button'
+                                                class='btn btn-warning'
+                                                style='font-family: Inter'
+                                            >
+                                                GỬI
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+            }
+
+            // get all adsFormats
+            fetch('/api/v1/adsFormat', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                return response.json();
+            })
+            .then((adsFormat_data) => {
+                if (!adsFormat_data) {
+                    return;
+                }
+                console.log(adsFormat_data);
+
+                // get all districts
+                fetch('/api/v1/district', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((district_data) => {
+                    if (!district_data) {
+                        return;
+                    }
+                    console.log(district_data);
+
+                    for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                        $(`#adsformat_type-${i}`).append(`<div>
+                            <label for='adsFormat' class='form-label' style='font-family: Inter'>
+                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                    <div>Hình thức quảng cáo</div>
+                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_adsFormat-${i}'></p>    
+                                </div>
+                            </label>
+                            <select class='form-select reportType' id='adsformat_type_list-${i}' required>
+                                <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                        -- Chọn hình thức quảng cáo --
+                                </option>
+                            </select></div>`
+                        );
+                        $(`#district_choice-${i}`).append(`<div>
+                            <label for='district' class='form-label' style='font-family: Inter'>
+                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                    <div>Quận</div>
+                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_district-${i}'></p>    
+                                </div>
+                            </label>
+                            <select class='form-select reportType' id='district_choice_list-${i}' required>
+                                <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                        -- Chọn Quận --
+                                </option>
+                            </select></div>`
+                        );
+                        $(`#ward_choice-${i}`).append(`<div>
+                            <label for='ward' class='form-label' style='font-family: Inter'>
+                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                    <div>Phường</div>
+                                    <p class='mb-0 text-black-50 fw-nomral' id='edit_ward-${i}'></p>    
+                                </div>
+                            </label>
+                            <select class='form-select reportType' id='ward_choice_list-${i}' required>
+                                <option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                        -- Chọn Phường --
+                                </option>
+                            </select></div>`
+                        );
+
+                        for (let j = 0; j < adsFormat_data.count; ++j) {
+                            const adsFormat = adsFormat_data.adsFormats[j];
+                            $(`#adsformat_type_list-${i}`).append(
+                                `<option value=${adsFormat.name}>${adsFormat.name}</option>`
+                            );
+
+                            if (adsPoint_data.adsPoint.adsFormat === adsFormat._id) {
+                                adsFormats.push(adsFormat.name);
+                            }
+                        }
+                        for (let j = 0; j < district_data.count; ++j) {
+                            const district = district_data.districts[j];
+                            $(`#district_choice_list-${i}`).append(
+                                `<option value=${district.districtName}>${district.districtName}</option>`
+                            );
+                        }
+
+                        $(`#district_choice_list-${i}`).on('change', function() {
+                            const selectedDistrict = $(this).val();
+                            const districtIndex = $(this).attr('id').split('-').pop();
+
+                            // Clear previous ward options
+                            $(`#ward_choice_list-${districtIndex}`).empty().append(
+                                `<option class='mb-0 text-black-50 fw-nomral' selected disabled>
+                                    -- Chọn Phường --
+                                </option>`
+                            );
+
+                            // Find the selected district object from district_data
+                            const district = district_data.districts.find(d => d.districtName === selectedDistrict);
+
+                            // Populate the ward list based on the selected district
+                            if (district) {
+                                for (let k = 0; k < district.wards.length; ++k) {
+                                    const ward = district.wards[k];
+                                    $(`#ward_choice_list-${districtIndex}`).append(
+                                        `<option value=${ward}>${ward}</option>`
+                                    );
+                                }
+                            }
+                        });
+                    }
+
+                    fetch(`/api/v1/location/` + adsPoint_data.adsPoint.location, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then((res) => res.json())
+                    .then((location_data) => {
+                        if (!location_data) {
+                            return;
+                        }
+                        console.log(location_data);
+
+                        $('#tableName').append(`Danh sách bảng đặt quảng cáo - ${location_data.location.locationName}`);
+
+                        for (let i = 0; i < adsPoint_data.adsPoint.adsBoard.length; i++) {
+                            const adsBoard = adsPoint_data.adsPoint.adsBoard[i];
+
+                            // Format date
+                            const contractEndDate = new Date(adsBoard.contractEndDate);
+
+                            const day = contractEndDate.getDate();
+                            const month = contractEndDate.getMonth() + 1;
+                            const year = contractEndDate.getFullYear();
+
+                            const contractEndDateFormat = `${(month < 10 ? '0' : '') + month}/${(day < 10 ? '0' : '') + day}/${year}`;
+                            
+                            $('#body').append(`
+                                <tr>
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">${i + 1}</h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-link m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailAdsBoardModal-${i}">
+                                            ${adsBoard.adsBoardType}
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">${adsBoard.size.width}m x ${adsBoard.size.height}m</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">${adsBoard.quantity}</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <p class="mb-0 fw-normal">${location_data.location.district}</p>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestLicenseAdsBoardModal-${i}">
+                                            <div>
+                                                <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
+                                                Yêu cầu cấp phép
+                                            </div>
+                                        </button>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#requestEditAdsBoardModal-${i}">
+                                            <div id="buttonStyle">
+                                                <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                Yêu cầu chỉnh sửa
+                                            </div>
+                                        </button>
+                                    </td>
+                                </tr>`);
+
+                            // detailAdsBoardModal
+                            document.getElementById(`adsBoardType-${i}`).textContent = adsBoard.adsBoardType;
+                            document.getElementById(`locationName-${i}`).textContent = location_data.location.locationName;
+                            document.getElementById(`address-${i}`).textContent = location_data.location.address;
+                            document.getElementById(`locationType-${i}`).textContent = adsPoint_data.adsPoint.locationType;
+                            document.getElementById(`adsFormat-${i}`).textContent = adsFormats[i];
+                            document.getElementById(`planningStatus-${i}`).textContent = adsPoint_data.adsPoint.planningStatus;
+                            document.getElementById(`size-${i}`).textContent = `${adsBoard.size.width}m x ${adsBoard.size.height}m`;
+                            document.getElementById(`quantity-${i}`).textContent = adsBoard.quantity;
+                            // document.getElementById(`adsBoardImages-${i}`).textContent = adsBoard.adsBoardImages;
+                            document.getElementById(`adsBoardImages-${i}`).innerHTML = `<img src="/public/images/IMG_7850.png" alt="" width="100%" height="100%" />`;
+                            document.getElementById(`contractEndDate-${i}`).textContent = contractEndDateFormat;
+                            document.getElementById(`district-${i}`).textContent = location_data.location.district;
+                            document.getElementById(`ward-${i}`).textContent = location_data.location.ward;
+                            const detailAdsBoardModal = new bootstrap.Modal(document.getElementById(`detailAdsBoardModal-${i}`));
+
+                            // requestLicenseAdsBoardModal
+                            document.getElementById(`license_adsBoardType-${i}`).value = adsBoard.adsBoardType;
+                            document.getElementById(`license_locationName-${i}`).value = location_data.location.locationName;
+                            document.getElementById(`license_address-${i}`).value = location_data.location.address;
+                            document.getElementById(`license_locationType-${i}`).value = adsPoint_data.adsPoint.locationType;
+                            document.getElementById(`license_adsFormat-${i}`).value = adsFormats[i];
+                            document.getElementById(`license_planningStatus-${i}`).value = adsPoint_data.adsPoint.planningStatus;
+                            document.getElementById(`license_height-${i}`).value = adsBoard.size.height;
+                            document.getElementById(`license_width-${i}`).value = adsBoard.size.width;
+                            document.getElementById(`license_quantity-${i}`).value = adsBoard.quantity;
+                            // document.getElementById(`license_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
+                            document.getElementById(`license_adsBoardImages-${i}`).innerHTML = `<img src="/public/images/IMG_7850.png" alt="" width="100%" height="100%" />`;
+                            document.getElementById(`license_contractEndDate-${i}`).value = contractEndDateFormat;
+                            document.getElementById(`license_district-${i}`).value = location_data.location.district;
+                            document.getElementById(`license_ward-${i}`).value = location_data.location.ward;
+                            const requestLicenseAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestLicenseAdsBoardModal-${i}`));
+
+                            // requestEditAdsBoardModal
+                            document.getElementById(`edit_adsBoardType-${i}`).textContent = `(${adsBoard.adsBoardType})`;
+                            document.getElementById(`edit_locationName-${i}`).textContent = `(${location_data.location.locationName})`;
+                            document.getElementById(`edit_address-${i}`).textContent = `(${location_data.location.address})`;
+                            document.getElementById(`edit_locationType-${i}`).textContent = `(${adsPoint_data.adsPoint.locationType})`;
+                            document.getElementById(`edit_adsFormat-${i}`).textContent = `(${adsFormats[i]})`;
+                            document.getElementById(`edit_planningStatus-${i}`).textContent = `(${adsPoint_data.adsPoint.planningStatus})`;
+                            document.getElementById(`edit_height-${i}`).textContent = `(${adsBoard.size.height})`;
+                            document.getElementById(`edit_width-${i}`).textContent = `(${adsBoard.size.width})`;
+                            document.getElementById(`edit_quantity-${i}`).textContent = `(${adsBoard.quantity})`;
+                            // document.getElementById(`edit_adsBoardImages-${i}`).value = adsBoard.adsBoardImages;
+                            document.getElementById(`edit_adsBoardImages-${i}`).innerHTML = `<img src="/public/images/IMG_7850.png" alt="" width="100%" height="100%" />`;
+                            document.getElementById(`edit_contractEndDate-${i}`).textContent = `(${contractEndDateFormat})`;
+                            document.getElementById(`edit_district-${i}`).textContent = `(${location_data.location.district})`;
+                            document.getElementById(`edit_ward-${i}`).textContent = `(${location_data.location.ward})`;
+                            const requestEditAdsBoardModal = new bootstrap.Modal(document.getElementById(`requestEditAdsBoardModal-${i}`));
+                            initializeDatepicker(`#license_contractEndDate_new-${i}`);
+                            initializeDatepicker(`#license_contractStartDate_new-${i}`);
+                            initializeDatepicker(`#edit_contractEndDate_new-${i}`);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Lỗi khi gửi dữ liệu Quận: ', error);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi gửi dữ liệu hình thức quảng cáo: ', error);
+                });
+
+            })
+            .catch((error) => {
+                console.error('Lỗi khi gửi dữ liệu vị trí: ', error);
+            });
+        })
+        .catch((error) => {
+            console.error('Lỗi khi gửi dữ liệu điểm quảng cáo: ', error);
+        });
+
+        function initializeDatepicker(inputId) {
+            const picker = datepicker(inputId, {
+                formatter: (input, date, instance) => {
+                    const value = date.toLocaleDateString();
+                    input.value = value; // => '1/25/2099'
+                },
+                overlayPlaceholder: 'Nhập năm',
+                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
+            });
+        }
+    });
+</script>
+{{/section}}
+
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card w-100 mb-4">
+                <div class="card-body p-4">
+                    <button type="button" class="btn btn-outline-dark mb-4">
+                        <div id="buttonStyle" onclick="goBack()">
+                            <img src="../../../public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
+                            Trở về
+                        </div>
+                    </button>
+                    <h5 class="card-title fw-semibold mb-4" id="tableName">
+                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">#</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Kích thước</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Số lượng</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Quận</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<title>Danh sách bảng quảng cáo</title>
+
+<div id="listAdsBoard_modalAddition"></div>

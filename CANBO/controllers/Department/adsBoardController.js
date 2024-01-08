@@ -32,12 +32,32 @@ const getAllAdsBoards = async (req, res) => {
 const getAllAdsBoardsByAdsPointId = async (req, res) => {
     const { id: adsPointId } = req.params;
     try {
-        const adsBoards = await AdsBoard.find({ adsPoint: adsPointId }).populate({
+        const adsBoards = await AdsBoard.find({ adsPoint: adsPointId })
+        .populate({
             path: 'adsBoard',
             model: 'AdsBoard'
-        });
+        })
+        .populate({
+            path: 'adsPoint',
+            populate: [
+                {
+                    path: 'location',
+                    model: 'Location',
+                },
+                {
+                    path: 'adsFormat',
+                    model: 'AdsFormat',
+                },
+            ]
+        })
+        .lean();
 
-        res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
+        console.log(adsBoards);
+
+        res.render('vwAdsBoard/listAdsBoard', {
+            adsBoards: adsBoards,
+            empty: adsBoards.length === 0,
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
