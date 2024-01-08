@@ -1,9 +1,12 @@
 const { StatusCodes } = require('http-status-codes');
+const Location = require('../../models/Location');
 const AdsPoint = require('../../models/AdsPoint');
 const CustomError = require('../../errors');
 
 const createAdsPoint = async (req, res) => {
     try {
+        const location = await Location.create(req.body.location);
+        req.body.location = location._id;
         const adsPoint = await AdsPoint.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsPoint });
     } catch (error) {
@@ -83,11 +86,12 @@ const deleteAdsPoint = async (req, res) => {
     try {
         const { id: adsPointId } = req.params;
         const adsPoint = await AdsPoint.findOne({ _id: adsPointId });
+        const location = await Location.findOne({ _id: adsPoint.location });
 
         if (!adsPoint) {
             throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
         }
-
+        await location.remove();
         await adsPoint.remove();
         res.status(StatusCodes.OK).json({ msg: 'Success! Ads point removed.' });
     } catch (error) {

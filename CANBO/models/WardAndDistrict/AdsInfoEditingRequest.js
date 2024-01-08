@@ -1,26 +1,38 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const AdsInfoEditingRequestSchema = new Schema(
     {
         adsObject: {
             type: Schema.Types.ObjectId,
-            refPath: 'adsType'
+            refPath: 'adsType',
+            required: true
         },
 
         adsType: {
             type: String,
-            enum: ['AdsBoard', 'AdsPoint'],
+            enum: ['AdsBoard', 'AdPoint'],
             required: true
         },
 
         newInfo: {
             type: Schema.Types.ObjectId,
-            refPath: 'adsType',
+            refPath: 'adsNewInfoType',
             required: true
         },
 
-        editRequestTime: { type: Date, default: Date.now },
+        adsNewInfoType: {
+            type: String,
+            enum: ['AdsPointRequestedEdit', 'AdsBoardRequestedEdit'],
+        },
+
+        editRequestTime: {
+            type: String,
+            default: () => {
+                return moment().format('DD/MM/YYYY');
+            },
+        },
 
         editReason: { type: String },
 
@@ -43,6 +55,15 @@ const AdsInfoEditingRequestSchema = new Schema(
     },
     { timestamps: true }
 );
+
+AdsInfoEditingRequestSchema.pre('save', function (next) {
+    if (this.adsType === 'AdsBoard') {
+        this.adsNewInfoType = 'AdsPointRequestedEdit';
+    } else if (this.adsType === 'AdPoint') {
+        this.adsNewInfoType = 'AdsBoardRequestedEdit';
+    }
+    next();
+});
 
 const AdsInfoEditingRequest = mongoose.model('AdsInfoEditingRequest', AdsInfoEditingRequestSchema);
 

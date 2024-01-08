@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const adsLicenseRequestSchema = new Schema(
     {
-        adsBoard: {
+        licenseRequestedAdsBoard: {
             type: Schema.Types.ObjectId,
-            ref: 'AdsBoard',
+            ref: 'LicenseRequestedAdsBoard',
             required: true
         },
 
@@ -26,12 +26,12 @@ const adsLicenseRequestSchema = new Schema(
         },
 
         contractStartDate: {
-            type: Date,
+            type: String,
             required: true
         },
 
         contractEndDate: {
-            type: Date,
+            type: String,
             required: true
         },
 

@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const adsPointSchema = new Schema(
+const adsPointRequestedEditSchema = new Schema(
     {
         location: {
             type: Schema.Types.ObjectId,
             ref: 'Location',
-            required: true,
-            unique: true
+            required: true
         },
 
         locationType: {
@@ -40,26 +39,10 @@ const adsPointSchema = new Schema(
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-adsPointSchema.virtual('adsBoard', {
-    ref: 'AdsBoard',
-    localField: '_id',
-    foreignField: 'adsPoint'
-});
-
-// adsPointSchema.pre(/^find/, function(next) {
-
-//     if (this.options._recursed) {
-//         return next();
-//     }
-
-//     this.populate({
-//         path: "location",
-//         model: "Location",
-//         select: "ward district",
-//         options: { _recursed: true }
-//     });
-//     console.log('Middleware pre-find of AdsPoint executed before find operation');
-//     next();
+// adsPointRequestedEditSchema.virtual('adsBoard', {
+//     ref: 'AdsBoard',
+//     localField: '_id',
+//     foreignField: 'adsPoint'
 // });
 
-module.exports = mongoose.model('AdsPoint', adsPointSchema);
+module.exports = mongoose.model('AdsPointRequestedEdit', adsPointRequestedEditSchema);
