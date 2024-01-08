@@ -4,8 +4,17 @@ const CustomError = require('../../errors');
 
 const getAllDistricts = async (req, res) => {
     try {
-        const districts = await District.find({}).sort({ districtName: 1 });
-        res.status(StatusCodes.OK).json({ districts, count: districts.length });
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+        const distName = req.params.distName;
+
+        res.render('vwDepartment/manageWardDistrict.hbs', {
+            title: 'Quản lý Quận/Phường',
+            currentDistName: distName,
+            currentDistId: districts.find((dist) => dist.districtName === distName)._id,
+            dists: districts,
+            distNames: districts.map((dist) => dist.districtName),
+            wards: districts.find((dist) => dist.districtName === distName).wards
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -22,17 +31,20 @@ const createDistrict = async (req, res) => {
 
 const updateDistrict = async (req, res) => {
     try {
-        const { id: districtId } = req.params;
-        const district = await District.findOneAndUpdate({ _id: districtId }, req.body, {
+        const _id = req.body._id;
+        const district = await District.findOneAndUpdate({ _id: _id }, {
+            districtName: req.body.districtName,
+            wards: req.body.wards
+        }, {
             new: true,
             runValidators: true
         });
 
         if (!district) {
-            throw new CustomError.NotFoundError(`No district with id : ${districtId}`);
+            throw new CustomError.NotFoundError(`No district with name : ${_id}`);
         }
 
-        res.status(StatusCodes.OK).json({ district });
+        res.status(StatusCodes.OK).send();
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
