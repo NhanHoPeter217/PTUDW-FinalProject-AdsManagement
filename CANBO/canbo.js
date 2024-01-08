@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 app.use(cors(corsOptions));
 
 // routers
-const authRouter = require('./routes/auth');
+const authRouter = require('./routes/auth.js');
 const jobsRouter = require('./routes/jobs');
 const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
@@ -87,7 +87,7 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // routes
-app.use('/api/v1/auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/forgotpw', forgotpwRouter);
 app.use('/api/v1/report', reportProcessingRouter);
@@ -97,16 +97,16 @@ app.use('/api/v1/jobs', jobsRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/report', reportRouter);
 
-app.use('/api/v1/adsBoard', adsBoardRouter);
+app.use('/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
-app.use('/api/v1/adsPoint', adsPointRouter);
+app.use('/adsPoint', adsPointRouter);
 app.use('/api/v1/district', districtRouter);
 app.use('/api/v1/ward', wardRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
-app.use('/api/v1/location', locationRouter);
+app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
 // FRONT END
 // Setup handlebars view engine
@@ -134,6 +134,12 @@ app.engine(
                 }
 
                 return null;
+            },
+            create_order(val) {
+                return val + 1;
+            },
+            equal(a, b) {
+                return a === b;
             }
         }
     })
@@ -161,13 +167,13 @@ app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
 
-app.get('/signin', function (req, res) {
-    res.render('commonFeatures/signin', { layout: false });
-});
+// app.get('/signin', function (req, res) {
+//     res.render('commonFeatures/signin', { layout: false });
+// });
 
-app.get('/admin/adsboard/list', function (req, res) {
-    res.render('vwAdsBoard/listAdsBoard', {});
-});
+// app.get('/admin/adsboard/list', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard', {});
+// });
 
 app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     const id = req.params.id;
@@ -176,9 +182,9 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     res.render('vwAdsBoard/listAdsBoard', { id: id });
 });
 
-app.get('/admin/adspoint/list', function (req, res) {
-    res.render('vwAdsPoint/listAdsPoint', {});
-});
+// app.get('/admin/adspoint/list', function (req, res) {
+//     res.render('vwAdsPoint/listAdsPoint', {});
+// });
 
 app.get('/admin/types/list', function (req, res) {
     res.render('vwType/listType', {});

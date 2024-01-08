@@ -73,8 +73,13 @@
             });
             const picker = datepicker('#register_DOB', {
                 formatter: (input, date, instance) => {
-                    const value = date.toLocaleDateString();
-                    input.value = value; // => '1/25/2099'
+                    const options = {
+                        day: 'numeric',
+                        month: 'numeric',
+                        year: 'numeric'
+                    };
+                    const value = date.toLocaleDateString('en-GB', options);
+                    input.value = value; // '25/1/2099'
                 },
                 overlayPlaceholder: 'Nhập năm',
                 customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']

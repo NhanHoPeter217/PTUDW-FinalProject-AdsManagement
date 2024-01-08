@@ -1,6 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const AdsPoint = require('../../models/AdsPoint');
 const CustomError = require('../../errors');
+const { getSingleLocation } = require('../locationController');
+const { getAllAdsFormats } = require('./adsFormatController');
 
 const createAdsPoint = async (req, res) => {
     try {
@@ -16,8 +18,29 @@ const getAllAdsPoints = async (req, res) => {
         const adsPoints = await AdsPoint.find({}).populate({
             path: 'adsBoard',
             model: 'AdsBoard'
+        }).populate('adsFormat').populate('location').lean();
+
+        const locationIds = adsPoints.map(point => point.location);
+        console.log(adsPoints);
+        // const adsFormatsResponse = await getAllAdsFormats(req, res);
+        // const { adsFormats } = adsFormatsResponse;
+        // console.log(adsFormatsResponse);
+
+        // const locations = await Promise.all(locationIds.map(async (id) => {
+        //     try {
+        //         return await getSingleLocation(id);
+        //     } catch (error) {
+        //         return null;
+        //     }
+        // }));
+
+        // console.log(locations);
+
+        res.render('vwAdsPoint/listAdsPoint', { 
+            adsPoints: adsPoints,
+            empty: adsPoints.length === 0,
+            locations: locationIds,
         });
-        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
