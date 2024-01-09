@@ -94,9 +94,10 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/report', reportRouter);
 
 app.use('/adsBoard', adsBoardRouter);
-app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
+app.use('/type', typeRoute);
+app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);

@@ -37,6 +37,7 @@
 {{#section 'js'}}
 <script>
     $(document).ready(function() {
+        // Get all district and ward for the dropdown list
         fetch('/api/v1/district', {
             method: 'GET',
             headers: {
