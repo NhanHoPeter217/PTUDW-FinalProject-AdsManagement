@@ -21,6 +21,15 @@ const getAllDistricts = async (req, res) => {
     }
 };
 
+const apiGetAllDistricts = async (req, res) => {
+    try {
+        const districts = await District.find({});
+        res.status(StatusCodes.OK).json({ districts, count: districts.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 const createDistrict = async (req, res) => {
     try {
         await District.create(req.body);
@@ -73,6 +82,7 @@ const deleteDistrict = async (req, res) => {
 
 module.exports = {
     getAllDistricts,
+    apiGetAllDistricts,
     createDistrict,
     updateDistrict,
     deleteDistrict

@@ -97,32 +97,6 @@
                 overlayPlaceholder: 'Nhập năm',
                 customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
             });
-            const picker3 = datepicker('#license_contractEndDate', {
-                formatter: (input, date, instance) => {
-                    const options = {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric'
-                    };
-                    const value = date.toLocaleDateString('en-GB', options);
-                    input.value = value; // '25/1/2099'
-                },
-                overlayPlaceholder: 'Nhập năm',
-                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-            });
-            const picker4 = datepicker('#license_contractStartDate', {
-                formatter: (input, date, instance) => {
-                    const options = {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric'
-                    };
-                    const value = date.toLocaleDateString('en-GB', options);
-                    input.value = value; // '25/1/2099'
-                },
-                overlayPlaceholder: 'Nhập năm',
-                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-            });
         </script>
         
         {{{_sections.js}}}

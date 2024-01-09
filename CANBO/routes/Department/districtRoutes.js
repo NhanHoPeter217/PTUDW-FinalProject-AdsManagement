@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateUser, authorizePermissions } = require('../../middleware/authentication');
 const {
     getAllDistricts,
+    apiGetAllDistricts,
     createDistrict,
     updateDistrict,
     deleteDistrict
@@ -13,6 +14,7 @@ const {
 
 router.get('/', (req, res) => res.redirect('http://localhost:4000/admin/dist/1'));
 router.get('/:distName', getAllDistricts);
+router.get('/api/v1', apiGetAllDistricts);
 
 router.route('/').post(createDistrict);
 router.route('/').patch(updateDistrict);
