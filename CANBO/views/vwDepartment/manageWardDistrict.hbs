@@ -384,6 +384,30 @@
             return true;
         }
 
+        // Edit District modal
+        distForm.on("submit", function(event) {
+            event.preventDefault();
+            
+            const newDistName = $('#newDistValue').val();
+            if (!verifyDistricName(newDistName)) return;
+
+            const data = {
+                _id: '{{ currentDistId }}',
+                districtName: newDistName,
+                wards: wards
+            }
+
+            axios.patch(`./`, data)
+            .then(response => {
+                window.location.href = `/district/${newDistName}`;
+            })
+            .catch(error => {
+                // Handle the error here
+                console.error(error);
+                alert('Sửa thất bại');
+            });
+        })
+
 
         // ADD DISTRICT MODAL
         const addDistModal = new bootstrap.Modal(document.getElementById('addDistModal'));
