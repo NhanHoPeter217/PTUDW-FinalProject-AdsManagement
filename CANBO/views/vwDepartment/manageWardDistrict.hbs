@@ -19,14 +19,14 @@
             <div class="list-group">
             {{#each dists}}
                 {{#ifCond districtName '==' ../currentDistName}}
-                <a href="/admin/dist/{{districtName}}" class="list-group-item d-flex list-group-item-action justify-content-around align-items-baseline active">
+                <a href="/district/{{districtName}}" class="list-group-item d-flex list-group-item-action justify-content-around align-items-baseline active">
                     <span>Quận {{districtName}}</span>
                     <button class="btn btn-light edit-dist" data-name="{{districtName}}">
                         <i class="bi bi-pencil"></i>
                     </button>
                 </a>
                 {{else}}
-                <a href="/admin/dist/{{districtName}}" class="list-group-item list-group-item-action">Quận {{districtName}}</a>
+                <a href="/district/{{districtName}}" class="list-group-item list-group-item-action">Quận {{districtName}}</a>
                 {{/ifCond}}
             {{/each}}
             </div>
@@ -292,7 +292,7 @@
             return true;
         }
 
-        // Add Ward submit handler
+        // Ward submit handler
         wardForm.on("submit", function(event) {
             event.preventDefault();
             
@@ -389,7 +389,7 @@
         const addDistModal = new bootstrap.Modal(document.getElementById('addDistModal'));
         const addDistForm = $('#addDistForm');
 
-        // Add District submit handler
+        // District submit handler
         addDistForm.on("submit", function(event) {
             event.preventDefault();
             
@@ -408,7 +408,7 @@
 
             axios.post(`./`, data)
             .then(response => {
-                window.location.href = `/admin/dist/`;
+                window.location.href = `/district`;
             })
             .catch(error => {
                 // Handle the error here
