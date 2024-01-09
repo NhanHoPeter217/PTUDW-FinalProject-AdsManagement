@@ -56,7 +56,6 @@ const locationRouter = require('./routes/locationRoutes');
 
 const reportRoute = require('./routes/report-ward.route');
 const adsPointRoute = require('./routes/ads-point.route');
-const wardListRoute = require('./routes/ward-list.route');
 // const adsBoardRoute = require('./routes/ads-board.route');
 const requestRoute = require('./routes/request.route');
 const typeRoute = require('./routes/type.route');
@@ -99,7 +98,7 @@ app.use('/api/v1/report', reportRouter);
 app.use('/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/adsPoint', adsPointRouter);
-app.use('/api/v1/district', districtRouter);
+app.use('/admin/dist', districtRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
@@ -172,7 +171,6 @@ app.get('/admin/types/list', function (req, res) {
 // app.use('/admin/adspoint', adsPointRoute);
 
 app.use('/admin/report', reportRoute);
-app.use('/admin/dist', wardListRoute);
 app.use('/admin/request', requestRoute);
 
 app.use(notFoundMiddleware);

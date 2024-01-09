@@ -11,9 +11,11 @@ const {
 // router.use(authenticateUser);
 // router.use(authorizePermissions('Sở VH-TT'));
 
-router.route('/').get(getAllDistricts);
+router.get('/', (req, res) => res.redirect('http://localhost:4000/admin/dist/1'));
+router.get('/:distName', getAllDistricts);
+
 router.route('/').post(createDistrict);
-router.route('/:id').patch(updateDistrict);
+router.route('/').patch(updateDistrict);
 router.route('/:id').delete(deleteDistrict);
 
 module.exports = router;
