@@ -27,7 +27,7 @@ const getAllAdsPoints = async (req, res) => {
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
-        res.render('vwAdsPoint/listAdsPoint', { 
+        res.render('vwAdsPoint/listAdsPoint', {
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
