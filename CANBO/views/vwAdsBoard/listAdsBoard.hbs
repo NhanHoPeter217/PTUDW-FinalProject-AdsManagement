@@ -11,24 +11,82 @@
         }
     </style>
 {{/section}}
+{{#section 'js'}}
+<script>
+    $(document).ready(function() {
+        fetch('/api/v1/district', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((district_data) => {
+            if (!district_data) { return; }
+            if ($('#edit_district').length > 0) {
+                $('#edit_district').on('change', function() {
+                    var selectedDistrict = $(this).val();
+
+                    let selectedDistrictData;
+                    for (let i = 0; i < district_data.count; ++i) {
+                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                            selectedDistrictData = district_data.districts[i];
+                            break;
+                        }
+                    }
+
+                    if (selectedDistrictData) {
+                        const wards = selectedDistrictData.wards;
+
+                        $('#edit_ward').empty();
+                        $('#edit_ward').append(`<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`);
+
+                        wards.forEach(function(ward) {
+                            $('#edit_ward').append(`<option value="${ward}">${ward}</option>`);
+                        });
+                    } else {
+                        console.log('District not found!');
+                    }
+                });
+            } else {
+                console.log('#edit_district not found!');
+            }
+        });
+    });
+</script>
+{{/section}}
 
 
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
+            <button type="button" class="btn btn-outline-dark mb-3">
+                <div id="buttonStyle" onclick="goBack()">
+                    <img src="../../../public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
+                    Trở về
+                </div>
+            </button>
             <div class="card w-100 mb-4">
                 <div class="card-body p-4">
-                    <button type="button" class="btn btn-outline-dark mb-4">
-                        <div id="buttonStyle" onclick="goBack()">
-                            <img src="../../../public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
-                            Trở về
-                        </div>
-                    </button>
-                    <h5 class="card-title fw-semibold mb-4" id="tableName">
-                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
-                        Danh sách bảng đặt quảng cáo
-                    </h5>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-semibold mb-4" id="tableName">
+                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                            Danh sách bảng đặt quảng cáo
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn btn-success m-1"
+                            data-bs-toggle="modal"
+                            data-bs-target="#requestLicenseAdsBoardModal">
+                            <div>
+                                <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
+                                Yêu cầu cấp phép
+                            </div>
+                        </button>
+                    </div>
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
@@ -88,21 +146,9 @@
                                     <td class="border-bottom-0">
                                         <button
                                             type="button"
-                                            class="btn btn-success m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestLicenseAdsBoardModal-${i}">
-                                            <div>
-                                                <img src="../../../public/assets/icons/License_icon.svg" alt="" width="24" height="24" />
-                                                Yêu cầu cấp phép
-                                            </div>
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
                                             class="btn btn-outline-warning m-1"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsBoardModal-${i}">
+                                            data-bs-target="#requestEditAdsBoardModal-{{index}}">
                                             <div id="buttonStyle">
                                                 <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
                                                 Yêu cầu chỉnh sửa
@@ -217,10 +263,446 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div
+                                    class='modal fade'
+                                    id='requestEditAdsBoardModal-{{index}}'
+                                    tabindex='-1'
+                                    aria-labelledby='reportModalLabel'
+                                    aria-hidden='true'
+                                >
+                                    <div class='modal-dialog'>
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <img
+                                                    src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                    style='height: 40px; width: 40px;'
+                                                />
+                                                <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                    Chỉnh sửa thông tin
+                                                </h5>
+                                                <button
+                                                    type='button'
+                                                    class='btn-close'
+                                                    data-bs-dismiss='modal'
+                                                    aria-label='Close'
+                                                ></button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                <form id='requestEditAdsBoardForm' enctype='multipart/form-data'>
+                                                    <div class='mb-3' id='adsBoardType'>
+                                                        <div>
+                                                            <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                    <div class="nowrap">Loại bảng quảng cáo</div>
+                                                                    <p class='mb-0 softer-text fw-nomral'>({{adsBoardType}})</p>    
+                                                                </div>
+                                                            </label>
+        <select class='form-select reportType' id='edit_adsBoardType' required>
+            <option class='mb-0 softer-text fw-nomral' selected disabled>
+                    -- Chọn loại bảng quảng cáo --
+            </option>
+            <option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
+            <option value='Trụ màn hình điện tử LED'>
+                Trụ màn hình điện tử LED
+            </option>
+            <option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+            <option value='Cổng chào'>Cổng chào</option>
+            <option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
+        </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class='mb-3' id="locationName">
+                                                        <label for='locationName' class='form-label' style='font-family: Inter'>
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                <div class="nowrap">Điểm quảng cáo</div>
+                                                                <p class='mb-0 softer-text fw-nomral'>({{adsPoint.location.locationName}})</p>    
+                                                            </div>
+                                                        </label>
+                                                        <input
+                                                            type='text'
+                                                            class='form-control fullNameReport'
+                                                            id='edit_locationName'
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div class="d-flex flex-row column-gap-3">
+                                                        <div class='mb-3' id='district'>
+                                                            <label for='district' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                    <div class="nowrap">Quận</div>
+                                                                    <p class='mb-0 softer-text fw-nomral'>({{adsPoint.location.district}})</p>
+                                                                </div>
+                                                            </label>
+                                                            <select class='form-select reportType' id='edit_district' required>
+                                                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                        -- Chọn Quận --
+                                                                </option>
+                                                                {{#each ../districts}}
+                                                                    <option value="{{districtName}}">{{districtName}}</option>
+                                                                {{/each}}
+                                                            </select>
+                                                        </div>
+                                                        <div class='mb-3' id='ward'>
+                                                            <label for='ward' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                    <div class="nowrap">Phường</div>
+                                                                    <p class='mb-0 softer-text fw-nomral'>({{adsPoint.location.ward}})</p>
+                                                                </div>
+                                                            </label>
+                                                            <select class='form-select reportType' id='edit_ward' required>
+                                                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                        -- Chọn Phường --
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class='mb-3' id="address">
+                                                        <label for='address' class='form-label' style='font-family: Inter'>
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                <div class="nowrap">Địa chỉ chi tiết</div>
+                                                                <p class='mb-0 softer-text fw-nomral' id='edit_address-${i}'></p>    
+                                                            </div>
+                                                        </label>
+                                                        <textarea
+                                                            class='form-control fullNameReport'
+                                                            id='edit_address'
+                                                            style="height: 100px;"
+                                                            required
+                                                        ></textarea>
+                                                    </div>
+                                                    <div class='mb-3' id="locationType">
+                                                        <label for='locationType' class='form-label' style='font-family: Inter'>
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                <div class="nowrap">Loại vị trí</div>
+                                                                <p class='mb-0 softer-text fw-nomral'>({{adsPoint.locationType}})</p>    
+                                                            </div>
+                                                        </label>
+    <select class='form-select reportType' id='edit_locationType' required>
+        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                -- Chọn loại vị trí --
+        </option>
+        <option
+            value='Đất công/Công viên/Hành lang an toàn giao thông'
+        >
+            Đất công/Công viên/Hành lang an toàn giao thông
+        </option>
+        <option value='Đất tư nhân/Nhà ở riêng lẻ'>
+            Đất tư nhân/Nhà ở riêng lẻ
+        </option>
+        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+        <option value='Chợ'>Chợ</option>
+        <option value='Cây xăng'>Cây xăng</option>
+        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+    </select>
+                                                    </div>
+                                                    <div class='mb-3' id="adsFormat">
+                                                        <label for="adsFormat" class="form-label" style="font-family: Inter">
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                <div class="nowrap">Hình thức quảng cáo</div>
+                                                                <p class='mb-0 softer-text fw-nomral'>({{adsPoint.adsFormat.name}})</p>    
+                                                            </div>
+                                                        </label>
+                                                        <select class='form-select reportType' id='edit_adsFormat' required>
+                                                            <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                    -- Chọn hình thức quảng cáo --
+                                                            </option>
+                                                            {{#each ../adsFormats}}
+                                                                <option value=`{{name}}`>{{name}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <div class='mb-3' id="planningStatus">
+                                                        <label for='planningStatus' class='form-label' style='font-family: Inter'>
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1 nowrap'>
+                                                                <div>Trạng thái địa điểm</div>
+                                                                {{#ifCond adsPoint.planningStatus "===" "Đã quy hoạch"}}
+                                                                <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                                                                {{else}}
+                                                                <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </label>
+                                                        <select class='form-select reportType' id='edit_planningStatus' required>
+                                                            <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                    -- Chọn trạng thái --
+                                                            </option>
+                                                            <option value='Đã quy hoạch'>Đã quy hoạch</option>
+                                                            <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="d-flex flex-row column-gap-3">
+                                                        <div class='mb-3' id="height">
+                                                            <label for='height' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                    <div>Chiều cao (m)</div>
+                                                                    <p class='mb-0 softer-text fw-nomral'>({{size.height}})</p>    
+                                                                </div>
+                                                            </label>
+                                                            <input
+                                                                type='text'
+                                                                class='form-control fullNameReport'
+                                                                id='edit_height'
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class='mb-3' id="width">
+                                                            <label for='width' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                    <div>Chiều rộng (m)</div>
+                                                                    <p class='mb-0 softer-text fw-nomral'>({{size.width}})</p>    
+                                                                </div>
+                                                            </label>
+                                                            <input
+                                                                type='text'
+                                                                class='form-control fullNameReport'
+                                                                id='edit_width'
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class='mb-3' id="quantity">
+                                                            <label for='quantity' class='form-label' style='font-family: Inter'>
+                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                    <div>Số lượng</div>
+                                                                    <p class='mb-0 softer-text fw-nomral' id='edit_quantity'>({{quantity}})</p>    
+                                                                </div>
+                                                            </label>
+                                                            <input
+                                                                type='text'
+                                                                class='form-control fullNameReport'
+                                                                id='edit_quantity'
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class='mb-3' id="contractEndDate">
+                                                        <label for='contractEndDate' class='form-label' style='font-family: Inter'>
+                                                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                <div>Ngày hết hạn của hợp đồng quảng cáo</div>
+                                                                <p class='mb-0 softer-text fw-nomral'>({{format_date contractEndDate}})</p>    
+                                                            </div>
+                                                        </label>
+                                                        <input type='text' id='edit_contractEndDate' class='form-control' required />
+                                                    </div>
+                                                    <div class='mb-3' id="adsBoardImages">
+                                                        <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                                                        <div class='card border mb-3'>
+                                                            <div class='card-body'>
+                                                                <p class='mb-0' id="edit_adsBoardImages"></p>
+                                                            </div>
+                                                        </div>
+                                                        <input
+                                                            type='file'
+                                                            class='form-control reportImage'
+                                                            id="edit_adsBoardImages"
+                                                            accept='image/*'
+                                                        />
+                                                    </div>
+                                                    <div class='button-container justify-content-center'>
+                                                        <div
+                                                            id='recaptcha'
+                                                            class='g-recaptcha'
+                                                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                            data-callback='onSubmit'
+                                                            data-size='invisible'
+                                                        ></div>
+                                                        <div class='d-grid gap-2 col-3 mx-auto'>
+                                                            <button
+                                                                id='submitEditButton'
+                                                                type='button'
+                                                                class='btn btn-warning'
+                                                                style='font-family: Inter'
+                                                            >
+                                                                GỬI
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{/each}}
                                 {{/if}}
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div
+                    class='modal fade'
+                    id='requestLicenseAdsBoardModal'
+                    tabindex='-1'
+                    aria-labelledby='reportModalLabel'
+                    aria-hidden='true'
+                >
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <img
+                                    src='../../../public/assets/icons/License_icon_green.svg'
+                                    style='height: 50px; width: 50px;'
+                                />
+                                <h5 class='modal-green-title' id='reportModalLabel'>
+                                    Yêu cầu cấp phép quảng cáo
+                                </h5>
+                                <button
+                                    type='button'
+                                    class='btn-close'
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                ></button>
+                            </div>
+                            <div class='modal-body'>
+                                <form id='requestLicenseAdsBoardForm' enctype='multipart/form-data'>
+                                    <input type="hidden" id="adsPointId" name="adsPointId" value="12345" />
+                                    <div class='mb-3' id='adsBoardType'>
+                                        <div>
+                                            <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                    <div class="nowrap">Loại bảng quảng cáo</div>
+                                                </div>
+                                            </label>
+<select class='form-select reportType' id='edit_adsBoardType' required>
+<option class='mb-0 softer-text fw-nomral' selected disabled>
+    -- Chọn loại bảng quảng cáo --
+</option>
+<option value='Trụ bảng hiflex'>Trụ bảng hiflex</option>
+<option value='Trụ màn hình điện tử LED'>
+Trụ màn hình điện tử LED
+</option>
+<option value='Trụ hộp đèn'>Trụ hộp đèn</option>
+<option value='Cổng chào'>Cổng chào</option>
+<option value='Trụ/Cụm pano'>Trụ/Cụm pano</option>
+</select>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row column-gap-3">
+                                        <div class='mb-3' id="height">
+                                            <label for='height' class='form-label' style='font-family: Inter'>Chiều cao (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_height'
+                                                required
+                                                
+                                            />
+                                        </div>
+                                        <div class='mb-3' id="width">
+                                            <label for='width' class='form-label' style='font-family: Inter'>Chiều rộng (m)</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_width'
+                                                required
+                                            />
+                                        </div>
+                                        <div class='mb-3' id="quantity">
+                                            <label for='quantity' class='form-label' style='font-family: Inter'>Số lượng</label>
+                                            <input
+                                                type='text'
+                                                class='form-control fullNameReport'
+                                                id='license_quantity'
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class='mb-3' id="adsBoardImages">
+                                        <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh bảng quảng cáo</label>
+                                        <input
+                                            type='file'
+                                            class='form-control reportImage'
+                                            id="license_adsBoardImages"
+                                            accept='image/*'
+                                        />
+                                    </div>
+                                    <div class='mb-3' id="adsContent">
+                                        <label for='adsContent' class='form-label' style='font-family: Inter'>Nội dung quảng cáo</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='license_adsContent'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='mb-3' id="illstrationImage">
+                                        <label for='illstrationImage' class='form-label' style='font-family: Inter'>Hình ảnh miêu tả</label>
+                                        <input
+                                            type='file'
+                                            class='form-control reportImage'
+                                            id="license_illstrationImage"
+                                            accept='image/*'
+                                        />
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="d-flex flex-row column-gap-3">
+                                            <div class='mb-3' id="contractStartDate">
+                                                <label for='contractStartDate' class='form-label' style='font-family: Inter'>Ngày bắt đầu hợp đồng</label>
+                                                <input type='text' id='license_contractStartDate' class='form-control' required />
+                                            </div>
+                                            <div class='mb-3' id="contractEndDate">
+                                                <label for='contractEndDate' class='form-label' style='font-family: Inter;'>Ngày hết hạn hợp đồng</label>
+                                                <input type='text' class='form-control' id="license_contractEndDate" required />
+                                            </div>
+                                            {{!-- <div id="error-msg" style="color: red;"></div> --}}
+                                        </div>
+                                    </div>
+                                    <div class='mb-3' id="companyName">
+                                        <label for='companyName' class='form-label' style='font-family: Inter'>Tên công ty đặt quảng cáo</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='license_companyName'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='mb-3' id="companyEmail">
+                                        <label for='companyEmail' class='form-label' style='font-family: Inter;'>Email công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='license_companyEmail'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3' id="companyPhone">
+                                        <label for='companyPhone' class='form-label' style='font-family: Inter;'>Điện thoại công ty</label>
+                                        <input
+                                            type='text'
+                                            class='form-control fullNameCompany'
+                                            id='license_companyPhone'
+                                            required
+                                        />
+                                    </div>
+                                    <div class='mb-3' id="companyAddress">
+                                        <label for='companyAddress' class='form-label' style='font-family: Inter'>Địa chỉ công ty</label>
+                                        <textarea
+                                            class='form-control fullNameReport'
+                                            id='license_companyAddress'
+                                            style="height: 100px;"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div class='button-container justify-content-center'>
+                                        <div
+                                            id='recaptcha'
+                                            class='g-recaptcha'
+                                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                            data-callback='onSubmit'
+                                            data-size='invisible'
+                                        ></div>
+                                        <div class='d-grid gap-2 col-3 mx-auto'>
+                                            <button
+                                                id='submitLicenseButton'
+                                                type='button'
+                                                class='btn btn-success m-1'
+                                                style='font-family: Inter;'
+                                            >
+                                                GỬI
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

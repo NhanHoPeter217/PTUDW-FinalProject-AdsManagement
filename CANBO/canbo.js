@@ -101,7 +101,7 @@ app.use('/adsPoint', adsPointRouter);
 app.use('/admin/dist', districtRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
-app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
+app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
