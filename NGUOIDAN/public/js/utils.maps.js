@@ -202,12 +202,10 @@ async function initMap() {
             }"></div>`
         );
         markerContent.html(`
-      <img src="/public/assets/icons/QC${
-          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
-      }.svg" class="markerPlaceholder" alt="" srcset="">
-      <img src="/public/assets/icons/Info_icon_${
-          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
-      }.svg" class="icon" alt="" srcset="">
+      <div class="markerPlaceholder" alt="" srcset="">${item.adsPoint.adsBoard.length}</div>
+        <img src="/public/assets/icons/Info_icon_${
+            item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+        }.svg" class="icon" alt="" srcset="">
       <div class="details">
           <div class="d-flex justify-content-between align-items-center column-gap-3">
 
@@ -440,6 +438,9 @@ function initAutocomplete() {
                             place_info.setContent(address);
                             place_info.open({ map: map, shouldFocus: false }, place_marker);
                         }
+                        place_info.addListener('closeclick', () => {
+                            place_marker.setMap(null);
+                        });
                     });
                 } else {
                     window.alert('Không tìm thấy địa chỉ cho điểm đã chọn');
