@@ -11,22 +11,22 @@
         <div class='container'>
             <div class='forms-container'>
                 <div class='signin-signup'>
-                    <form action='' class='sign-in-form' id='signinForm'>
+                    <form action='/auth/login' method="POST" class='sign-in-form'>
                         <h2 class='title'>Sign In</h2>
                         <div class='input-field'>
                             <i class='fas fa-user'></i>
-                            <input type='text' placeholder='Username or Email' id='account' />
+                            <input type='text' placeholder='Username or Email' id='account' name="account" />
                         </div>
                         <div class='input-field'>
                             <i class='fas fa-lock'></i>
                             <div>
-                                <input type='password' placeholder='Password' id='password'/>
+                                <input type='password' placeholder='Password' id='password' name="password" />
                                 <i class='fas fa-eye-slash' id='togglePassword'></i>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary m-1">Log In</button>
+                        <button type="submit" class="btn btn-primary m-1">Log In</button>
+                        
                         <a class='forgot-password' href='/forgotPassword'>Forgot password?</a>
-
                         <p class='social-text'>Or Sign in with social platforms</p>
                         <div class='social-media'>
                             <a href='#' class='social-icon'>

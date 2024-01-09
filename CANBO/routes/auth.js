@@ -9,11 +9,9 @@ router.post('/register', authenticateUser, authorizePermissions('Sở VH-TT'), r
 router.get('/login', (req, res) => {
     res.render('commonFeatures/signin', { layout: false });
 });
-router.post('/login', async (req, res) => {
-    const _user = await login(req, res);
-    console.log(_user);
-    // res.render()
-});
+
+router.post('/login', login);
+
 router.delete('/logout', authenticateUser, logout);
 
 module.exports = router;

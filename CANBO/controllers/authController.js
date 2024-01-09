@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
 const crypto = require('crypto');
+const { BadRequestError } = require('../errors');
 const { readdir } = require('fs');
 
 const register = async (req, res) => {
@@ -22,6 +23,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { account, password } = req.body;
+
+    console.log(req.body);
 
     if (!account || !password) {
         throw new BadRequestError('Please provide username/email and password');
@@ -66,6 +69,7 @@ const login = async (req, res) => {
     await Token.create(userToken);
 
     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+    console.log(userToken);
 
     res.status(StatusCodes.OK).json({ user: tokenUser });
 };
