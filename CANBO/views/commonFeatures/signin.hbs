@@ -11,21 +11,20 @@
         <div class='container'>
             <div class='forms-container'>
                 <div class='signin-signup'>
-                    <form action='/auth/login' method="POST" class='sign-in-form'>
+                    <form action='' class='sign-in-form' id='signinForm'>
                         <h2 class='title'>Sign In</h2>
                         <div class='input-field'>
                             <i class='fas fa-user'></i>
-                            <input type='text' placeholder='Username or Email' id='account' name="account" />
+                            <input type='text' placeholder='Username or Email' id='account' />
                         </div>
                         <div class='input-field'>
                             <i class='fas fa-lock'></i>
                             <div>
-                                <input type='password' placeholder='Password' id='password' name="password" />
+                                <input type='password' placeholder='Password' id='password'/>
                                 <i class='fas fa-eye-slash' id='togglePassword'></i>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary m-1">Log In</button>
-                        
+                        <input type='submit' value='Log In' class='btn solid' />
                         <a class='forgot-password' href='/forgotPassword'>Forgot password?</a>
                         <p class='social-text'>Or Sign in with social platforms</p>
                         <div class='social-media'>
@@ -46,7 +45,6 @@
                 </div>
             </div>
         </div>
-        
         <script src='https://cdn.jsdelivr.net/npm/handlebars/dist/handlebars.min.js'>
         </script>
         <script src='../../public/js/signin.js'></script>
