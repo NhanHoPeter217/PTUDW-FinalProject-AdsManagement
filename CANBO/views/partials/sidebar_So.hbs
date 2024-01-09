@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Page Title</title>
     <style>
+        #buttonStyle {
+            transition: filter 0.1s ease-in-out;
+        }
+        #buttonStyle:hover {
+            filter: brightness(0) invert(1);
+        }
         .nav-link {
             transition: background-color 0.3s ease-in-out;
             display: block;
@@ -47,6 +52,7 @@
             margin-bottom: 5px;
             color: #333;
         }
+
     </style>
 </head>
 <body>
@@ -68,13 +74,15 @@
                     Quản lý phân loại
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link link-body-emphasis">
-                    <img src="/public/assets/icons/CreateAccount_icon.svg" alt="" width="24" height="24" class="me-2" />
-                    Danh sách tài khoản
-                </a>
-            </li>
+            <button type='button' class='btn btn-outline-primary w-100 mt-4' data-bs-toggle='modal' data-bs-target='#createAccountModal'>
+                <div id="buttonStyle">
+                    <img src="/public/assets/icons/CreateAccount_icon.svg" alt="" width="24" height="24"/>
+                    <span class="ms-2">Tạo tài khoản</span>
+                </div>
+            </button>
         </ul>
     </div>
 </body>
 </html>
+
+{{> createAccount}}

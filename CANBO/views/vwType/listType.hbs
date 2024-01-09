@@ -8,6 +8,34 @@
         #buttonStyle:hover {
             filter: brightness(0) invert(1);
         }
+
+    /* Add new or revised styles here */
+        .btn-custom {
+            font-family: Inter;
+        }
+
+        .table tbody tr td {
+            vertical-align: middle;
+        }
+
+        .bg-blue th {
+            background-color: #0066FF;
+            color: white;
+        }
+
+        .table-container {
+            overflow: hidden;
+        }
+
+        .table-container table {
+            table-layout: fixed;
+        }
+
+        .table-body-container {
+            overflow-y: auto;
+            height: 300px; /* Set your preferred height */
+        }
+
   </style>
 {{/section}}
 
@@ -437,98 +465,115 @@
 </script>
 {{/section}}
 
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 pb-4">
-            <h5 class="card-title fw-semibold mb-4">Các phân loại</h5>
-            <div class="card w-100 mt-3">
+        <div class="col-md-11 pb-4">
+            <h5 class="card-title fw-bold mb-4">Các phân loại</h5>
+
+            <!-- Card 1: Các loại hình quảng cáo -->
+            <div class="card mb-3">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title fw-semibold mb-4">
-                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title fw-bold">
+                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" class="me-2" />
                             Các loại hình quảng cáo
                         </h5>
-                        <button
-                        type="button"
-                        class="btn btn-success m-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addAdsTypeModal">
-                            <div>
-                                <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" />
-                                Thêm loại hình quảng cáo
-                            </div>
+                        <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addAdsTypeModal">
+                            <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
+                            Thêm loại hình quảng cáo
                         </button>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
-                            <thead class="text-dark fs-4">
+                    <div class="table-container">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 35%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                            </colgroup>
+                            <thead class="table">
                                 <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">#</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Tên loại hình quảng cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Ngày tạo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Ngày cập nhật mới nhất</h6>
-                                    </th>
+                                    <th>#</th>
+                                    <th>Tên loại hình quảng cáo</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày cập nhật mới nhất</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody id="adsFormat_body">
-                            </tbody>
                         </table>
+                        <div class="table-body-container" style="height: 300px; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                                <colgroup>
+                                    <col style="width: 5%">
+                                    <col style="width: 35%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                </colgroup>
+                                <tbody id="adsFormat_body">
+                                    <!-- Table rows will be dynamically populated here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card w-100 mt-3">
+
+            <!-- Card 2: Các loại hình thức báo cáo -->
+            <div class="card">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title fw-semibold mb-4">
-                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title fw-bold">
+                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" class="me-2" />
                             Các loại hình thức báo cáo
                         </h5>
-                        <button
-                        type="button"
-                        class="btn btn-success m-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addReportTypeModal">
-                            <div>
-                                <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" />
-                                Thêm hình thức báo cáo
-                            </div>
+                        <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addReportTypeModal">
+                            <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
+                            Thêm hình thức báo cáo
                         </button>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
-                            <thead class="text-dark fs-4">
+                    <div class="table-container">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 35%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                            </colgroup>
+                            <thead class="table">
                                 <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">#</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Tên hình thức báo cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Ngày tạo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Ngày cập nhật mới nhất</h6>
-                                    </th>
+                                    <th>#</th>
+                                    <th>Tên hình thức báo cáo</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày cập nhật mới nhất</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody id="reportFormat_body">
-                            </tbody>
                         </table>
+                        <div class="table-body-container" style="height: 300px; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                                <colgroup>
+                                    <col style="width: 5%">
+                                    <col style="width: 35%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                </colgroup>
+                                <tbody id="reportFormat_body">
+                                    <!-- Table rows will be dynamically populated here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <title>Danh sách các phân loại</title>
 
