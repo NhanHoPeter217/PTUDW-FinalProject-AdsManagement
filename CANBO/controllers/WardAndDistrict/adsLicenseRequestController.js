@@ -68,12 +68,12 @@ const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
 };
 
 const getAdsLicenseRequestsByWardAndDistrict = async (req, res) => {
-    const { ward, district } = req.params;
+    const { wardID, distID } = req.params;
 
     try {
         const adsLicenseRequests = await AdsLicenseRequest.find({
-            'wardAndDistrict.ward': ward,
-            'wardAndDistrict.district': district
+            'wardAndDistrict.ward': wardID,
+            'wardAndDistrict.district': distID
         });
 
         res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });

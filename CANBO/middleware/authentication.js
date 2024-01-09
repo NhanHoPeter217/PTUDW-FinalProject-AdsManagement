@@ -70,6 +70,8 @@ const authenticateResident = async (req, res, next) => {
 
 const authorizePermissions = (...roles) => {
     return (req, res, next) => {
+        console.log(req.user.role)
+        console.log(roles)
         if (!roles.includes(req.user.role)) {
             throw new CustomError.UnauthorizedError('Unauthorized to access this route');
         }

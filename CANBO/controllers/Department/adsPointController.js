@@ -19,6 +19,10 @@ const getAllAdsPoints = async (req, res) => {
         const adsPoints = await AdsPoint.find({}).populate({
             path: 'adsBoard',
             model: 'AdsBoard'
+        })
+        .populate({
+            path: 'location',
+            model: 'Location'
         });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
@@ -26,25 +30,78 @@ const getAllAdsPoints = async (req, res) => {
     }
 };
 
-// const getAllAdsPointsByAssignedArea = async (req, res) => {
-//     const { assignedArea } = req.user;
-//     const { ward, district } = assignedArea;
-//     try {
-//         let query = {
-//             'adsBoard.location.district': district
-//         };
+const getAllAdsPointsByAssignedArea = async (req, res) => {
+    const { assignedArea } = req.user;
+    const { ward, district } = assignedArea;
+    try {
+        let query = {};
 
-//         if (ward !== '*') {
-//             query['adsBoard.location.ward'] = ward;
-//         }
+        if (ward !== '*') {
+            query['ward'] = ward;
+        }
 
-//         const adsPoints = await AdsPoint.find(query);
+        if (district !== '*') {
+            query['district'] = district;
+        }
+        const locationsID = await Location.find(query).select('_id');
 
-//         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
-//     } catch (error) {
-//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
-//     }
-// };
+        const adsPoints = await AdsPoint.find({'location': locationsID})
+        .populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        })
+        .populate({
+            path: 'location',
+            model: 'Location'
+        });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllAdsPointsByWardList = async (req, res) => {
+    const { assignedArea } = req.user;
+    const district = assignedArea.district;
+    const wardList = req.body.wardList;
+    try {
+        const locationsID = await Location.find({
+            district,
+            ward: { $in: wardList }
+        }).select('_id');
+        const adsPoints = await AdsPoint.find({'location': locationsID})
+        .populate({
+            path: 'location',
+            model: 'Location'
+        })
+        .populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllAdsPointByWardAndDistrict = async (req, res) => {
+    const { wardId, distId } = req.params;
+    try {
+        const locationsID = await Location.find({ ward: wardId, district: distId }).select('_id');
+        const adsPoints = await AdsPoint.find({'location': locationsID})
+        .populate({
+            path: 'location',
+            model: 'Location'
+        })
+        .populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
 
 const getSingleAdsPoint = async (req, res) => {
     try {
@@ -52,6 +109,10 @@ const getSingleAdsPoint = async (req, res) => {
         const adsPoint = await AdsPoint.findOne({ _id: adsPointId }).populate({
             path: 'adsBoard',
             model: 'AdsBoard'
+        })
+        .populate({
+            path: 'location',
+            model: 'Location'
         });
 
         if (!adsPoint) {
@@ -102,7 +163,9 @@ const deleteAdsPoint = async (req, res) => {
 module.exports = {
     createAdsPoint,
     getAllAdsPoints,
-    // getAllAdsPointsByAssignedArea,
+    getAllAdsPointsByAssignedArea,
+    getAllAdsPointByWardAndDistrict,
+    getAllAdsPointsByWardList,
     getSingleAdsPoint,
     updateAdsPoint,
     deleteAdsPoint
