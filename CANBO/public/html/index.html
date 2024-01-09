@@ -1,0 +1,24 @@
+<div class="d-flex adpointInfo adPoint${item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'}">
+    
+    <img src="/public/assets/icons/QC${item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+    }.svg" class="markerPlaceholder" alt="" srcset="">
+
+    <img src="/public/assets/icons/Info_icon_${
+        item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+    }.svg" class="icon" alt="" srcset="">
+
+    <div class="details">
+        
+    <!-- location.locationName -->
+    <h5>${item.locationName}</h5>
+    <meta name="planningStatus" content="${item.adsPoint.planningStatus}"></meta>
+    
+    <!-- adsPoint.locationType -->
+    <h6>${item.adsPoint.locationType}</h6>
+    
+    <!-- location.address -->
+    <p>Phường <b>${item.ward}</b>\t Quận <b>${item.district}</b></p>
+        
+    </div>
+
+</div>

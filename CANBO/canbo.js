@@ -54,8 +54,6 @@ const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequ
 const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
 const locationRouter = require('./routes/locationRoutes');
 
-const reportRoute = require('./routes/report-ward.route');
-const adsPointRoute = require('./routes/ads-point.route');
 // const adsBoardRoute = require('./routes/ads-board.route');
 const requestRoute = require('./routes/request.route');
 const typeRoute = require('./routes/type.route');
@@ -152,8 +150,8 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
 //     res.render('vwAdsPoint/listAdsPoint', {});
 // });
 
-app.get('/admin/types/list', function (req, res) {
-    res.render('vwType/listType', {});
+app.get('/types/list', function (req, res) {
+    res.render('vwType/listType', {layout: 'canbo_So'});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
@@ -170,7 +168,10 @@ app.get('/admin/types/list', function (req, res) {
 
 // app.use('/admin/adspoint', adsPointRoute);
 
-app.use('/admin/report', reportRoute);
+app.get('/ward/:wardId/dist/:distId', function (req, res) {
+    res.render('vwReport/listReport', { layout: 'canbo' });
+});
+
 app.use('/admin/request', requestRoute);
 
 app.use(notFoundMiddleware);
