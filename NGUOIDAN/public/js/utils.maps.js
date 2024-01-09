@@ -203,6 +203,9 @@ async function initMap() {
         );
         markerContent.html(`
       <div class="markerPlaceholder" alt="" srcset="">${item.adsPoint.adsBoard.length}</div>
+        <img src="/public/assets/icons/Info_icon_${
+            item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
+        }.svg" class="icon" alt="" srcset="">
       <div class="details">
           <div class="d-flex justify-content-between align-items-center column-gap-3">
 

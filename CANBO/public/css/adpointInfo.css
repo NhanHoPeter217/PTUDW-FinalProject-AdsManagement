@@ -1,9 +1,8 @@
 /*
  * Property styles in unhighlighted state.
  */
-.adpointInfo {
+ .adpointInfo {
     align-items: start;
-    background-color: #ffffff;
     border-radius: 50%;
     color: #263238;
     display: flex;
@@ -37,6 +36,10 @@
 
 .adpointInfo.adPointBlue::after {
     border-top: 9px solid #0057ff;
+}
+
+.adpointInfo .icon {
+    display: none;
 }
 
 .markerPlaceholder {
@@ -91,6 +94,7 @@
     display: flex;
 }
 
-.adPointRed {
-    color: var(--Red);
+.adpointInfo.highlight .icon {
+    display: block;
+    margin-top: 3px;
 }
