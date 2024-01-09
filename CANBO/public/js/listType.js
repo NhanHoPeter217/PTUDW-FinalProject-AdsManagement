@@ -33,7 +33,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         const submitedButtonId = $(document.activeElement).attr('id');
-        const id = $(this).find('#edit_adsFormatName').attr('data-id');
+        const id = e.currentTarget.getAttribute('data-id');
 
         if (submitedButtonId === 'deleteAdsTypeButton') {
             fetch(`/api/v1/adsFormat/${id}`, {
@@ -51,7 +51,8 @@ $(document).ready(function() {
             });
         }
         else {
-            const name = $(this).find('#edit_adsFormatName').val();
+            const name = $(`#edit_adsFormatName-${id}`).val();
+
             const data = {
                 name: name,
             };
@@ -109,7 +110,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         const submitedButtonId = $(document.activeElement).attr('id');
-        const id = $(this).find('#edit_reportFormatName').attr('data-id');
+        const id = e.currentTarget.getAttribute('data-id');
 
         if (submitedButtonId === 'deleteReportTypeButton') {
             fetch(`/api/v1/reportFormat/${id}`, {
@@ -127,7 +128,7 @@ $(document).ready(function() {
             });
         }
         else {
-            const name = $(this).find('#edit_reportFormatName').val();
+            const name = $(`#edit_reportFormatName_${id}`).val();
             const data = {
                 name: name,
             };

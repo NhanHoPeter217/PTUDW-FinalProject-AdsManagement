@@ -9,7 +9,6 @@
             filter: brightness(0) invert(1);
         }
 
-    /* Add new or revised styles here */
         .btn-custom {
             font-family: Inter;
         }
@@ -33,284 +32,14 @@
 
         .table-body-container {
             overflow-y: auto;
-            height: 300px; /* Set your preferred height */
+            height: 300px;
         }
 
   </style>
 {{/section}}
 
 {{#section 'js'}}
-<script src='../../public/js/adsFormat.js'></script>
-<script>
-
-    function formatDate(date) {
-        const date_ = new Date(date);
-
-        const day = date_.getDate();
-        const month = date_.getMonth() + 1;
-        const year = date_.getFullYear();
-
-        const date_format = `${(month < 10 ? '0' : '') + month}/${(day < 10 ? '0' : '') + day}/${year}`;
-
-        return date_format;
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        fetch('/api/v1/adsFormat', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((adsFormat_data) => {
-            if (!adsFormat_data) {
-                return;
-            }
-            console.log(adsFormat_data);
-
-            for (let i = 0; i < adsFormat_data.count; ++i) {
-                adsFormat = adsFormat_data.adsFormats[i];
-
-                // Format date
-                const createdDate = formatDate(adsFormat.createdAt);
-                const updatedDate = formatDate(adsFormat.updatedAt);
-
-                $('#listType_modalAddition').append(`
-                    <div
-                        class='modal fade'
-                        id='editAdsFormatTypeModal-${i}'
-                        tabindex='-1'
-                        aria-labelledby='reportModalLabel-${i}'
-                        aria-hidden='true'
-                    >
-                        <div class='modal-dialog'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <img
-                                        src='../../../public/assets/icons/Edit_icon_orange.svg'
-                                        style='height: 40px; width: 40px;'
-                                    />
-                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                        Chỉnh sửa thông tin
-                                    </h5>
-                                    <button
-                                        type='button'
-                                        class='btn-close'
-                                        data-bs-dismiss='modal'
-                                        aria-label='Close'
-                                    ></button>
-                                </div>
-                                <div class='modal-body'>
-                                    <form class='report-form' id='editAdsTypeForm' enctype='multipart/form-data'>
-                                        <div class='mb-3'>
-                                            <label for='adsFormatName' class='form-label' style='font-family: Inter;'>Loại hình quảng cáo</label>
-                                                <input
-                                                    type='text'
-                                                    class='form-control fullNameReport'
-                                                    id='edit_adsFormatName'
-                                                    value="${adsFormat.name}"
-                                                    data-id="${adsFormat._id}"
-                                                    required
-                                                />
-                                        </div>
-                                        <div class='button-container justify-content-center'>
-                                            <div
-                                                id='recaptcha'
-                                                class='g-recaptcha'
-                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                                                data-callback='onSubmit'
-                                                data-size='invisible'
-                                            ></div>
-                                            <div class="d-flex justify-content-center">
-                                                <div class='d-grid col-md-3 mx-2'>
-                                                    <button
-                                                        id='deleteAdsTypeButton'
-                                                        type='submit'
-                                                        class='btn btn-outline-danger btn-block'
-                                                        style='font-family: Inter'
-                                                    >
-                                                        XÓA
-                                                    </button>
-                                                </div>
-                                                <div class='d-grid col-md-3 mx-2'>
-                                                    <button
-                                                        id='saveAdsTypeButton'
-                                                        type='submit'
-                                                        class='btn btn-success btn-block'
-                                                        style='font-family: Inter'
-                                                    >
-                                                        LƯU
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).promise().done(function() {
-                    $('#adsFormat_body').append(`
-                        <tr>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-semibold mb-0">${i + 1}</h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${adsFormat.name}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${createdDate}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${updatedDate}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-warning m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editAdsFormatTypeModal-${i}">
-                                    <div id="buttonStyle">
-                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                        Chỉnh sửa
-                                    </div>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            }
-        })
-
-        fetch('/api/v1/reportFormat', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
-        .then((reportFormat_data) => {
-            if (!reportFormat_data) {
-                return;
-            }
-            console.log(reportFormat_data);
-
-            for (let i = 0; i < reportFormat_data.count; ++i) {
-                reportFormat = reportFormat_data.reportFormats[i];
-
-                // Format date
-                const createdDate = formatDate(reportFormat.createdAt);
-                const updatedDate = formatDate(reportFormat.updatedAt);
-
-                $('#listType_modalAddition').append(`
-                    <div
-                        class='modal fade'
-                        id='editReportTypeModal-${i}'
-                        tabindex='-1'
-                        aria-labelledby='reportModalLabel-${i}'
-                        aria-hidden='true'
-                    >
-                        <div class='modal-dialog'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <img
-                                        src='../../../public/assets/icons/Edit_icon_orange.svg'
-                                        style='height: 40px; width: 40px;'
-                                    />
-                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                        Chỉnh sửa thông tin
-                                    </h5>
-                                    <button
-                                        type='button'
-                                        class='btn-close'
-                                        data-bs-dismiss='modal'
-                                        aria-label='Close'
-                                    ></button>
-                                </div>
-                                <div class='modal-body'>
-                                    <form class='report-form' id='editReportTypeForm' enctype='multipart/form-data'>
-                                        <div class='mb-3'>
-                                            <label for='reportFormatName' class='form-label' style='font-family: Inter;'>Hình thức báo cáo</label>
-                                            <input
-                                                type='text'
-                                                class='form-control fullNameReport'
-                                                id='edit_reportFormatName'
-                                                value="${reportFormat.name}"
-                                                data-id="${reportFormat._id}"
-                                                required
-                                            />
-                                        </div>
-                                        <div class='button-container justify-content-center'>
-                                            <div
-                                                id='recaptcha'
-                                                class='g-recaptcha'
-                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                                                data-callback='onSubmit'
-                                                data-size='invisible'
-                                            ></div>
-                                            <div class="d-flex justify-content-center">
-                                                <div class='d-grid col-md-3 mx-2'>
-                                                    <button
-                                                        id='deleteReportTypeButton'
-                                                        type='submit'
-                                                        class='btn btn-outline-danger btn-block'
-                                                        style='font-family: Inter'
-                                                    >
-                                                        XÓA
-                                                    </button>
-                                                </div>
-                                                <div class='d-grid col-md-3 mx-2'>
-                                                    <button
-                                                        id='saveReportTypeButton'
-                                                        type='submit'
-                                                        class='btn btn-success btn-block'
-                                                        style='font-family: Inter'
-                                                    >
-                                                        LƯU
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).promise().done(function() {
-                    $('#reportFormat_body').append(`
-                        <tr>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-semibold mb-0">${i + 1}</h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${reportFormat.name}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${createdDate}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">${updatedDate}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-warning m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editReportTypeModal-${i}">
-                                    <div id="buttonStyle">
-                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                        Chỉnh sửa
-                                    </div>
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            }
-        })
-    });
-</script>
+<script src='../../public/js/listType.js'></script>
 {{/section}}
 
 <div class="container-fluid mt-4">
@@ -360,7 +89,106 @@
                                     <col style="width: 20%">
                                 </colgroup>
                                 <tbody id="adsFormat_body">
-                                    <!-- Table rows will be dynamically populated here -->
+                                    {{#each this.adsFormats as |adsFormats index|}}
+                                    <tr>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">{{create_order @index}}</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{name}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{format_date createdAt}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{format_date updatedAt}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-warning m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editAdsFormatTypeModal-{{index}}">
+                                                <div id="buttonStyle">
+                                                    <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                    Chỉnh sửa
+                                                </div>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <div
+                                        class='modal fade'
+                                        id='editAdsFormatTypeModal-{{index}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel-{{index}}'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                        Chỉnh sửa thông tin
+                                                    </h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form id='editAdsTypeForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                        <div class='mb-3'>
+                                                            <label for='adsFormatName' class='form-label' style='font-family: Inter;'>Loại hình quảng cáo</label>
+                                                                <input
+                                                                    type='text'
+                                                                    class='form-control fullNameReport'
+                                                                    id='edit_adsFormatName-{{_id}}'
+                                                                    value="{{name}}"
+                                                                    required
+                                                                />
+                                                        </div>
+                                                        <div class='button-container justify-content-center'>
+                                                            <div
+                                                                id='recaptcha'
+                                                                class='g-recaptcha'
+                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                data-callback='onSubmit'
+                                                                data-size='invisible'
+                                                            ></div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class='d-grid col-md-3 mx-2'>
+                                                                    <button
+                                                                        id='deleteAdsTypeButton'
+                                                                        type='submit'
+                                                                        class='btn btn-outline-danger btn-block'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        XÓA
+                                                                    </button>
+                                                                </div>
+                                                                <div class='d-grid col-md-3 mx-2'>
+                                                                    <button
+                                                                        id='saveAdsTypeButton'
+                                                                        type='submit'
+                                                                        class='btn btn-success btn-block'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        LƯU
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
@@ -410,12 +238,110 @@
                                     <col style="width: 20%">
                                 </colgroup>
                                 <tbody id="reportFormat_body">
-                                    <!-- Table rows will be dynamically populated here -->
+                                    {{#each this.reportFormats as |reportFormats index|}}
+                                    <tr>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">{{create_order @index}}</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{name}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{format_date createdAt}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal">{{format_date updatedAt}}</p>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-warning m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editReportTypeModal-{{index}}">
+                                                <div id="buttonStyle">
+                                                    <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                    Chỉnh sửa
+                                                </div>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <div
+                                        class='modal fade'
+                                        id='editReportTypeModal-{{index}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                        Chỉnh sửa thông tin
+                                                    </h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form id='editReportTypeForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                        <div class='mb-3'>
+                                                            <label for='reportFormatName' class='form-label' style='font-family: Inter;'>Hình thức báo cáo</label>
+                                                            <input
+                                                                type='text'
+                                                                class='form-control fullNameReport'
+                                                                id='edit_reportFormatName_{{_id}}'
+                                                                value="{{name}}"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div class='button-container justify-content-center'>
+                                                            <div
+                                                                id='recaptcha'
+                                                                class='g-recaptcha'
+                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                data-callback='onSubmit'
+                                                                data-size='invisible'
+                                                            ></div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class='d-grid col-md-3 mx-2'>
+                                                                    <button
+                                                                        id='deleteReportTypeButton'
+                                                                        type='submit'
+                                                                        class='btn btn-outline-danger btn-block'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        XÓA
+                                                                    </button>
+                                                                </div>
+                                                                <div class='d-grid col-md-3 mx-2'>
+                                                                    <button
+                                                                        id='saveReportTypeButton'
+                                                                        type='submit'
+                                                                        class='btn btn-success btn-block'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        LƯU
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
