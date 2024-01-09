@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env' });
 require('express-async-errors');
 
 const express = require('express');
-const { engine } = require('express-handlebars');
+const engineWithHelpers = require('./handlebars');
 
 const app = express();
 
@@ -110,32 +110,7 @@ app.use('/api/v1/location', locationRouter);
 // Setup handlebars view engine
 // sectionHandler(engine);
 
-app.engine(
-    'hbs',
-    engine({
-        extname: 'hbs',
-        defaultLayout: 'canbo',
-        helpers: {
-            section: function section(name, options) {
-                var helper = this;
-                if (!this._sections) {
-                    this._sections = {};
-                    this._sections._get = function (arg) {
-                        if (typeof helper._sections[arg] === 'undefined') {
-                            throw new Error('The section "' + arg + '" is required.');
-                        }
-                        return helper._sections[arg];
-                    };
-                }
-                if (!this._sections[name]) {
-                    this._sections[name] = options.fn(this);
-                }
-
-                return null;
-            }
-        }
-    })
-);
+app.engine('hbs', engineWithHelpers);
 
 // Basic setup
 app.set('view engine', 'hbs');
@@ -144,7 +119,7 @@ app.set('title', 'Ads Management');
 
 // Get pages
 app.get('/', (req, res) => {
-    res.render('home', { hideNavbar: true });
+    res.render('home', { hideNavbar: false });
 });
 
 app.get('/forgotPassword', function (req, res) {
@@ -164,7 +139,6 @@ app.get('/signin', function (req, res) {
 });
 
 app.get('/admin/adsboard/list', function (req, res) {
-    // console.log(1);
     res.render('vwAdsBoard/listAdsBoard', {});
 });
 
@@ -172,12 +146,15 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     const id = req.params.id;
     const idString = id.toString();
     console.log(id);
-    res.render('vwAdsBoard/listAdsBoard', {id: id});
+    res.render('vwAdsBoard/listAdsBoard', { id: id });
 });
 
 app.get('/admin/adspoint/list', function (req, res) {
-    // console.log(1);
     res.render('vwAdsPoint/listAdsPoint', {});
+});
+
+app.get('/admin/types/list', function (req, res) {
+    res.render('vwType/listType', {});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
@@ -193,10 +170,10 @@ app.get('/admin/adspoint/list', function (req, res) {
 // });
 
 // app.use('/admin/adspoint', adsPointRoute);
+
 app.use('/admin/report', reportRoute);
 app.use('/admin/dist', wardListRoute);
 app.use('/admin/request', requestRoute);
-app.use('/admin/type', typeRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

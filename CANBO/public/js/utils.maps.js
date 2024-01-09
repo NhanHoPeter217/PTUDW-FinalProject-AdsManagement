@@ -128,13 +128,20 @@ async function initMap() {
         );
     });
 
+    // Previous Marker
+    let prevMarker = null;
+
     function handleMarkerClick(markerView, adsPoint, name, ward, district) {
         if (markerView.content.classList.contains('highlight')) {
             markerView.content.classList.remove('highlight');
-            markerView.zIndex = null;
+            markerView.zIndex = 1;
+            prevMarker = null;
         } else {
             markerView.content.classList.add('highlight');
-            markerView.zIndex = 1;
+            if (prevMarker && prevMarker.content.classList.contains('highlight'))
+                prevMarker.content.classList.remove('highlight');
+            markerView.zIndex = google.maps.Marker.MAX_ZINDEX;
+            prevMarker = markerView;
 
             // Add data to left bar
             $('#boards-container').empty();
@@ -207,9 +214,38 @@ async function initMap() {
 
         return markerContent[0];
     }
+    const ClusterRenderrer = {
+        render: function ({ count, position }, stats, map) {
+            // change color if this cluster has more markers than the mean cluster
+            const color = count > Math.max(10, stats.clusters.markers.mean) ? '#ff0000' : '#0000ff';
+            // create svg literal with fill color
+            const svg = `<svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="50" height="50">
+        <circle cx="120" cy="120" opacity=".6" r="70" />
+        <circle cx="120" cy="120" opacity=".3" r="90" />
+        <circle cx="120" cy="120" opacity=".2" r="110" />
+        <text x="50%" y="50%" style="fill:#fff" text-anchor="middle" font-size="50" dominant-baseline="middle" font-family="roboto,arial,sans-serif">${count}</text>
+        </svg>`;
+            const title = `Cluster of ${count} markers`,
+                // adjust zIndex to be above other markers
+                zIndex = count;
+
+            // create cluster SVG element
+            const parser = new DOMParser();
+            const svgEl = parser.parseFromString(svg, 'image/svg+xml').documentElement;
+            svgEl.setAttribute('transform', 'translate(0 25)');
+            const clusterOptions = {
+                map,
+                position,
+                zIndex,
+                title,
+                content: svgEl
+            };
+            return new google.maps.marker.AdvancedMarkerElement(clusterOptions);
+        }
+    };
 
     // Add a marker clusterer to manage the markers.
-    new markerClusterer.MarkerClusterer({ markers, map });
+    new markerClusterer.MarkerClusterer({ markers, map, renderer: ClusterRenderrer });
 
     initAutocomplete();
 }
@@ -361,10 +397,10 @@ function initAutocomplete() {
                 </div>
               </div>
               `);
-                        place_info.open({map: map, shouldFocus: false}, place_marker);
+                            place_info.open({ map: map, shouldFocus: false }, place_marker);
                         } else {
                             place_info.setContent(address);
-                            place_info.open({map: map, shouldFocus: false}, place_marker);
+                            place_info.open({ map: map, shouldFocus: false }, place_marker);
                         }
                     });
                 } else {
@@ -389,7 +425,9 @@ $(document).ready(function () {
         else
             markers.forEach((marker, index) => {
                 // Hide Quy hoach markers
-                const bool = marker.content.querySelector('meta[name="planningStatus"]').content === 'Đã quy hoạch';
+                const bool =
+                    marker.content.querySelector('meta[name="planningStatus"]').content ===
+                    'Đã quy hoạch';
                 marker.setMap(bool ? null : map);
             });
     });

@@ -1,8 +1,6 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="/public/css/report.css" />
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
     #buttonStyle {
@@ -12,11 +10,9 @@
         filter: brightness(0) invert(1);
     }
 </style>
-
-
 {{/section}}
 
-<nav class='navbar navbar-expand-lg navbar-light bg-light shadow-sm'>
+<nav class='navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top' id="navbar">
     <div class='container'>
         <a class='navbar-brand' href='/'>
         <div class="d-flex gap-1">
@@ -41,10 +37,10 @@
                     <a class='nav-link' href=''>Yêu cầu</a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link' href=''>Quản lý Quận/Phường</a>
+                    <a class='nav-link' href='/admin/dist'>Quản lý Quận/Phường</a>
                 </li>
                 <li class='nav-item'>
-                    <a class='nav-link' href=''>Quản lý phân loại</a>
+                    <a class='nav-link' href='/admin/types/list'>Quản lý phân loại</a>
                 </li>
                 <li class='nav-item'>
                     <a class='nav-link' href=''>Danh sách tài khoản</a>
