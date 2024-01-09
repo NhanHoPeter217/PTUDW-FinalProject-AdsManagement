@@ -98,7 +98,7 @@ app.use('/api/v1/report', reportRouter);
 app.use('/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/adsPoint', adsPointRouter);
-app.use('/admin/dist', districtRouter);
+app.use('/district', districtRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
