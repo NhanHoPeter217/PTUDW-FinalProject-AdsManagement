@@ -128,7 +128,7 @@ async function initMap() {
     // Previous Marker
     let prevMarker = null;
 
-    function handleMarkerClick(markerView, adsPoint, name, ward, district) {
+    function handleMarkerClick(markerView, adsPoint, name) {
         if (markerView.content.classList.contains('highlight')) {
             markerView.content.classList.remove('highlight');
             markerView.zIndex = 1;
@@ -180,12 +180,7 @@ async function initMap() {
             }"></div>`
         );
         markerContent.html(`
-      <img src="/public/assets/icons/QC${
-          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
-      }.svg" class="markerPlaceholder" alt="" srcset="">
-      <img src="/public/assets/icons/Info_icon_${
-          item.adsPoint.planningStatus === 'Đã quy hoạch' ? 'Blue' : 'Red'
-      }.svg" class="icon" alt="" srcset="">
+      <div class="markerPlaceholder" alt="" srcset="">${item.adsPoint.adsBoard.length}</div>
       <div class="details">
 
         <!-- location.locationName -->
@@ -393,6 +388,9 @@ function initAutocomplete() {
                             place_info.setContent(address);
                             place_info.open({ map: map, shouldFocus: false }, place_marker);
                         }
+                        place_info.addListener('closeclick', () => {
+                            place_marker.setMap(null);
+                        });
                     });
                 } else {
                     window.alert('Không tìm thấy địa chỉ cho điểm đã chọn');
