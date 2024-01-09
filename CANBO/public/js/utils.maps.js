@@ -1,5 +1,5 @@
 import getLocation from '/public/utils/getClientLocation.js';
-import { getAllLocations, getSingleAdsPoint } from '/public/utils/getData.js';
+import { getAllLocations } from '/public/utils/getData.js';
 import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
 
 // dynamic import gg map API
@@ -99,9 +99,6 @@ async function initMap() {
 
     clientMarker.setMap(map);
 
-    // Initial Infowindow for places
-    let infoWindow = new google.maps.InfoWindow();
-
     locations.forEach((item, index) => {
         if (item.adsPoint == undefined) return;
 
@@ -148,15 +145,6 @@ async function initMap() {
             adsPoint.adsBoard.forEach((board, index) => {
                 $('#boards-container').append(`
             <!-- Adboard${index} -->
-            <style>
-                #reportIcon {
-                    transition: filter 0.1s ease-in-out; /* Add a transition effect */
-                }
-            
-                #reportIcon:hover {
-                    filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
-                }
-          </style>
             <div
               class="card ad-board default-background primary-text"
               style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
@@ -255,7 +243,6 @@ function initAutocomplete() {
     const input = document.getElementById('searchInput');
     const searchBox = new google.maps.places.SearchBox(input);
 
-    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', () => {
         searchBox.setBounds(map.getBounds());
@@ -287,19 +274,17 @@ function initAutocomplete() {
                 return;
             }
 
-            const icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
+            const icon = () => {
+                const icon = document.createElement('img');
+                icon.src = '/public/assets/icons/Location.svg';
+                return icon;
             };
 
             // Create a marker for each place.
             markers.push(
-                new google.maps.Marker({
-                    map,
-                    icon,
+                new google.maps.marker.AdvancedMarkerElement({
+                    map: map,
+                    content: icon(),
                     title: place.name,
                     position: place.geometry.location
                 })
@@ -315,11 +300,17 @@ function initAutocomplete() {
         map.fitBounds(bounds);
     });
 
+    function iconMaker() {
+        const icon = document.createElement('img');
+        icon.src = '/public/assets/icons/Location.svg';
+    }
+
     // Get places on click
     let place_info = new google.maps.InfoWindow();
     let geocoder = new google.maps.Geocoder();
-    let place_marker = new google.maps.Marker({
-        map: null
+    let place_marker = new google.maps.marker.AdvancedMarkerElement({
+        map: null,
+        content: iconMaker()
     });
     let place_service = new google.maps.places.PlacesService(map);
 
@@ -335,7 +326,7 @@ function initAutocomplete() {
             .then((response) => {
                 if (response.results[0]) {
                     place_marker.setMap(map);
-                    place_marker.setPosition(latlng);
+                    place_marker.position = latlng;
 
                     let address_id = response.results[0].place_id;
                     let address = response.results[0].formatted_address;
