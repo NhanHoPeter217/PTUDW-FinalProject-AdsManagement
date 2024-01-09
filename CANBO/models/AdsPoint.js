@@ -46,6 +46,14 @@ adsPointSchema.virtual('adsBoard', {
     foreignField: 'adsPoint'
 });
 
+adsPointSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'adsFormat',
+        select: 'name'
+    });
+    next();
+});
+
 // adsPointSchema.pre(/^find/, function(next) {
 
 //     if (this.options._recursed) {

@@ -14,7 +14,7 @@ const { authenticateUser, authorizePermissions } = require('../../middleware/aut
 router.use(authenticateUser);
 
 router.route('/').get(authorizePermissions('Sở VH-TT'), getAllAdsLicenseRequests);
-router.route('/').post(authorizePermissions('Phường', 'Quận'), createAdsLicenseRequest);
+router.route('/:id').post(authorizePermissions('Phường', 'Quận'), createAdsLicenseRequest);
 router.route('/:id').get(authorizePermissions('Sở VH-TT'), getSingleAdsLicenseRequest);
 router
     .route('/area/:area')

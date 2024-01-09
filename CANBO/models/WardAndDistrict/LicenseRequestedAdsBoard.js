@@ -38,4 +38,13 @@ const licenseRequestedAdsBoardSchema = new Schema(
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+
+
+licenseRequestedAdsBoardSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'adsPoint',
+    });
+    next();
+});
+
 module.exports = mongoose.model('LicenseRequestedAdsBoard', licenseRequestedAdsBoardSchema);

@@ -1,11 +1,24 @@
 const { StatusCodes } = require('http-status-codes');
+const AdsPoint = require('../../models/AdsPoint');
 const AdsLicenseRequest = require('../../models/WardAndDistrict/AdsLicenseRequest');
+const LicenseRequestedAdsBoard = require('../../models/WardAndDistrict/LicenseRequestedAdsBoard');
 const CustomError = require('../../errors');
 
 const createAdsLicenseRequest = async (req, res) => {
     try {
-        const adsLicenseRequestData = req.body;
-        const adsLicenseRequest = await AdsLicenseRequest.create(adsLicenseRequestData);
+        const adsPointId = req.params.id;
+        const adsPoint = await AdsPoint.findOne({ _id: adsPointId }).populate({
+            path: 'location',
+            model: 'Location',
+            select: 'ward district'
+        });
+
+        req.body.wardAndDistrict = { ward: adsPoint.location.ward, district: adsPoint.location.district };
+        req.body.licenseRequestedAdsBoard.adsPoint = req.params.id;
+        const licenseRequestedAdsBoard = await LicenseRequestedAdsBoard.create(
+            req.body.licenseRequestedAdsBoard);
+        req.body.licenseRequestedAdsBoard = licenseRequestedAdsBoard._id;
+        const adsLicenseRequest = await AdsLicenseRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsLicenseRequest });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

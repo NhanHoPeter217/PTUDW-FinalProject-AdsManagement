@@ -32,10 +32,7 @@ const getAllAdsBoards = async (req, res) => {
 const getAllAdsBoardsByAdsPointId = async (req, res) => {
     const { id: adsPointId } = req.params;
     try {
-        const adsBoards = await AdsBoard.find({ adsPoint: adsPointId }).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        });
+        const adsBoards = await AdsBoard.find({ adsPoint: adsPointId })
 
         res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
     } catch (error) {

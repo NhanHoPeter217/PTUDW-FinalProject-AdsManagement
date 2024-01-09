@@ -12,7 +12,7 @@ const AdsInfoEditingRequestSchema = new Schema(
 
         adsType: {
             type: String,
-            enum: ['AdsBoard', 'AdPoint'],
+            enum: ['AdsBoard', 'AdsPoint'],
             required: true
         },
 
@@ -29,17 +29,18 @@ const AdsInfoEditingRequestSchema = new Schema(
 
         editRequestTime: {
             type: String,
-            default: () => {
-                return moment().format('DD/MM/YYYY');
-            },
+            required: true,
+            // default: () => {
+            //     return moment().format('DD/MM/YYYY');
+            // },
         },
 
         editReason: { type: String },
 
         requestApprovalStatus: {
             type: String,
-            enum: ['Chưa được duyệt, Đã được duyệt'],
-            default: 'Chưa được duyệt'
+            enum: ['Chưa được duyệt', 'Đã được duyệt'],
+            default: 'Chưa được duyệt',
         },
 
         wardAndDistrict: {
@@ -53,14 +54,14 @@ const AdsInfoEditingRequestSchema = new Schema(
             }
         }
     },
-    { timestamps: true }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }}
 );
 
 AdsInfoEditingRequestSchema.pre('save', function (next) {
     if (this.adsType === 'AdsBoard') {
-        this.adsNewInfoType = 'AdsPointRequestedEdit';
-    } else if (this.adsType === 'AdPoint') {
         this.adsNewInfoType = 'AdsBoardRequestedEdit';
+    } else if (this.adsType === 'AdsPoint') {
+        this.adsNewInfoType = 'AdsPointRequestedEdit';
     }
     next();
 });

@@ -12,6 +12,7 @@ router.use(authenticateUser);
 
 router.route('/').get(authorizePermissions('Sở VH-TT'), getAllAdsInfoEditingRequests);
 router.route('/').post(authorizePermissions('Phường', 'Quận'), createAdsInfoEditingRequest);
+// router.route('/').post(createAdsInfoEditingRequest);
 router.route('/:id').get(authorizePermissions('Sở VH-TT'), getSingleAdsInfoEditingRequest);
 router.route('/:id').patch(authorizePermissions('Sở VH-TT'), updateAdsInfoEditingRequest);
 

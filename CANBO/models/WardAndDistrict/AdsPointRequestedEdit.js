@@ -3,11 +3,13 @@ const Schema = mongoose.Schema;
 
 const adsPointRequestedEditSchema = new Schema(
     {
-        location: {
-            type: Schema.Types.ObjectId,
-            ref: 'Location',
-            required: true
-        },
+        locationName: { type: String, required: true },
+
+        address: { type: String, required: true },
+
+        ward: { type: String, required: true },
+
+        district: { type: String, required: true },
 
         locationType: {
             type: String,
@@ -44,5 +46,13 @@ const adsPointRequestedEditSchema = new Schema(
 //     localField: '_id',
 //     foreignField: 'adsPoint'
 // });
+
+adsPointRequestedEditSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'adsFormat',
+        select: 'name'
+    });
+    next();
+});
 
 module.exports = mongoose.model('AdsPointRequestedEdit', adsPointRequestedEditSchema);
