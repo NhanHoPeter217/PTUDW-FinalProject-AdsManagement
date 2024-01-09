@@ -40,6 +40,7 @@ const authenticateResident = async (req, res, next) => {
     const { identifier } = req.signedCookies;
     try {
         if (identifier) {
+            console.log('had identifier');
             const payload = isTokenValid(identifier);
 
             const existingIdentifier = await Identifier.findOne({
@@ -53,6 +54,7 @@ const authenticateResident = async (req, res, next) => {
             req.residentID = payload.residentID;
             return next();
         } else {
+            console.log('did not have identifier');
             const residentID = Date.now().toString() + crypto.randomBytes(40).toString('hex');
             const userAgent = req.headers['user-agent'];
             const ip = req.ip;

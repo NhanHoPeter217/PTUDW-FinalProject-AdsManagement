@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const AdsInfoEditingRequest = require('../../models/WardAndDistrict/AdsInfoEditingRequest');
 const AdsBoardRequestedEdit = require('../../models/WardAndDistrict/AdsBoardRequestedEdit');
 const AdsPointRequestedEdit = require('../../models/WardAndDistrict/AdsPointRequestedEdit');
+const Location = require('../../models/Location');
 const CustomError = require('../../errors');
 const AdsBoard = require('../../models/AdsBoard');
 const AdsPoint = require('../../models/AdsPoint');
@@ -94,6 +95,41 @@ const updateAdsInfoEditingRequest = async (req, res) => {
                 `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
             );
         } 
+        const {adsObject, adsType, newInfo} = adsInfoEditingRequest;
+        if (adsType === 'AdsBoard') {
+            const {
+                quantity,
+                adsBoardImages,
+                adsBoardType,
+                size,
+                contractEndDate
+            } = await AdsBoardRequestedEdit.findOne({ _id: newInfo });
+    
+            await AdsBoard.findOneAndUpdate(
+                { _id: adsObject }, 
+                { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
+                { new: true, runValidators: true }
+            );
+        }
+        else if(adsType === 'AdsPoint') {
+            const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
+            const newLocation = await Location.findOne({ _id: newAdsObject.location });
+            const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });
+            
+            newAdsObject.locationImages = newInformation.locationImages;
+            newAdsObject.planningStatus = newInformation.planningStatus;
+            newAdsObject.locationType = newInformation.locationType;
+            newAdsObject.adsFormat = newInformation.adsFormat;
+
+            newLocation.locationName = newInformation.locationName;
+            newLocation.coords = newInformation.coords;
+            newLocation.address = newInformation.address;
+            newLocation.ward = newInformation.ward;
+            newLocation.district = newInformation.district;
+
+            await newLocation.save();
+            await newAdsObject.save();
+        }
 
         res.status(StatusCodes.OK).json({ adsInfoEditingRequest });
     } catch (error) {

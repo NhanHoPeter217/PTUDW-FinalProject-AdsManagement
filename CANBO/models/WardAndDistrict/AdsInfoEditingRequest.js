@@ -30,9 +30,6 @@ const AdsInfoEditingRequestSchema = new Schema(
         editRequestTime: {
             type: String,
             required: true,
-            // default: () => {
-            //     return moment().format('DD/MM/YYYY');
-            // },
         },
 
         editReason: { type: String },

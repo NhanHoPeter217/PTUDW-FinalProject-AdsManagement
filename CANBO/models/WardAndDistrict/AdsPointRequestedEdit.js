@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const adsPointRequestedEditSchema = new Schema(
     {
+        coords: {
+            lat: { type: Number, required: true },
+            lng: { type: Number, required: true }
+        },
         locationName: { type: String, required: true },
 
         address: { type: String, required: true },
