@@ -15,12 +15,16 @@ const createAdsPoint = async (req, res) => {
 
 const getAllAdsPoints = async (req, res) => {
     try {
-        const adsPoints = await AdsPoint.find({}).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        }).populate('adsFormat').populate('location').lean();
+        const adsPoints = await AdsPoint.find({})
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate('adsFormat')
+            .populate('location')
+            .lean();
 
-        const locationIds = adsPoints.map(point => point.location);
+        const locationIds = adsPoints.map((point) => point.location);
         console.log(adsPoints);
         // const adsFormatsResponse = await getAllAdsFormats(req, res);
         // const { adsFormats } = adsFormatsResponse;
@@ -36,10 +40,10 @@ const getAllAdsPoints = async (req, res) => {
 
         // console.log(locations);
 
-        res.render('vwAdsPoint/listAdsPoint', { 
+        res.render('vwAdsPoint/listAdsPoint', {
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
-            locations: locationIds,
+            locations: locationIds
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

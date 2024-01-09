@@ -22,14 +22,16 @@ const getAllLocations = async (req, res) => {
 const getSingleLocation = async (req, res) => {
     try {
         const { id: locationId } = req.params;
-        const location = await Location.findOne({ _id: locationId }).populate({
-            path: 'adsPoint',
-            model: 'AdsPoint',
-            populate: {
-                path: 'adsBoard',
-                model: 'AdsBoard'
-            }
-        }).lean();
+        const location = await Location.findOne({ _id: locationId })
+            .populate({
+                path: 'adsPoint',
+                model: 'AdsPoint',
+                populate: {
+                    path: 'adsBoard',
+                    model: 'AdsBoard'
+                }
+            })
+            .lean();
 
         if (!location) {
             throw new CustomError.NotFoundError(`No location with id: ${locationId}`);

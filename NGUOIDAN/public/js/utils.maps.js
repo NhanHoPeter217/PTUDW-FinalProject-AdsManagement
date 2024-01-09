@@ -1,5 +1,5 @@
 import getLocation from '/public/utils/getClientLocation.js';
-import { getAllLocations, getSingleAdsPoint } from '/public/utils/getData.js';
+import { getAllLocations } from '/public/utils/getData.js';
 import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
 
 // dynamic import gg map API
@@ -99,9 +99,6 @@ async function initMap() {
 
     clientMarker.setMap(map);
 
-    // Initial Infowindow for places
-    let infoWindow = new google.maps.InfoWindow();
-
     locations.forEach((item, index) => {
         if (item.adsPoint == undefined) return;
 
@@ -148,15 +145,6 @@ async function initMap() {
             adsPoint.adsBoard.forEach((board, index) => {
                 $('#boards-container').append(`
             <!-- Adboard${index} -->
-            <style>
-                #reportIcon {
-                    transition: filter 0.1s ease-in-out; /* Add a transition effect */
-                }
-            
-                #reportIcon:hover {
-                    filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
-                }
-          </style>
             <div
               class="card ad-board default-background primary-text"
               style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
@@ -188,20 +176,17 @@ async function initMap() {
                   </svg>
                   <button
                     type="button"
-                    class="btn btn-outline-danger"
+                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
                     onclick="reportButtonHandler(event)"
                     data-relatedToType="AdsBoard"
                     data-relatedTo="${board._id}"
                     data-ward="${ward}"
                     data-district="${district}"
-                    style="display: flex; justify-content: center; align-items: center;"
                   >
-                    <div style="display: flex; justify-content: center; align-items: center; column-gap: 7px;" id="reportIcon">
-                      <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                      <span id="buttonNamePlaceholder" style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                        Báo cáo
-                      </span>
-                    </div>
+                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                    Báo cáo
+                    </span>
                   </button>
                 </div>
               </div>
@@ -232,16 +217,16 @@ async function initMap() {
             <!-- Button to trigger the modal -->
             <button
                 type="button"
-                class="btn btn-outline-danger"
+                class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
                 data-relatedToType="AdsPoint"
                 data-relatedTo="${item.adsPoint._id}"
                 data-ward="${item.ward}"
                 data-district="${item.district}"
                 onclick="reportButtonHandler(event)"
-                style="display: flex; justify-content: center; align-items: center; column-gap: 7px; width:fit-content; min-width: 111px"
+                style="width:fit-content; min-width: 111px"
             >
                 <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                <span id="buttonNamePlaceholder" style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
                     Báo cáo
                 </span>
             </button>
@@ -297,7 +282,6 @@ function initAutocomplete() {
     const input = document.getElementById('searchInput');
     const searchBox = new google.maps.places.SearchBox(input);
 
-    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', () => {
         searchBox.setBounds(map.getBounds());
@@ -329,19 +313,17 @@ function initAutocomplete() {
                 return;
             }
 
-            const icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
+            const icon = () => {
+                const icon = document.createElement('img');
+                icon.src = '/public/assets/icons/Location.svg';
+                return icon;
             };
 
             // Create a marker for each place.
             markers.push(
-                new google.maps.Marker({
-                    map,
-                    icon,
+                new google.maps.marker.AdvancedMarkerElement({
+                    map: map,
+                    content: icon(),
                     title: place.name,
                     position: place.geometry.location
                 })
@@ -360,7 +342,7 @@ function initAutocomplete() {
     // Get places on click
     let place_info = new google.maps.InfoWindow();
     let geocoder = new google.maps.Geocoder();
-    let place_marker = new google.maps.Marker({
+    let place_marker = new google.maps.marker.AdvancedMarkerElement({
         map: null
     });
     let place_service = new google.maps.places.PlacesService(map);
@@ -377,7 +359,7 @@ function initAutocomplete() {
             .then((response) => {
                 if (response.results[0]) {
                     place_marker.setMap(map);
-                    place_marker.setPosition(latlng);
+                    place_marker.position = latlng;
 
                     let address_id = response.results[0].place_id;
                     let address = response.results[0].formatted_address;
@@ -441,14 +423,14 @@ function initAutocomplete() {
               <!-- Button to trigger the modal -->
               <button
                   type="button"
-                  class="btn btn-outline-danger"
+                  class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
                   onclick="reportButtonHandler(event)"
                   data-relatedToType="Location"
                   data-relatedTo='${JSON.stringify(location)}'
-                  style="display: flex; justify-content: center; align-items: center; column-gap: 7px; width: fit-content;"
+                  style="width: fit-content;"
               >
                   <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                  <span id="buttonNamePlaceholder" style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                  <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
                       Báo cáo
                   </span>
               </button>
