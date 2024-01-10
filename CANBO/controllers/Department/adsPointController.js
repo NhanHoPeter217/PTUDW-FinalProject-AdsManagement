@@ -2,6 +2,8 @@ const { StatusCodes } = require('http-status-codes');
 const Location = require('../../models/Location');
 const AdsPoint = require('../../models/AdsPoint');
 const CustomError = require('../../errors');
+const AdsFormat = require('../../models/Department/AdsFormat');
+const District = require('../../models/Department/District');
 
 const createAdsPoint = async (req, res) => {
     try {
@@ -16,15 +18,24 @@ const createAdsPoint = async (req, res) => {
 
 const getAllAdsPoints = async (req, res) => {
     try {
-        const adsPoints = await AdsPoint.find({}).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        })
-        .populate({
-            path: 'location',
-            model: 'Location'
+        const adsPoints = await AdsPoint.find({})
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate('adsFormat')
+            .populate('location')
+            .lean();
+
+        const adsFormats = await AdsFormat.find({}).lean();
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        res.render('vwAdsPoint/listAdsPoint', {
+            adsPoints: adsPoints,
+            empty: adsPoints.length === 0,
+            adsFormats: adsFormats,
+            districts: districts,
         });
-        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }

@@ -1,6 +1,8 @@
 const AdsBoard = require('../../models/AdsBoard');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../../errors');
+const AdsFormat = require('../../models/Department/AdsFormat');
+const District = require('../../models/Department/District');
 
 const createAdsBoard = async (req, res) => {
     try {
@@ -33,8 +35,32 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
     const { id: adsPointId } = req.params;
     try {
         const adsBoards = await AdsBoard.find({ adsPoint: adsPointId })
+        .populate({
+            path: 'adsPoint',
+            populate: [
+                {
+                    path: 'location',
+                    model: 'Location',
+                },
+                {
+                    path: 'adsFormat',
+                    model: 'AdsFormat',
+                },
+            ]
+        })
+        .lean();
 
-        res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
+        console.log(adsBoards);
+
+        const adsFormats = await AdsFormat.find({}).lean();
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        res.render('vwAdsBoard/listAdsBoard', {
+            adsBoards: adsBoards,
+            empty: adsBoards.length === 0,
+            adsFormats: adsFormats,
+            districts: districts,
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }

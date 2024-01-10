@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticateUser, authorizePermissions } = require('../../middleware/authentication');
 const {
     getAllDistricts,
+    apiGetAllDistricts,
     createDistrict,
     updateDistrict,
     deleteDistrict
@@ -11,9 +12,12 @@ const {
 // router.use(authenticateUser);
 // router.use(authorizePermissions('Sở VH-TT'));
 
-router.route('/').get(getAllDistricts);
+router.get('/', (req, res) => res.redirect('/district/1'));
+router.get('/:distName', getAllDistricts);
+router.get('/api/v1', apiGetAllDistricts);
+
 router.route('/').post(createDistrict);
-router.route('/:id').patch(updateDistrict);
+router.route('/').patch(updateDistrict);
 router.route('/:id').delete(deleteDistrict);
 
 module.exports = router;

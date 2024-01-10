@@ -4,7 +4,7 @@ const CustomError = require('../../errors');
 
 const getAllAdsFormats = async (req, res) => {
     try {
-        const adsFormats = await AdsFormat.find({});
+        const adsFormats = await AdsFormat.find({}).lean();
         res.status(StatusCodes.OK).json({ adsFormats, count: adsFormats.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
