@@ -2,6 +2,8 @@
 {{#section 'css'}}
     <link rel="stylesheet" href="../../public/css/report.css" />
     <link rel="stylesheet" href="../../public/css/adpointInfo.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
     <style>
         #buttonStyle {
             transition: filter 0.1s ease-in-out;
@@ -42,30 +44,110 @@
             white-space: normal;
         }
 
-            /* Custom styles for the dropdowns */
-        .list-select {
-            width: 200px;
-            padding: 0.375rem 2rem 0.375rem 0.75rem;
-            border-radius: 0.25rem;
-            border: 1px solid #ced4da;
-            color: #0066FF;
-            background-color: #fff;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        /* Style for the filter container */
+        .filter-container {
+            margin-bottom: 20px;
         }
 
-        /* Adjust hover and focus styles */
-        .list-select:focus, .list-select:hover {
+        /* Style for select dropdowns */
+        .list-select {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #495057;
+            background-color: #fff;
+            cursor: pointer;
+            width: 100%; /* Adjust width as needed */
+            max-width: 100%;
+        }
+
+        .list-select:hover {
+            border-color: #adb5bd;
+        }
+
+        .list-select:focus {
             border-color: #80bdff;
-            outline: 0;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
+
+        .list-select-ward {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 6px; /* Adjust padding as needed */
+            width: 100%; /* Adjust width as needed */
+        }
+
+        /* Change background color on hover */
+        .list-select-ward:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Change border color when focused */
+        .list-select-ward:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Custom checkbox styles */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .checkbox-input {
+            margin-right: 10px; /* Add space between checkbox and text */
+            height: 25px; /* Adjust height of the checkbox */
+            width: 25px; /* Adjust width of the checkbox */
+        }
+
+        .checkmark {
+            height: 25px; /* Adjust height of the checkbox */
+            width: 25px; /* Adjust width of the checkbox */
+            background-color: #fff;
+            border: 1px solid #adb5bd;
+            border-radius: 3px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .checkbox-input:checked ~ .checkmark:after {
+            content: '';
+            position: absolute;
+            display: block;
+            left: 6px;
+            top: 2px;
+            width: 10px; /* Adjust size of the checkmark */
+            height: 18px; /* Adjust size of the checkmark */
+            border: solid #007bff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .fw-bold {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Adjust the height and other styles as needed */
+        .scrollable-list {
+            max-height: 62vh; /* Set a maximum height for the container */
+            overflow-y: auto; /* Enable vertical scrollbar when content overflows */
+        }
+
+
     </style>
 {{/section}}
 {{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // Get all district and ward for the dropdown list
-        fetch('/api/v1/district', {
+        fetch('/district/api/v1', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,6 +158,79 @@
         })
         .then((district_data) => {
             if (!district_data) { return; }
+
+            if ($('#filter_district').length > 0) {
+                $('#filter_district').on('change', function() {
+                    var selectedDistrict = $(this).val();
+
+                    let selectedDistrictData;
+                    for (let i = 0; i < district_data.count; ++i) {
+                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                            selectedDistrictData = district_data.districts[i];
+                            break;
+                        }
+                    }
+
+                    if (selectedDistrictData) {
+                        const wards = selectedDistrictData.wards;
+
+                        $('#filter_ward').empty();
+
+                        wards.forEach(function(ward) {
+                            $('#filter_ward').append(`
+                                <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" class="checkbox-input" id="${ward}">
+                                        <span>Phường ${ward}</span>
+                                    </label>
+                                </div>
+                            `);
+                        });
+                        
+                        // Get all the checkbox elements
+                        const checkboxes = document.querySelectorAll('.checkbox-input');
+                        const wardList = [];
+
+                        function fetchAdsPointsByWardList() {
+                            const checkboxes = document.querySelectorAll('.checkbox-input');
+                            wardList.length = 0; // Clear the wardList array
+
+                            Array.from(checkboxes).forEach(function(checkbox) {
+                                if (checkbox.checked) {
+                                    wardList.push(checkbox.id);
+                                }
+                            });
+
+                            fetch('/api/v1/adsPoint/wardList', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    wardList: wardList
+                                })
+                            })
+                            .then((response) => {
+                                return response.json();
+                            })
+                            .then((data) => )
+                        }
+
+                        // Add event listeners to each checkbox
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.addEventListener('change', function() {
+                                fetchAdsPointsByWardList();
+                            });
+                        });
+
+                    } else {
+                        console.log('District not found!');
+                    }
+                });
+            } else {
+                console.log('#filter_district not found!');
+            }
+            
             if ($('#edit_district').length > 0) {
                 $('#edit_district').on('change', function() {
                     var selectedDistrict = $(this).val();
@@ -111,47 +266,28 @@
 
 <div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-9">
             <h5 class="card-title fw-bold mb-4">Quản lý quảng cáo</h5>
             <div class="card w-100 mb-4">
                 <div class="card-body p-4">
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="card-title fw-semibold mb-4" id="tableName">
-        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
-        Danh sách các điểm đặt quảng cáo
-    </h5>
-    <div class="d-flex flex-column flex-md-row align-items-md-center">
-        <div class="d-flex flex-column flex-md-row me-md-3 align-items-center">
-            <select id="districtSelect1" class="list-select list-select-sm">
-                <option>Quận 1</option>
-                <!-- Add other district options here -->
-            </select>
-        </div>
-        <div class="d-flex flex-column flex-md-row align-items-center">
-            <select id="districtSelect2" class="list-select list-select-sm">
-                <option>Phường 2</option>
-                <!-- Add other district options here -->
-            </select>
-        </div>
-    </div>
-</div>
-
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title fw-semibold mb-4" id="tableName">
+                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                        Danh sách các điểm đặt quảng cáo
+                    </h5>
+                </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                     <colgroup>
-                        <col style="width: 4%">
-                        <col style="width: 19%">
+                        <col style="width: 5%">
+                        <col style="width: 50%">
                         <col style="width: 19%">
                         <col style="width: 21%">
-                        <col style="width: 15%">
-                        <col style="width: 22%">
                     </colgroup>
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Điểm quảng cáo</th>
-                            <th scope="col">Loại vị trí</th>
-                            <th scope="col">Hình thức quảng cáo</th>
                             <th scope="col">Bảng quảng cáo</th>
                             <th scope="col">Hành động</th>
                         </tr>
@@ -160,12 +296,10 @@
                 <div class="table-body-container" style="height: 55vh; overflow-y: auto;">
                     <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                         <colgroup>
-                            <col style="width: 4%">
-                            <col style="width: 19%">
+                            <col style="width: 5%">
+                            <col style="width: 50%">
                             <col style="width: 19%">
                             <col style="width: 21%">
-                            <col style="width: 15%">
-                            <col style="width: 22%">
                         </colgroup>
                         <tbody id="body">
                             {{#if this.empty}}
@@ -177,18 +311,16 @@
                                     <tr>
                                         <td class="align-middle">{{create_order @index}}</td>
                                         <td class="align-middle">
-                                            <button type="button" class="btn btn-link limited-width" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{index}}">
+                                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{index}}">
                                                 {{location.locationName}}
                                             </button>
                                         </td>
-                                        <td class="align-middle text-center narrow-width">{{locationType}}</td>
-                                        <td class="align-middle">{{adsFormat.name}}</td>
-                                        <td class="border-bottom-0">
+                                        <td class="border-bottom-0 align-middle">
                                         <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/{{_id}}" role="button">
                                             <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
                                         </a>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        <td class="border-bottom-0 align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
@@ -474,6 +606,30 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+            <div class="pe-4">
+                <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
+                <div class="filter-container mb-3">
+                    <select id="filter_district" class="list-select list-select-sm">
+                        <option selected disabled>-- Chọn Quận --</option>
+                        <!-- Populate districts dynamically -->
+                        {{#each districts}}
+                            <option value="{{districtName}}">Quận {{districtName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="list-group">
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                        <span class="fw-bold">Danh sách các phường</span>
+                    </div>
+                    <div id="filter_ward" class="scrollable-list">
+                    </div>
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
