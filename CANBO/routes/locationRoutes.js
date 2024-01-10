@@ -25,12 +25,12 @@ router
     .route('/dist/:distId/ward/:wardId')
     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllLocationsByWardAndDistrict);
 
-// router
-//     .route('/wardList')
-//     .post(authenticateUser, authorizePermissions('Quận'), getAllLocationsByWardList);
 router
-    .route('/wardList')
-    .post(getAllLocationsByWardList);
+    .route('/wardList/api/v1')
+    .post(authenticateUser, authorizePermissions('Quận'), getAllLocationsByWardList);
+// router
+//     .route('/wardList/api/v1')
+//     .post(getAllLocationsByWardList);
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createLocation);
 

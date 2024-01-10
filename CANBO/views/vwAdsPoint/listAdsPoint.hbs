@@ -56,7 +56,7 @@
                                     <tr>
                                         <td class="align-middle">{{create_order @index}}</td>
                                         <td class="align-middle">
-                                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{index}}">
+                                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{_id}}">
                                                 {{location.locationName}}
                                             </button>
                                         </td>
@@ -70,7 +70,7 @@
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#requestEditAdsPointModal-{{index}}">
+                                                data-bs-target="#requestEditAdsPointModal-{{_id}}">
                                                 <div id="buttonStyle">
                                                     <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
                                                     Yêu cầu chỉnh sửa
@@ -80,7 +80,7 @@
                                     </tr>
                                     <div
                                         class="modal fade"
-                                        id="detailAdsPointModal-{{index}}"
+                                        id="detailAdsPointModal-{{_id}}"
                                         tabindex="-1"
                                         aria-labelledby="reportModalLabel"
                                         aria-hidden="true"
@@ -163,7 +163,7 @@
                                     </div>
                                     <div
                                         class='modal fade'
-                                        id='requestEditAdsPointModal-{{index}}'
+                                        id='requestEditAdsPointModal-{{_id}}'
                                         tabindex='-1'
                                         aria-labelledby='reportModalLabel'
                                         aria-hidden='true'
@@ -380,5 +380,3 @@
 </div>
 
 <title>Danh sách điểm quảng cáo</title>
-
-<div id="listAdsPoint_modalAddition"></div>
