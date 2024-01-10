@@ -98,3 +98,9 @@
     display: block;
     margin-top: 3px;
 }
+
+.center-content td,
+.center-content th {
+    text-align: center;
+    vertical-align: middle;
+}
