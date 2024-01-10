@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const licenseRequestedAdsBoardSchema = new Schema(
     {
-        adsPoint: {
+        adsBoard: {
             type: Schema.Types.ObjectId,
-            ref: 'AdsPoint',
+            ref: 'AdsBoard',
             required: true
         },
 

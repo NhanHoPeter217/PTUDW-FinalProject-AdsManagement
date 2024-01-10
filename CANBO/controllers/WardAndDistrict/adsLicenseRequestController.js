@@ -7,17 +7,24 @@ const CustomError = require('../../errors');
 
 const createAdsLicenseRequest = async (req, res) => {
     try {
-        const adsPointId = req.params.id;
-        const adsPoint = await AdsPoint.findOne({ _id: adsPointId }).populate({
-            path: 'location',
-            model: 'Location',
-            select: 'ward district'
+        const adsBoardId = req.params.id;
+        const adsBoard = await AdsBoard.findOne({ _id: adsBoardId }).populate({
+            path: 'adsPoint',
+            model: 'AdsPoint',
+            populate: {
+                path: 'location',
+                model: 'Location',
+                select: 'ward district'
+            }
         });
 
-        req.body.wardAndDistrict = { ward: adsPoint.location.ward, district: adsPoint.location.district };
-        req.body.licenseRequestedAdsBoard.adsPoint = req.params.id;
+        req.body.wardAndDistrict = { ward: adsBoard.adsPoint.location.ward, district: adsBoard.adsPoint.location.district };
+        
+        req.body.licenseRequestedAdsBoard.adsBoard = req.params.id;
+
         const licenseRequestedAdsBoard = await LicenseRequestedAdsBoard.create(
             req.body.licenseRequestedAdsBoard);
+
         req.body.licenseRequestedAdsBoard = licenseRequestedAdsBoard._id;
         const adsLicenseRequest = await AdsLicenseRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsLicenseRequest });
@@ -57,10 +64,17 @@ const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
     const { ward, district } = assignedArea;
 
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({
-            'wardAndDistrict.ward': ward,
-            'wardAndDistrict.district': district
-        });
+        let query = {};
+
+        if (ward !== '*') {
+            query['wardAndDistrict.ward'] = ward;
+        }
+
+        if (district !== '*') {
+            query['wardAndDistrict.district'] = district;
+        }
+        
+        const adsLicenseRequests = await AdsLicenseRequest.find(query);
 
         res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
     } catch (error) {
@@ -85,17 +99,17 @@ const getAdsLicenseRequestsByWardAndDistrict = async (req, res) => {
 
 const updateAdsLicenseRequestByAssignedArea = async (req, res) => {
     const { id: adsLicenseRequestId } = req.params;
-
+    let adsLicenseRequest;
     try {
-        const adsLicenseRequest = await AdsLicenseRequest.findOneAndUpdate(
-            { _id: adsLicenseRequestId },
+        adsLicenseRequest = await AdsLicenseRequest.findOneAndUpdate(
+            { _id: adsLicenseRequestId, requestApprovalStatus: { $ne: 'Đã được duyệt' } },
             req.body,
             { new: true, runValidators: true }
         );
 
         if (!adsLicenseRequest) {
             throw new CustomError.NotFoundError(
-                `No Ads License Request with id: ${adsLicenseRequestId}`
+                `No Ads License Request can be updated with id: ${adsLicenseRequestId}`
             );
         }
 
@@ -122,16 +136,17 @@ const updateAdsLicenseRequestByDepartmentOfficier = async (req, res) => {
         }
 
         if(adsLicenseRequest.requestApprovalStatus === 'Đã được duyệt'){
-            const {quantity, adBoardImages, adsBoardType, size, contractEndDate, adsPoint} = await LicenseRequestedAdsBoard.findOne({ 
+            const {quantity, adBoardImages, adsBoardType, size, contractEndDate, adsBoard} = await LicenseRequestedAdsBoard.findOne({ 
                 _id: adsLicenseRequest.licenseRequestedAdsBoard });
 
-            const newAdsBoard = await AdsBoard.create({
+            const newAdsBoard = await AdsBoard.findByIdAndUpdate(
+                adsBoard,
+            {
                 quantity: quantity,
                 adsBoardImages: adBoardImages,
                 adsBoardType: adsBoardType,
                 size: size,
                 contractEndDate: contractEndDate,
-                adsPoint: adsPoint
             });
             res.status(StatusCodes.OK).json({ newAdsBoard });
         }

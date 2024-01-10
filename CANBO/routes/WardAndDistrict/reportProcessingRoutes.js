@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {
-    getAllReports,
+    getAllReportsByResident,
+    getAllReportsByDepartmentOfficer,
     getAllReportsByAssignedArea,
     getSingleReport,
     getAllReportsByWardAndDistrict,
@@ -15,17 +16,25 @@ const {
     authorizePermissions
 } = require('../../middleware/authentication');
 
-// Người dân có thể tạo Report
 router.route('/').post(createReport);
 
-router.use(authenticateUser);
+router.route('/resident').get(authenticateResident, getAllReportsByResident);
 
-router.route('/').get(authorizePermissions('Sở VH-TT'), getAllReports);
-router.route('/').get(authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
 router
-    .route('dist/:dist/ward/:ward')
-    .get(authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
-router.route('/:id').get(authorizePermissions('Sở VH-TT'), getSingleReport);
-router.route('/:id').patch(authorizePermissions('Phường', 'Quận'), updateReport);
+    .route('/dist/:distID/ward/:wardID')
+    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
+
+
+router
+    .route('/')
+    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
+
+router
+    .route('/assignedArea')
+    .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
+    
+router.route('/:id').get(authenticateUser, getSingleReport);
+
+router.route('/:id').patch(authenticateUser, authorizePermissions('Phường', 'Quận'), updateReport);
 
 module.exports = router;

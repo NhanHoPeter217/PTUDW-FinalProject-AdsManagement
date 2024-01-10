@@ -66,6 +66,14 @@ const ReportProcessingSchema = new Schema(
     { timestamps: true }
 );
 
+ReportProcessingSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'reportFormat',
+        select: 'name'
+    });
+    next();
+});
+
 const ReportProcessing = mongoose.model('ReportProcessing', ReportProcessingSchema);
 
 module.exports = ReportProcessing;

@@ -26,15 +26,15 @@ const adsBoardSchema = new Schema(
             ]
         },
         size: {
-            width: { type: Number, required: true },
-            height: { type: Number, required: true }
+            width: { type: Number},
+            height: { type: Number}
         },
 
-        quantity: { type: Number, required: true, default: 1 },
+        quantity: { type: Number, default: 1 },
 
         adsBoardImages: [{ type: String }],
 
-        contractEndDate: { type: String, required: true }
+        contractEndDate: { type: String}
     },
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

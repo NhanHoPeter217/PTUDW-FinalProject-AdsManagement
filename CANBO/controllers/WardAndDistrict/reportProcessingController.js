@@ -4,8 +4,12 @@ const Location = require('../../models/Location');
 const CustomError = require('../../errors');
 const { handleFileUpload } = require('../../utils/handleFileUpload');
 const sendEmail = require('../../utils/sendEmail');
+const fs = require('fs').promises;
+const path = require('path');
 
-const getAllReports = async (req, res) => {
+const { AUTH_EMAIL } = process.env;
+
+const getAllReportsByResident = async (req, res) => {
     try {
         const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
             'createdAt'
@@ -16,14 +20,32 @@ const getAllReports = async (req, res) => {
     }
 };
 
+const getAllReportsByDepartmentOfficer = async (req, res) => {
+    try {
+        const reports = await ReportProcessing.find({}).sort(
+            'createdAt'
+        );
+        res.status(StatusCodes.OK).json({ reports, count: reports.length });
+    } catch (error) {
+        throw new CustomError.BadRequestError(error.message);
+    }
+};
+
 const getAllReportsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
     try {
-        const reports = await Report.find({
-            'wardAndDistrict.ward': ward,
-            'wardAndDistrict.district': district
-        });
+        let query = {};
+
+        if (ward !== '*') {
+            query['ward'] = ward;
+        }
+
+        if (district !== '*') {
+            query['district'] = district;
+        }
+        const reports = await ReportProcessing.find(query).sort('createdAt');
+
         res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -31,12 +53,12 @@ const getAllReportsByAssignedArea = async (req, res) => {
 };
 
 const getAllReportsByWardAndDistrict = async (req, res) => {
-    const { ward, district } = req.params;
-
+    const { wardID, distID } = req.params;
+    console.log(wardID, distID);
     try {
         const reportProcessings = await ReportProcessing.find({
-            'wardAndDistrict.ward': ward,
-            'wardAndDistrict.district': district
+            'ward': wardID,
+            'district': distID
         });
 
         res.status(StatusCodes.OK).json({ reportProcessings, count: reportProcessings.length });
@@ -62,42 +84,31 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        const image1 = handleFileUpload(req, 'image1', 'public/uploads/reportImages');
-        const image2 = handleFileUpload(req, 'image2', 'public/uploads/reportImages');
-        req.body.image1 = image1;
-        req.body.image2 = image2;
-
+        if (req.files) {
+            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages');
+    
+            Object.keys(uploadedImages).forEach(fieldName => {
+                req.body[fieldName] = Array.isArray(uploadedImages[fieldName]) ? 
+                uploadedImages[fieldName] : [uploadedImages[fieldName]];
+            });
+        }
+        
         if (req.body.relatedToType === 'Location') {
-            const locationObj = {
-                coords: {
-                    lat: req.body.lat,
-                    lng: req.body.lng
-                },
-                locationName: req.body.locationName,
-                address: req.body.address,
-                ward: req.body.ward,
-                district: req.body.district
-            };
-            const location = await Location.create(locationObj);
+            const location = await Location.create(req.body.relatedTo);
             req.body.relatedTo = location._id;
         }
-
         const reportProcessing = await ReportProcessing.create(req.body);
 
-        res.status(StatusCodes.CREATED).json({ message: 'Report created successfully' });
+        res.status(StatusCodes.CREATED).json({ reportProcessing });
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
 };
 
-const sendReportStatusNotification = async (req, res) => {
+const sendReportStatusNotification = async (reportProcessing) => {
     try {
-        const { id: reportProcessingId } = req.params;
-        const reportProcessing =
-            await ReportProcessing.findById(reportProcessingId).populate('relatedTo reportFormat');
-
-        const { relatedTo, relatedToType, reportFormat, senderName, email, phone, content } =
-            reportProcessing;
+        const {relatedToType, reportFormat, senderName, 
+            email, phone, content, createdAt } = reportProcessing;
 
         const subject = 'New announcement: The status and processing method of your report';
 
@@ -107,24 +118,55 @@ const sendReportStatusNotification = async (req, res) => {
         );
 
         let locationName, address;
-
         if (relatedToType === 'Location') {
-            ({ locationName, address } = relatedTo);
+            ({ locationName, address } = reportProcessing.relatedTo);
+
         } else if (relatedToType === 'AdsPoint') {
-            ({ locationName, address } = relatedTo.location);
+            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate(
+                { 
+                    path: 'relatedTo',
+                    model: 'AdsPoint', 
+                    populate: { 
+                        path: 'location',
+                        model: 'Location',
+                        select: 'locationName address'
+                    } 
+                }
+            );
+            ({ locationName, address } = reportProcessing.relatedTo.location);
+
         } else if (relatedToType === 'AdsBoard') {
-            ({ locationName, address } = relatedTo.adsPoint.location);
+            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate(
+                { 
+                    path: 'relatedTo',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint', 
+                        populate: { 
+                            path: 'location',
+                            model: 'Location',
+                            select: 'locationName address'
+                        } 
+                    }
+                }
+            );
+            console.log(reportProcessing);
+            ({ locationName, address } = reportProcessing.relatedTo.adsPoint.location);
+
         }
 
         const replacedHTML = htmlContent
-            .replace('{{locationName}}', locationName)
-            .replace('{{address}}', address)
-            .replace('{{reportFormat}}', reportFormat)
             .replace('{{senderName}}', senderName)
             .replace('{{phone}}', phone)
             .replace('{{content}}', content)
-            .replace('{{processingStatus}}', req.body.processingStatus)
-            .replace('{{processingMethod}}', req.body.processingMethod);
+            .replace('{{relatedToType}}', relatedToType)
+            .replace('{{locationName}}', locationName)
+            .replace('{{address}}', address)
+            .replace('{{createdAt}}', createdAt)
+            .replace('{{reportFormat}}', reportFormat.name)
+            .replace('{{processingStatus}}', reportProcessing.processingStatus)
+            .replace('{{processingMethod}}', reportProcessing.processingMethod);
 
         const mailOptions = {
             from: AUTH_EMAIL,
@@ -132,15 +174,13 @@ const sendReportStatusNotification = async (req, res) => {
             subject,
             html: replacedHTML
         };
+
         await sendEmail(mailOptions);
 
-        if (!reportProcessing) {
-            throw new CustomError.NotFoundError(
-                `No ReportProcessing with id: ${reportProcessingId}`
-            );
-        }
+        return true;
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        console.error(error);
+        return false;
     }
 };
 
@@ -161,14 +201,19 @@ const updateReport = async (req, res) => {
                 `No report processing with id: ${reportProcessingId}`
             );
         }
+        const emailSent = await sendReportStatusNotification(reportProcessing);
 
-        sendReportStatusNotification(req, res);
-
-        res.status(StatusCodes.OK).json({ reportProcessing });
+        if (emailSent) {
+            res.status(StatusCodes.OK).json({ reportProcessing });
+        } else {
+            throw new Error('Failed to send email notification');
+        }
     } catch (error) {
+        console.error(error);
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
 
 // const deleteReport = async (req, res) => {
 //     const { id: reportProcessingId } = req.params;
@@ -188,7 +233,8 @@ const updateReport = async (req, res) => {
 // };
 
 module.exports = {
-    getAllReports,
+    getAllReportsByResident,
+    getAllReportsByDepartmentOfficer,
     getAllReportsByAssignedArea,
     getSingleReport,
     getAllReportsByWardAndDistrict,

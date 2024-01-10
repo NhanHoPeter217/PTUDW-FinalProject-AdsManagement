@@ -9,32 +9,68 @@ function getFormattedDate() {
     const minutes = currentDate.getMinutes().toString().padStart(2, '0');
     const seconds = currentDate.getSeconds().toString().padStart(2, '0');
 
-    return `${year}.${month}.${day}_${hours}.${minutes}.${seconds}`;
+    return `${year}.${month}.${day}_${hours}.${minutes}.${seconds}_${Date.now()}`;
 }
 
-// Function to handle file uploads
-const handleFileUpload = (req, fieldName, folderName) => {
-    if (req.files && req.files[fieldName]) {
-        const file = req.files[fieldName];
-        const mainDirectory = path.resolve(__dirname, '..');
-        const uploadPath = path.join(mainDirectory, folderName);
+// const handleFileUpload = (req, fieldName, folderName) => {
+//     if (req.files && req.files[fieldName]) {
+//         const file = req.files[fieldName];
+//         const mainDirectory = path.resolve(__dirname, '..');
+//         const uploadPath = path.join(mainDirectory, folderName);
 
-        // Create the folder if it doesn't exist
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-        const fileName = `${getFormattedDate()}_${fieldName}_${file.name}`;
-        const filePath = path.join(uploadPath, fileName);
+//         // Create the folder if it doesn't exist
+//         if (!fs.existsSync(uploadPath)) {
+//             fs.mkdirSync(uploadPath, { recursive: true });
+//         }
+//         const fileName = `${getFormattedDate()}_${fieldName}_${file.name}`;
+//         const filePath = path.join(uploadPath, fileName);
 
-        file.mv(filePath, (err) => {
-            if (err) {
-                throw new Error(`Error uploading file: ${err}`);
+//         file.mv(filePath, (err) => {
+//             if (err) {
+//                 throw new Error(`Error uploading file: ${err}`);
+//             }
+//         });
+//         return filePath;
+//     }
+//     return null;
+// };
+
+const handleFileUpload = (req, folderName) => {
+    try {
+        const uploadedImages = {};
+
+        const fieldNames = Object.keys(req.files);
+
+        fieldNames.forEach(fieldName => {
+            const files = req.files[fieldName];
+            const mainDirectory = path.resolve(__dirname, '..');
+            const uploadPath = path.join(mainDirectory, folderName);
+
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
             }
+
+            const filePaths = files.map(file => {
+                const fileName = `${getFormattedDate()}_${file.name}`;
+                const filePath = path.join(uploadPath, fileName);
+
+                file.mv(filePath, (err) => {
+                    if (err) {
+                        throw new Error(`Error uploading file: ${err}`);
+                    }
+                });
+
+                return filePath;
+            });
+
+            uploadedImages[fieldName] = filePaths;
         });
 
-        return filePath;
+        return uploadedImages;
     }
-    return null;
+    catch (error) {
+        throw error;
+    }
 };
 
 module.exports = { handleFileUpload };
