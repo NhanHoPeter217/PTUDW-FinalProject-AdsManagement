@@ -5,7 +5,7 @@
 
 <div id='root'>
     <div id='left-bar' class='col'>
-        <div class='input-group mb-3 flex-nowrap shadow-sm'>
+        <div class='input-group mb-3 flex-nowrap'>
             <button
                 class='btn btn-outline-secondary primary-background'
                 type='button'
@@ -43,11 +43,11 @@
     <script>
         const nav = $( "#navbar" )
         $( document ).ready( function() {
-            $( "#map" ).css( {"height": $(window).height() - nav.height() - 16} );
+            $( "#left-bar" ).css( {"height": $(window).height() - nav.height() - 16} );
         } );
 
         $( window ).on( "resize", function() {
-            $( "#map" ).css( {"height": $(this).height() - nav.height() - 16} );
+            $( "#left-bar" ).css( {"height": $(this).height() - nav.height() - 16} );
         } );
     </script>
 {{/section}}

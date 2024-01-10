@@ -35,6 +35,7 @@ const engineWithHelpers = engine({
          * {{/ifCond}}
          */
         ifCond: function (v1, operator, v2, options) {
+            console.log(v1, operator, v2);
             switch (operator) {
                 case '==':
                     return v1 == v2 ? options.fn(this) : options.inverse(this); // eslint-disable-line
@@ -59,6 +60,28 @@ const engineWithHelpers = engine({
                 default:
                     return options.inverse(this);
             }
+        },
+
+        /**
+         * Increase the value by 1
+         * @name Inc
+         * @example
+         * {{inc @index}}
+         */
+        inc: function (value, options) {
+            return parseInt(value) + 1;
+        },
+
+        create_order(val) {
+            return val + 1;
+        },
+        format_date(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+        
+            return `${day}/${month}/${year}`;
         }
     }
 });

@@ -1,9 +1,8 @@
 /*
  * Property styles in unhighlighted state.
  */
-.adpointInfo {
+ .adpointInfo {
     align-items: start;
-    background-color: #ffffff;
     border-radius: 50%;
     color: #263238;
     display: flex;
@@ -24,7 +23,7 @@
     height: 0;
     left: 50%;
     position: absolute;
-    top: 85%;
+    top: 74%;
     transform: translate(-50%, 0);
     transition: all 0.3s ease-out;
     width: 0;
@@ -43,8 +42,23 @@
     display: none;
 }
 
-.adpointInfo .markerPlaceholder {
-    display: block;
+.markerPlaceholder {
+    width: 26px;
+    height: 26px;
+    color: #ffffff;
+    font-size: 11px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adPointRed .markerPlaceholder {
+    background-color: var(--Red);
+}
+
+.adPointBlue .markerPlaceholder {
+    background-color: #0057ff;
 }
 
 .adpointInfo .details {
@@ -76,15 +90,11 @@
     display: none;
 }
 
-.adpointInfo.highlight .icon {
-    display: block;
-    margin-top: 3px;
-}
-
 .adpointInfo.highlight .details {
     display: flex;
 }
 
-.adPointRed {
-    color: var(--Red);
+.adpointInfo.highlight .icon {
+    display: block;
+    margin-top: 3px;
 }

@@ -19,11 +19,14 @@
         {{{_sections.css}}}
     </head>
 
-    <body>
+    <body class="bg-body-tertiary">
         {{#unless hideNavbar}}
             {{> navbar}}
         {{/unless}}
-        {{{body}}}
+        <div class="d-flex flex-no-wrap bg-body-tertiary">
+            {{> sidebar_So}}
+            {{{body}}}
+        </div>
 
         <!-- jQuery -->
         <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>

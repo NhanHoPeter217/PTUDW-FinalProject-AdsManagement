@@ -167,3 +167,12 @@ body {
 .submit-btn:hover {
     background-color: #4d84e2;
 }
+
+.softer-text {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+

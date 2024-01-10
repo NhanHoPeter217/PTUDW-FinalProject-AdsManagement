@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 app.use(cors(corsOptions));
 
 // routers
-const authRouter = require('./routes/auth');
+const authRouter = require('./routes/auth.js');
 const jobsRouter = require('./routes/jobs');
 const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
@@ -54,9 +54,6 @@ const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequ
 const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
 const locationRouter = require('./routes/locationRoutes');
 
-const reportRoute = require('./routes/report-ward.route');
-const adsPointRoute = require('./routes/ads-point.route');
-const wardListRoute = require('./routes/ward-list.route');
 // const adsBoardRoute = require('./routes/ads-board.route');
 const requestRoute = require('./routes/request.route');
 const typeRoute = require('./routes/type.route');
@@ -74,7 +71,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // app.use(helmet());
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/public', express.static('public'));
 app.use(cookieParser(process.env.JWT_SECRET));
@@ -86,7 +83,7 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // routes
-app.use('/api/v1/auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/forgotpassword', forgotpwRouter);
 app.use('/api/v1/report', reportProcessingRouter);
@@ -96,15 +93,15 @@ app.use('/api/v1/jobs', jobsRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/report', reportRouter);
 
-app.use('/api/v1/adsBoard', adsBoardRouter);
+app.use('/adsBoard', adsBoardRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
-app.use('/api/v1/adsPoint', adsPointRouter);
-app.use('/api/v1/district', districtRouter);
+app.use('/adsPoint', adsPointRouter);
+app.use('/district', districtRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
-app.use('/api/v1/adsLicenseRequest', adsLicenseRequestRouter);
+app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
-app.use('/api/v1/location', locationRouter);
+app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
 // FRONT END
 // Setup handlebars view engine
@@ -134,13 +131,13 @@ app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
 
-app.get('/signin', function (req, res) {
-    res.render('commonFeatures/signin', { layout: false });
-});
+// app.get('/signin', function (req, res) {
+//     res.render('commonFeatures/signin', { layout: false });
+// });
 
-app.get('/admin/adsboard/list', function (req, res) {
-    res.render('vwAdsBoard/listAdsBoard', {});
-});
+// app.get('/admin/adsboard/list', function (req, res) {
+//     res.render('vwAdsBoard/listAdsBoard', {});
+// });
 
 app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     const id = req.params.id;
@@ -149,12 +146,12 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
     res.render('vwAdsBoard/listAdsBoard', { id: id });
 });
 
-app.get('/admin/adspoint/list', function (req, res) {
-    res.render('vwAdsPoint/listAdsPoint', {});
-});
+// app.get('/admin/adspoint/list', function (req, res) {
+//     res.render('vwAdsPoint/listAdsPoint', {});
+// });
 
-app.get('/admin/types/list', function (req, res) {
-    res.render('vwType/listType', {});
+app.get('/types/list', function (req, res) {
+    res.render('vwType/listType', {layout: 'canbo_So'});
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
@@ -171,8 +168,10 @@ app.get('/admin/types/list', function (req, res) {
 
 // app.use('/admin/adspoint', adsPointRoute);
 
-app.use('/admin/report', reportRoute);
-app.use('/admin/dist', wardListRoute);
+app.get('/ward/:wardId/dist/:distId', function (req, res) {
+    res.render('vwReport/listReport', { layout: 'canbo' });
+});
+
 app.use('/admin/request', requestRoute);
 
 app.use(notFoundMiddleware);
