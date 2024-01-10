@@ -1,12 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 
-router.get('/:id', (req, res) => {
-    console.log(req.params.id);
-    res.render('home');
-});
+async function getAllAdsPoints() {
+    try {
+        var result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
+        let AdsPoints = result.data.adsPoints;
+    
+        let AdsBoards = [];
 
-router.get('/', (req, res) => {
-    res.render('home');
+        AdsPoints.forEach((adsPoint) => {
+            AdsBoards.push(...adsPoint.adsBoard)
+        });
+    
+        return { AdsPoints, AdsBoards };
+    }
+    catch (err) {
+        console.log(err);
+    }
+    
+}
+
+router.get('/', async (req, res) => {
+
+    const { AdsPoints, AdsBoards } = await getAllAdsPoints();
+
+    res.render('home2', { AdsPoints, AdsBoard });
 });
 module.exports = router;

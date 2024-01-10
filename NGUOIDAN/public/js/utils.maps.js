@@ -1,5 +1,5 @@
 import getLocation from '/public/utils/getClientLocation.js';
-import { getAllLocations } from '/public/utils/getData.js';
+import getAllLocations from '/public/utils/getData.js';
 import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
 
 // dynamic import gg map API
@@ -61,19 +61,9 @@ async function initMap() {
     const { Map } = await google.maps.importLibrary('maps');
     const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
-    let clientLat = 0;
-    let clientLng = 0;
-    await getLocation()
-        .then(({ latitude, longitude }) => {
-            clientLat = latitude;
-            clientLng = longitude;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
+ 
     // Current location of the client
-    const clientLocation = { lat: clientLat, lng: clientLng };
+    const clientLocation = await getLocation();
     let clientMarkerElement = document.createElement('img');
     clientMarkerElement.src = 'public/assets/icons/ClientLocation.svg';
 

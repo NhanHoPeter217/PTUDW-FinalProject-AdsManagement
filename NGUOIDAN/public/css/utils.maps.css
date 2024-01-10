@@ -57,3 +57,7 @@ $enable-shadows body {
     color: var(--Green2);
     font-family: Inter;
 }
+
+.none{
+    display: none;
+}

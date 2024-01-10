@@ -33,7 +33,36 @@ app.engine(
                 }
 
                 return null;
-            }
+            },
+            ifCond: function (v1, operator, v2, options) {
+                switch (operator) {
+                    case '==':
+                        return v1 == v2 ? options.fn(this) : options.inverse(this);
+                    case '===':
+                        return v1 === v2 ? options.fn(this) : options.inverse(this);
+                    case '!=':
+                        return v1 != v2 ? options.fn(this) : options.inverse(this);
+                    case '!==':
+                        return v1 !== v2 ? options.fn(this) : options.inverse(this);
+                    case '<':
+                        return v1 < v2 ? options.fn(this) : options.inverse(this);
+                    case '<=':
+                        return v1 <= v2 ? options.fn(this) : options.inverse(this);
+                    case '>':
+                        return v1 > v2 ? options.fn(this) : options.inverse(this);
+                    case '>=':
+                        return v1 >= v2 ? options.fn(this) : options.inverse(this);
+                    case '&&':
+                        return v1 && v2 ? options.fn(this) : options.inverse(this);
+                    case '||':
+                        return v1 || v2 ? options.fn(this) : options.inverse(this);
+                    default:
+                        return options.inverse(this);
+                }
+            },
+            inc: function (value, options) {
+                return parseInt(value) + 1;
+            },
         }
     })
 );
@@ -43,7 +72,10 @@ app.set('views', './views');
 app.set('view engine', '.hbs');
 app.set('title', 'Ads Management');
 
-app.use('/', require('./home.route'));
+app.get('/', (req, res) => {
+    res.render('home');
+});
+app.use('/2', require('./home.route'));
 
 const port = process.env.PORT_NGUOIDAN || 3000;
 

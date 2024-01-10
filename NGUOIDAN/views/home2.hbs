@@ -1,0 +1,299 @@
+{{#section 'css'}}
+    <link href='public/css/utils.maps.css' rel='stylesheet' />
+    <link rel='stylesheet' href='public/css/report.css' />
+    <link rel="stylesheet" href="/public/css/adpointInfo.css">
+    <style>
+        .reportExclamation > img {
+            transition: filter 0.1s ease-in-out; /* Add a transition effect */
+        }
+
+        .reportExclamation:hover > img {
+            filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
+        }
+    </style>
+{{/section}}
+
+<div id='root'>
+    <div id='left-bar' class='col'>
+        <div class='input-group mb-3 flex-nowrap'>
+            <button
+                class='btn btn-outline-secondary default-background'
+                type='button'
+                id='button-addon2'
+            >Tìm</button>
+            <input
+                type='text'
+                class='form-control'
+                placeholder='Địa điểm'
+                aria-label='Địa điểm'
+                aria-describedby='button-addon2'
+                id='searchInput'
+            />
+        </div>
+        <h3>Các bảng quảng cáo</h3>
+        <div id="boards-container">
+        {{#each AdsBoard}}
+            <!-- Adboard{{inc @index}} -->
+            <div
+              class="card ad-board default-background primary-text"
+              data-adsPoint="{{adsPoint}}"
+              style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
+            >
+              <div class="d-flex align-items-start">
+                <div class="card-body ps-2" style="padding: 0px;">
+                  <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">{{adsBoardType}}</h5>
+                  <p class="card-text">
+                    <span class="label">Kích thước:</span>
+                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">{{size.width}}m x {{size.height}}m</span>
+                  </p>
+                  <p class="card-text">
+                    <span class="label">Số lượng:</span>
+                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">{{quantity}} trụ / bảng</span>
+                  </p>
+                </div>
+              </div>
+          
+          
+                <!-- Button to trigger the modal -->
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none">
+                    <path d="M14.2501 8.74994H16.7501V11.2499H14.2501V8.74994ZM14.2501 13.7499H16.7501V21.2499H14.2501V13.7499ZM15.5001 2.49994C8.60006 2.49994 3.00006 8.09994 3.00006 14.9999C3.00006 21.8999 8.60006 27.4999 15.5001 27.4999C22.4001 27.4999 28.0001 21.8999 28.0001 14.9999C28.0001 8.09994 22.4001 2.49994 15.5001 2.49994ZM15.5001 24.9999C9.98756 24.9999 5.50006 20.5124 5.50006 14.9999C5.50006 9.48744 9.98756 4.99994 15.5001 4.99994C21.0126 4.99994 25.5001 9.48744 25.5001 14.9999C25.5001 20.5124 21.0126 24.9999 15.5001 24.9999Z" fill="#1C89D0"/>
+                  </svg>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
+                    onclick="reportButtonHandler(event)"
+                    data-relatedToType="AdsBoard"
+                    data-relatedTo="{{_id}}"
+                    data-ward="{{ward}}"
+                    data-district="{{district}}"
+                  >
+                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                    Báo cáo
+                    </span>
+                  </button>
+                </div>
+              </div>
+        {{/each}}
+        </div>
+    </div>
+    <div id='map'>
+    </div>
+</div>
+
+{{!-- Elements for adPoint markers --}}
+{{#each locations}}
+{{#ifCond adsPoint.planningStatus '===' 'Đã quy hoạch'}}
+<div class="adpointInfo adPointBlue" data-id="{{_id}}" data-lat={{coords.lat}}" data-lng="{{coords.lng}}">
+{{else}}
+<div class="adpointInfo adPointRed" data-id="{{_id}}" data-lat={{coords.lat}}" data-lng="{{coords.lng}}">
+{{/ifCond}}
+    <div class="markerPlaceholder" alt="" srcset="">{{adsPoint.adsBoard.length}}</div>
+
+    {{#ifCond adsPoint.planningStatus '===' 'Đã quy hoạch'}}
+    <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset="">
+    {{else}}
+    <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset="">
+    {{/ifCond}}
+
+    <div class="details">
+        <div class="d-flex justify-content-between align-items-center column-gap-3">
+            <!-- location.locationName -->
+            <h5>{{locationName}}</h5>
+            <meta name="planningStatus" content="{{adsPoint.planningStatus}}"></meta>
+            <!-- Button to trigger the modal -->
+            <button
+                type="button"
+                class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
+                data-relatedToType="AdsPoint"
+                data-relatedTo="{{adsPoint._id}}"
+                data-ward="{{ward}}"
+                data-district="{{district}}"
+                onclick="reportButtonHandler(event)"
+                style="width:fit-content; min-width: 111px"
+            >
+                <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                    Báo cáo
+                </span>
+            </button>
+        </div>
+        <!-- adsPoint.locationType -->
+        <h6>{{adsPoint.locationType}}</h6>
+        <!-- location.address -->
+        <p>Phường <b>{{ward}}</b> Quận <b>{{district}}</b></p>
+    </div>
+</div>
+{{/each}}
+
+<button
+    id='report-canvas-button'
+    class='btn btn-primary'
+    type='button'
+    data-bs-toggle='offcanvas'
+    data-bs-target='#staticBackdrop'
+    aria-controls='staticBackdrop'
+>
+    Báo cáo đã gửi
+</button>
+
+<div
+    class='offcanvas offcanvas-end'
+    data-bs-backdrop='static'
+    data-bs-scroll='true'
+    tabindex='-1'
+    id='staticBackdrop'
+    aria-labelledby='staticBackdropLabel'
+>
+    <div class='offcanvas-header'>
+        <h5 class='offcanvas-title' id='staticBackdropLabel'>Các báo cáo đã gửi</h5>
+        <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='offcanvas'
+            aria-label='Close'
+        ></button>
+    </div>
+    <div class='offcanvas-body'>
+        <div>
+            Bạn chưa gửi báo cáo cho điểm quảng cáo nào.
+        </div>
+    </div>
+</div>
+
+<!-- Filter Board -->
+<div class='filterBoard form-check form-switch'>
+    <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
+    <label class='form-check-label' for='filterButton'>Quy hoạch</label>
+</div>
+
+<!-- Report Modal -->
+<div
+    class='modal fade'
+    id='reportModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <img
+                    src='public/assets/icons/Report_icon.svg'
+                    alt='report-icon'
+                    style='height: 30px; width: 30px;'
+                />
+                <h5 class='modal-title' id='reportModalLabel'>Báo cáo</h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <div class="alert alert-success" role="alert">Bạn đang báo cáo cho một <b></b></div>
+                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='reportFormat' class='form-label' style='font-family: Inter;'>Hình
+                            thức</label>
+                        <select class='form-select reportType' id='reportFormat' required>
+                            <option value='' disabled selected>
+                                -- Chọn hình thức báo cáo --
+                            </option>
+                        </select>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='fullName' class='form-label' style='font-family: Inter;'>Họ và
+                            tên</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='fullName'
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='email'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Email</label>
+                        <input type='email' class='form-control reportEmail' id='email' required />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='phone' class='form-label' style='font-family: Inter;'>Số điện
+                            thoại liên lạc</label>
+                        <input type='tel' class='form-control reportPhone' id='phone' required />
+                    </div>
+                    <div class='mb-3'>
+                        <label
+                            for='reportContent'
+                            class='form-label'
+                            style='font-family: Inter;'
+                        >Nội dung</label>
+                        <textarea
+                            id='reportContent'
+                            class='form-control reportContent'
+                            required
+                        ></textarea>
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image1' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            1</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image1'
+                            accept='image/*'
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='image2' class='form-label' style='font-family: Inter;'>Hình ảnh
+                            2</label>
+                        <input
+                            type='file'
+                            class='form-control reportImage'
+                            id='image2'
+                            accept='image/*'
+                        />
+                    </div>
+
+                    <div class='button-container justify-content-center'>
+                        <div class="g-recaptcha" id="recaptcha"
+                            data-sitekey="6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb"
+                            data-callback="onSubmit"
+                            data-size="invisible"
+                        ></div>
+                        <button
+                            id='submitReportButton'
+                            type='button'
+                            class='submit-btn'
+                            style='font-family: Inter;'
+                        >
+                            GỬI
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#section 'js'}}
+    {{! Marker Clusterer }}
+    <script src='https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'></script>
+
+    <script src="/public/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="/public/js/tinymce.js"></script>
+
+    {{!-- Report processing --}}
+    <script src="/public/js/report.js"></script>
+
+    <script src="https://www.google.com/recaptcha/api.js"
+        async defer>
+    </script>
+
+    <script src="/public/js/main.js" type="module"></script>
+{{/section}}
