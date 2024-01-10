@@ -4,7 +4,9 @@ const { authenticateUser, authorizePermissions } = require('../../middleware/aut
 const {
     createAdsPoint,
     getAllAdsPoints,
-    // getAllAdsPointsByAssignedArea,
+    getAllAdsPointsByAssignedArea,
+    getAllAdsPointByWardAndDistrict,
+    getAllAdsPointsByWardList,
     getSingleAdsPoint,
     updateAdsPoint,
     deleteAdsPoint
@@ -12,7 +14,19 @@ const {
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
 router.route('/allPoints').get(getAllAdsPoints);
-// router.route('/').get(authenticateUser, getAllAdsPointsByAssignedArea);
+
+router
+    .route('/assignedArea')
+    .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllAdsPointsByAssignedArea);
+
+router
+    .route('/dist/:distId/ward/:wardId')
+    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllAdsPointByWardAndDistrict);
+
+router
+    .route('/wardList')
+    .post(authenticateUser, authorizePermissions('Quận'), getAllAdsPointsByWardList);
+
 router.route('/:id').get(getSingleAdsPoint);
 router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), updateAdsPoint);
 router.route('/:id').delete(authenticateUser, authorizePermissions('Sở VH-TT'), deleteAdsPoint);
