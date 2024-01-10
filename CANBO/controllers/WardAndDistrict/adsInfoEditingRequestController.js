@@ -14,6 +14,7 @@ const path = require('path');
 const { AUTH_EMAIL } = process.env;
 
 const createAdsInfoEditingRequest = async (req, res) => {
+    const { email } = req.user;
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
@@ -25,6 +26,7 @@ const createAdsInfoEditingRequest = async (req, res) => {
             adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
+        req.body.officerEmail = email;
         const adsInfoEditingRequest = await AdsInfoEditingRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsInfoEditingRequest });
     } catch (error) {
@@ -87,7 +89,7 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
     }
 };
 
-const sendReportStatusNotification = async (email, adsInfoEditingRequest) => {
+const sendReportStatusNotification = async (officerEmail, adsInfoEditingRequest) => {
     try {
         const {
             requestApprovalStatus,
@@ -159,7 +161,7 @@ const sendReportStatusNotification = async (email, adsInfoEditingRequest) => {
 
         const mailOptions = {
             from: AUTH_EMAIL,
-            to: email,
+            to: officerEmail,
             subject,
             html: replacedHTML
         };
@@ -174,7 +176,6 @@ const sendReportStatusNotification = async (email, adsInfoEditingRequest) => {
 };
 
 const updateAdsInfoEditingRequest = async (req, res) => {
-    const { email } = req.user;
     try {
         const { id: adsInfoEditingRequestId } = req.params;
         const adsInfoEditingRequest = await AdsInfoEditingRequest.findOneAndUpdate(
@@ -188,7 +189,7 @@ const updateAdsInfoEditingRequest = async (req, res) => {
                 `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
             );
         }
-        const { adsObject, adsType, newInfo } = adsInfoEditingRequest;
+        const { adsObject, adsType, newInfo, officerEmail } = adsInfoEditingRequest;
         if (adsType === 'AdsBoard') {
             const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
                 await AdsBoardRequestedEdit.findOne({ _id: newInfo });
@@ -218,7 +219,7 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             await newAdsObject.save();
         }
 
-        const emailSent = await sendReportStatusNotification(email, adsInfoEditingRequest);
+        const emailSent = await sendReportStatusNotification(officerEmail, adsInfoEditingRequest);
 
         if (emailSent) {
             res.status(StatusCodes.OK).json({ adsInfoEditingRequest });

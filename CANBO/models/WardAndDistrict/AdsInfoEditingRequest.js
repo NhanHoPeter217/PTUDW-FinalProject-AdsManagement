@@ -40,6 +40,10 @@ const AdsInfoEditingRequestSchema = new Schema(
             default: 'Chưa được duyệt'
         },
 
+        officerEmail: {
+            type: String,
+            required: true
+        },
         wardAndDistrict: {
             ward: {
                 type: 'String'

@@ -120,6 +120,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
         if (relatedToType === 'Location') {
             ({ locationName, address } = reportProcessing.relatedTo);
         } else if (relatedToType === 'AdsPoint') {
+            relatedTo = 'Ad point';
             reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate({
                 path: 'relatedTo',
                 model: 'AdsPoint',
@@ -131,6 +132,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
             });
             ({ locationName, address } = reportProcessing.relatedTo.location);
         } else if (relatedToType === 'AdsBoard') {
+            relatedTo = 'Ad board';
             reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate({
                 path: 'relatedTo',
                 model: 'AdsBoard',
@@ -144,7 +146,6 @@ const sendReportStatusNotification = async (reportProcessing) => {
                     }
                 }
             });
-            console.log(reportProcessing);
             ({ locationName, address } = reportProcessing.relatedTo.adsPoint.location);
         }
 
@@ -152,7 +153,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
             .replace('{{senderName}}', senderName)
             .replace('{{phone}}', phone)
             .replace('{{content}}', content)
-            .replace('{{relatedToType}}', relatedToType)
+            .replace('{{relatedTo}}', relatedTo)
             .replace('{{locationName}}', locationName)
             .replace('{{address}}', address)
             .replace('{{createdAt}}', createdAt)
