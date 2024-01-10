@@ -1,6 +1,65 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            #buttonStyle {
+                transition: filter 0.1s ease-in-out;
+            }
+            #buttonStyle:hover {
+                filter: brightness(0) invert(1);
+            }
+            .nav-link {
+                transition: background-color 0.3s ease-in-out;
+                display: block;
+                padding: 12px 0;
+                color: #555;
+                text-decoration: none;
+                border-bottom: 1px solid transparent;
+            }
+
+            .nav-link:hover {
+                background-color: #f0f0f0;
+            }
+
+            .nav-item {
+                position: relative;
+            }
+
+            .nav-item::after {
+                content: "";
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: #3498db;
+                transform: scaleX(0);
+                transition: transform 0.3s ease-in-out;
+                transform-origin: bottom right;
+            }
+
+            .nav-item:hover::after {
+                transform: scaleX(1);
+                transform-origin: bottom left;
+            }
+
+            .nav-link svg {
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+
+            .fs-4 {
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+
+        </style>
         <!-- Bootstrap Icons CSS -->
         <link
             rel="stylesheet"
@@ -42,27 +101,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://unpkg.com/js-datepicker"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const togglePassword = document.getElementById('togglePassword');
-                const password = document.getElementById('password');
 
-                togglePassword.addEventListener('click', function() {
-                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                    password.setAttribute('type', type);
-                    this.querySelector('i').classList.toggle('bi-eye');
-                    this.querySelector('i').classList.toggle('bi-eye-slash');
-                });
-
-                const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-                const confirmPassword = document.getElementById('confirmPassword');
-
-                toggleConfirmPassword.addEventListener('click', function() {
-                    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                    confirmPassword.setAttribute('type', type);
-                    this.querySelector('i').classList.toggle('bi-eye');
-                    this.querySelector('i').classList.toggle('bi-eye-slash');
-                });
-            });
         </script>
         <script type="module">
             $(document).ready(function(){
@@ -70,32 +109,6 @@
                     $('.navbar-nav .nav-link').removeClass('active');
                     $(this).addClass('active');
                 });
-            });
-            const picker1 = datepicker('#register_DOB', {
-                formatter: (input, date, instance) => {
-                    const options = {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric'
-                    };
-                    const value = date.toLocaleDateString('en-GB', options);
-                    input.value = value; // '25/1/2099'
-                },
-                overlayPlaceholder: 'Nhập năm',
-                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-            });
-            const picker2 = datepicker('#edit_contractEndDate', {
-                formatter: (input, date, instance) => {
-                    const options = {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric'
-                    };
-                    const value = date.toLocaleDateString('en-GB', options);
-                    input.value = value; // '25/1/2099'
-                },
-                overlayPlaceholder: 'Nhập năm',
-                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
             });
         </script>
         

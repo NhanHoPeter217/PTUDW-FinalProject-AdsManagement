@@ -32,3 +32,20 @@
 #username {
     margin-right: 5px; /* Adjust spacing between username and icon */
 }
+
+/* Custom styles for dropdown menu */
+.dropdown-menu {
+    background-color: #333; /* Background color */
+    border: none; /* Remove borders */
+    padding: 0; /* Remove default padding */
+}
+
+.dropdown-item {
+    color: #fff; /* Text color */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.dropdown-item:hover {
+    background-color: #555; /* Change background color on hover */
+    color: #fff; /* Text color on hover */
+}

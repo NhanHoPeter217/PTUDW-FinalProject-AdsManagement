@@ -4,7 +4,7 @@ const { authenticateUser, authorizePermissions } = require('../middleware/authen
 
 const { register, login, logout } = require('../controllers/authController');
 
-router.post('/register', authenticateUser, authorizePermissions('Sở VH-TT'), register);
+router.post('/register/api/v1', authenticateUser, authorizePermissions('Sở VH-TT'), register);
 // router.post('/register', register);
 router.get('/login', (req, res) => {
     res.render('commonFeatures/signin', { layout: false });

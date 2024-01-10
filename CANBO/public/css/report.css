@@ -122,6 +122,8 @@ body {
     text-align: left;
 }
 
+.districtType,
+.wardType,
 .reportType,
 .fullNameReport,
 .reportEmail,

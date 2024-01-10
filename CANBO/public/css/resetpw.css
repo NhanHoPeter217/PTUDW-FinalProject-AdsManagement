@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .input-field input:-webkit-autofill,
 .input-field input:-webkit-autofill:hover,
@@ -42,7 +42,7 @@ form,
 .otp-field input:focus,
 .otp-field input::-webkit-inner-spin-button,
 .otp-field input::-webkit-outer-spin-button {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .container {
@@ -154,6 +154,24 @@ form.sign-in-form {
 .social-icon:hover {
     color: #4481eb;
     border-color: #4481eb;
+}
+
+.btn {
+    width: 150px;
+    background-color: #5995fd;
+    border: none;
+    outline: none;
+    height: 49px;
+    border-radius: 49px;
+    color: #fff;
+    font-size: large;
+    font-weight: 600;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #4d84e2;
 }
 
 .btn.solid {

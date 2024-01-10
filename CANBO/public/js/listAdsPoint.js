@@ -128,8 +128,8 @@ $(document).ready(function () {
                 console.log('#filter_district not found!');
             }
 
-            if ($('#edit_district').length > 0) {
-                $('#edit_district').on('change', function () {
+            if ($('.districtType').length > 0) {
+                $('.districtType').on('change', function () {
                     var selectedDistrict = $(this).val();
 
                     let selectedDistrictData;
@@ -143,27 +143,27 @@ $(document).ready(function () {
                     if (selectedDistrictData) {
                         const wards = selectedDistrictData.wards;
 
-                        $('#edit_ward').empty();
-                        $('#edit_ward').append(
+                        $('.wardType').empty();
+                        $('.wardType').append(
                             `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
                         );
 
                         wards.forEach(function (ward) {
-                            $('#edit_ward').append(`<option value="${ward}">${ward}</option>`);
+                            $('.wardType').append(`<option value="${ward}">${ward}</option>`);
                         });
                     } else {
                         console.log('District not found!');
                     }
                 });
             } else {
-                console.log('#edit_district not found!');
+                console.log('.districtType not found!');
             }
         });
 });
 
 $('#detailAdsPointModal').on('show.bs.modal', function (event) {
-    const button = $(event.relatedTarget); // Button that triggered the modal
-    const index = button.data('bs-index'); // Extract index from data-bs-index attribute
+    const button = $(event.relatedTarget);
+    const index = button.data('bs-index');
 
     // Fetch the adsPoint data based on the index or any other logic you use
     const adsPoint = this.adsPoints[index];
@@ -173,5 +173,4 @@ $('#detailAdsPointModal').on('show.bs.modal', function (event) {
     modal.find('.modal-content #locationName').text(adsPoint.location.locationName);
     modal.find('.modal-content #district').text(adsPoint.location.district);
     modal.find('.modal-content #ward').text(adsPoint.location.ward);
-    // Update other modal content elements similarly
 });

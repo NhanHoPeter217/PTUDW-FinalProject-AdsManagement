@@ -1,3 +1,4 @@
+<script src='../../public/js/createAccount.js' defer></script>
 
 <div
     class='modal fade'
@@ -20,7 +21,7 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='createAccountForm' enctype='multipart/form-data'>
+                <form class='createAccountForm' id='createAccountForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
                         <label for='register_fullName' class='form-label' style='font-family: Inter;'>Họ và tên</label>
                         <input
@@ -31,21 +32,21 @@
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='userName' class='form-label' style='font-family: Inter;'>Tên tài khoản</label>
+                        <label for='register_userName' class='form-label' style='font-family: Inter;'>Tên tài khoản</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='userName'
+                            id='register_userName'
                             required
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='password' class='form-label' style='font-family: Inter'>Mật khẩu</label>
+                        <label for='register_password' class='form-label' style='font-family: Inter'>Mật khẩu</label>
                         <div class='input-group'>
                             <input
                                 type='password'
                                 class='form-control'
-                                id='password'
+                                id='register_password'
                                 required
                             />
                             <button class='btn btn-outline-secondary' type='button' id='togglePassword'>
@@ -54,12 +55,12 @@
                         </div>
                     </div>
                     <div class='mb-3'>
-                        <label for='confirmPassword' class='form-label' style='font-family: Inter'>Nhập lại mật khẩu</label>
+                        <label for='register_confirmPassword' class='form-label' style='font-family: Inter'>Nhập lại mật khẩu</label>
                         <div class='input-group'>
                             <input
                                 type='password'
                                 class='form-control'
-                                id='confirmPassword'
+                                id='register_confirmPassword'
                                 required
                             />
                             <button class='btn btn-outline-secondary' type='button' id='toggleConfirmPassword'>
@@ -72,66 +73,45 @@
                         <input type='text' id='register_DOB' class='form-control' required />
                     </div>
                     <div class='mb-3'>
-                        <label for='email' class='form-label' style='font-family: Inter'>Email</label>
+                        <label for='register_email' class='form-label' style='font-family: Inter'>Email</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='email'
+                            id='register_email'
                             required
                         />
                     </div>
                     <div class='mb-3'>
-                        <label for='phoneNumber' class='form-label' style='font-family: Inter'>Số điện thoại</label>
+                        <label for='register_phoneNumber' class='form-label' style='font-family: Inter'>Số điện thoại</label>
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='phoneNumber'
+                            id='register_phoneNumber'
                             required
                         />
                     </div>
-                    <div class='mb-3'>
-                        <label for='role' class='form-label' style='font-family: Inter'>Vai trò cán bộ</label>
-                        <select class='form-select reportType' id='role' required>
-                            <option
-                                value='Phường'
-                                selected
-                            >
-                                Phường
-                            </option>
-                            <option value='Quận'>
-                                Quận
-                            </option>
-                        </select>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='district' class='form-label' style='font-family: Inter'>Quận</label>
-                        <select class='form-select reportType' id='district' required>
-                            <option
-                                value='1'
-                                selected
-                            >
-                                1
-                            </option>
-                            <option value='2'>
-                                2
-                            </option>
-                            <option value='3'>3</option>
-                        </select>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='ward' class='form-label' style='font-family: Inter'>Phường</label>
-                        <select class='form-select reportType' id='ward' required>
-                            <option
-                                value='1'
-                                selected
-                            >
-                                1
-                            </option>
-                            <option value='2'>
-                                2
-                            </option>
-                            <option value='3'>3</option>
-                        </select>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="mb-3">
+                            <label for="registerRole" class="form-label" style="font-family: Inter;">Vai trò cán bộ</label>
+                            <select class="form-select reportType" id="register_role" required>
+                                <option value="Phường" selected>Phường</option>
+                                <option value="Quận">Quận</option>
+                            </select>
+                        </div>
+                        <div class="d-flex flex-row gap-3">
+                            <div class="mb-3" id="registerDistrict">
+                                <label for="register_district" class="form-label" style="font-family: Inter;">Quận</label>
+                                <select class="form-select districtType" id="register_district" required>
+                                    <option class="mb-0 softer-text fw-nomral" selected disabled>-- Chọn Quận --</option>
+                                </select>
+                            </div>
+                            <div class="mb-3" id="registerWard">
+                                <label for="register_ward" class="form-label" style="font-family: Inter;">Phường</label>
+                                <select class="form-select wardType" id="register_ward" required>
+                                    <option class="mb-0 softer-text fw-nomral" selected disabled>-- Chọn Phường --</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class='button-container justify-content-center'>
                         <div
@@ -144,7 +124,7 @@
                         <div class='d-grid gap-2 col-3 mx-auto'>
                             <button
                                 id='createAccountButton'
-                                type='button'
+                                type='submit'
                                 class='btn btn-primary'
                                 style='font-family: Inter'
                             >

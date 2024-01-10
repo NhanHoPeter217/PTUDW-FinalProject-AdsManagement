@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // Send POST request to reset password
-            const response = await fetch('api/v1/forgotpw/reset', {
+            const response = await fetch('api/v1/forgotpassword/reset', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 // Redirect to a success page or perform other actions as needed
                 alert('Password reset successful!');
-                window.location.href = '/';
+                window.location.href = '/auth/login';
             } else {
                 // Handle the case when the request was not successful
                 alert('Password reset failed. Please try again.');
