@@ -12,6 +12,6 @@ router.get('/login', (req, res) => {
 
 router.post('/login/api/v1', login);
 
-router.delete('/logout', authenticateUser, logout);
+router.delete('/logout/api/v1', authenticateUser, logout);
 
 module.exports = router;
