@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const AdsInfoEditingRequestSchema = new Schema(
     {
         adsObject: {
             type: Schema.Types.ObjectId,
-            refPath: 'adsType'
+            refPath: 'adsType',
+            required: true
         },
 
         adsType: {
@@ -16,18 +18,26 @@ const AdsInfoEditingRequestSchema = new Schema(
 
         newInfo: {
             type: Schema.Types.ObjectId,
-            refPath: 'adsType',
+            refPath: 'adsNewInfoType',
             required: true
         },
 
-        editRequestTime: { type: Date, default: Date.now },
+        adsNewInfoType: {
+            type: String,
+            enum: ['AdsPointRequestedEdit', 'AdsBoardRequestedEdit'],
+        },
+
+        editRequestTime: {
+            type: String,
+            required: true,
+        },
 
         editReason: { type: String },
 
         requestApprovalStatus: {
             type: String,
-            enum: ['Chưa được duyệt, Đã được duyệt'],
-            default: 'Chưa được duyệt'
+            enum: ['Chưa được duyệt', 'Đã được duyệt'],
+            default: 'Chưa được duyệt',
         },
 
         wardAndDistrict: {
@@ -41,8 +51,17 @@ const AdsInfoEditingRequestSchema = new Schema(
             }
         }
     },
-    { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }}
 );
+
+AdsInfoEditingRequestSchema.pre('save', function (next) {
+    if (this.adsType === 'AdsBoard') {
+        this.adsNewInfoType = 'AdsBoardRequestedEdit';
+    } else if (this.adsType === 'AdsPoint') {
+        this.adsNewInfoType = 'AdsPointRequestedEdit';
+    }
+    next();
+});
 
 const AdsInfoEditingRequest = mongoose.model('AdsInfoEditingRequest', AdsInfoEditingRequestSchema);
 

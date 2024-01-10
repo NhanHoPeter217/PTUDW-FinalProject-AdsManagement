@@ -11,9 +11,6 @@ const {
 // Người dân có thể lấy AdsFormat
 router.route('/').get(getAllAdsFormats);
 
-// Người dân có thể lấy AdsFormat
-router.route('/').get(getAllAdsFormats);
-
 // router.use(authenticateUser);
 // router.use(authorizePermissions('Sở VH-TT'));
 
