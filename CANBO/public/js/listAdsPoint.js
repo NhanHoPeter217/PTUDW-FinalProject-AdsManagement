@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Get all district and ward for the dropdown list
     fetch('/district/api/v1', {
         method: 'GET',
@@ -6,31 +6,33 @@ $(document).ready(function() {
             'Content-Type': 'application/json'
         }
     })
-    .then((response) => {
-        return response.json();
-    })
-    .then((district_data) => {
-        if (!district_data) { return; }
+        .then((response) => {
+            return response.json();
+        })
+        .then((district_data) => {
+            if (!district_data) {
+                return;
+            }
 
-        if ($('#filter_district').length > 0) {
-            $('#filter_district').on('change', function() {
-                var selectedDistrict = $(this).val();
+            if ($('#filter_district').length > 0) {
+                $('#filter_district').on('change', function () {
+                    var selectedDistrict = $(this).val();
 
-                let selectedDistrictData;
-                for (let i = 0; i < district_data.count; ++i) {
-                    if (district_data.districts[i].districtName === `${selectedDistrict}`) {
-                        selectedDistrictData = district_data.districts[i];
-                        break;
+                    let selectedDistrictData;
+                    for (let i = 0; i < district_data.count; ++i) {
+                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                            selectedDistrictData = district_data.districts[i];
+                            break;
+                        }
                     }
-                }
 
-                if (selectedDistrictData) {
-                    const wards = selectedDistrictData.wards;
+                    if (selectedDistrictData) {
+                        const wards = selectedDistrictData.wards;
 
-                    $('#filter_ward').empty();
+                        $('#filter_ward').empty();
 
-                    wards.forEach(function(ward) {
-                        $('#filter_ward').append(`
+                        wards.forEach(function (ward) {
+                            $('#filter_ward').append(`
                             <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
                                 <label class="checkbox-container">
                                     <input type="checkbox" class="checkbox-input" id="${ward}">
@@ -38,48 +40,50 @@ $(document).ready(function() {
                                 </label>
                             </div>
                         `);
-                    });
-                    
-                    // Get all the checkbox elements
-                    const checkboxes = document.querySelectorAll('.checkbox-input');
-                    const wardList = [];
-
-                    function fetchAdsPointsByWardList() {
-                        const checkboxes = document.querySelectorAll('.checkbox-input');
-                        wardList.length = 0; // Clear the wardList array
-
-                        Array.from(checkboxes).forEach(function(checkbox) {
-                            if (checkbox.checked) {
-                                wardList.push(checkbox.id);
-                            }
                         });
 
-                        fetch('/adsPoint/wardList/api/v1', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                wardList: wardList
+                        // Get all the checkbox elements
+                        const checkboxes = document.querySelectorAll('.checkbox-input');
+                        const wardList = [];
+
+                        function fetchAdsPointsByWardList() {
+                            const checkboxes = document.querySelectorAll('.checkbox-input');
+                            wardList.length = 0; // Clear the wardList array
+
+                            Array.from(checkboxes).forEach(function (checkbox) {
+                                if (checkbox.checked) {
+                                    wardList.push(checkbox.id);
+                                }
+                            });
+
+                            fetch('/adsPoint/wardList/api/v1', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    wardList: wardList
+                                })
                             })
-                        })
-                        .then((response) => {
-                            return response.json();
-                        })
-                        .then((adsPoints_data) => {
-                            $('#body').empty();
+                                .then((response) => {
+                                    return response.json();
+                                })
+                                .then((adsPoints_data) => {
+                                    $('#body').empty();
 
-                            console.log($('#body'));
+                                    console.log($('#body'));
 
-                            if (!adsPoints_data) { return; }
-                            
-                            const adsPoints = adsPoints_data.adsPoints;
+                                    if (!adsPoints_data) {
+                                        return;
+                                    }
 
-                            var index = 0;
+                                    const adsPoints = adsPoints_data.adsPoints;
 
-                            adsPoints.forEach(function(adsPoint) {
-                                index += 1;
-                                $('#body').append(`
+                                    var index = 0;
+
+                                    adsPoints.forEach(function (adsPoint) {
+                                        index += 1;
+                                        $('#body').append(`
                                     <tr>
                                         <td class="align-middle">${index}</td>
                                         <td class="align-middle">
@@ -106,59 +110,60 @@ $(document).ready(function() {
                                         </td>
                                     </tr>
                                 `);
+                                    });
+                                });
+                        }
+
+                        // Add event listeners to each checkbox
+                        checkboxes.forEach(function (checkbox) {
+                            checkbox.addEventListener('change', function () {
+                                fetchAdsPointsByWardList();
                             });
-                        })
-                    }
-
-                    // Add event listeners to each checkbox
-                    checkboxes.forEach(function(checkbox) {
-                        checkbox.addEventListener('change', function() {
-                            fetchAdsPointsByWardList();
                         });
-                    });
-
-                } else {
-                    console.log('District not found!');
-                }
-            });
-        } else {
-            console.log('#filter_district not found!');
-        }
-        
-        if ($('#edit_district').length > 0) {
-            $('#edit_district').on('change', function() {
-                var selectedDistrict = $(this).val();
-
-                let selectedDistrictData;
-                for (let i = 0; i < district_data.count; ++i) {
-                    if (district_data.districts[i].districtName === `${selectedDistrict}`) {
-                        selectedDistrictData = district_data.districts[i];
-                        break;
+                    } else {
+                        console.log('District not found!');
                     }
-                }
+                });
+            } else {
+                console.log('#filter_district not found!');
+            }
 
-                if (selectedDistrictData) {
-                    const wards = selectedDistrictData.wards;
+            if ($('.districtType').length > 0) {
+                $('.districtType').on('change', function () {
+                    var selectedDistrict = $(this).val();
 
-                    $('#edit_ward').empty();
-                    $('#edit_ward').append(`<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`);
+                    let selectedDistrictData;
+                    for (let i = 0; i < district_data.count; ++i) {
+                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                            selectedDistrictData = district_data.districts[i];
+                            break;
+                        }
+                    }
 
-                    wards.forEach(function(ward) {
-                        $('#edit_ward').append(`<option value="${ward}">${ward}</option>`);
-                    });
-                } else {
-                    console.log('District not found!');
-                }
-            });
-        } else {
-            console.log('#edit_district not found!');
-        }
-    });
+                    if (selectedDistrictData) {
+                        const wards = selectedDistrictData.wards;
+
+                        $('.wardType').empty();
+                        $('.wardType').append(
+                            `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
+                        );
+
+                        wards.forEach(function (ward) {
+                            $('.wardType').append(`<option value="${ward}">${ward}</option>`);
+                        });
+                    } else {
+                        console.log('District not found!');
+                    }
+                });
+            } else {
+                console.log('.districtType not found!');
+            }
+        });
 });
 
 $('#detailAdsPointModal').on('show.bs.modal', function (event) {
-    const button = $(event.relatedTarget); // Button that triggered the modal
-    const index = button.data('bs-index'); // Extract index from data-bs-index attribute
+    const button = $(event.relatedTarget);
+    const index = button.data('bs-index');
 
     // Fetch the adsPoint data based on the index or any other logic you use
     const adsPoint = this.adsPoints[index];
@@ -168,5 +173,4 @@ $('#detailAdsPointModal').on('show.bs.modal', function (event) {
     modal.find('.modal-content #locationName').text(adsPoint.location.locationName);
     modal.find('.modal-content #district').text(adsPoint.location.district);
     modal.find('.modal-content #ward').text(adsPoint.location.ward);
-    // Update other modal content elements similarly
 });

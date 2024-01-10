@@ -14,10 +14,14 @@ const createAdsLicenseRequest = async (req, res) => {
             select: 'ward district'
         });
 
-        req.body.wardAndDistrict = { ward: adsPoint.location.ward, district: adsPoint.location.district };
+        req.body.wardAndDistrict = {
+            ward: adsPoint.location.ward,
+            district: adsPoint.location.district
+        };
         req.body.licenseRequestedAdsBoard.adsPoint = req.params.id;
         const licenseRequestedAdsBoard = await LicenseRequestedAdsBoard.create(
-            req.body.licenseRequestedAdsBoard);
+            req.body.licenseRequestedAdsBoard
+        );
         req.body.licenseRequestedAdsBoard = licenseRequestedAdsBoard._id;
         const adsLicenseRequest = await AdsLicenseRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsLicenseRequest });
@@ -38,7 +42,7 @@ const getAllAdsLicenseRequests = async (req, res) => {
 const getSingleAdsLicenseRequest = async (req, res) => {
     try {
         const { id: adsLicenseRequestId } = req.params;
-        const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId});
+        const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId });
 
         if (!adsLicenseRequest) {
             throw new CustomError.NotFoundError(
@@ -74,7 +78,7 @@ const getAdsLicenseRequestsByWardAndDistrict = async (req, res) => {
     try {
         const adsLicenseRequests = await AdsLicenseRequest.find({
             'wardAndDistrict.ward': wardID,
-            'wardAndDistrict.district': distID,
+            'wardAndDistrict.district': distID
         });
 
         res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
@@ -121,9 +125,11 @@ const updateAdsLicenseRequestByDepartmentOfficier = async (req, res) => {
             );
         }
 
-        if(adsLicenseRequest.requestApprovalStatus === 'Đã được duyệt'){
-            const {quantity, adBoardImages, adsBoardType, size, contractEndDate, adsPoint} = await LicenseRequestedAdsBoard.findOne({ 
-                _id: adsLicenseRequest.licenseRequestedAdsBoard });
+        if (adsLicenseRequest.requestApprovalStatus === 'Đã được duyệt') {
+            const { quantity, adBoardImages, adsBoardType, size, contractEndDate, adsPoint } =
+                await LicenseRequestedAdsBoard.findOne({
+                    _id: adsLicenseRequest.licenseRequestedAdsBoard
+                });
 
             const newAdsBoard = await AdsBoard.create({
                 quantity: quantity,

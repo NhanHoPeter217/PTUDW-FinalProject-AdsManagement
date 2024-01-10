@@ -152,7 +152,7 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
 // });
 
 app.get('/types/list', function (req, res) {
-    res.render('vwType/listType', {layout: 'canbo_So'});
+    res.render('vwType/listType', { layout: 'canbo_So' });
 });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {

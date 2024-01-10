@@ -24,7 +24,7 @@ const fetchUserInfo = async () => {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch user info');
+            throw new Error('Lấy thông tin tài khoản bị lỗi!');
         }
 
         const data = await response.json();

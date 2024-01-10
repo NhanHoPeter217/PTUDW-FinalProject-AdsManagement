@@ -66,8 +66,8 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
         const adsInfoEditingRequest = await AdsInfoEditingRequest.findOne({
             _id: adsInfoEditingRequestId
         })
-        .populate('adsObject')
-        .populate('newInfo');
+            .populate('adsObject')
+            .populate('newInfo');
 
         if (!adsInfoEditingRequest) {
             throw new CustomError.NotFoundError(
@@ -94,28 +94,22 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             throw new CustomError.NotFoundError(
                 `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
             );
-        } 
-        const {adsObject, adsType, newInfo} = adsInfoEditingRequest;
+        }
+        const { adsObject, adsType, newInfo } = adsInfoEditingRequest;
         if (adsType === 'AdsBoard') {
-            const {
-                quantity,
-                adsBoardImages,
-                adsBoardType,
-                size,
-                contractEndDate
-            } = await AdsBoardRequestedEdit.findOne({ _id: newInfo });
-    
+            const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
+                await AdsBoardRequestedEdit.findOne({ _id: newInfo });
+
             await AdsBoard.findOneAndUpdate(
-                { _id: adsObject }, 
+                { _id: adsObject },
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
                 { new: true, runValidators: true }
             );
-        }
-        else if(adsType === 'AdsPoint') {
+        } else if (adsType === 'AdsPoint') {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });
             const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });
-            
+
             newAdsObject.locationImages = newInformation.locationImages;
             newAdsObject.planningStatus = newInformation.planningStatus;
             newAdsObject.locationType = newInformation.locationType;
