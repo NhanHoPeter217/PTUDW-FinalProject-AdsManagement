@@ -72,8 +72,8 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
         const adsInfoEditingRequest = await AdsInfoEditingRequest.findOne({
             _id: adsInfoEditingRequestId
         })
-        .populate('adsObject')
-        .populate('newInfo');
+            .populate('adsObject')
+            .populate('newInfo');
 
         if (!adsInfoEditingRequest) {
             throw new CustomError.NotFoundError(
@@ -89,63 +89,73 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
 
 const sendReportStatusNotification = async (email, adsInfoEditingRequest) => {
     try {
-        const {requestApprovalStatus, adsNewInfoType, newInfo, editRequestTime, 
-        editReason, createdAt} = adsInfoEditingRequest;
-        
-        const subject = 'New announcement: Your request for adjusting information has been approved';
+        const {
+            requestApprovalStatus,
+            adsNewInfoType,
+            newInfo,
+            editRequestTime,
+            editReason,
+            createdAt
+        } = adsInfoEditingRequest;
+
+        const subject =
+            'New announcement: Your request for adjusting information has been approved';
 
         let replacedHTML, htmlContent, locationName, address;
 
-
         if (adsNewInfoType === 'AdsPointRequestedEdit') {
             adsPointRequestedEdit = await AdsPointRequestedEdit.findById(newInfo);
-            console.log(adsPointRequestedEdit);``
+            console.log(adsPointRequestedEdit);
+            ``;
             htmlContent = await fs.readFile(
-                path.join(__dirname, '../../public/html/adsPointRequestApprovalNotificationEmail.html'),
+                path.join(
+                    __dirname,
+                    '../../public/html/adsPointRequestApprovalNotificationEmail.html'
+                ),
                 'utf8'
             );
 
             replacedHTML = htmlContent
-            .replace('{{relatedTo}}', 'Ad point')
-            .replace('{{planningStatus}}', adsPointRequestedEdit.planningStatus)
-            .replace('{{locationType}}', adsPointRequestedEdit.locationType)
-            .replace('{{adsFormat}}', adsPointRequestedEdit.adsFormat.name)
-            .replace('{{locationName}}', adsPointRequestedEdit.locationName)
-            .replace('{{address}}', adsPointRequestedEdit.address);
-
-
+                .replace('{{relatedTo}}', 'Ad point')
+                .replace('{{planningStatus}}', adsPointRequestedEdit.planningStatus)
+                .replace('{{locationType}}', adsPointRequestedEdit.locationType)
+                .replace('{{adsFormat}}', adsPointRequestedEdit.adsFormat.name)
+                .replace('{{locationName}}', adsPointRequestedEdit.locationName)
+                .replace('{{address}}', adsPointRequestedEdit.address);
         } else if (adsNewInfoType === 'AdsBoardRequestedEdit') {
             adsBoardRequestedEdit = await AdsBoardRequestedEdit.findById(newInfo);
-            adsPoint = await AdsPoint.findOne(adsBoardRequestedEdit.adsPoint).populate(
-            { 
+            adsPoint = await AdsPoint.findOne(adsBoardRequestedEdit.adsPoint).populate({
                 path: 'location',
                 model: 'Location',
                 select: 'locationName address'
             });
 
-            ({locationName, address} = adsPoint.location);
+            ({ locationName, address } = adsPoint.location);
 
             htmlContent = await fs.readFile(
-                path.join(__dirname, '../../public/html/adsBoardRequestApprovalNotificationEmail.html'),
+                path.join(
+                    __dirname,
+                    '../../public/html/adsBoardRequestApprovalNotificationEmail.html'
+                ),
                 'utf8'
             );
 
             replacedHTML = htmlContent
-            .replace('{{relatedTo}}', 'Ad board')
-            .replace('{{quantity}}', adsBoardRequestedEdit.quantity)
-            .replace('{{adsBoardType}}', adsBoardRequestedEdit.adsBoardType)
-            .replace('{{width}}', adsBoardRequestedEdit.size.width)
-            .replace('{{height}}', adsBoardRequestedEdit.size.height)
-            .replace('{{contractEndDate}}', adsBoardRequestedEdit.contractEndDate)
-            .replace('{{locationName}}', locationName)
-            .replace('{{address}}', address);
+                .replace('{{relatedTo}}', 'Ad board')
+                .replace('{{quantity}}', adsBoardRequestedEdit.quantity)
+                .replace('{{adsBoardType}}', adsBoardRequestedEdit.adsBoardType)
+                .replace('{{width}}', adsBoardRequestedEdit.size.width)
+                .replace('{{height}}', adsBoardRequestedEdit.size.height)
+                .replace('{{contractEndDate}}', adsBoardRequestedEdit.contractEndDate)
+                .replace('{{locationName}}', locationName)
+                .replace('{{address}}', address);
         }
 
         replacedHTML = replacedHTML
-        .replace('{{requestApprovalStatus}}', requestApprovalStatus)
-        .replace('{{editRequestTime}}', editRequestTime)
-        .replace('{{editReason}}', editReason)
-        .replace('{{createdAt}}', createdAt);
+            .replace('{{requestApprovalStatus}}', requestApprovalStatus)
+            .replace('{{editRequestTime}}', editRequestTime)
+            .replace('{{editReason}}', editReason)
+            .replace('{{createdAt}}', createdAt);
 
         const mailOptions = {
             from: AUTH_EMAIL,
@@ -177,28 +187,22 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             throw new CustomError.NotFoundError(
                 `No AdsInfoEditingRequest with id: ${adsInfoEditingRequestId}`
             );
-        } 
-        const {adsObject, adsType, newInfo} = adsInfoEditingRequest;
+        }
+        const { adsObject, adsType, newInfo } = adsInfoEditingRequest;
         if (adsType === 'AdsBoard') {
-            const {
-                quantity,
-                adsBoardImages,
-                adsBoardType,
-                size,
-                contractEndDate
-            } = await AdsBoardRequestedEdit.findOne({ _id: newInfo });
-    
+            const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
+                await AdsBoardRequestedEdit.findOne({ _id: newInfo });
+
             await AdsBoard.findOneAndUpdate(
-                { _id: adsObject }, 
+                { _id: adsObject },
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
                 { new: true, runValidators: true }
             );
-        }
-        else if(adsType === 'AdsPoint') {
+        } else if (adsType === 'AdsPoint') {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });
             const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });
-            
+
             newAdsObject.locationImages = newInformation.locationImages;
             newAdsObject.planningStatus = newInformation.planningStatus;
             newAdsObject.locationType = newInformation.locationType;

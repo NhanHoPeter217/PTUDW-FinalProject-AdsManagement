@@ -40,7 +40,7 @@ const licenseRequestedAdsBoardSchema = new Schema(
 
 licenseRequestedAdsBoardSchema.pre(/^find/, function (next) {
     this.populate({
-        path: 'adsPoint',
+        path: 'adsPoint'
     });
     next();
 });

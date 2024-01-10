@@ -14,7 +14,7 @@ const locationSchema = new Schema(
 
         ward: { type: String, required: true },
 
-        district: { type: String, required: true },
+        district: { type: String, required: true }
     },
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

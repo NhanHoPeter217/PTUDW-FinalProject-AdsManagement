@@ -24,12 +24,12 @@ const AdsInfoEditingRequestSchema = new Schema(
 
         adsNewInfoType: {
             type: String,
-            enum: ['AdsPointRequestedEdit', 'AdsBoardRequestedEdit'],
+            enum: ['AdsPointRequestedEdit', 'AdsBoardRequestedEdit']
         },
 
         editRequestTime: {
             type: String,
-            required: true,
+            required: true
         },
 
         editReason: { type: String },
@@ -37,7 +37,7 @@ const AdsInfoEditingRequestSchema = new Schema(
         requestApprovalStatus: {
             type: String,
             enum: ['Chưa được duyệt', 'Đã được duyệt'],
-            default: 'Chưa được duyệt',
+            default: 'Chưa được duyệt'
         },
 
         wardAndDistrict: {
@@ -51,7 +51,7 @@ const AdsInfoEditingRequestSchema = new Schema(
             }
         }
     },
-    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true }}
+    { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 AdsInfoEditingRequestSchema.pre('save', function (next) {

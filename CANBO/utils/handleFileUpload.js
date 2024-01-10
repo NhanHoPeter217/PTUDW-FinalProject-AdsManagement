@@ -41,7 +41,7 @@ const handleFileUpload = (req, folderName) => {
 
         const fieldNames = Object.keys(req.files);
 
-        fieldNames.forEach(fieldName => {
+        fieldNames.forEach((fieldName) => {
             const files = req.files[fieldName];
             const mainDirectory = path.resolve(__dirname, '..');
             const uploadPath = path.join(mainDirectory, folderName);
@@ -50,7 +50,7 @@ const handleFileUpload = (req, folderName) => {
                 fs.mkdirSync(uploadPath, { recursive: true });
             }
 
-            const filePaths = files.map(file => {
+            const filePaths = files.map((file) => {
                 const fileName = `${getFormattedDate()}_${file.name}`;
                 const filePath = path.join(uploadPath, fileName);
 
@@ -67,8 +67,7 @@ const handleFileUpload = (req, folderName) => {
         });
 
         return uploadedImages;
-    }
-    catch (error) {
+    } catch (error) {
         throw error;
     }
 };

@@ -24,7 +24,6 @@ router
     .route('/dist/:distID/ward/:wardID')
     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
 
-
 router
     .route('/')
     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
@@ -32,7 +31,7 @@ router
 router
     .route('/assignedArea')
     .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
-    
+
 router.route('/:id').get(authenticateUser, getSingleReport);
 
 router.route('/:id').patch(authenticateUser, authorizePermissions('Phường', 'Quận'), updateReport);

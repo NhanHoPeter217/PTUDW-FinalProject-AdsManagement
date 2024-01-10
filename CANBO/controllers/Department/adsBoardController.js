@@ -35,20 +35,20 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
     const { id: adsPointId } = req.params;
     try {
         const adsBoards = await AdsBoard.find({ adsPoint: adsPointId })
-        .populate({
-            path: 'adsPoint',
-            populate: [
-                {
-                    path: 'location',
-                    model: 'Location',
-                },
-                {
-                    path: 'adsFormat',
-                    model: 'AdsFormat',
-                },
-            ]
-        })
-        .lean();
+            .populate({
+                path: 'adsPoint',
+                populate: [
+                    {
+                        path: 'location',
+                        model: 'Location'
+                    },
+                    {
+                        path: 'adsFormat',
+                        model: 'AdsFormat'
+                    }
+                ]
+            })
+            .lean();
 
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
@@ -57,7 +57,7 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             adsBoards: adsBoards,
             empty: adsBoards.length === 0,
             adsFormats: adsFormats,
-            districts: districts,
+            districts: districts
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

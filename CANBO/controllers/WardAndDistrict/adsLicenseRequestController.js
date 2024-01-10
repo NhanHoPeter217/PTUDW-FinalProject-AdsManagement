@@ -18,12 +18,16 @@ const createAdsLicenseRequest = async (req, res) => {
             }
         });
 
-        req.body.wardAndDistrict = { ward: adsBoard.adsPoint.location.ward, district: adsBoard.adsPoint.location.district };
-        
+        req.body.wardAndDistrict = {
+            ward: adsBoard.adsPoint.location.ward,
+            district: adsBoard.adsPoint.location.district
+        };
+
         req.body.licenseRequestedAdsBoard.adsBoard = req.params.id;
 
         const licenseRequestedAdsBoard = await LicenseRequestedAdsBoard.create(
-            req.body.licenseRequestedAdsBoard);
+            req.body.licenseRequestedAdsBoard
+        );
 
         req.body.licenseRequestedAdsBoard = licenseRequestedAdsBoard._id;
         const adsLicenseRequest = await AdsLicenseRequest.create(req.body);
@@ -45,7 +49,7 @@ const getAllAdsLicenseRequests = async (req, res) => {
 const getSingleAdsLicenseRequest = async (req, res) => {
     try {
         const { id: adsLicenseRequestId } = req.params;
-        const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId});
+        const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId });
 
         if (!adsLicenseRequest) {
             throw new CustomError.NotFoundError(
@@ -73,7 +77,7 @@ const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
         if (district !== '*') {
             query['wardAndDistrict.district'] = district;
         }
-        
+
         const adsLicenseRequests = await AdsLicenseRequest.find(query);
 
         res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
@@ -88,7 +92,7 @@ const getAdsLicenseRequestsByWardAndDistrict = async (req, res) => {
     try {
         const adsLicenseRequests = await AdsLicenseRequest.find({
             'wardAndDistrict.ward': wardID,
-            'wardAndDistrict.district': distID,
+            'wardAndDistrict.district': distID
         });
 
         res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
@@ -135,18 +139,18 @@ const updateAdsLicenseRequestByDepartmentOfficier = async (req, res) => {
             );
         }
 
-        if(adsLicenseRequest.requestApprovalStatus === 'Đã được duyệt'){
-            const {quantity, adBoardImages, adsBoardType, size, contractEndDate, adsBoard} = await LicenseRequestedAdsBoard.findOne({ 
-                _id: adsLicenseRequest.licenseRequestedAdsBoard });
+        if (adsLicenseRequest.requestApprovalStatus === 'Đã được duyệt') {
+            const { quantity, adBoardImages, adsBoardType, size, contractEndDate, adsBoard } =
+                await LicenseRequestedAdsBoard.findOne({
+                    _id: adsLicenseRequest.licenseRequestedAdsBoard
+                });
 
-            const newAdsBoard = await AdsBoard.findByIdAndUpdate(
-                adsBoard,
-            {
+            const newAdsBoard = await AdsBoard.findByIdAndUpdate(adsBoard, {
                 quantity: quantity,
                 adsBoardImages: adBoardImages,
                 adsBoardType: adsBoardType,
                 size: size,
-                contractEndDate: contractEndDate,
+                contractEndDate: contractEndDate
             });
             res.status(StatusCodes.OK).json({ newAdsBoard });
         }

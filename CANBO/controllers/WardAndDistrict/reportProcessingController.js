@@ -22,9 +22,7 @@ const getAllReportsByResident = async (req, res) => {
 
 const getAllReportsByDepartmentOfficer = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({}).sort(
-            'createdAt'
-        );
+        const reports = await ReportProcessing.find({}).sort('createdAt');
         res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
@@ -57,8 +55,8 @@ const getAllReportsByWardAndDistrict = async (req, res) => {
     console.log(wardID, distID);
     try {
         const reportProcessings = await ReportProcessing.find({
-            'ward': wardID,
-            'district': distID
+            ward: wardID,
+            district: distID
         });
 
         res.status(StatusCodes.OK).json({ reportProcessings, count: reportProcessings.length });
@@ -86,13 +84,14 @@ const createReport = async (req, res) => {
     try {
         if (req.files) {
             const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages');
-    
-            Object.keys(uploadedImages).forEach(fieldName => {
-                req.body[fieldName] = Array.isArray(uploadedImages[fieldName]) ? 
-                uploadedImages[fieldName] : [uploadedImages[fieldName]];
+
+            Object.keys(uploadedImages).forEach((fieldName) => {
+                req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
+                    ? uploadedImages[fieldName]
+                    : [uploadedImages[fieldName]];
             });
         }
-        
+
         if (req.body.relatedToType === 'Location') {
             const location = await Location.create(req.body.relatedTo);
             req.body.relatedTo = location._id;
@@ -107,8 +106,8 @@ const createReport = async (req, res) => {
 
 const sendReportStatusNotification = async (reportProcessing) => {
     try {
-        const {relatedToType, reportFormat, senderName, 
-            email, phone, content, createdAt } = reportProcessing;
+        const { relatedToType, reportFormat, senderName, email, phone, content, createdAt } =
+            reportProcessing;
 
         const subject = 'New announcement: The status and processing method of your report';
 
@@ -120,40 +119,33 @@ const sendReportStatusNotification = async (reportProcessing) => {
         let locationName, address;
         if (relatedToType === 'Location') {
             ({ locationName, address } = reportProcessing.relatedTo);
-
         } else if (relatedToType === 'AdsPoint') {
-            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate(
-                { 
-                    path: 'relatedTo',
-                    model: 'AdsPoint', 
-                    populate: { 
+            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate({
+                path: 'relatedTo',
+                model: 'AdsPoint',
+                populate: {
+                    path: 'location',
+                    model: 'Location',
+                    select: 'locationName address'
+                }
+            });
+            ({ locationName, address } = reportProcessing.relatedTo.location);
+        } else if (relatedToType === 'AdsBoard') {
+            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate({
+                path: 'relatedTo',
+                model: 'AdsBoard',
+                populate: {
+                    path: 'adsPoint',
+                    model: 'AdsPoint',
+                    populate: {
                         path: 'location',
                         model: 'Location',
                         select: 'locationName address'
-                    } 
-                }
-            );
-            ({ locationName, address } = reportProcessing.relatedTo.location);
-
-        } else if (relatedToType === 'AdsBoard') {
-            reportProcessing = await ReportProcessing.findById(reportProcessing._id).populate(
-                { 
-                    path: 'relatedTo',
-                    model: 'AdsBoard',
-                    populate: {
-                        path: 'adsPoint',
-                        model: 'AdsPoint', 
-                        populate: { 
-                            path: 'location',
-                            model: 'Location',
-                            select: 'locationName address'
-                        } 
                     }
                 }
-            );
+            });
             console.log(reportProcessing);
             ({ locationName, address } = reportProcessing.relatedTo.adsPoint.location);
-
         }
 
         const replacedHTML = htmlContent
@@ -213,7 +205,6 @@ const updateReport = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
-
 
 // const deleteReport = async (req, res) => {
 //     const { id: reportProcessingId } = req.params;
