@@ -41,6 +41,22 @@ const getAllAdsPoints = async (req, res) => {
     }
 };
 
+const getAllAdsPointsAPI = async (req, res) => {
+    try {
+        const adsPoints = await AdsPoint.find({}).populate({
+            path: 'adsBoard',
+            model: 'AdsBoard'
+        })
+        .populate({
+            path: 'location',
+            model: 'Location'
+        });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 const getAllAdsPointsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
@@ -174,6 +190,7 @@ const deleteAdsPoint = async (req, res) => {
 module.exports = {
     createAdsPoint,
     getAllAdsPoints,
+    getAllAdsPointsAPI,
     getAllAdsPointsByAssignedArea,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,

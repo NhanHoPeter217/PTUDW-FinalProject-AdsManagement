@@ -4,6 +4,7 @@ const { authenticateUser, authorizePermissions } = require('../../middleware/aut
 const {
     createAdsPoint,
     getAllAdsPoints,
+    getAllAdsPointsAPI,
     getAllAdsPointsByAssignedArea,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,
@@ -14,6 +15,7 @@ const {
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
 router.route('/allPoints').get(getAllAdsPoints);
+router.route('/allPoints/api/v1').get(getAllAdsPointsAPI);
 
 router
     .route('/assignedArea')
