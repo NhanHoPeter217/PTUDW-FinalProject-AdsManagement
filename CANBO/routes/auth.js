@@ -10,7 +10,7 @@ router.get('/login', (req, res) => {
     res.render('commonFeatures/signin', { layout: false });
 });
 
-router.post('/login', login);
+router.post('/login/api/v1', login);
 
 router.delete('/logout', authenticateUser, logout);
 

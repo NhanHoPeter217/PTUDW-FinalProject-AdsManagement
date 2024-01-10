@@ -10,7 +10,7 @@ const getAllDistricts = async (req, res) => {
 
         res.render('vwDepartment/manageWardDistrict.hbs', {
             layout: 'canbo_So',
-            title: 'Quản lý Quận/Phường',
+            title: 'Quản lý Phường / Quận',
             currentDistName: distName,
             currentDistId: districts.find((dist) => dist.districtName === distName)._id,
             dists: districts,

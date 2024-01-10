@@ -31,6 +31,7 @@ const getAllAdsPoints = async (req, res) => {
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         res.render('vwAdsPoint/listAdsPoint', {
+            layout: 'canbo_So',
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
@@ -86,6 +87,30 @@ const getAllAdsPointsByAssignedArea = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
+// const getAllAdsPointsByWardList = async (req, res) => {
+//     const { assignedArea } = req.user;
+//     const district = assignedArea.district;
+//     const wardList = req.body.wardList;
+//     try {
+//         const locationsID = await Location.find({
+//             district,
+//             ward: { $in: wardList }
+//         }).select('_id');
+//         const adsPoints = await AdsPoint.find({'location': locationsID})
+//         .populate({
+//             path: 'location',
+//             model: 'Location'
+//         })
+//         .populate({
+//             path: 'adsBoard',
+//             model: 'AdsBoard'
+//         });
+//         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
+//     }
+// };
 
 const getAllAdsPointsByWardList = async (req, res) => {
     const { assignedArea } = req.user;
