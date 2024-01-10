@@ -50,8 +50,6 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
         })
         .lean();
 
-        console.log(adsBoards);
-
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 

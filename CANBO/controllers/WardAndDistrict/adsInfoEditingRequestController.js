@@ -7,6 +7,12 @@ const CustomError = require('../../errors');
 const AdsBoard = require('../../models/AdsBoard');
 const AdsPoint = require('../../models/AdsPoint');
 
+const sendEmail = require('../../utils/sendEmail');
+const fs = require('fs').promises;
+const path = require('path');
+
+const { AUTH_EMAIL } = process.env;
+
 const createAdsInfoEditingRequest = async (req, res) => {
     try {
         const { adsObject, adsType } = req.body;
@@ -81,7 +87,84 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
     }
 };
 
+const sendReportStatusNotification = async (email, adsInfoEditingRequest) => {
+    try {
+        const {requestApprovalStatus, adsNewInfoType, newInfo, editRequestTime, 
+        editReason, createdAt} = adsInfoEditingRequest;
+        
+        const subject = 'New announcement: Your request for adjusting information has been approved';
+
+        let replacedHTML, htmlContent, locationName, address;
+
+
+        if (adsNewInfoType === 'AdsPointRequestedEdit') {
+            adsPointRequestedEdit = await AdsPointRequestedEdit.findById(newInfo);
+            console.log(adsPointRequestedEdit);``
+            htmlContent = await fs.readFile(
+                path.join(__dirname, '../../public/html/adsPointRequestApprovalNotificationEmail.html'),
+                'utf8'
+            );
+
+            replacedHTML = htmlContent
+            .replace('{{relatedTo}}', 'Ad point')
+            .replace('{{planningStatus}}', adsPointRequestedEdit.planningStatus)
+            .replace('{{locationType}}', adsPointRequestedEdit.locationType)
+            .replace('{{adsFormat}}', adsPointRequestedEdit.adsFormat.name)
+            .replace('{{locationName}}', adsPointRequestedEdit.locationName)
+            .replace('{{address}}', adsPointRequestedEdit.address);
+
+
+        } else if (adsNewInfoType === 'AdsBoardRequestedEdit') {
+            adsBoardRequestedEdit = await AdsBoardRequestedEdit.findById(newInfo);
+            adsPoint = await AdsPoint.findOne(adsBoardRequestedEdit.adsPoint).populate(
+            { 
+                path: 'location',
+                model: 'Location',
+                select: 'locationName address'
+            });
+
+            ({locationName, address} = adsPoint.location);
+
+            htmlContent = await fs.readFile(
+                path.join(__dirname, '../../public/html/adsBoardRequestApprovalNotificationEmail.html'),
+                'utf8'
+            );
+
+            replacedHTML = htmlContent
+            .replace('{{relatedTo}}', 'Ad board')
+            .replace('{{quantity}}', adsBoardRequestedEdit.quantity)
+            .replace('{{adsBoardType}}', adsBoardRequestedEdit.adsBoardType)
+            .replace('{{width}}', adsBoardRequestedEdit.size.width)
+            .replace('{{height}}', adsBoardRequestedEdit.size.height)
+            .replace('{{contractEndDate}}', adsBoardRequestedEdit.contractEndDate)
+            .replace('{{locationName}}', locationName)
+            .replace('{{address}}', address);
+        }
+
+        replacedHTML = replacedHTML
+        .replace('{{requestApprovalStatus}}', requestApprovalStatus)
+        .replace('{{editRequestTime}}', editRequestTime)
+        .replace('{{editReason}}', editReason)
+        .replace('{{createdAt}}', createdAt);
+
+        const mailOptions = {
+            from: AUTH_EMAIL,
+            to: email,
+            subject,
+            html: replacedHTML
+        };
+
+        await sendEmail(mailOptions);
+
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};
+
 const updateAdsInfoEditingRequest = async (req, res) => {
+    const { email } = req.user;
     try {
         const { id: adsInfoEditingRequestId } = req.params;
         const adsInfoEditingRequest = await AdsInfoEditingRequest.findOneAndUpdate(
@@ -131,7 +214,13 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             await newAdsObject.save();
         }
 
-        res.status(StatusCodes.OK).json({ adsInfoEditingRequest });
+        const emailSent = await sendReportStatusNotification(email, adsInfoEditingRequest);
+
+        if (emailSent) {
+            res.status(StatusCodes.OK).json({ adsInfoEditingRequest });
+        } else {
+            throw new Error('Failed to send email notification');
+        }
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
