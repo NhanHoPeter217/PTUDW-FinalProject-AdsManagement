@@ -1,7 +1,7 @@
 /*
  * Property styles in unhighlighted state.
  */
- .adpointInfo {
+.adpointInfo {
     align-items: start;
     border-radius: 50%;
     color: #263238;
@@ -97,4 +97,176 @@
 .adpointInfo.highlight .icon {
     display: block;
     margin-top: 3px;
+}
+
+.center-content td,
+.center-content th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#buttonStyle {
+    transition: filter 0.1s ease-in-out;
+}
+#buttonStyle:hover {
+    filter: brightness(0) invert(1);
+}
+
+.limited-width-stt {
+    width: 40px;
+    overflow: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.limited-width {
+    width: 220px;
+    overflow: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.limited-width-locationType {
+    width: 240px;
+    overflow: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.limited-width-adsFormat {
+    width: 250px;
+    overflow: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+p {
+    white-space: normal;
+}
+
+/* Style for the filter container */
+.filter-container {
+    margin-bottom: 20px;
+}
+
+/* Style for select dropdowns */
+.list-select {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #495057;
+    background-color: #fff;
+    cursor: pointer;
+    width: 100%; /* Adjust width as needed */
+    max-width: 100%;
+}
+
+.list-select:hover {
+    border-color: #adb5bd;
+}
+
+.list-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.list-select-ward {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px; /* Adjust padding as needed */
+    width: 100%; /* Adjust width as needed */
+}
+
+/* Change background color on hover */
+.list-select-ward:hover {
+    background-color: #f5f5f5;
+}
+
+/* Change border color when focused */
+.list-select-ward:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Custom checkbox styles */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.checkbox-input {
+    margin-right: 10px; /* Add space between checkbox and text */
+    height: 25px; /* Adjust height of the checkbox */
+    width: 25px; /* Adjust width of the checkbox */
+}
+
+.checkmark {
+    height: 25px; /* Adjust height of the checkbox */
+    width: 25px; /* Adjust width of the checkbox */
+    background-color: #fff;
+    border: 1px solid #adb5bd;
+    border-radius: 3px;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.checkbox-input:checked ~ .checkmark:after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 6px;
+    top: 2px;
+    width: 10px; /* Adjust size of the checkmark */
+    height: 18px; /* Adjust size of the checkmark */
+    border: solid #007bff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.fw-bold {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Adjust the height and other styles as needed */
+.scrollable-list {
+    max-height: 62vh; /* Set a maximum height for the container */
+    overflow-y: auto; /* Enable vertical scrollbar when content overflows */
+}
+
+/* Custom styles for the select dropdown */
+.custom-select {
+    font-size: 16px; /* Increase text size */
+    color: blue; /* Set text color to blue */
+    border: 1px solid #007bff; /* Add border */
+    border-radius: 5px; /* Add border radius */
+    padding: 8px; /* Add padding */
+    background-color: white; /* Set background color */
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#007bff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    /* Add custom dropdown arrow (blue color) */
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 10px);
+    background-position-y: center;
+    padding-right: 30px; /* Adjust for the arrow */
+}
+
+/* Hover styles for the select dropdown */
+.custom-select:hover {
+    border-color: #0056b3; /* Change border color on hover */
+}
+
+/* Focus styles for the select dropdown */
+.custom-select:focus {
+    outline: none;
+    border-color: #0056b3; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add box-shadow on focus */
+}
+
+.list-select option {
+    text-align: center;
 }

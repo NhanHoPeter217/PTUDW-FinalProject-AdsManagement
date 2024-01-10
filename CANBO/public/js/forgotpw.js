@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 // Send POST request to your server
-                const response = await fetch('/api/v1/forgotpw', {
+                const response = await fetch('/api/v1/forgotpassword', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

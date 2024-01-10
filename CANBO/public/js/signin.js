@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // Send POST request to your server
-            const response = await fetch('/auth/login', {
+            const response = await fetch('/auth/login/api/v1', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

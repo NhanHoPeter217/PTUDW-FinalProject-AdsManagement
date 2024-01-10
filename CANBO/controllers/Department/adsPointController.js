@@ -31,10 +31,11 @@ const getAllAdsPoints = async (req, res) => {
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         res.render('vwAdsPoint/listAdsPoint', {
+            layout: 'canbo_So',
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
-            districts: districts,
+            districts: districts
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -43,14 +44,15 @@ const getAllAdsPoints = async (req, res) => {
 
 const getAllAdsPointsAPI = async (req, res) => {
     try {
-        const adsPoints = await AdsPoint.find({}).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        })
-        .populate({
-            path: 'location',
-            model: 'Location'
-        });
+        const adsPoints = await AdsPoint.find({})
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -72,20 +74,44 @@ const getAllAdsPointsByAssignedArea = async (req, res) => {
         }
         const locationsID = await Location.find(query).select('_id');
 
-        const adsPoints = await AdsPoint.find({'location': locationsID})
-        .populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        })
-        .populate({
-            path: 'location',
-            model: 'Location'
-        });
+        const adsPoints = await AdsPoint.find({ location: locationsID })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
+// const getAllAdsPointsByWardList = async (req, res) => {
+//     const { assignedArea } = req.user;
+//     const district = assignedArea.district;
+//     const wardList = req.body.wardList;
+//     try {
+//         const locationsID = await Location.find({
+//             district,
+//             ward: { $in: wardList }
+//         }).select('_id');
+//         const adsPoints = await AdsPoint.find({'location': locationsID})
+//         .populate({
+//             path: 'location',
+//             model: 'Location'
+//         })
+//         .populate({
+//             path: 'adsBoard',
+//             model: 'AdsBoard'
+//         });
+//         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
+//     }
+// };
 
 const getAllAdsPointsByWardList = async (req, res) => {
     const { assignedArea } = req.user;
@@ -96,15 +122,15 @@ const getAllAdsPointsByWardList = async (req, res) => {
             district,
             ward: { $in: wardList }
         }).select('_id');
-        const adsPoints = await AdsPoint.find({'location': locationsID})
-        .populate({
-            path: 'location',
-            model: 'Location'
-        })
-        .populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        });
+        const adsPoints = await AdsPoint.find({ location: locationsID })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -115,15 +141,15 @@ const getAllAdsPointByWardAndDistrict = async (req, res) => {
     const { wardId, distId } = req.params;
     try {
         const locationsID = await Location.find({ ward: wardId, district: distId }).select('_id');
-        const adsPoints = await AdsPoint.find({'location': locationsID})
-        .populate({
-            path: 'location',
-            model: 'Location'
-        })
-        .populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        });
+        const adsPoints = await AdsPoint.find({ location: locationsID })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            });
         res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -133,14 +159,15 @@ const getAllAdsPointByWardAndDistrict = async (req, res) => {
 const getSingleAdsPoint = async (req, res) => {
     try {
         const { id: adsPointId } = req.params;
-        const adsPoint = await AdsPoint.findOne({ _id: adsPointId }).populate({
-            path: 'adsBoard',
-            model: 'AdsBoard'
-        })
-        .populate({
-            path: 'location',
-            model: 'Location'
-        });
+        const adsPoint = await AdsPoint.findOne({ _id: adsPointId })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            });
 
         if (!adsPoint) {
             throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
