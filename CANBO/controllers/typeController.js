@@ -10,12 +10,12 @@ const getAllTypes = async (req, res) => {
         res.render('vwType/listType', {
             layout: 'canbo_So',
             adsFormats: adsFormats,
-            reportFormats: reportFormats,
+            reportFormats: reportFormats
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
-}
+};
 
 module.exports = {
     getAllTypes

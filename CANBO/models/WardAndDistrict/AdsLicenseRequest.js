@@ -28,7 +28,7 @@ const adsLicenseRequestSchema = new Schema(
 
         activeStatus: {
             type: String,
-            enum: ['Đang tồn tại' , 'Đã hủy bỏ'],
+            enum: ['Đang tồn tại', 'Đã hủy bỏ'],
             default: 'Đang tồn tại'
         },
 
@@ -55,12 +55,10 @@ const adsLicenseRequestSchema = new Schema(
 adsLicenseRequestSchema.pre(/^find/, function (next) {
     this.find({ ActiveStatus: { $ne: 'Đã hủy bỏ' } });
     this.populate({
-        path: 'licenseRequestedAdsBoard',
+        path: 'licenseRequestedAdsBoard'
     });
     next();
 });
-
-
 
 const AdsLicenseRequest = mongoose.model('AdsLicenseRequest', adsLicenseRequestSchema);
 
