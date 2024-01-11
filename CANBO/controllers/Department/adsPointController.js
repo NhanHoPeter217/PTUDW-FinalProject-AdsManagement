@@ -29,6 +29,8 @@ const getAllAdsPoints = async (req, res) => {
 
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
+        
+        console.log(adsPoints[0].location.coords);
 
         res.render('vwAdsPoint/listAdsPoint', {
             layout: 'canbo_So',

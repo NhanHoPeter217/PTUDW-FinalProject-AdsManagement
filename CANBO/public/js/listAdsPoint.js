@@ -174,3 +174,29 @@ $('#detailAdsPointModal').on('show.bs.modal', function (event) {
     modal.find('.modal-content #district').text(adsPoint.location.district);
     modal.find('.modal-content #ward').text(adsPoint.location.ward);
 });
+
+$(document).ready(function () {
+    $(document).on('submit', '#requestEditAdsPointForm', function (e) {
+        e.preventDefault();
+
+        const adsObject = e.currentTarget.getAttribute('data-id');
+        const adsType = "AdsPoint";
+        const lat = document.getElementById(`lat-${adsObject}`).value;
+        const lng = document.getElementById(`lng-${adsObject}`).value;
+        const locationName = document.getElementById(`edit_locationName-${adsObject}`).value;
+        const address = document.getElementById(`edit_address-${adsObject}`).value;
+        const ward = document.getElementById(`edit_ward-${adsObject}`).value;
+        const district = document.getElementById(`edit_district-${adsObject}`).value;
+        const locationType = document.getElementById(`edit_locationType-${adsObject}`).value;
+        const adsFormat = document.getElementById(`edit_adsFormat-${adsObject}`).value;
+
+        const locationImages = [];
+        const locationImage1 = document.getElementById(`edit_locationImage_1-${adsObject}`).textContent;
+        const locationImage2 = document.getElementById(`edit_locationImage_2-${adsObject}`).textContent;
+
+        const planningStatus = document.getElementById(`edit_planningStatus-${adsObject}`).value;
+
+        // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
+
+    });
+});
