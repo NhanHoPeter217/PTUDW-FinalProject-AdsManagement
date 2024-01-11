@@ -84,32 +84,32 @@ $(document).ready(function () {
                                     adsPoints.forEach(function (adsPoint) {
                                         index += 1;
                                         $('#body').append(`
-                                    <tr>
-                                        <td class="align-middle">${index}</td>
-                                        <td class="align-middle">
-                                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-${adsPoint._id}">
-                                                ${adsPoint.location.locationName}
-                                            </button>
-                                        </td>
-                                        <td class="border-bottom-0 align-middle">
-                                        <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/${adsPoint._id}" role="button">
-                                            <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
-                                        </a>
-                                        </td>
-                                        <td class="border-bottom-0 align-middle">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-warning m-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#requestEditAdsPointModal-${adsPoint._id}">
-                                                <div id="buttonStyle">
-                                                    <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                    Yêu cầu chỉnh sửa
-                                                </div>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                `);
+                                            <tr>
+                                                <td class="align-middle">${index}</td>
+                                                <td class="align-middle">
+                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-${adsPoint._id}">
+                                                        ${adsPoint.location.locationName}
+                                                    </button>
+                                                </td>
+                                                <td class="border-bottom-0 align-middle">
+                                                <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/${adsPoint._id}" role="button">
+                                                    <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
+                                                </a>
+                                                </td>
+                                                <td class="border-bottom-0 align-middle">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-warning m-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#requestEditAdsPointModal-${adsPoint._id}">
+                                                        <div id="buttonStyle">
+                                                            <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                            Yêu cầu chỉnh sửa
+                                                        </div>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                    `);
                                     });
                                 });
                         }
