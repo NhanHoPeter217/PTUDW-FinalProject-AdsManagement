@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-// Add event handler to the Report button
+// Add event handler to the Nút báo cáo đỏ
 function reportButtonHandler(event) {
     event.preventDefault();
 
@@ -113,7 +113,6 @@ function onSubmit(token) {
     if (relatedToType === 'Location') {
         relatedTo = JSON.parse(relatedTo);
         Object.keys(relatedTo).forEach((key) => {
-            console.log(key, relatedTo[key]);
             formData.append(key, relatedTo[key]);
         });
     } else {

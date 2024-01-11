@@ -1,15 +1,17 @@
 
-import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
-import { Map, AdvancedMarkerElement, getLocation, SearchBox } from '/public/js/GeoService.js';
+import { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng } from '/public/js/GeoService.mjs';
 import getClientLocation from '/public/utils/getClientLocation.js';
 
 export class MyMap{
     map;
     apiKey;
     clientMarker;
+    activeInfoMarker;
+    places_service;
 
-    constructor(){
-        this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I'
+    constructor(activeInfoMarker){
+        this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
+        this.activeInfoMarker = activeInfoMarker;
     }
     
     async initMap(Element){
@@ -23,14 +25,42 @@ export class MyMap{
             mapId: '4fde48b8a0296373',
             keyboardShortcuts: false,
             disableDefaultUI: true,
+            draggableCursor: 'auto',
             streetView: false,
             streetViewCotrol: false,
             streetViewControlOptions: false,
             clickableIcons: false
         });
 
-        // Client icon set
+        // Create Places Service
+        this.places_service = new google.maps.places.PlacesService(this.map);
 
+        // Client icon set
+        this.clientMarker = new AdvancedMarkerElement({
+            map: this.map,
+            position: center,
+            content: $('<img src="\\public\\assets\\icons\\ClientLocation.svg" alt="client" width="30" height="30">')[0],
+            zIndex: google.maps.Marker.MAX_ZINDEX,
+        })
+
+
+        // Add event listener
+        this.map.addListener('click', async (event) => {
+            const coords = event.latLng.toJSON();
+            const location = await getDataFromLatLng(this.places_service, coords);
+            
+            // Return if no location found
+            if (!location) return;
+
+            // Clear current active info marker
+            if (this.activeInfoMarker.marker){
+                this.activeInfoMarker.marker.close();
+            }
+
+            // Create InfoMarker
+            this.activeInfoMarker.marker = new InfoMarker(this, location, coords);
+            this.activeInfoMarker.marker.open();
+        });
 
     }
 }
@@ -51,88 +81,163 @@ class MyMarker {
 }
 
 export class AdPointMarker extends MyMarker{
-    title;
+    name;
     state;
     address;
     adPoint;
 
-    constructor({...options}){
+    constructor(myMap, content, coords, activeMarker){
         
         const originalMarker = new AdvancedMarkerElement({
-            // map là 1 MyMap object
-            map: options.map.map,
-            position: new google.maps.LatLng(options.coords.lat, options.coords.lng),
-            content: options.content,
+            map: myMap.map,
+            position: new google.maps.LatLng(coords.lat, coords.lng),
+            content: content,
             zIndex: 1,
         });
         
-        super(originalMarker, options.map.map);
+        super(originalMarker, myMap.map);
 
         this.marker.addListener('click', handleMarkerClick);
 
         function handleMarkerClick(){
-            console.log(this.marker);
-            const content = this.marker.content;
+            turnOnAdsBoard(content.getAttribute('data-id'));
 
+            let content = originalMarker.content;
             // Tắt
             if (content.classList.contains('highlight')) {
                 content.classList.remove('highlight');
-                activeMarker = null;
-
-                this.marker.zIndex = 1;
+                originalMarker.zIndex = 1;
+                activeMarker.marker = null;
             }
 
             // Bật
             else{
                 content.classList.add('highlight');
 
-                if (activeMarker){
-                    activeMarker.content.classList.remove('highlight');
-                    activeMarker.zIndex = 1;
+                if (activeMarker.marker){
+                    activeMarker.marker.content.classList.remove('highlight');
+                    activeMarker.marker.zIndex = 1;
                 }
 
-                activeMarker = this.marker;
-                activeMarker.zIndex = google.maps.Marker.MAX_ZINDEX + 1000;
+                activeMarker.marker = originalMarker;
+                activeMarker.marker.zIndex = google.maps.Marker.MAX_ZINDEX;
             }
+        }
+
+        function turnOnAdsBoard(id){
+            $('.ad-board').hide();
+            $(`[data-adspoint=${id}]`).show();
         }
     }
 }
 
 
 export class InfoMarker extends MyMarker{
-    title;
+    name;
     address;
     ward;
     district;
     infoWindow;
 
-    constructor({...options}){
-        this.marker = new AdvancedMarkerElement({
-            // map là 1 MyMap object
-            map: options.map.map,
-            position: new google.maps.LatLng(options.coords.lat, options.coords.lng),
+    constructor(myMap, data, coords){
+        const originalMarker = new AdvancedMarkerElement({
+            map: myMap.map,
+            position: new google.maps.LatLng(coords.lat, coords.lng),
             zIndex: google.maps.Marker.MAX_ZINDEX + 1,
         });
+        super(originalMarker, myMap.map);
 
         this.infoWindow = new google.maps.InfoWindow({
-            content: options.content,
-            maxWidth: 300,
+            content: buildContent(),
         });
+
+        // Add event listener
+        this.infoWindow.addListener('closeclick', ()=>{
+            this.marker.setMap(null);
+          });
+
+        function buildContent(){
+            // Create a Location object
+            let location = {
+                ...coords,
+                locationName: data.name,
+                address: data.address,
+                ward: data.ward,
+                district: data.district
+            };
+            const content = `
+                <div class="d-flex align-items-center column-gap-2 info-board mb-2">
+                <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                    <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path id="" d="M14.2727 18.3636C16.532 18.3636 18.3636 16.5321 18.3636 14.2727C18.3636 12.0134 16.532 10.1818 14.2727 10.1818C12.0133 10.1818 10.1818 12.0134 10.1818 14.2727C10.1818 16.5321 12.0133 18.3636 14.2727 18.3636Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                </svg>
+                <div class="d-flex flex-column">
+                    <h6 class="mb-1">${location.locationName}</h6>
+                    <p>Phường <b>${location.ward}</b>\t Quận <b>${location.district}</b></p>
+                </div>
+                </div>
+                <!-- Button to trigger the modal -->
+                <button
+                    type="button"
+                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
+                    onclick="reportButtonHandler(event)"
+                    data-relatedToType="Location"
+                    data-relatedTo='${JSON.stringify(location)}'
+                    style="width: fit-content;"
+                >
+                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
+                        Báo cáo
+                    </span>
+                </button>
+            `;
+            return content;
+        }
+    }
+
+    open(){
+        this.infoWindow.open({map: this.map, anchor: this.marker});
+    }
+    close(){
+        this.infoWindow.close();
+        this.marker.setMap(null);
     }
 }
 
 
 export class MarkerManager {
-    markers = [];
+    myMarkers = [];
+    adsPoints = [];
     map;
     clusterer;
+    activeMarker = {marker: null};
 
-    constructor({...options}){
-        this.map = options.map.map;
+    constructor(myMap, adPoints){
+        this.map = myMap.map;
 
         // Set list markers
-        this.markers = options.markers.map(marker => marker.marker);
+        this.adPoints = adPoints;
 
+        // Init markers
+        this.adPoints.each((index, adPoint) => {
+            const coords = {
+                lat: parseFloat(adPoint.getAttribute('data-lat')),
+                lng: parseFloat(adPoint.getAttribute('data-lng'))
+            };
+            const content = adPoint;
+    
+            const adPointMarker = new AdPointMarker(
+                myMap,
+                content,
+                coords,
+                this.activeMarker
+            );
+            this.myMarkers.push(adPointMarker);
+        });
+        
+        // Init clusterer
         const ClusterRenderrer = {
             render: function ({ count, position }, stats, map) {
                 // change color if this cluster has more markers than the mean cluster
@@ -164,22 +269,82 @@ export class MarkerManager {
         };
     
         // Add a marker clusterer to manage the markers.
-        this.clusterer = new markerClusterer.MarkerClusterer({ markers: this.markers, map: this.map, renderer: ClusterRenderrer });
+        this.clusterer = new markerClusterer.MarkerClusterer({
+            markers: this.myMarkers.map(myMarker => myMarker.marker),
+            map: this.map,
+            renderer: ClusterRenderrer
+        });
     }
     addMarker(marker){
-        this.markers.push(marker);
+        this.myMarkers.push(marker);
     }
     setMarkerList(markers){
         this.markers = markers;
     }
     showAll(){
-        this.markers.forEach(marker => {
+        this.myMarkers.forEach(marker => {
             marker.show();
         })
     }
     hideAll(){
-        this.markers.forEach(marker => {
+        this.myMarkers.forEach(marker => {
             marker.hide();
         })
+    }
+    destroy(){
+        this.hideAll();
+        this.clusterer.removeMarkers(this.myMarkers.map(marker => marker.marker));
+        this.clusterer = null;
+    }
+}
+
+
+export class MySearchBox {
+    map;
+    input;
+    autocomplete;
+    activeInfoMarker
+
+    constructor(map, input, activeInfoMarker) {
+        this.map = map.map;
+        this.input = input;
+        this.activeInfoMarker = activeInfoMarker;
+    }
+   
+    async initSearchBox() {
+        // const options = {
+        //     componentRestrictions: { country: "vn" },
+        //     fields: ["address_components", "geometry", "name", "formatted_address", "place_id"],
+        //     strictBounds: false,
+        // };
+
+        // this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
+
+        // // Set bounds automatically
+        // this.autocomplete.bindTo("bounds", this.map);
+
+        // // Add event listener
+        // this.autocomplete.addListener("place_changed", () => {
+        //     const place = this.autocomplete.getPlace();
+        //     if (!place.geometry || !place.geometry.location) {
+        //         window.alert("No details available for input: '" + place.name + "'");
+        //         return;
+        //     }
+
+        //     // Clear current active info marker
+        //     if (this.activeInfoMarker.marker){
+        //         this.activeInfoMarker.marker.close();
+        //     }
+        //     console.log(place.address_components);
+        //     // Create InfoMarker
+        //     const location = {
+        //         name: '',
+        //         address: place.formatted_address,
+        //         ward: '',
+        //         district: ''
+        //     };
+        //     this.activeInfoMarker.marker = new InfoMarker(this, location, place.geometry.location.toJSON());
+        //     this.activeInfoMarker.marker.open();
+        // });
     }
 }

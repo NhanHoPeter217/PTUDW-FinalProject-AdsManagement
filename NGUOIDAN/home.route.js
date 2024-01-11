@@ -25,6 +25,6 @@ router.get('/', async (req, res) => {
 
     const { AdsPoints, AdsBoards } = await getAllAdsPoints();
 
-    res.render('home2', { AdsPoints, AdsBoard });
+    res.render('home2', { AdsPoints, AdsBoards });
 });
 module.exports = router;

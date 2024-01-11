@@ -32,10 +32,10 @@
         </div>
         <h3>Các bảng quảng cáo</h3>
         <div id="boards-container">
-        {{#each AdsBoard}}
+        {{#each AdsBoards}}
             <!-- Adboard{{inc @index}} -->
             <div
-              class="card ad-board default-background primary-text"
+              class="ad-board card default-background primary-text"
               data-adsPoint="{{adsPoint}}"
               style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
             >
@@ -83,33 +83,33 @@
 </div>
 
 {{!-- Elements for adPoint markers --}}
-{{#each locations}}
-{{#ifCond adsPoint.planningStatus '===' 'Đã quy hoạch'}}
-<div class="adpointInfo adPointBlue" data-id="{{_id}}" data-lat={{coords.lat}}" data-lng="{{coords.lng}}">
+{{#each AdsPoints}}
+{{#ifCond planningStatus '===' 'Đã quy hoạch'}}
+<div class="adpointInfo adPointBlue" data-id="{{_id}}" data-lat="{{location.coords.lat}}" data-lng="{{location.coords.lng}}">
 {{else}}
-<div class="adpointInfo adPointRed" data-id="{{_id}}" data-lat={{coords.lat}}" data-lng="{{coords.lng}}">
+<div class="adpointInfo adPointRed" data-id="{{_id}}" data-lat="{{location.coords.lat}}" data-lng="{{location.coords.lng}}">
 {{/ifCond}}
-    <div class="markerPlaceholder" alt="" srcset="">{{adsPoint.adsBoard.length}}</div>
+    <div class="markerPlaceholder" alt="" srcset="">{{adsBoard.length}}</div>
 
-    {{#ifCond adsPoint.planningStatus '===' 'Đã quy hoạch'}}
-    <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset="">
+    {{#ifCond planningStatus '===' 'Đã quy hoạch'}}
+    <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>
     {{else}}
-    <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset="">
+    <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset=""/>
     {{/ifCond}}
 
     <div class="details">
         <div class="d-flex justify-content-between align-items-center column-gap-3">
             <!-- location.locationName -->
-            <h5>{{locationName}}</h5>
-            <meta name="planningStatus" content="{{adsPoint.planningStatus}}"></meta>
+            <h5>{{location.locationName}}</h5>
+            <meta name="planningStatus" content="{{planningStatus}}"></meta>
             <!-- Button to trigger the modal -->
             <button
                 type="button"
                 class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
                 data-relatedToType="AdsPoint"
-                data-relatedTo="{{adsPoint._id}}"
-                data-ward="{{ward}}"
-                data-district="{{district}}"
+                data-relatedTo="{{_id}}"
+                data-ward="{{location.ward}}"
+                data-district="{{location.district}}"
                 onclick="reportButtonHandler(event)"
                 style="width:fit-content; min-width: 111px"
             >
@@ -119,8 +119,8 @@
                 </span>
             </button>
         </div>
-        <!-- adsPoint.locationType -->
-        <h6>{{adsPoint.locationType}}</h6>
+        <!-- locationType -->
+        <h6>{{locationType}}</h6>
         <!-- location.address -->
         <p>Phường <b>{{ward}}</b> Quận <b>{{district}}</b></p>
     </div>
@@ -163,9 +163,15 @@
 </div>
 
 <!-- Filter Board -->
-<div class='filterBoard form-check form-switch'>
-    <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
-    <label class='form-check-label' for='filterButton'>Quy hoạch</label>
+<div class="filterBoard shadow-sm">
+    <div class='form-check form-switch'>
+        <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
+        <label class='form-check-label' for='filterButton'>Điểm đặt</label>
+    </div>
+    <div class='form-check form-switch'>
+        <input class='form-check-input' type='checkbox' role='switch' id='reportFilterButton' checked />
+        <label class='form-check-label' for='reportFilterButton'>Báo cáo</label>
+    </div>
 </div>
 
 <!-- Report Modal -->
@@ -294,6 +300,6 @@
     <script src="https://www.google.com/recaptcha/api.js"
         async defer>
     </script>
-
+    <script>$('.ad-board').hide()</script>
     <script src="/public/js/main.js" type="module"></script>
 {{/section}}
