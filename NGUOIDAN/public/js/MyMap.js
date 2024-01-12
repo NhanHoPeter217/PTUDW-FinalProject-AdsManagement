@@ -1,5 +1,5 @@
 
-import { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng } from '/public/js/GeoService.mjs';
+import { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng, getWardFromAddress, getDistrictFromAddress } from '/public/js/GeoService.mjs';
 import getClientLocation from '/public/utils/getClientLocation.js';
 
 export class MyMap{
@@ -80,7 +80,7 @@ class MyMarker {
     }
 }
 
-export class AdPointMarker extends MyMarker{
+class AdPointMarker extends MyMarker{
     name;
     state;
     address;
@@ -100,9 +100,10 @@ export class AdPointMarker extends MyMarker{
         this.marker.addListener('click', handleMarkerClick);
 
         function handleMarkerClick(){
+            let content = originalMarker.content;
+
             turnOnAdsBoard(content.getAttribute('data-id'));
 
-            let content = originalMarker.content;
             // Tắt
             if (content.classList.contains('highlight')) {
                 content.classList.remove('highlight');
@@ -132,7 +133,7 @@ export class AdPointMarker extends MyMarker{
 }
 
 
-export class InfoMarker extends MyMarker{
+class InfoMarker extends MyMarker{
     name;
     address;
     ward;
@@ -198,7 +199,7 @@ export class InfoMarker extends MyMarker{
     }
 
     open(){
-        this.infoWindow.open({map: this.map, anchor: this.marker});
+        this.infoWindow.open({map: this.map, shouldFocus: false, anchor: this.marker});
     }
     close(){
         this.infoWindow.close();
@@ -312,39 +313,47 @@ export class MySearchBox {
     }
    
     async initSearchBox() {
-        // const options = {
-        //     componentRestrictions: { country: "vn" },
-        //     fields: ["address_components", "geometry", "name", "formatted_address", "place_id"],
-        //     strictBounds: false,
-        // };
+        const options = {
+            componentRestrictions: { country: "vn" },
+            fields: ["address_components", "geometry", "name", "formatted_address", "place_id"],
+            strictBounds: false,
+        };
 
-        // this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
+        this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
 
-        // // Set bounds automatically
-        // this.autocomplete.bindTo("bounds", this.map);
+        // Set bounds automatically
+        this.autocomplete.bindTo("bounds", this.map);
 
-        // // Add event listener
-        // this.autocomplete.addListener("place_changed", () => {
-        //     const place = this.autocomplete.getPlace();
-        //     if (!place.geometry || !place.geometry.location) {
-        //         window.alert("No details available for input: '" + place.name + "'");
-        //         return;
-        //     }
+        // Add event listener
+        this.autocomplete.addListener("place_changed", () => {
+            const place = this.autocomplete.getPlace();
+            if (!place.geometry || !place.geometry.location) {
+                window.alert("No details available for input: '" + place.name + "'");
+                return;
+            }
 
-        //     // Clear current active info marker
-        //     if (this.activeInfoMarker.marker){
-        //         this.activeInfoMarker.marker.close();
-        //     }
-        //     console.log(place.address_components);
-        //     // Create InfoMarker
-        //     const location = {
-        //         name: '',
-        //         address: place.formatted_address,
-        //         ward: '',
-        //         district: ''
-        //     };
-        //     this.activeInfoMarker.marker = new InfoMarker(this, location, place.geometry.location.toJSON());
-        //     this.activeInfoMarker.marker.open();
-        // });
+            // Clear current active info marker
+            if (this.activeInfoMarker.marker){
+                this.activeInfoMarker.marker.close();
+            }
+
+            // Create InfoMarker
+            const location = {
+                name: place.name,
+                address: place.formatted_address,
+                ward: '',
+                district: ''
+            };
+
+            location.ward = getWardFromAddress(location.address);
+            location.district = getDistrictFromAddress(location.address);
+            if (location.district === ''){
+                console.log('[Regex] Fail to get district');
+                return;
+            }
+
+            this.activeInfoMarker.marker = new InfoMarker(this, location, place.geometry.location.toJSON());
+            this.activeInfoMarker.marker.open();
+        });
     }
 }

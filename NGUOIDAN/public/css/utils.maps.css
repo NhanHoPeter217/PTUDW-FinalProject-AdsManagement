@@ -71,3 +71,5 @@ $enable-shadows body {
     border-width: 2px;
     border-radius: 10px;
 }
+
+.gm-style iframe + div { border:none!important; }

@@ -43,7 +43,7 @@
 
 const { Map, InfoWindow } = await google.maps.importLibrary('maps');
 const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
-const { Autocomplete, SearchBox } = await google.maps.importLibrary('places');
+const { SearchBox } = await google.maps.importLibrary('places');
 
 import { getWardFromAddress, getDistrictFromAddress } from '/public/utils/getAddressComponents.js';
 
@@ -59,31 +59,13 @@ async function geocode(latlng){
     await geocoder.geocode({ location: latlng })
     .then((response) => {
             const results = response.results;
+
             if (results[0]) {
                 place_id = results[0].place_id;
                 address = results[0].formatted_address;
-                // Extract ward and district from address components
-                for (const result of results) {
-                    for (const addrComponent of result.address_components) {
-                        // Get the ward
-                        if (addrComponent.types.includes('administrative_area_level_3')) {
-                            ward = addrComponent.long_name;
-                        } else {
-                            // console.log('[Google Maps API] Fail to find ward in ', address);
-                            ward = getWardFromAddress(address);
-                        }
-
-                        // Get the district
-                        if (addrComponent.types.includes('administrative_area_level_2')) {
-                            district = addrComponent.long_name;
-                        } else {
-                            // console.log('[Google Maps API] Fail to find district in ', address);
-                            district = getDistrictFromAddress(address);
-                        }
-                    }
-                    // Break the loop if both ward and district are found
-                    if (ward !== undefined && district !== undefined) break;
-                }
+                ward = getWardFromAddress(address);
+                district = getDistrictFromAddress(address);
+                
             } else {
                 window.alert("No results found");
             }
@@ -120,10 +102,9 @@ async function getDataFromLatLng(map, latlng){
 
     // Get place_id, address, ward, district
     const { place_id, address, ward, district } = await geocode(latlng);
-    if (place_id == '' || address == '' || ward == '' || district == ''){
+    if (place_id == '' || address == '' || district == ''){
         if (place_id == '') console.log('[Google Maps API] Fail to get place_id from latlng', latlng);
         if (address == '') console.log('[Google Maps API] Fail to get address from latlng', latlng);
-        if (ward == '') console.log('[Google Maps API] Fail to get ward from latlng', latlng);
         if (district == '') console.log('[Google Maps API] Fail to get district from latlng', latlng);
         return null;
     }
@@ -134,9 +115,10 @@ async function getDataFromLatLng(map, latlng){
     if (name === ''){
         console.log('[Google Maps API] Fail to get name from place_id', place_id);
     }
-
+    if (ward === '')
+        ward = "Không xác định";
     return { name, address, ward, district };
 }
 
 
-export { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng };
+export { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng, getWardFromAddress, getDistrictFromAddress };

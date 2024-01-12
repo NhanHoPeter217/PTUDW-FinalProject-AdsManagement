@@ -72,10 +72,7 @@ app.set('views', './views');
 app.set('view engine', '.hbs');
 app.set('title', 'Ads Management');
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
-app.use('/2', require('./home.route'));
+app.get('/', require('./home.route'));
 
 const port = process.env.PORT_NGUOIDAN || 3000;
 
