@@ -27,100 +27,12 @@
         </div>
         <h3>Các bảng quảng cáo</h3>
         <div id="boards-container">
-        {{#each AdsBoards}}
-            <!-- Adboard{{inc @index}} -->
-            <div
-              class="ad-board card default-background primary-text"
-              data-adsPoint="id_{{adsPoint}}"
-              style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
-            >
-              <div class="d-flex align-items-start">
-                <div class="card-body ps-2" style="padding: 0px;">
-                  <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">{{adsBoardType}}</h5>
-                  <p class="card-text">
-                    <span class="label">Kích thước:</span>
-                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">{{size.width}}m x {{size.height}}m</span>
-                  </p>
-                  <p class="card-text">
-                    <span class="label">Số lượng:</span>
-                    <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">{{quantity}} trụ / bảng</span>
-                  </p>
-                </div>
-              </div>
-          
-          
-                <!-- Button to trigger the modal -->
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none">
-                    <path d="M14.2501 8.74994H16.7501V11.2499H14.2501V8.74994ZM14.2501 13.7499H16.7501V21.2499H14.2501V13.7499ZM15.5001 2.49994C8.60006 2.49994 3.00006 8.09994 3.00006 14.9999C3.00006 21.8999 8.60006 27.4999 15.5001 27.4999C22.4001 27.4999 28.0001 21.8999 28.0001 14.9999C28.0001 8.09994 22.4001 2.49994 15.5001 2.49994ZM15.5001 24.9999C9.98756 24.9999 5.50006 20.5124 5.50006 14.9999C5.50006 9.48744 9.98756 4.99994 15.5001 4.99994C21.0126 4.99994 25.5001 9.48744 25.5001 14.9999C25.5001 20.5124 21.0126 24.9999 15.5001 24.9999Z" fill="#1C89D0"/>
-                  </svg>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
-                    onclick="reportButtonHandler(event)"
-                    data-relatedToType="AdsBoard"
-                    data-relatedTo="{{_id}}"
-                    data-ward="{{ward}}"
-                    data-district="{{district}}"
-                  >
-                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                    Báo cáo
-                    </span>
-                  </button>
-                </div>
-              </div>
-        {{/each}}
         </div>
     </div>
     <div id='map'>
     </div>
 </div>
 
-{{!-- Elements for adPoint markers --}}
-{{#each AdsPoints}}
-{{#ifCond planningStatus '===' 'Đã quy hoạch'}}
-<div class="adpointInfo adPointBlue" data-id="{{_id}}" data-lat="{{location.coords.lat}}" data-lng="{{location.coords.lng}}">
-{{else}}
-<div class="adpointInfo adPointRed" data-id="{{_id}}" data-lat="{{location.coords.lat}}" data-lng="{{location.coords.lng}}">
-{{/ifCond}}
-    <div class="markerPlaceholder" alt="" srcset="">{{adsBoard.length}}</div>
-
-    {{#ifCond planningStatus '===' 'Đã quy hoạch'}}
-    <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>
-    {{else}}
-    <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset=""/>
-    {{/ifCond}}
-
-    <div class="details">
-        <div class="d-flex justify-content-between align-items-center column-gap-3">
-            <!-- location.locationName -->
-            <h5>{{location.locationName}}</h5>
-            <meta name="planningStatus" content="{{planningStatus}}"></meta>
-            <!-- Button to trigger the modal -->
-            <button
-                type="button"
-                class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
-                data-relatedToType="AdsPoint"
-                data-relatedTo="{{_id}}"
-                data-ward="{{location.ward}}"
-                data-district="{{location.district}}"
-                onclick="reportButtonHandler(event)"
-                style="width:fit-content; min-width: 111px"
-            >
-                <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                    Báo cáo
-                </span>
-            </button>
-        </div>
-        <!-- locationType -->
-        <h6>{{locationType}}</h6>
-        <!-- location.address -->
-        <p>Phường <b>{{location.ward}}</b> Quận <b>{{location.district}}</b></p>
-    </div>
-</div>
-{{/each}}
 
 <button
     id='report-canvas-button'
