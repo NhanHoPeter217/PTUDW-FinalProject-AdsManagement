@@ -3,8 +3,10 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
+// var Handlebars = require('handlebars');
 
 const app = express();
+var pjax = require('express-pjax');
 
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
@@ -33,6 +35,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(pjax());
 app.use(cors(corsOptions));
 
 // routers
@@ -104,11 +107,34 @@ app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
+
 // FRONT END
 // Setup handlebars view engine
 // sectionHandler(engine);
-
 app.engine('hbs', engineWithHelpers);
+// app.js
+// Handlebars.registerHelper('role', async function() {
+//     try {
+//         const response = await fetch('/api/v1/user', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//         });
+
+//         const infoUser_data = await response.json();
+
+//         if (!infoUser_data) {
+//             return "Phường";
+//         }
+
+//         return infoUser_data.infoUser.role || "Phường";
+//     } catch (error) {
+//         console.error('Error fetching user info:', error);
+//         return "Phường"; // Default value in case of an error
+//     }
+// });
+
 
 // Basic setup
 app.set('view engine', 'hbs');
@@ -151,9 +177,9 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
 //     res.render('vwAdsPoint/listAdsPoint', {});
 // });
 
-app.get('/types/list', function (req, res) {
-    res.render('vwType/listType', { layout: 'canbo_So' });
-});
+// app.get('/types/list', function (req, res) {
+//     res.renderPjax('vwType/listType', { layout: 'canbo_So' });
+// });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
 //     res.render('vwAdsBoard/listAdsBoard');

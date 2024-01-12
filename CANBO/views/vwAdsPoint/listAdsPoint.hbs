@@ -190,14 +190,14 @@
                                                             <div class='mb-3' id='locationName'>
                                                                 <label for='locationName' class='form-label' style='font-family: Inter;'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                        <div class="nowrap">Điểm quảng cáo</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{location.locationName}})</p>    
+                                                                        <div class="nowrap">Điểm quảng cáo</div> 
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
                                                                     class='form-control fullNameReport'
                                                                     id='edit_locationName-{{_id}}'
+                                                                    value="{{location.locationName}}"
                                                                     required
                                                                 />
                                                             </div>
@@ -206,7 +206,7 @@
                                                                     <label for='district' class='form-label' style='font-family: Inter'>
                                                                         <div class='d-flex flex-row grid gap-1 column-gap-1'>
                                                                             <div class="nowrap">Quận</div>
-                                                                            <p class='mb-0 softer-text fw-nomral'>({{location.district}})</p>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
                                                                     <select class='form-select districtType' id='edit_district-{{_id}}' required>
@@ -214,7 +214,7 @@
                                                                                 -- Chọn Quận --
                                                                         </option>
                                                                         {{#each ../districts}}
-                                                                            <option value="{{districtName}}">{{districtName}}</option>
+                                                                             <option value={{districtName}} {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
                                                                         {{/each}}
                                                                     </select>
                                                                 </div>
@@ -222,13 +222,14 @@
                                                                     <label for='ward' class='form-label' style='font-family: Inter'>
                                                                         <div class='d-flex flex-row grid gap-1 column-gap-1'>
                                                                             <div class="nowrap">Phường</div>
-                                                                            <p class='mb-0 softer-text fw-nomral'>({{location.ward}})</p>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
                                                                     <select class='form-select wardType' id='edit_ward-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Phường --
                                                                         </option>
+                                                                        <option value={{location.ward}} selected>{{location.ward}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -236,7 +237,7 @@
                                                                 <label for='address' class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-1 column-gap-1'>
                                                                         <div class="nowrap">Địa chỉ chi tiết</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{location.address}})</p>    
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
                                                                 <textarea
@@ -244,7 +245,7 @@
                                                                     id='edit_address-{{_id}}'
                                                                     style="height: 100px;"
                                                                     required
-                                                                ></textarea>
+                                                                >{{location.address}}</textarea>
                                                             </div>
                                                             <div class='mb-3' id="locationType">
                                                                 <label for='locationType' class='form-label' style='font-family: Inter'>
