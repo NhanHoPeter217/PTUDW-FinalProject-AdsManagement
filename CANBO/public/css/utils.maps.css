@@ -67,4 +67,6 @@ $enable-shadows body {
     border-radius: 10px;
 }
 
-.gm-style iframe + div { border:none!important; }
+.gm-style iframe + div {
+    border: none !important;
+}

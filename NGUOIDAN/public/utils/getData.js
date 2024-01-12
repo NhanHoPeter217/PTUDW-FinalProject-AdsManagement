@@ -4,7 +4,7 @@ async function getAllAdsPoints() {
 
     let adsBoards = [];
     adsPoints.forEach((adsPoint) => {
-        adsBoards.push(...adsPoint.adsBoard)
+        adsBoards.push(...adsPoint.adsBoard);
     });
     return { adsPoints, adsBoards };
 }

@@ -1,5 +1,4 @@
-
-import { MyMap, MarkerManager, MySearchBox } from "./MyMap.js";
+import { MyMap, MarkerManager, MySearchBox } from './MyMap.js';
 
 let markerManager = null;
 
@@ -7,31 +6,37 @@ async function getAllAdsPoints() {
     try {
         let result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
         let AdsPoints = result.data.adsPoints;
-    
+
         let AdsBoards = [];
 
         AdsPoints.forEach((adsPoint) => {
-            AdsBoards.push(...adsPoint.adsBoard)
+            AdsBoards.push(...adsPoint.adsBoard);
         });
-   
+
         const parser = new DOMParser();
         // Append AdsBoard
-        let adboardContainer = document.getElementById("boards-container");
+        let adboardContainer = document.getElementById('boards-container');
         let adBoardElements = [];
         let adPointElements = [];
-        
+
         // Append AdsPoint
-        for (let adPoint of AdsPoints){
-            let div = parser.parseFromString(`
-            ${adPoint.planningStatus === "Đã quy hoạch" ?
-            `<div class="adpointInfo adPointRed" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">` :
-            `<div class="adpointInfo adPointBlue" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
+        for (let adPoint of AdsPoints) {
+            let div = parser.parseFromString(
+                `
+            ${
+                adPoint.planningStatus === 'Đã quy hoạch'
+                    ? `<div class="adpointInfo adPointRed" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
+                    : `<div class="adpointInfo adPointBlue" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
             }
                 <div class="markerPlaceholder" alt="" srcset="">${adPoint.adsBoard.length}</div>
             
-                ${adPoint.planningStatus === "Đã quy hoạch" ? `
-                <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>` : `
-                <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset=""/>`}            
+                ${
+                    adPoint.planningStatus === 'Đã quy hoạch'
+                        ? `
+                <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>`
+                        : `
+                <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset=""/>`
+                }            
                 <div class="details">
                     <div class="d-flex justify-content-between align-items-center column-gap-3">
                         <!-- location.locationName -->
@@ -57,13 +62,18 @@ async function getAllAdsPoints() {
                     <!-- locationType -->
                     <h6>${adPoint.locationType}</h6>
                     <!-- location.address -->
-                    <p>Phường <b>${adPoint.location.ward}</b> Quận <b>${adPoint.location.district}</b></p>
+                    <p>Phường <b>${adPoint.location.ward}</b> Quận <b>${
+                        adPoint.location.district
+                    }</b></p>
                 </div>
-            </div>`, "text/html").body.firstChild;
+            </div>`,
+                'text/html'
+            ).body.firstChild;
             adPointElements.push(div);
 
-            for (let adsBoard of adPoint.adsBoard){
-                let div = parser.parseFromString(`
+            for (let adsBoard of adPoint.adsBoard) {
+                let div = parser.parseFromString(
+                    `
                     <div
                     class="ad-board card default-background primary-text"
                     data-adsPoint="id_${adsBoard.adsPoint}"
@@ -105,58 +115,60 @@ async function getAllAdsPoints() {
                         </button>
                         </div>
                     </div>
-                `, "text/html").body.firstChild;
+                `,
+                    'text/html'
+                ).body.firstChild;
                 adboardContainer.appendChild(div);
                 adBoardElements.push(div);
             }
         }
 
         return { adBoardElements, adPointElements };
-    
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
 
-
-async function main(){
-    if (typeof google === 'object' && typeof google.maps === 'object'){
+async function main() {
+    if (typeof google === 'object' && typeof google.maps === 'object') {
         // get the map element
         const mapElement = document.getElementById('map');
-    
+
         // Public Marker for Map Click Event and SearchBox
         let activeInfoMarker = {
             marker: null
-        }
-        
+        };
+
         // create the map
         const map = new MyMap(activeInfoMarker);
-        await map.initMap(mapElement)
-        
+        await map.initMap(mapElement);
+
         // get all locations element
-        const { adBoardElements , adPointElements } = await getAllAdsPoints();
+        const { adBoardElements, adPointElements } = await getAllAdsPoints();
 
         // Hide all ad-board
-        for (let item of adBoardElements){
+        for (let item of adBoardElements) {
             item.style.display = 'none';
         }
 
         // Init Marker Manager
-        markerManager =  new MarkerManager(map, adPointElements);
-    
+        markerManager = new MarkerManager(map, adPointElements);
+
         // Init Filter Switch
         $('#filterButton').change(function () {
-            if ($(this).is(':checked')){
-                markerManager =  new MarkerManager(map, adPointElements);
-            }
-            else{
+            if ($(this).is(':checked')) {
+                markerManager = new MarkerManager(map, adPointElements);
+            } else {
                 markerManager.destroy();
             }
         });
-    
+
         // Init Search Box
-        const searchBox = new MySearchBox(map, document.getElementById('searchInput'), activeInfoMarker);
+        const searchBox = new MySearchBox(
+            map,
+            document.getElementById('searchInput'),
+            activeInfoMarker
+        );
         searchBox.initSearchBox();
     }
 }

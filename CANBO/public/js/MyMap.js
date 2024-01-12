@@ -1,22 +1,29 @@
-
-import { Map, AdvancedMarkerElement, SearchBox, InfoWindow, getDataFromLatLng, getWardFromAddress, getDistrictFromAddress } from '/public/js/GeoService.mjs';
+import {
+    Map,
+    AdvancedMarkerElement,
+    SearchBox,
+    InfoWindow,
+    getDataFromLatLng,
+    getWardFromAddress,
+    getDistrictFromAddress
+} from '/public/js/GeoService.mjs';
 import getClientLocation from '/public/utils/getClientLocation.js';
 
-export class MyMap{
+export class MyMap {
     map;
     apiKey;
     clientMarker;
     activeInfoMarker;
     places_service;
 
-    constructor(activeInfoMarker){
+    constructor(activeInfoMarker) {
         this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
         this.activeInfoMarker = activeInfoMarker;
     }
-    
-    async initMap(Element){
+
+    async initMap(Element) {
         const center = await getClientLocation();
-    
+
         this.map = new Map(Element, {
             zoom: 17,
             minZoom: 12,
@@ -39,21 +46,22 @@ export class MyMap{
         this.clientMarker = new AdvancedMarkerElement({
             map: this.map,
             position: center,
-            content: $('<img src="\\public\\assets\\icons\\ClientLocation.svg" alt="client" width="30" height="30">')[0],
-            zIndex: google.maps.Marker.MAX_ZINDEX,
-        })
-
+            content: $(
+                '<img src="\\public\\assets\\icons\\ClientLocation.svg" alt="client" width="30" height="30">'
+            )[0],
+            zIndex: google.maps.Marker.MAX_ZINDEX
+        });
 
         // Add event listener
         this.map.addListener('click', async (event) => {
             const coords = event.latLng.toJSON();
             const location = await getDataFromLatLng(this.places_service, coords);
-            
+
             // Return if no location found
             if (!location) return;
 
             // Clear current active info marker
-            if (this.activeInfoMarker.marker){
+            if (this.activeInfoMarker.marker) {
                 this.activeInfoMarker.marker.close();
             }
 
@@ -61,7 +69,6 @@ export class MyMap{
             this.activeInfoMarker.marker = new InfoMarker(this, location, coords);
             this.activeInfoMarker.marker.open();
         });
-
     }
 }
 
@@ -72,34 +79,33 @@ class MyMarker {
         this.marker = marker;
         this.map = map;
     }
-    show(){
+    show() {
         this.marker.setMap(this.map);
     }
-    hide(){
+    hide() {
         this.marker.setMap(null);
     }
 }
 
-class AdPointMarker extends MyMarker{
+class AdPointMarker extends MyMarker {
     name;
     state;
     address;
     adPoint;
 
-    constructor(myMap, content, coords, activeMarker){
-        
+    constructor(myMap, content, coords, activeMarker) {
         const originalMarker = new AdvancedMarkerElement({
             map: myMap.map,
             position: new google.maps.LatLng(coords.lat, coords.lng),
             content: content,
-            zIndex: 1,
+            zIndex: 1
         });
-        
+
         super(originalMarker, myMap.map);
 
         this.marker.addListener('click', handleMarkerClick);
 
-        function handleMarkerClick(){
+        function handleMarkerClick() {
             let content = originalMarker.content;
 
             turnOnAdsBoard(content.getAttribute('data-id'));
@@ -112,10 +118,10 @@ class AdPointMarker extends MyMarker{
             }
 
             // Bật
-            else{
+            else {
                 content.classList.add('highlight');
 
-                if (activeMarker.marker){
+                if (activeMarker.marker) {
                     activeMarker.marker.content.classList.remove('highlight');
                     activeMarker.marker.zIndex = 1;
                 }
@@ -125,45 +131,44 @@ class AdPointMarker extends MyMarker{
             }
         }
 
-        function turnOnAdsBoard(id){
+        function turnOnAdsBoard(id) {
             const adsBoards = document.getElementsByClassName('ad-board');
             for (const adsBoard of adsBoards) {
                 adsBoard.style.display = 'none';
             }
 
-            document.querySelectorAll(`[data-adsPoint=id_${id}]`).forEach(element => {
+            document.querySelectorAll(`[data-adsPoint=id_${id}]`).forEach((element) => {
                 element.style.display = 'flex';
             });
         }
     }
 }
 
-
-class InfoMarker extends MyMarker{
+class InfoMarker extends MyMarker {
     name;
     address;
     ward;
     district;
     infoWindow;
 
-    constructor(myMap, data, coords){
+    constructor(myMap, data, coords) {
         const originalMarker = new AdvancedMarkerElement({
             map: myMap.map,
             position: new google.maps.LatLng(coords.lat, coords.lng),
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1
         });
         super(originalMarker, myMap.map);
 
         this.infoWindow = new google.maps.InfoWindow({
-            content: buildContent(),
+            content: buildContent()
         });
 
         // Add event listener
-        this.infoWindow.addListener('closeclick', ()=>{
+        this.infoWindow.addListener('closeclick', () => {
             this.marker.setMap(null);
-          });
+        });
 
-        function buildContent(){
+        function buildContent() {
             // Create a Location object
             let location = {
                 ...coords,
@@ -204,24 +209,23 @@ class InfoMarker extends MyMarker{
         }
     }
 
-    open(){
-        this.infoWindow.open({map: this.map, shouldFocus: false, anchor: this.marker});
+    open() {
+        this.infoWindow.open({ map: this.map, shouldFocus: false, anchor: this.marker });
     }
-    close(){
+    close() {
         this.infoWindow.close();
         this.marker.setMap(null);
     }
 }
-
 
 export class MarkerManager {
     myMarkers = [];
     adsPoints = [];
     map;
     clusterer;
-    activeMarker = {marker: null};
+    activeMarker = { marker: null };
 
-    constructor(myMap, adPoints){
+    constructor(myMap, adPoints) {
         this.map = myMap.map;
 
         // Set list markers
@@ -233,21 +237,17 @@ export class MarkerManager {
                 lat: parseFloat(adPoint.getAttribute('data-lat')),
                 lng: parseFloat(adPoint.getAttribute('data-lng'))
             };
-    
-            const adPointMarker = new AdPointMarker(
-                myMap,
-                adPoint,
-                coords,
-                this.activeMarker
-            );
+
+            const adPointMarker = new AdPointMarker(myMap, adPoint, coords, this.activeMarker);
             this.myMarkers.push(adPointMarker);
-        };
-        
+        }
+
         // Init clusterer
         const ClusterRenderrer = {
             render: function ({ count, position }, stats, map) {
                 // change color if this cluster has more markers than the mean cluster
-                const color = count > Math.max(10, stats.clusters.markers.mean) ? '#ff0000' : '#0000ff';
+                const color =
+                    count > Math.max(10, stats.clusters.markers.mean) ? '#ff0000' : '#0000ff';
                 // create svg literal with fill color
                 const svg = `<svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="50" height="50">
             <circle cx="120" cy="120" opacity=".6" r="70" />
@@ -258,7 +258,7 @@ export class MarkerManager {
                 const title = `Cluster of ${count} markers`,
                     // adjust zIndex to be above other markers
                     zIndex = count;
-    
+
                 // create cluster SVG element
                 const parser = new DOMParser();
                 const svgEl = parser.parseFromString(svg, 'image/svg+xml').documentElement;
@@ -273,64 +273,63 @@ export class MarkerManager {
                 return new google.maps.marker.AdvancedMarkerElement(clusterOptions);
             }
         };
-    
+
         // Add a marker clusterer to manage the markers.
         this.clusterer = new markerClusterer.MarkerClusterer({
-            markers: this.myMarkers.map(myMarker => myMarker.marker),
+            markers: this.myMarkers.map((myMarker) => myMarker.marker),
             map: this.map,
             renderer: ClusterRenderrer
         });
     }
-    addMarker(marker){
+    addMarker(marker) {
         this.myMarkers.push(marker);
     }
-    setMarkerList(markers){
+    setMarkerList(markers) {
         this.markers = markers;
     }
-    showAll(){
-        this.myMarkers.forEach(marker => {
+    showAll() {
+        this.myMarkers.forEach((marker) => {
             marker.show();
-        })
+        });
     }
-    hideAll(){
-        this.myMarkers.forEach(marker => {
+    hideAll() {
+        this.myMarkers.forEach((marker) => {
             marker.hide();
-        })
+        });
     }
-    destroy(){
+    destroy() {
         this.hideAll();
-        this.clusterer.removeMarkers(this.myMarkers.map(marker => marker.marker));
+        this.clusterer.removeMarkers(this.myMarkers.map((marker) => marker.marker));
         this.clusterer = null;
     }
 }
-
 
 export class MySearchBox {
     map;
     input;
     autocomplete;
-    activeInfoMarker
+    activeInfoMarker;
 
     constructor(map, input, activeInfoMarker) {
         this.map = map.map;
         this.input = input;
         this.activeInfoMarker = activeInfoMarker;
     }
-   
+
     async initSearchBox() {
         const options = {
-            componentRestrictions: { country: "vn" },
-            fields: ["address_components", "geometry", "name", "formatted_address", "place_id"],
-            strictBounds: false,
+            componentRestrictions: { country: 'vn' },
+            fields: ['address_components', 'geometry', 'name', 'formatted_address', 'place_id'],
+            strictBounds: false
         };
 
         this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
 
         // Set bounds automatically
-        this.autocomplete.bindTo("bounds", this.map);
+        this.autocomplete.bindTo('bounds', this.map);
 
         // Add event listener
-        this.autocomplete.addListener("place_changed", () => {
+        this.autocomplete.addListener('place_changed', () => {
             const place = this.autocomplete.getPlace();
             if (!place.geometry || !place.geometry.location) {
                 window.alert("No details available for input: '" + place.name + "'");
@@ -338,7 +337,7 @@ export class MySearchBox {
             }
 
             // Clear current active info marker
-            if (this.activeInfoMarker.marker){
+            if (this.activeInfoMarker.marker) {
                 this.activeInfoMarker.marker.close();
             }
 
@@ -352,12 +351,16 @@ export class MySearchBox {
 
             location.ward = getWardFromAddress(location.address);
             location.district = getDistrictFromAddress(location.address);
-            if (location.district === ''){
+            if (location.district === '') {
                 console.log('[Regex] Fail to get district');
                 return;
             }
 
-            this.activeInfoMarker.marker = new InfoMarker(this, location, place.geometry.location.toJSON());
+            this.activeInfoMarker.marker = new InfoMarker(
+                this,
+                location,
+                place.geometry.location.toJSON()
+            );
             this.activeInfoMarker.marker.open();
         });
     }

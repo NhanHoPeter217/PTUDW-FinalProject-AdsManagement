@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const phone = document.getElementById('register_phoneNumber').value;
         const role = document.getElementById('register_role').value;
         const district = document.getElementById('register_district').value;
-        const ward = (role === "Phường") ? document.getElementById('register_ward').value : "*";
+        const ward = role === 'Phường' ? document.getElementById('register_ward').value : '*';
 
         let isValid = true;
 

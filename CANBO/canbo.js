@@ -122,16 +122,15 @@ app.get('/', async (req, res) => {
         try {
             var result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
             let AdsPoints = result.data.adsPoints;
-        
+
             let AdsBoards = [];
-    
+
             AdsPoints.forEach((adsPoint) => {
-                AdsBoards.push(...adsPoint.adsBoard)
+                AdsBoards.push(...adsPoint.adsBoard);
             });
-        
+
             return { AdsPoints, AdsBoards };
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }
