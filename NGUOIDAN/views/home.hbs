@@ -31,7 +31,7 @@
             <!-- Adboard{{inc @index}} -->
             <div
               class="ad-board card default-background primary-text"
-              data-adsPoint="{{adsPoint}}"
+              data-adsPoint="id_{{adsPoint}}"
               style="width: 20rem; padding: 17px 17px; gap: 40px; min-width: 350px;"
             >
               <div class="d-flex align-items-start">
@@ -117,7 +117,7 @@
         <!-- locationType -->
         <h6>{{locationType}}</h6>
         <!-- location.address -->
-        <p>Phường <b>{{ward}}</b> Quận <b>{{district}}</b></p>
+        <p>Phường <b>{{location.ward}}</b> Quận <b>{{location.district}}</b></p>
     </div>
 </div>
 {{/each}}
@@ -295,6 +295,5 @@
     <script src="https://www.google.com/recaptcha/api.js"
         async defer>
     </script>
-    <script>$('.ad-board').hide()</script>
     <script src="/public/js/main.js" type="module"></script>
 {{/section}}

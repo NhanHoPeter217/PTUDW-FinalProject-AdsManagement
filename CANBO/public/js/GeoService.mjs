@@ -110,7 +110,6 @@ async function getDataFromLatLng(map, latlng){
     }
 
 
-    // Get place name
     let name = await placeDetails(map, place_id);
     if (address.includes(name)){
         console.log('[Google Maps API] Fail to get name from place_id', place_id);

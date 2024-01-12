@@ -1,4 +1,3 @@
-
 import { MyMap, MarkerManager, MySearchBox } from "./MyMap.js";
 
 let markerManager = null;
@@ -20,7 +19,7 @@ async function main(){
         
         // get all locations element
         const adPointElements = document.getElementsByClassName('adpointInfo');
-
+        
         // Hide all ad-board
         for (let item of document.getElementsByClassName('ad-board')){
             item.style.display = 'none';
