@@ -55,7 +55,7 @@ export class MyMap {
             zoom: 17,
             minZoom: 12,
             maxZoom: 22,
-            center: center,
+            center: this.center,
             mapId: '4fde48b8a0296373',
             keyboardShortcuts: false,
             disableDefaultUI: true,
@@ -72,7 +72,7 @@ export class MyMap {
         // Client icon set
         this.clientMarker = new AdvancedMarkerElement({
             map: this.map,
-            position: center,
+            position: this.center,
             content: $(
                 '<img src="\\public\\assets\\icons\\ClientLocation.svg" alt="client" width="30" height="30">'
             )[0],
