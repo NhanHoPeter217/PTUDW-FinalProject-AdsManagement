@@ -4,7 +4,7 @@
 }
 
 .navbar-brand {
-    color: #0066FF; /* Color for the brand text */
+    color: #0066ff; /* Color for the brand text */
     font-weight: bold; /* Set the font weight */
 }
 
@@ -15,7 +15,7 @@
 }
 
 .nav-link:hover {
-    color: #0066FF; /* Change color on hover */
+    color: #0066ff; /* Change color on hover */
 }
 
 #username-container {

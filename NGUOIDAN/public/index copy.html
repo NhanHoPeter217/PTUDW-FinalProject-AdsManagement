@@ -1,0 +1,72 @@
+<div class="ad-board card default-background primary-text" data-adsPoint="id_${adsBoard.adsPoint}" style="width: 20rem; padding: 17px; gap: 40px; min-width: 350px;">
+    <div class="d-flex align-items-start">
+        <div class="card-body ps-2" style="padding: 0;">
+            <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">${adsBoard.adsBoardType}</h5>
+            <p class="card-text">
+                <span class="label">Kích thước:</span>
+                <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${adsBoard.size.width}m x ${adsBoard.size.height}m</span>
+            </p>
+            <p class="card-text">
+                <span class="label">Số lượng:</span>
+                <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${adsBoard.quantity} trụ / bảng</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Button to trigger the modal -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none" data-bs-toggle="modal" data-bs-target="#adboard-detail-modal-${adsBoard._id}">
+            <path d="M14.25 8.75H16.75V11.25H14.25V8.75ZM14.25 13.75H16.75V21.25H14.25V13.75ZM15.5 2.5C8.6 2.5 3 8.1 3 15C3 21.9 8.6 27.5 15.5 27.5C22.4 27.5 28 21.9 28 15C28 8.1 22.4 2.5 15.5 2.5ZM15.5 25C9.9875 25 5.5 20.5125 5.5 15C5.5 9.4875 9.9875 5 15.5 5C21.0125 5 25.5 9.4875 25.5 15C25.5 20.5125 21.0125 25 15.5 25Z" fill="#1C89D0"/>
+        </svg>
+        <button type="button" class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation" onclick="reportButtonHandler(event)" data-relatedToType="AdsBoard" data-relatedTo="${adsBoard._id}" data-ward="${adPoint.location.ward}" data-district="${adPoint.location.district}">
+            <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+            <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">Báo cáo</span>
+        </button>
+    </div>
+
+    <!-- Carousel -->
+    <div class="modal fade" id="adboard-detail-modal-${adsBoard._id}" aria-labelledby="adboard-detail-modal-label-${adsBoard._id}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="adboard-detail-modal-label-${adsBoard._id}">Chi tiết bảng quảng cáo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-primary">Ngày kết thúc hợp đồng</h5>
+                    <p class="mb-4">${adsBoard.contractEndDate}</p>
+                    <h5 class="text-primary">Hình ảnh</h5>
+
+                    <!-- Carousel Wrapper -->
+                    <div id="adsBoardCarousel_${adsBoard._id}" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+                        <!-- Indicators -->
+                        <div class="carousel-indicators">
+                            <button type="button" data-mdb-target="#adsBoardCarousel_${adsBoard._id}" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-mdb-target="#adsBoardCarousel_${adsBoard._id}" data-mdb-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-mdb-target="#adsBoardCarousel_${adsBoard._id}" data-mdb-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+
+                        <!-- Inner -->
+                        <div class="carousel-inner">
+                            <!-- Single item -->
+                            <div class="carousel-item active">
+                                <img src="${adsBoard.adsBoardImages?.[0] || '/public/images/IMG_7850.png'}" class="d-block w-100" alt="AdsBoard Image">
+                            </div>
+                        </div>
+                        <!-- Inner -->
+
+                        <!-- Controls -->
+                        <button class="carousel-control-prev" type="button" data-mdb-target="#adsBoardCarousel_${adsBoard._id}" data-mdb-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-mdb-target="#adsBoardCarousel_${adsBoard._id}" data-mdb-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

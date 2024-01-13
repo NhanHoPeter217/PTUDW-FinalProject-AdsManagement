@@ -5,7 +5,12 @@ const fillPlaceholder = (elementId, value) => {
     }
 };
 
-const fetchUserInfo = async (fullNameId = null, dobId = null, emailId = null, phoneNumberId = null) => {
+const fetchUserInfo = async (
+    fullNameId = null,
+    dobId = null,
+    emailId = null,
+    phoneNumberId = null
+) => {
     try {
         const response = await fetch('/api/v1/user', {
             method: 'GET',
@@ -29,4 +34,3 @@ const fetchUserInfo = async (fullNameId = null, dobId = null, emailId = null, ph
         console.error('Lỗi:', error.message);
     }
 };
-

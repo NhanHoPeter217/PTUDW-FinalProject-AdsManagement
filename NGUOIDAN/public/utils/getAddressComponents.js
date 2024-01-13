@@ -17,11 +17,7 @@ function getWardFromAddress(addressString) {
                 break;
             }
         }
-        if (wardInfo === '') {
-            console.log('[Regex] Fail to find ward in ', addressString);
-        }
     }
-
     return wardInfo;
 }
 
@@ -39,10 +35,7 @@ function getDistrictFromAddress(addressString) {
         district = match2[1];
     } else if (match3) {
         district = match3[1];
-    } else {
-        console.log('[Regex] Fail to find district in ', addressString);
     }
-
     return district;
 }
 

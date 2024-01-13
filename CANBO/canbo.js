@@ -11,6 +11,7 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
+const axios = require('axios');
 
 // security and connection
 const morgan = require('morgan');
@@ -161,8 +162,25 @@ app.use(function (req, res, next) {
 });
 
 // Get pages
-app.get('/', (req, res) => {
-    res.render('home', { hideNavbar: false });
+app.get('/', async (req, res) => {
+    async function getAllAdsPoints() {
+        try {
+            var result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
+            let AdsPoints = result.data.adsPoints;
+
+            let AdsBoards = [];
+
+            AdsPoints.forEach((adsPoint) => {
+                AdsBoards.push(...adsPoint.adsBoard);
+            });
+
+            return { AdsPoints, AdsBoards };
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const { AdsPoints, AdsBoards } = await getAllAdsPoints();
+    res.render('home', { AdsPoints, AdsBoards });
 });
 
 app.get('/forgotPassword', function (req, res) {
