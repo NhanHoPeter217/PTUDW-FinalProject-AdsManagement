@@ -76,8 +76,6 @@ const getSingleAdsInfoEditingRequest = async (req, res) => {
         })
             .populate('adsObject')
             .populate('newInfo');
-            .populate('adsObject')
-            .populate('newInfo');
 
         if (!adsInfoEditingRequest) {
             throw new CustomError.NotFoundError(
@@ -196,11 +194,7 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
                 await AdsBoardRequestedEdit.findOne({ _id: newInfo });
 
-            const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
-                await AdsBoardRequestedEdit.findOne({ _id: newInfo });
-
             await AdsBoard.findOneAndUpdate(
-                { _id: adsObject },
                 { _id: adsObject },
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
                 { new: true, runValidators: true }

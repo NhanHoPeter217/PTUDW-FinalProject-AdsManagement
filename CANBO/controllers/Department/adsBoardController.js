@@ -49,20 +49,6 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
                 ]
             })
             .lean();
-            .populate({
-                path: 'adsPoint',
-                populate: [
-                    {
-                        path: 'location',
-                        model: 'Location'
-                    },
-                    {
-                        path: 'adsFormat',
-                        model: 'AdsFormat'
-                    }
-                ]
-            })
-            .lean();
 
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
