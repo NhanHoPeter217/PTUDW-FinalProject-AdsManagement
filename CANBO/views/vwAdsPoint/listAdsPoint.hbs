@@ -1,11 +1,11 @@
 {{#section 'css'}}
-    <link rel="stylesheet" href="../../public/css/report.css" />
-    <link rel="stylesheet" href="../../public/css/adpointInfo.css" />
+    <link rel="stylesheet" href="public/css/report.css" />
+    <link rel="stylesheet" href="public/css/adpointInfo.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 {{/section}}
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src='../../public/js/listAdsPoint.js'></script>
+<script src='public/js/listAdsPoint.js' type="module"></script>
 {{/section}}
 
 <div class="container-fluid mt-4">
@@ -19,12 +19,12 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title fw-semibold" id="tableName">
-                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                            <img src="../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
                             Danh sách các điểm đặt quảng cáo
                         </h5>
                         {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                         <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addAdsPointModal">
-                            <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
+                            <img src="../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
                             Thêm điểm quảng cáo
                         </button>
                         {{/ifCond}}
@@ -78,7 +78,7 @@
                                             </td>
                                             <td class="border-bottom-0 align-middle">
                                             <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/{{_id}}" role="button">
-                                                <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
+                                                <img src="../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
                                             </a>
                                             </td>
                                             {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
@@ -89,7 +89,7 @@
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editAdsPointModal-{{_id}}">
                                                     <div id="buttonStyle">
-                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                        <img src="../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
                                                     </div>
                                                 </button>
                                             </td>
@@ -101,24 +101,26 @@
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#requestEditAdsPointModal-{{_id}}">
                                                     <div id="buttonStyle">
-                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                        <img src="../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
                                                     </div>
                                                 </button>
                                             </td>
                                             {{/ifCond}}
                                         </tr>
                                         <div
-                                            class="modal fade"
+                                            class="modal fade detailAdsPointModal"
                                             id="detailAdsPointModal-{{_id}}"
                                             tabindex="-1"
                                             aria-labelledby="reportModalLabel"
                                             aria-hidden="true"
+                                            data-lat="{{location.coords.lat}}"
+                                            data-lng="{{location.coords.lng}}"
                                             >
                                             <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
                                                 <div class='modal-content'>
                                                     <div class='modal-header'>
                                                         <img
-                                                            src='../../../public/assets/icons/Info_icon.svg'
+                                                            src='../public/assets/icons/Info_icon.svg'
                                                             style='height: 40px; width: 40px;'
                                                         />
                                                         <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
@@ -153,7 +155,8 @@
                                                                 <div class='card border'>
                                                                     <div class='card-body'>
                                                                         <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
-                                                                        <p class='mb-0' id="address">{{location.address}}</p>
+                                                                        <p class='mb-1' id="address">{{location.address}}</p>
+                                                                        <div class="map-view-only"></div>
                                                                     </div>
                                                                 </div>
                                                                 <div class='card border'>
@@ -191,17 +194,19 @@
                                             </div>
                                         </div>
                                         <div
-                                            class='modal fade'
+                                            class='modal fade editAdsPointModal'
                                             id='editAdsPointModal-{{_id}}'
                                             tabindex='-1'
                                             aria-labelledby='reportModalLabel'
                                             aria-hidden='true'
+                                            data-lat="{{location.coords.lat}}"
+                                            data-lng="{{location.coords.lng}}"
                                         >
                                             <div class='modal-dialog'>
                                                 <div class='modal-content'>
                                                     <div class='modal-header'>
                                                         <img
-                                                            src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                            src='../public/assets/icons/Edit_icon_orange.svg'
                                                             style='height: 40px; width: 40px;'
                                                         />
                                                         <h5 class='modal-requestEdit-title' id='reportModalLabel'>
@@ -272,11 +277,12 @@
                                                                     </div>
                                                                 </label>
                                                                 <textarea
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control fullNameReport search-box'
                                                                     id='edit_address-{{_id}}'
                                                                     style="height: 100px;"
                                                                     required
                                                                 >{{location.address}}</textarea>
+                                                                <div class="map-search-box"></div>
                                                             </div>
                                                             <div class='mb-3' id="locationType">
                                                                 <label for='locationType' class='form-label' style='font-family: Inter'>
@@ -390,17 +396,19 @@
                                             </div>
                                         </div>
                                         <div
-                                            class='modal fade'
+                                            class='modal fade requestEditAdsPointModal'
                                             id='requestEditAdsPointModal-{{_id}}'
                                             tabindex='-1'
                                             aria-labelledby='reportModalLabel'
                                             aria-hidden='true'
+                                            data-lat="{{location.coords.lat}}"
+                                            data-lng="{{location.coords.lng}}"
                                         >
                                             <div class='modal-dialog'>
                                                 <div class='modal-content'>
                                                     <div class='modal-header'>
                                                         <img
-                                                            src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                            src='../public/assets/icons/Edit_icon_orange.svg'
                                                             style='height: 40px; width: 40px;'
                                                         />
                                                         <h5 class='modal-requestEdit-title' id='reportModalLabel'>
@@ -471,11 +479,12 @@
                                                                     </div>
                                                                 </label>
                                                                 <textarea
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control fullNameReport search-box mb-1'
                                                                     id='edit_address-{{_id}}'
                                                                     style="height: 100px;"
                                                                     required
                                                                 >{{location.address}}</textarea>
+                                                                <div class="map-search-box"></div>
                                                             </div>
                                                             <div class='mb-3' id="locationType">
                                                                 <label for='locationType' class='form-label' style='font-family: Inter'>

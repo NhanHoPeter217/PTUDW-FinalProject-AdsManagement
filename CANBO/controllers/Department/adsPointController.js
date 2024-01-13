@@ -172,7 +172,7 @@ const getAllAdsPointsByWardListAndDistrict = async (req, res) => {
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
-}
+};
 
 const getAllAdsPointByWardAndDistrict = async (req, res) => {
     const { wardId, distId } = req.params;
