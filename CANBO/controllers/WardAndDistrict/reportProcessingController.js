@@ -1,6 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const ReportProcessing = require('../../models/WardAndDistrict/ReportProcessing');
 const Location = require('../../models/Location');
+const AdsPoint = require('../../models/AdsPoint');
+const AdsBoard = require('../../models/AdsBoard');
 const CustomError = require('../../errors');
 const { handleFileUpload } = require('../../utils/handleFileUpload');
 const sendEmail = require('../../utils/sendEmail');
@@ -93,9 +95,30 @@ const createReport = async (req, res) => {
         }
 
         if (req.body.relatedToType === 'Location') {
-            const location = await Location.create(req.body.relatedTo);
+            let locationData = JSON.parse(req.body.relatedTo);
+            const location = await Location.create(locationData);
             req.body.relatedTo = location._id;
+            req.body.coords = locationData.coords;
+        } else if (req.body.relatedToType === 'AdsPoint') {
+            const adsPoint = await AdsPoint.findById(req.body.relatedTo).populate({
+                path: 'location',
+                model: 'Location'
+            });
+            req.body.coords = adsPoint.location.coords;
+        } else if (req.body.relatedToType === 'AdsBoard') {
+            const adsBoard = await AdsBoard.findById(req.body.relatedTo).populate({
+                path: 'adsPoint',
+                model: 'AdsPoint',
+                populate: {
+                    path: 'location',
+                    model: 'Location',
+                    select: 'coords'
+                }
+            });
+            req.body.coords = adsBoard.adsPoint.location.coords;
         }
+
+        req.body.residentID = req.residentID;
         const reportProcessing = await ReportProcessing.create(req.body);
 
         res.status(StatusCodes.CREATED).json({ reportProcessing });
