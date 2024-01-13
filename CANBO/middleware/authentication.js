@@ -43,7 +43,6 @@ const authenticateResident = async (req, res, next) => {
         if (identifier) {
             console.log('had identifier');
             const payload = isTokenValid(identifier);
-
             const existingIdentifier = await Identifier.findOne({
                 residentID: payload.resident.residentID
             });
@@ -52,14 +51,15 @@ const authenticateResident = async (req, res, next) => {
                 throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
             }
             attachIdentiferToResponse({ res, resident: payload.resident });
-            req.residentID = payload.residentID;
+            console.log('payload', payload.resident.residentID);
+
+            req.residentID = payload.resident.residentID;
             return next();
         } else {
             console.log('did not have identifier');
             const residentID = Date.now().toString() + crypto.randomBytes(40).toString('hex');
             const userAgent = req.headers['user-agent'];
             const ip = req.ip;
-            console.log('ip', ip, '|| userAgent', userAgent, '|| residentID', residentID);
             const residentIdentifier = { residentID, ip, userAgent };
 
             await Identifier.create(residentIdentifier);

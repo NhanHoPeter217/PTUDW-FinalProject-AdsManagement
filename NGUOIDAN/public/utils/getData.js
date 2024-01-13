@@ -221,6 +221,18 @@ async function getAllAdsPoints() {
     }
 }
 
-async function getAllReports() {}
+async function getAllReports() {
+    const result = await axios
+        .get(`http://localhost:4000/report/resident/api/v1`, {
+            withCredentials: true
+        }) // get all reports
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
+
+    console.log(result.data.reports);
+    return result.data.reports;
+}
 
 export { getAllAdsPoints, getAllReports };

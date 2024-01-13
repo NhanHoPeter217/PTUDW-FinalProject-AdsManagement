@@ -1,7 +1,8 @@
-import { MyMap, MarkerManager, MySearchBox, ReportMarkerManager } from 'public/js/MyMap.js';
-import { getAllAdsPoints, getAllReports } from 'public/utils/getData.js';
+import { MyMap, MarkerManager, MySearchBox, ReportMarkerManager } from '/public/js/MyMap.js';
+import { getAllAdsPoints, getAllReports } from '/public/utils/getData.js';
 
 let markerManager = null;
+let reportMarkerManager = null;
 
 async function main() {
     if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -27,6 +28,11 @@ async function main() {
 
         // Init Marker Manager
         markerManager = new MarkerManager(map, adPointElements);
+
+        // Init Report Marker Manager
+        const reportProcessings = await getAllReports();
+        if (reportProcessings)
+            reportMarkerManager = new ReportMarkerManager(map, reportProcessings);
 
         // Init Filter Switch
         $('#filterButton').change(function () {
