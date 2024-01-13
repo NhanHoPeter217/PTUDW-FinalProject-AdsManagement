@@ -3,7 +3,7 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
-var session = require('express-session')
+var session = require('express-session');
 // var Handlebars = require('handlebars');
 
 const app = express();
@@ -29,13 +29,15 @@ var corsOptions = {
     origin: whitelist
 };
 
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}))
+app.set('trust proxy', 1); // trust first proxy
+app.use(
+    session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }
+    })
+);
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
@@ -113,7 +115,6 @@ app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
-
 // FRONT END
 // Setup handlebars view engine
 // sectionHandler(engine);
@@ -141,7 +142,6 @@ app.engine('hbs', engineWithHelpers);
 //     }
 // });
 
-
 // Basic setup
 app.set('view engine', 'hbs');
 app.set('views', './views');
@@ -149,10 +149,10 @@ app.set('title', 'Ads Management');
 
 app.use(function (req, res, next) {
     // console.log(req.session.auth);
-    if (typeof (req.session.auth) === 'undefined') {
-      req.session.auth = false;
+    if (typeof req.session.auth === 'undefined') {
+        req.session.auth = false;
     }
-  
+
     res.locals.auth = req.session.auth;
     res.locals.authUser = req.session.authUser;
     next();

@@ -11,19 +11,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-        $('#username').text(infoUser_data.infoUser.username);
-        if (infoUser_data.infoUser.role === "Sở VH-TT") {
-            document.getElementById('tab_report').style.display = "block";
-            document.getElementById('tab_license').style.display = "block";
-            document.getElementById('tab_request').style.display = "block";
-            document.getElementById('tab_manage').style.display = "block";
-        } else {
-            document.getElementById('tab_report').style.display = "block";
-            document.getElementById('tab_license').style.display = "block";
-            document.getElementById('tab_request').style.display = "block";
-            document.getElementById('tab_ads').style.display = "block";
-        }
-    });
+            $('#username').text(infoUser_data.infoUser.username);
+            if (infoUser_data.infoUser.role === 'Sở VH-TT') {
+                document.getElementById('tab_report').style.display = 'block';
+                document.getElementById('tab_license').style.display = 'block';
+                document.getElementById('tab_request').style.display = 'block';
+                document.getElementById('tab_manage').style.display = 'block';
+            } else {
+                document.getElementById('tab_report').style.display = 'block';
+                document.getElementById('tab_license').style.display = 'block';
+                document.getElementById('tab_request').style.display = 'block';
+                document.getElementById('tab_ads').style.display = 'block';
+            }
+        });
 
     document.getElementById('logoutButton').addEventListener('click', function () {
         fetch('/auth/logout/api/v1', {

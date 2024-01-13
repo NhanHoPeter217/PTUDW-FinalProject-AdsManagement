@@ -263,3 +263,18 @@ p {
 .list-select option {
     text-align: center;
 }
+
+.map-view-only {
+    height: 200px;
+}
+
+.map-search-box {
+    height: 200px;
+}
+
+.modal {
+    z-index: 999;
+}
+.modal-backdrop {
+    z-index: 998;
+}

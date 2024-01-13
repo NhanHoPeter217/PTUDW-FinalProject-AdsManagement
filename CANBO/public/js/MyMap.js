@@ -13,19 +13,48 @@ export class MyMap {
     clientMarker;
     activeInfoMarker;
     places_service;
+    center = { lat: 10.7625216, lng: 106.6823262 }; // default center at HCMUS
 
     constructor(activeInfoMarker) {
         this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
         this.activeInfoMarker = activeInfoMarker;
     }
 
+    initMapViewOnly(Element, coords) {
+        this.map = new Map(Element, {
+            zoom: 16,
+            center: coords || this.center,
+            mapId: '4fde48b8a0296373',
+            disableDoubleClickZoom: true,
+            draggable: false,
+            keyboardShortcuts: false,
+            navigationControl: false,
+            scaleControl: false,
+            scrollwheel: false,
+            streetViewControl: false,
+            disableDefaultUI: true,
+            draggableCursor: 'auto',
+            streetView: false,
+            streetViewCotrol: false,
+            streetViewControlOptions: false,
+            clickableIcons: false
+        });
+
+        // Client icon set
+        this.clientMarker = new AdvancedMarkerElement({
+            map: this.map,
+            position: coords || this.center,
+            zIndex: google.maps.Marker.MAX_ZINDEX
+        });
+    }
+
     async initMap(Element) {
-        const center = await getClientLocation();
+        this.center = await getClientLocation();
 
         this.map = new Map(Element, {
             zoom: 17,
             minZoom: 12,
-            maxZoom: 100,
+            maxZoom: 22,
             center: center,
             mapId: '4fde48b8a0296373',
             keyboardShortcuts: false,
@@ -300,7 +329,7 @@ export class MySearchBox {
         this.activeInfoMarker = activeInfoMarker;
     }
 
-    async initSearchBox() {
+    initSearchBox(bindToMap = true) {
         const options = {
             componentRestrictions: { country: 'vn' },
             fields: ['address_components', 'geometry', 'name', 'formatted_address', 'place_id'],
@@ -310,7 +339,7 @@ export class MySearchBox {
         this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
 
         // Set bounds automatically
-        this.autocomplete.bindTo('bounds', this.map);
+        bindToMap && this.autocomplete.bindTo('bounds', this.map);
 
         // Add event listener
         this.autocomplete.addListener('place_changed', () => {

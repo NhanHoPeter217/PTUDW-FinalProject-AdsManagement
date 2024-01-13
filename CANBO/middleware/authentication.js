@@ -6,7 +6,6 @@ const Identifier = require('../models/Authentication/Identifier');
 const crypto = require('crypto');
 
 const authenticateUser = async (req, res, next) => {
-
     if (req.session.auth === false) {
         req.session.retUrl = req.originalUrl;
         window.location.href = '/auth/login';
