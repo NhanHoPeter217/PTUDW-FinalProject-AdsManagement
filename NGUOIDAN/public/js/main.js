@@ -34,12 +34,19 @@ async function main() {
         if (reportProcessings)
             reportMarkerManager = new ReportMarkerManager(map, reportProcessings);
 
-        // Init Filter Switch
+        // Init Filter Switches
         $('#filterButton').change(function () {
             if ($(this).is(':checked')) {
                 markerManager = new MarkerManager(map, adPointElements);
             } else {
                 markerManager.destroy();
+            }
+        });
+        $('#reportFilterButton').change(function () {
+            if ($(this).is(':checked')) {
+                reportMarkerManager = new ReportMarkerManager(map, reportProcessings);
+            } else {
+                reportMarkerManager.destroy();
             }
         });
 

@@ -1,7 +1,7 @@
 {{#section 'css'}}
     <link href='public/css/utils.maps.css' rel='stylesheet' />
     <link rel='stylesheet' href='public/css/report.css' />
-    <link rel="stylesheet" href="/public/css/adpointInfo.css">
+    <link rel="stylesheet" href="public/css/adpointInfo.css">
     <style>
         .reportExclamation > img {
             transition: filter 0.1s ease-in-out; /* Add a transition effect */
@@ -39,22 +39,22 @@
     class='btn btn-primary'
     type='button'
     data-bs-toggle='offcanvas'
-    data-bs-target='#staticBackdrop'
-    aria-controls='staticBackdrop'
+    data-bs-target='#report-canvas'
+    aria-controls='report-canvas'
 >
     Báo cáo đã gửi
 </button>
 
 <div
     class='offcanvas offcanvas-end'
-    data-bs-backdrop='static'
+    data-bs-backdrop='false'
     data-bs-scroll='true'
     tabindex='-1'
-    id='staticBackdrop'
-    aria-labelledby='staticBackdropLabel'
+    id='report-canvas'
+    aria-labelledby='report-canvasLabel'
 >
     <div class='offcanvas-header'>
-        <h5 class='offcanvas-title' id='staticBackdropLabel'>Các báo cáo đã gửi</h5>
+        <h5 class='offcanvas-title' id='report-canvasLabel'>Các báo cáo đã gửi</h5>
         <button
             type='button'
             class='btn-close'
@@ -62,11 +62,7 @@
             aria-label='Close'
         ></button>
     </div>
-    <div class='offcanvas-body'>
-        <div>
-            Bạn chưa gửi báo cáo cho điểm quảng cáo nào.
-        </div>
-    </div>
+    <div class='offcanvas-body d-flex flex-column row-gap-3' id="report-container"></div>
 </div>
 
 <!-- Filter Board -->

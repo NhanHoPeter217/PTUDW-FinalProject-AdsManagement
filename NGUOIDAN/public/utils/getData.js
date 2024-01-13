@@ -231,8 +231,37 @@ async function getAllReports() {
             return null;
         });
 
-    console.log(result.data.reports);
-    return result.data.reports;
+    const parser = new DOMParser();
+    const reportContainer = document.getElementById('report-container');
+
+    if (!result) {
+        reportContainer.innerHTML = `<p>Không có báo cáo nào</p>`;
+        return null;
+    }
+
+    const reports = result.data.reports;
+
+    for (let report of reports) {
+        const imgSrc = report.image1 != 'undefined' || report.image2 != 'undefined';
+        const content = `
+    <div class="card" style="width: 100%;">
+        ${imgSrc ? `<img src="${imgSrc}" class="card-img-top" alt="Report Image">` : ''}
+        <div class="card-body">
+            <h4 class="card-title text-success">${report.reportFormat.name}</h4>
+            <h6 class="card-subtitle text-secondary">${report.createdAt}</h6>
+            <iframe style="width: 100%; height: 100px; overflow: hidden;" srcdoc="${
+                report.content
+            }" frameborder="0" title="Report Content"></iframe>
+            <p class="card-text">Phường <b>${report.ward}</b> Quận <b>${report.district}</b></p>
+            <p class="card-text text-danger"><em><b>${report.processingStatus}</b></em></p>
+        </div>
+    </div>
+        `;
+        const div = parser.parseFromString(content, 'text/html').body.firstChild;
+        reportContainer.appendChild(div);
+    }
+    console.log(reports);
+    return reports;
 }
 
 export { getAllAdsPoints, getAllReports };
