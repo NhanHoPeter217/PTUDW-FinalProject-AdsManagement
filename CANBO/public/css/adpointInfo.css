@@ -263,3 +263,15 @@ p {
 .list-select option {
     text-align: center;
 }
+
+.map-view-only {
+    height: 200px;
+}
+
+.map-search-box {
+    height: 200px;
+}
+
+.pac-container.pac-logo{
+    z-index: 1056 !important;
+}

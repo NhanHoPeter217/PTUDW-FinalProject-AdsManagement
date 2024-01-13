@@ -13,7 +13,6 @@ getAllReportFormats();
 document.addEventListener('DOMContentLoaded', async function () {
     const submitButton = document.getElementById('submitReportButton');
     submitButton.addEventListener('click', function () {
-        console.log('submit button clicked');
         if (validateForm()) {
             grecaptcha.execute();
         }
@@ -107,20 +106,15 @@ function onSubmit(token) {
     let relatedTo = submitButton.attr('data-relatedTo');
     let ward = submitButton.attr('data-ward');
     let district = submitButton.attr('data-district');
-
     const formData = new FormData();
 
-    if (relatedToType === 'Location') {
-        relatedTo = JSON.parse(relatedTo);
-        Object.keys(relatedTo).forEach((key) => {
-            formData.append(key, relatedTo[key]);
-        });
-    } else {
-        formData.append('relatedTo', relatedTo);
-        if (ward && ward.length > 0) formData.append('ward', ward);
-        formData.append('district', district);
-    }
+    // if (relatedToType === 'Location') {
+    //     relatedTo = JSON.parse(relatedTo);
+    // }
 
+    formData.append('relatedTo', relatedTo);
+    if (ward && ward.length > 0) formData.append('ward', ward);
+    formData.append('district', district);
     formData.append('relatedToType', relatedToType);
     formData.append('reportFormat', reportFormat);
     formData.append('senderName', senderName);
@@ -136,8 +130,9 @@ function onSubmit(token) {
     }
 
     // Gửi dữ liệu đến máy chủ
-    axios('http://localhost:4000/api/v1/reportProcessing', {
+    axios('http://localhost:4000/report/resident/api/v1', {
         method: 'POST',
+        withCredentials: true,
         data: formData
     })
         .then((res) => {
@@ -152,4 +147,8 @@ function onSubmit(token) {
             console.error('Lỗi khi gửi dữ liệu: ', error, error.response.data);
         });
     grecaptcha.reset();
+}
+
+function getReport() {
+    report;
 }

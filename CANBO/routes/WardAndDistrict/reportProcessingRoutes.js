@@ -16,9 +16,9 @@ const {
     authorizePermissions
 } = require('../../middleware/authentication');
 
-router.route('/').post(createReport);
+router.route('/resident/api/v1').post(authenticateResident, createReport);
 
-router.route('/resident').get(authenticateResident, getAllReportsByResident);
+router.route('/resident/api/v1').get(authenticateResident, getAllReportsByResident);
 
 router
     .route('/dist/:distID/ward/:wardID')

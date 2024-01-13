@@ -1,3 +1,6 @@
+import initMapViewOnly from './miniMap_viewonly.js';
+import initMapWithSearchBox from './miniMap_searchBox.js';
+
 document.addEventListener('DOMContentLoaded', function () {
     const inputContractEndDate = $('.license_contractEndDate');
     const inputContractStartDate = $('.license_contractStartDate');
@@ -202,4 +205,12 @@ $(document).ready(function () {
                 console.error('Lỗi khi yêu cầu chỉnh sửa quảng cáo:', error);
             });
     });
+
+    // Init map view only
+    const detailModals = document.getElementsByClassName('detailAdsBoardModal');
+    initMapViewOnly(detailModals);
+
+    // Init map with search box
+    const requestModals = document.getElementsByClassName('requestLicenseAdsBoardModal');
+    initMapWithSearchBox(requestModals);
 });

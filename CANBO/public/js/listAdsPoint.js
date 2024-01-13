@@ -1,3 +1,6 @@
+import initMapViewOnly from '/public/js/miniMap_viewonly.js';
+import initMapWithSearchBox from '/public/js/miniMap_searchBox.js';
+
 function updateCheckbox() {
     // Get all the checkbox elements
     const checkboxes = document.querySelectorAll('.checkbox-input');
@@ -232,4 +235,16 @@ $(document).ready(function () {
 
         // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
     });
+
+    // Init map view only
+    const detailModal = document.getElementsByClassName('detailAdsPointModal');
+    initMapViewOnly(detailModal);
+
+    // Init map with search box
+    const editAdsPointModal = document.getElementsByClassName('editAdsPointModal');
+    initMapWithSearchBox(editAdsPointModal);
+
+    // Init map with search box
+    const requestEditAdsPointModal = document.getElementsByClassName('requestEditAdsPointModal');
+    initMapWithSearchBox(requestEditAdsPointModal);
 });

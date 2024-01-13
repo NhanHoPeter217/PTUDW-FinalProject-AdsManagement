@@ -1,8 +1,6 @@
 import {
     Map,
     AdvancedMarkerElement,
-    SearchBox,
-    InfoWindow,
     getDataFromLatLng,
     getWardFromAddress,
     getDistrictFromAddress
@@ -171,7 +169,7 @@ class InfoMarker extends MyMarker {
         function buildContent() {
             // Create a Location object
             let location = {
-                ...coords,
+                coords,
                 locationName: data.name,
                 address: data.address,
                 ward: data.ward,
@@ -197,6 +195,8 @@ class InfoMarker extends MyMarker {
                     onclick="reportButtonHandler(event)"
                     data-relatedToType="Location"
                     data-relatedTo='${JSON.stringify(location)}'
+                    data-ward="${location.ward}"
+                    data-district="${location.district}"
                     style="width: fit-content;"
                 >
                     <img src='public/assets/icons/Report_icon.svg' fill="none"/>
@@ -215,6 +215,41 @@ class InfoMarker extends MyMarker {
     close() {
         this.infoWindow.close();
         this.marker.setMap(null);
+    }
+}
+
+class ReportMarker extends MyMarker {
+    reportProcessing;
+    map;
+    constructor(myMap, coords, reportProcessing) {
+        const originalMarker = new AdvancedMarkerElement({
+            map: myMap.map,
+            position: new google.maps.LatLng(coords.lat, coords.lng),
+            content: $(
+                `<img src="public/assets/icons/triangle-danger-f.svg" alt="reportMarker">`
+            )[0],
+            zIndex: google.maps.Marker.MAX_ZINDEX + 2
+        });
+        super(originalMarker, myMap.map);
+    }
+}
+
+export class ReportMarkerManager {
+    reportMarkers = [];
+    constructor(myMap, reportProcessings) {
+        const bsOffcanvas = new bootstrap.Offcanvas('#report-canvas');
+
+        reportProcessings.forEach((reportProcessing) => {
+            const coords = reportProcessing.coords;
+            const reportMarker = new ReportMarker(myMap, coords, reportProcessing);
+            reportMarker.marker.addListener('click', () => bsOffcanvas.toggle());
+            this.reportMarkers.push(reportMarker);
+        });
+    }
+    destroy() {
+        this.reportMarkers.forEach((reportMarker) => {
+            reportMarker.hide();
+        });
     }
 }
 

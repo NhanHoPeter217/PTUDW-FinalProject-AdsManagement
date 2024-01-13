@@ -1,8 +1,9 @@
 const CustomError = require('../errors');
 const { isTokenValid } = require('../utils');
 const Token = require('../models/Authentication/Token');
-const { attachCookiesToResponse } = require('../utils');
+const { attachCookiesToResponse, attachIdentiferToResponse } = require('../utils');
 const Identifier = require('../models/Authentication/Identifier');
+const crypto = require('crypto');
 
 const authenticateUser = async (req, res, next) => {
     if (req.session.auth === false) {
@@ -47,7 +48,6 @@ const authenticateResident = async (req, res, next) => {
         if (identifier) {
             console.log('had identifier');
             const payload = isTokenValid(identifier);
-
             const existingIdentifier = await Identifier.findOne({
                 residentID: payload.resident.residentID
             });
@@ -56,7 +56,9 @@ const authenticateResident = async (req, res, next) => {
                 throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
             }
             attachIdentiferToResponse({ res, resident: payload.resident });
-            req.residentID = payload.residentID;
+            console.log('payload', payload.resident.residentID);
+
+            req.residentID = payload.resident.residentID;
             return next();
         } else {
             console.log('did not have identifier');
@@ -65,12 +67,13 @@ const authenticateResident = async (req, res, next) => {
             const ip = req.ip;
             const residentIdentifier = { residentID, ip, userAgent };
 
-            await Identifier.create({ residentIdentifier });
+            await Identifier.create(residentIdentifier);
             attachIdentiferToResponse({ res, resident: residentIdentifier });
             req.residentID = residentID;
             return next();
         }
     } catch (error) {
+        console.log(error);
         throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
     }
 };
