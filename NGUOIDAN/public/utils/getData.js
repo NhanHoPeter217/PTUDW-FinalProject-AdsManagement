@@ -1,22 +1,12 @@
-async function getAllLocations() {
-    const resLocation = await axios.get(`http://localhost:4000/api/v1/location/allLocations`);
-    let locations = resLocation.data.locations;
+async function getAllAdsPoints() {
+    const resLocation = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
+    let adsPoints = resLocation.data.adsPoints;
 
-    const formats = await axios.get(`http://localhost:4000/api/v1/adsFormat`);
-    const formatList = formats.data.adsFormats;
-
-    locations = locations
-        .filter((location) => location.adsPoint)
-        .map((location) => {
-            const format = formatList.find((format) => format._id === location.adsPoint.adsFormat);
-            return { ...location, adsPoint: { ...location.adsPoint, adsFormat: format.name } };
-        });
-    return { locations };
+    let adsBoards = [];
+    adsPoints.forEach((adsPoint) => {
+        adsBoards.push(...adsPoint.adsBoard);
+    });
+    return { adsPoints, adsBoards };
 }
 
-async function getSingleAdsPoint(id) {
-    const adsPoint = await axios.get(`http://localhost:4000/api/v1/adsPoint/${id}`);
-    return adsPoint;
-}
-
-export { getAllLocations, getSingleAdsPoint };
+export default getAllAdsPoints;

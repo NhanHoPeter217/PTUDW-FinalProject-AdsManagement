@@ -1,0 +1,51 @@
+.navbar {
+    background-color: #f8f9fa; /* Background color for the navbar */
+    border-bottom: 1px solid #ddd; /* Add a bottom border */
+}
+
+.navbar-brand {
+    color: #0066ff; /* Color for the brand text */
+    font-weight: bold; /* Set the font weight */
+}
+
+.nav-link {
+    color: #333; /* Color for the navigation links */
+    font-weight: bold; /* Set the font weight */
+    transition: color 0.3s ease-in-out; /* Add transition for smoother color change */
+}
+
+.nav-link:hover {
+    color: #0066ff; /* Change color on hover */
+}
+
+#username-container {
+    padding: 8px 12px; /* Adjust padding for separation */
+    border-radius: 8px; /* Add border radius for a button-like appearance */
+    background-color: #f0f0f0; /* Set a background color */
+    transition: background-color 0.3s ease; /* Add a transition effect */
+}
+
+#username-container:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+}
+
+#username {
+    margin-right: 5px; /* Adjust spacing between username and icon */
+}
+
+/* Custom styles for dropdown menu */
+.dropdown-menu {
+    background-color: #333; /* Background color */
+    border: none; /* Remove borders */
+    padding: 0; /* Remove default padding */
+}
+
+.dropdown-item {
+    color: #fff; /* Text color */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.dropdown-item:hover {
+    background-color: #555; /* Change background color on hover */
+    color: #fff; /* Text color on hover */
+}

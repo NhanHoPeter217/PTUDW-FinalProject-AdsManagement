@@ -50,6 +50,7 @@ const getSingleAdsLicenseRequest = async (req, res) => {
     try {
         const { id: adsLicenseRequestId } = req.params;
         const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId });
+        const adsLicenseRequest = await AdsLicenseRequest.findOne({ _id: adsLicenseRequestId });
 
         if (!adsLicenseRequest) {
             throw new CustomError.NotFoundError(
@@ -92,6 +93,7 @@ const getAdsLicenseRequestsByWardAndDistrict = async (req, res) => {
     try {
         const adsLicenseRequests = await AdsLicenseRequest.find({
             'wardAndDistrict.ward': wardID,
+            'wardAndDistrict.district': distID
             'wardAndDistrict.district': distID
         });
 

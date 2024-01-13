@@ -16,26 +16,23 @@
 <div id='root'>
     <div id='left-bar' class='col'>
         <div class='input-group mb-3 flex-nowrap'>
-            <button
-                class='btn btn-outline-secondary default-background'
-                type='button'
-                id='button-addon2'
-            >Tìm</button>
             <input
                 type='text'
                 class='form-control'
-                placeholder='Địa điểm'
-                aria-label='Địa điểm'
+                placeholder='Tìm địa điểm'
+                aria-label='Tìm địa điểm'
                 aria-describedby='button-addon2'
                 id='searchInput'
             />
         </div>
         <h3>Các bảng quảng cáo</h3>
-        <div id="boards-container"></div>
+        <div id="boards-container">
+        </div>
     </div>
     <div id='map'>
     </div>
 </div>
+
 
 <button
     id='report-canvas-button'
@@ -73,9 +70,15 @@
 </div>
 
 <!-- Filter Board -->
-<div class='filterBoard form-check form-switch'>
-    <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
-    <label class='form-check-label' for='filterButton'>Quy hoạch</label>
+<div class="filterBoard shadow-sm">
+    <div class='form-check form-switch'>
+        <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
+        <label class='form-check-label' for='filterButton'>Điểm đặt</label>
+    </div>
+    <div class='form-check form-switch'>
+        <input class='form-check-input' type='checkbox' role='switch' id='reportFilterButton' checked />
+        <label class='form-check-label' for='reportFilterButton'>Báo cáo</label>
+    </div>
 </div>
 
 <!-- Report Modal -->
@@ -204,7 +207,5 @@
     <script src="https://www.google.com/recaptcha/api.js"
         async defer>
     </script>
-
-    {{! Google Maps Functions }}
-    <script src='public/js/utils.maps.js' type='module'></script>
+    <script src="/public/js/main.js" type="module"></script>
 {{/section}}

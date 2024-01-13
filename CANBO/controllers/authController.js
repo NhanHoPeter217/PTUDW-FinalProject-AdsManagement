@@ -85,6 +85,8 @@ const logout = async (req, res) => {
     res.status(StatusCodes.OK).json({
         message: 'Logout successfully'
     });
+
+    window.location.href = '/login';
 };
 
 module.exports = {

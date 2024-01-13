@@ -9,6 +9,7 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
+const axios = require('axios');
 
 // security and connection
 const morgan = require('morgan');
@@ -55,8 +56,8 @@ const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessin
 const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
-const requestRoute = require('./routes/request.route');
-const typeRoute = require('./routes/type.route');
+const requestRouter = require('./routes/request.route');
+const typeRouter = require('./routes/typeRoutes.js');
 const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 // import wardRoute from './routes/ward.route.js';
 // import districtRoute from './routes/district.route.js';
@@ -94,9 +95,10 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/report', reportRouter);
 
 app.use('/adsBoard', adsBoardRouter);
-app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
+app.use('/types', typeRouter);
+app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
@@ -115,8 +117,25 @@ app.set('views', './views');
 app.set('title', 'Ads Management');
 
 // Get pages
-app.get('/', (req, res) => {
-    res.render('home', { hideNavbar: false });
+app.get('/', async (req, res) => {
+    async function getAllAdsPoints() {
+        try {
+            var result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
+            let AdsPoints = result.data.adsPoints;
+
+            let AdsBoards = [];
+
+            AdsPoints.forEach((adsPoint) => {
+                AdsBoards.push(...adsPoint.adsBoard);
+            });
+
+            return { AdsPoints, AdsBoards };
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const { AdsPoints, AdsBoards } = await getAllAdsPoints();
+    res.render('home', { AdsPoints, AdsBoards });
 });
 
 app.get('/forgotPassword', function (req, res) {
@@ -172,7 +191,7 @@ app.get('/ward/:wardId/dist/:distId', function (req, res) {
     res.render('vwReport/listReport', { layout: 'canbo' });
 });
 
-app.use('/admin/request', requestRoute);
+app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

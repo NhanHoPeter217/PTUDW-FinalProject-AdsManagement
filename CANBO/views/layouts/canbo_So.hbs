@@ -47,7 +47,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const togglePassword = document.getElementById('togglePassword');
-                const password = document.getElementById('password');
+                const password = document.getElementById('register_password');
 
                 togglePassword.addEventListener('click', function() {
                     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -57,7 +57,7 @@
                 });
 
                 const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-                const confirmPassword = document.getElementById('confirmPassword');
+                const confirmPassword = document.getElementById('register_confirmPassword');
 
                 toggleConfirmPassword.addEventListener('click', function() {
                     const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -87,21 +87,8 @@
                 overlayPlaceholder: 'Nhập năm',
                 customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
             });
-            const picker2 = datepicker('#edit_contractEndDate', {
-                formatter: (input, date, instance) => {
-                    const options = {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric'
-                    };
-                    const value = date.toLocaleDateString('en-GB', options);
-                    input.value = value; // '25/1/2099'
-                },
-                overlayPlaceholder: 'Nhập năm',
-                customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-            });
+
         </script>
-        
         {{{_sections.js}}}
     </body>
 </html>

@@ -1,0 +1,85 @@
+<script src="../../public/js/commonFunctions.js" defer></script>
+<script src='../../public/js/updateInfoAccount.js' defer></script>
+
+<div
+    class='modal fade'
+    id='updateInfoAccountModal'
+    tabindex='-1'
+    aria-labelledby='reportModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-detail-title'>
+                    Cập nhật tài khoản
+                </h5>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                <form class='updateInfoForm' id='createAccountForm' enctype='multipart/form-data'>
+                    <div class='mb-3'>
+                        <label for='update_fullName' class='form-label' style='font-family: Inter;'>
+                            <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                <div class="nowrap">Họ và tên</div>
+                                <p class='mb-0 softer-text fw-nomral' id="current_fullName"></p>
+                            </div>
+                        </label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='update_fullName'
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='update_DOB' class='form-label' style='font-family: Inter'>Ngày sinh</label>
+                        <input type='text' id='update_DOB' class='form-control' required />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='update_email' class='form-label' style='font-family: Inter'>Email</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='update_email'
+                            required
+                        />
+                    </div>
+                    <div class='mb-3'>
+                        <label for='update_phoneNumber' class='form-label' style='font-family: Inter'>Số điện thoại</label>
+                        <input
+                            type='text'
+                            class='form-control fullNameReport'
+                            id='update_phoneNumber'
+                            required
+                        />
+                    </div>
+                    <div class='button-container justify-content-center'>
+                        <div
+                            id='recaptcha'
+                            class='g-recaptcha'
+                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                            data-callback='onSubmit'
+                            data-size='invisible'
+                        ></div>
+                        <div class='d-grid gap-2 col-3 mx-auto'>
+                            <button
+                                id='createAccountButton'
+                                type='submit'
+                                class='btn btn-primary'
+                                style='font-family: Inter'
+                            >
+                                CẬP NHẬT
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
