@@ -205,7 +205,6 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             const newLocation = await Location.findOne({ _id: newAdsObject.location });
             const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });
 
-
             newAdsObject.locationImages = newInformation.locationImages;
             newAdsObject.planningStatus = newInformation.planningStatus;
             newAdsObject.locationType = newInformation.locationType;

@@ -54,6 +54,11 @@ const ReportProcessingSchema = new Schema(
 
         processingMethod: { type: String },
 
+        coords: {
+            lat: { type: Number, required: true },
+            lng: { type: Number, required: true }
+        },
+
         ward: {
             type: 'String'
         },

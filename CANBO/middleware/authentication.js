@@ -1,8 +1,9 @@
 const CustomError = require('../errors');
 const { isTokenValid } = require('../utils');
 const Token = require('../models/Authentication/Token');
-const { attachCookiesToResponse } = require('../utils');
+const { attachCookiesToResponse, attachIdentiferToResponse } = require('../utils');
 const Identifier = require('../models/Authentication/Identifier');
+const crypto = require('crypto');
 
 const authenticateUser = async (req, res, next) => {
     const { refreshToken, accessToken } = req.signedCookies;
@@ -58,14 +59,16 @@ const authenticateResident = async (req, res, next) => {
             const residentID = Date.now().toString() + crypto.randomBytes(40).toString('hex');
             const userAgent = req.headers['user-agent'];
             const ip = req.ip;
+            console.log('ip', ip, '|| userAgent', userAgent, '|| residentID', residentID);
             const residentIdentifier = { residentID, ip, userAgent };
 
-            await Identifier.create({ residentIdentifier });
+            await Identifier.create(residentIdentifier);
             attachIdentiferToResponse({ res, resident: residentIdentifier });
             req.residentID = residentID;
             return next();
         }
     } catch (error) {
+        console.log(error);
         throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
     }
 };
