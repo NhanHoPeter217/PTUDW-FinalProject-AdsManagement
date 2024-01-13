@@ -250,5 +250,6 @@ $(document).ready(function () {
 
     // Init map with search box
     const createAdsPointModal = document.getElementsByClassName('addAdsPointModal');
+    console.log(createAdsPointModal);
     initMapWithSearchBox(createAdsPointModal);
 });
