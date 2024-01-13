@@ -1,8 +1,6 @@
 import {
     Map,
     AdvancedMarkerElement,
-    SearchBox,
-    InfoWindow,
     getDataFromLatLng,
     getWardFromAddress,
     getDistrictFromAddress
@@ -215,7 +213,7 @@ export class MarkerManager {
         this.map = myMap.map;
 
         // Set list markers
-        this.adPoints = Array.from(adPoints);
+        this.adPoints = adPoints;
 
         // Init markers
         for (const adPoint of this.adPoints) {

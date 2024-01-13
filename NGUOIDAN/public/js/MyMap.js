@@ -1,8 +1,6 @@
 import {
     Map,
     AdvancedMarkerElement,
-    SearchBox,
-    InfoWindow,
     getDataFromLatLng,
     getWardFromAddress,
     getDistrictFromAddress
