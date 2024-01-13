@@ -30,13 +30,27 @@ const getAllAdsPoints = async (req, res) => {
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
-        res.render('vwAdsPoint/listAdsPoint', {
-            layout: 'canbo_So',
-            adsPoints: adsPoints,
-            empty: adsPoints.length === 0,
-            adsFormats: adsFormats,
-            districts: districts
-        });
+        const role = req.session.authUser.role;
+        console.log(role);
+
+        if (role === 'Sở VH-TT') {
+            res.render('vwAdsPoint/listAdsPoint', {
+                layout: 'canbo_So',
+                adsPoints: adsPoints,
+                empty: adsPoints.length === 0,
+                adsFormats: adsFormats,
+                districts: districts,
+                authUser: req.session.authUser
+            });
+        } else {
+            res.render('vwAdsPoint/listAdsPoint', {
+                adsPoints: adsPoints,
+                empty: adsPoints.length === 0,
+                adsFormats: adsFormats,
+                districts: districts,
+                authUser: req.session.authUser
+            });
+        }
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -137,6 +151,29 @@ const getAllAdsPointsByWardList = async (req, res) => {
     }
 };
 
+const getAllAdsPointsByWardListAndDistrict = async (req, res) => {
+    const district = req.body.district;
+    const wardList = req.body.wardList;
+    try {
+        const locationsID = await Location.find({
+            district,
+            ward: { $in: wardList }
+        }).select('_id');
+        const adsPoints = await AdsPoint.find({ location: locationsID })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+}
+
 const getAllAdsPointByWardAndDistrict = async (req, res) => {
     const { wardId, distId } = req.params;
     try {
@@ -219,6 +256,7 @@ module.exports = {
     getAllAdsPoints,
     getAllAdsPointsAPI,
     getAllAdsPointsByAssignedArea,
+    getAllAdsPointsByWardListAndDistrict,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,
     getSingleAdsPoint,

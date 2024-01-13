@@ -43,6 +43,11 @@ const login = async (req, res) => {
     }
     const tokenUser = createTokenUser(user);
 
+    user.password = undefined; // delete password from user object
+
+    req.session.auth = true;
+    req.session.authUser = user;
+
     // create refresh token
     let refreshToken = '';
     // check for existing token
@@ -72,6 +77,8 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+    req.session.auth = false;
+    req.session.authUser = undefined;
     await Token.findOneAndDelete({ user: req.user.userId });
 
     res.cookie('accessToken', 'logout', {

@@ -40,9 +40,16 @@
 
 {{#section 'js'}}
 <script src='../../public/js/listType.js'></script>
+<script>
+    $('#add-new-test').click(function (event) {
+        $.get('/types/list').then(function (data) {
+            $('#main').html(data);
+        });
+    });
+</script>
 {{/section}}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4" id="main">
     <div class="row">
         <div class="col-md-11 pb-4">
             <h5 class="card-title fw-bold mb-4">Quản lý phân loại</h5>

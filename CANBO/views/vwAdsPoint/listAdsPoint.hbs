@@ -10,34 +10,26 @@
 
 <div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-md-9">
+        {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
+            <div class="col-md-1"></div>
+        {{/ifCond}}
+        <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-md-8{{else}}col-md-9{{/ifCond}}">
             <h5 class="card-title fw-bold mb-4">Quản lý quảng cáo</h5>
             <div class="card w-100 mb-4">
                 <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title fw-semibold" id="tableName">
-                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
-                        Danh sách các điểm đặt quảng cáo
-                    </h5>
-                </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
-                    <colgroup>
-                        <col style="width: 5%">
-                        <col style="width: 50%">
-                        <col style="width: 19%">
-                        <col style="width: 21%">
-                    </colgroup>
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Điểm quảng cáo</th>
-                            <th scope="col">Bảng quảng cáo</th>
-                            <th scope="col">Hành động</th>
-                        </tr>
-                    </thead>
-                </table>
-                <div class="table-body-container" style="height: 57vh; overflow-y: auto;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title fw-semibold" id="tableName">
+                            <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                            Danh sách các điểm đặt quảng cáo
+                        </h5>
+                        {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                        <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addAdsPointModal">
+                            <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
+                            Thêm điểm quảng cáo
+                        </button>
+                        {{/ifCond}}
+                    </div>
+                <div class="table-responsive">
                     <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                         <colgroup>
                             <col style="width: 5%">
@@ -45,323 +37,571 @@
                             <col style="width: 19%">
                             <col style="width: 21%">
                         </colgroup>
-                        <tbody id="body">
-                            {{#if this.empty}}
-                                <tr>
-                                    <td colspan="7" class="text-center text-primary fw-bold">Danh sách trống</td>
-                                </tr>
-                            {{else}}
-                                {{#each this.adsPoints as |adsPoint index|}}
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Điểm quảng cáo</th>
+                                <th scope="col">Bảng quảng cáo</th>
+                                {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                                    <th scope="col">Thao tác</th>
+                                {{/ifCond}}
+                                {{#ifCond authUser.role '===' 'Quận'}}
+                                    <th scope="col">Yêu cầu chỉnh sửa</th>
+                                {{/ifCond}}
+                                {{#ifCond authUser.role '===' 'Phường'}}
+                                    <th scope="col">Yêu cầu chỉnh sửa</th>
+                                {{/ifCond}}
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="table-body-container" style="height: 57vh; overflow-y: auto;">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 50%">
+                                <col style="width: 19%">
+                                <col style="width: 21%">
+                            </colgroup>
+                            <tbody id="body">
+                                {{#if this.empty}}
                                     <tr>
-                                        <td class="align-middle">{{create_order @index}}</td>
-                                        <td class="align-middle">
-                                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{_id}}">
-                                                {{location.locationName}}
-                                            </button>
-                                        </td>
-                                        <td class="border-bottom-0 align-middle">
-                                        <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/{{_id}}" role="button">
-                                            <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
-                                        </a>
-                                        </td>
-                                        <td class="border-bottom-0 align-middle">
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-warning m-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#requestEditAdsPointModal-{{_id}}">
-                                                <div id="buttonStyle">
-                                                    <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                    Yêu cầu chỉnh sửa
-                                                </div>
-                                            </button>
-                                        </td>
+                                        <td colspan="7" class="text-center text-primary fw-bold">Danh sách trống</td>
                                     </tr>
-                                    <div
-                                        class="modal fade"
-                                        id="detailAdsPointModal-{{_id}}"
-                                        tabindex="-1"
-                                        aria-labelledby="reportModalLabel"
-                                        aria-hidden="true"
-                                        >
-                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
-                                            <div class='modal-content'>
-                                                <div class='modal-header'>
-                                                    <img
-                                                        src='../../../public/assets/icons/Info_icon.svg'
-                                                        style='height: 40px; width: 40px;'
-                                                    />
-                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
-                                                    <button
-                                                        type='button'
-                                                        class='btn-close'
-                                                        data-bs-dismiss='modal'
-                                                        aria-label='Close'
-                                                    ></button>
-                                                </div>
-                                                <div class='modal-detail-body'>
-                                                    <form id='detailAdsPointForm' enctype='multipart/form-data'>
-                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Điểm quảng cáo:</h5>
-                                                                    <p class='mb-0 text-primary fw-semibold' id="locationName">{{location.locationName}}</p>
+                                {{else}}
+                                    {{#each this.adsPoints as |adsPoint index|}}
+                                        <tr>
+                                            <td class="align-middle">{{create_order @index}}</td>
+                                            <td class="align-middle">
+                                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-{{_id}}">
+                                                    {{location.locationName}}
+                                                </button>
+                                            </td>
+                                            <td class="border-bottom-0 align-middle">
+                                            <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/{{_id}}" role="button">
+                                                <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
+                                            </a>
+                                            </td>
+                                            {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
+                                            <td class="border-bottom-0 align-middle">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-warning m-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editAdsPointModal-{{_id}}">
+                                                    <div id="buttonStyle">
+                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                    </div>
+                                                </button>
+                                            </td>
+                                            {{else}}
+                                            <td class="border-bottom-0 align-middle">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-warning m-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#requestEditAdsPointModal-{{_id}}">
+                                                    <div id="buttonStyle">
+                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                    </div>
+                                                </button>
+                                            </td>
+                                            {{/ifCond}}
+                                        </tr>
+                                        <div
+                                            class="modal fade"
+                                            id="detailAdsPointModal-{{_id}}"
+                                            tabindex="-1"
+                                            aria-labelledby="reportModalLabel"
+                                            aria-hidden="true"
+                                            >
+                                            <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                                <div class='modal-content'>
+                                                    <div class='modal-header'>
+                                                        <img
+                                                            src='../../../public/assets/icons/Info_icon.svg'
+                                                            style='height: 40px; width: 40px;'
+                                                        />
+                                                        <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                                        <button
+                                                            type='button'
+                                                            class='btn-close'
+                                                            data-bs-dismiss='modal'
+                                                            aria-label='Close'
+                                                        ></button>
+                                                    </div>
+                                                    <div class='modal-detail-body'>
+                                                        <form id='detailAdsPointForm' enctype='multipart/form-data'>
+                                                            <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Điểm quảng cáo:</h5>
+                                                                        <p class='mb-0 text-primary fw-semibold' id="locationName">{{location.locationName}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-3'>Quận:</h5>
+                                                                        <p class='mb-0' id="district">{{location.district}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-3'>Phường:</h5>
+                                                                        <p class='mb-0' id="ward">{{location.ward}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                        <p class='mb-0' id="address">{{location.address}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Loại vị trí</h5>
+                                                                        <p class='mb-0' id="locationType">{{locationType}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Hình thức quảng cáo</h5>
+                                                                        <p class='mb-0' id="adsFormat">{{adsFormat.name}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
+                                                                        {{#ifCond planningStatus "===" "Đã quy hoạch"}}
+                                                                        <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                                                                        {{else}}
+                                                                        <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
+                                                                        {{/ifCond}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
+                                                                        <p class='mb-0' id="locationImages">{{locationImages}}</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-3'>Quận:</h5>
-                                                                    <p class='mb-0' id="district">{{location.district}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-3'>Phường:</h5>
-                                                                    <p class='mb-0' id="ward">{{location.ward}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
-                                                                    <p class='mb-0' id="address">{{location.address}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Loại vị trí</h5>
-                                                                    <p class='mb-0' id="locationType">{{locationType}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Hình thức quảng cáo</h5>
-                                                                    <p class='mb-0' id="adsFormat">{{adsFormat.name}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
-                                                                    {{#ifCond planningStatus "===" "Đã quy hoạch"}}
-                                                                    <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
-                                                                    {{else}}
-                                                                    <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
-                                                                    {{/ifCond}}
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
-                                                                    <p class='mb-0' id="locationImages">{{locationImages}}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div
-                                        class='modal fade'
-                                        id='requestEditAdsPointModal-{{_id}}'
-                                        tabindex='-1'
-                                        aria-labelledby='reportModalLabel'
-                                        aria-hidden='true'
-                                    >
-                                        <div class='modal-dialog'>
-                                            <div class='modal-content'>
-                                                <div class='modal-header'>
-                                                    <img
-                                                        src='../../../public/assets/icons/Edit_icon_orange.svg'
-                                                        style='height: 40px; width: 40px;'
-                                                    />
-                                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                                        Chỉnh sửa thông tin
-                                                    </h5>
-                                                    <button
-                                                        type='button'
-                                                        class='btn-close'
-                                                        data-bs-dismiss='modal'
-                                                        aria-label='Close'
-                                                    ></button>
-                                                </div>
-                                                <div class='modal-body'>
-                                                    <form method="POST" id='requestEditAdsPointForm' enctype='multipart/form-data'>
-                                                        <div class='mb-3' id='locationName'>
-                                                            <label for='locationName' class='form-label' style='font-family: Inter;'>
-                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                    <div class="nowrap">Điểm quảng cáo</div>
-                                                                    <p class='mb-0 softer-text fw-nomral'>({{location.locationName}})</p>    
-                                                                </div>
-                                                            </label>
-                                                            <input
-                                                                type='text'
-                                                                class='form-control fullNameReport'
-                                                                id='edit_locationName'
-                                                                required
-                                                            />
-                                                        </div>
-                                                        <div class="d-flex flex-row column-gap-3">
-                                                            <div class='mb-3' id='district'>
-                                                                <label for='district' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Quận</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{location.district}})</p>
+                                        <div
+                                            class='modal fade'
+                                            id='editAdsPointModal-{{_id}}'
+                                            tabindex='-1'
+                                            aria-labelledby='reportModalLabel'
+                                            aria-hidden='true'
+                                        >
+                                            <div class='modal-dialog'>
+                                                <div class='modal-content'>
+                                                    <div class='modal-header'>
+                                                        <img
+                                                            src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                            style='height: 40px; width: 40px;'
+                                                        />
+                                                        <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                            Chỉnh sửa thông tin
+                                                        </h5>
+                                                        <button
+                                                            type='button'
+                                                            class='btn-close'
+                                                            data-bs-dismiss='modal'
+                                                            aria-label='Close'
+                                                        ></button>
+                                                    </div>
+                                                    <div class='modal-body'>
+                                                        <form id='requestEditAdsPointForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                            <input type="hidden" id="lat-{{_id}}" name="lat" value="{{location.coords.lat}}">
+                                                            <input type="hidden" id="lng-{{_id}}" name="lng" value="{{location.coords.lng}}">
+                                                            <div class='mb-3' id='locationName'>
+                                                                <label for='locationName' class='form-label' style='font-family: Inter;'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Điểm quảng cáo</div> 
                                                                     </div>
                                                                 </label>
-                                                                <select class='form-select districtType' id='edit_district' required>
+                                                                <input
+                                                                    type='text'
+                                                                    class='form-control fullNameReport'
+                                                                    id='edit_locationName-{{_id}}'
+                                                                    value="{{location.locationName}}"
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div class="d-flex flex-row column-gap-3">
+                                                                <div class='mb-3' id='district'>
+                                                                    <label for='district' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Quận</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select districtType' id='edit_district-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                                -- Chọn Quận --
+                                                                        </option>
+                                                                        {{#each ../districts}}
+                                                                             <option value={{districtName}} {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                                                        {{/each}}
+                                                                    </select>
+                                                                </div>
+                                                                <div class='mb-3' id='ward'>
+                                                                    <label for='ward' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Phường</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select wardType' id='edit_ward-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                                -- Chọn Phường --
+                                                                        </option>
+                                                                        <option value={{location.ward}} selected>{{location.ward}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class='mb-3' id="address">
+                                                                <label for='address' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                        <div class="nowrap">Địa chỉ chi tiết</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>    
+                                                                    </div>
+                                                                </label>
+                                                                <textarea
+                                                                    class='form-control fullNameReport'
+                                                                    id='edit_address-{{_id}}'
+                                                                    style="height: 100px;"
+                                                                    required
+                                                                >{{location.address}}</textarea>
+                                                            </div>
+                                                            <div class='mb-3' id="locationType">
+                                                                <label for='locationType' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Loại vị trí</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'>({{locationType}})</p>    
+                                                                    </div>
+                                                                </label>
+    <select class='form-select reportType' id='edit_locationType-{{_id}}' required>
+        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                -- Chọn loại vị trí --
+        </option>
+        <option
+            value='Đất công/Công viên/Hành lang an toàn giao thông'
+        >
+            Đất công/Công viên/Hành lang an toàn giao thông
+        </option>
+        <option value='Đất tư nhân/Nhà ở riêng lẻ'>
+            Đất tư nhân/Nhà ở riêng lẻ
+        </option>
+        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+        <option value='Chợ'>Chợ</option>
+        <option value='Cây xăng'>Cây xăng</option>
+        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+    </select>
+                                                            </div>
+                                                            <div class='mb-3' id="adsFormat">
+                                                                <label for="adsFormat" class="form-label" style="font-family: Inter">
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Hình thức quảng cáo</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'>({{adsFormat.name}})</p>    
+                                                                    </div>
+                                                                </label>
+                                                                <select class='form-select reportType' id='edit_adsFormat-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                            -- Chọn Quận --
+                                                                            -- Chọn hình thức quảng cáo --
                                                                     </option>
-                                                                    {{#each ../districts}}
-                                                                        <option value="{{districtName}}">{{districtName}}</option>
+                                                                    {{#each ../adsFormats}}
+                                                                        <option value=`{{name}}`>{{name}}</option>
                                                                     {{/each}}
                                                                 </select>
                                                             </div>
-                                                            <div class='mb-3' id='ward'>
-                                                                <label for='ward' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Phường</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{location.ward}})</p>
+                                                            <div class='mb-3' id="planningStatus">
+                                                                <label for='planningStatus' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1 nowrap'>
+                                                                        <div>Trạng thái địa điểm</div>
+                                                                        {{#ifCond planningStatus "===" "Đã quy hoạch"}}
+                                                                        <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                                                                        {{else}}
+                                                                        <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
+                                                                        {{/ifCond}}
                                                                     </div>
                                                                 </label>
-                                                                <select class='form-select wardType' id='edit_ward' required>
+                                                                <select class='form-select reportType' id='edit_planningStatus-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                            -- Chọn Phường --
+                                                                            -- Chọn trạng thái --
                                                                     </option>
+                                                                    <option value='Đã quy hoạch'>Đã quy hoạch</option>
+                                                                    <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
                                                                 </select>
                                                             </div>
-                                                        </div>
-                                                        <div class='mb-3' id="address">
-                                                            <label for='address' class='form-label' style='font-family: Inter'>
-                                                                <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                    <div class="nowrap">Địa chỉ chi tiết</div>
-                                                                    <p class='mb-0 softer-text fw-nomral'>({{location.address}})</p>    
+                                                            <div class='mb-3' id="locationImages">
+                                                                <label for='locationImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                                                                <div class='card border mb-3'>
+                                                                    <div class='card-body'>
+                                                                        <p class='mb-0' id="edit_locationImage_1-{{_id}}">image_url_1.jpg</p>
+                                                                        <p class='mb-0' id="edit_locationImage_2-{{_id}}">image_url_2.jpg</p>
+                                                                    </div>
                                                                 </div>
-                                                            </label>
-                                                            <textarea
-                                                                class='form-control fullNameReport'
-                                                                id='edit_address'
-                                                                style="height: 100px;"
-                                                                required
-                                                            ></textarea>
-                                                        </div>
-                                                        <div class='mb-3' id="locationType">
-                                                            <label for='locationType' class='form-label' style='font-family: Inter'>
-                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                    <div class="nowrap">Loại vị trí</div>
-                                                                    <p class='mb-0 softer-text fw-nomral'>({{locationType}})</p>    
-                                                                </div>
-                                                            </label>
-<select class='form-select reportType' id='edit_locationType' required>
-    <option class='mb-0 softer-text fw-nomral' selected disabled>
-            -- Chọn loại vị trí --
-    </option>
-    <option
-        value='Đất công/Công viên/Hành lang an toàn giao thông'
-    >
-        Đất công/Công viên/Hành lang an toàn giao thông
-    </option>
-    <option value='Đất tư nhân/Nhà ở riêng lẻ'>
-        Đất tư nhân/Nhà ở riêng lẻ
-    </option>
-    <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
-    <option value='Chợ'>Chợ</option>
-    <option value='Cây xăng'>Cây xăng</option>
-    <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
-</select>
-                                                        </div>
-                                                        <div class='mb-3' id="adsFormat">
-                                                            <label for="adsFormat" class="form-label" style="font-family: Inter">
-                                                                <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                    <div class="nowrap">Hình thức quảng cáo</div>
-                                                                    <p class='mb-0 softer-text fw-nomral'>({{adsFormat.name}})</p>    
-                                                                </div>
-                                                            </label>
-                                                            <select class='form-select reportType' id='edit_adsFormat' required>
-                                                                <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                        -- Chọn hình thức quảng cáo --
-                                                                </option>
-                                                                {{#each ../adsFormats}}
-                                                                    <option value=`{{name}}`>{{name}}</option>
-                                                                {{/each}}
-                                                            </select>
-                                                        </div>
-                                                        <div class='mb-3' id="planningStatus">
-                                                            <label for='planningStatus' class='form-label' style='font-family: Inter'>
-                                                                <div class='d-flex flex-row grid gap-0 column-gap-1 nowrap'>
-                                                                    <div>Trạng thái địa điểm</div>
-                                                                    {{#ifCond planningStatus "===" "Đã quy hoạch"}}
-                                                                    <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
-                                                                    {{else}}
-                                                                    <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
-                                                                    {{/ifCond}}
-                                                                </div>
-                                                            </label>
-                                                            <select class='form-select reportType' id='edit_planningStatus' required>
-                                                                <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                        -- Chọn trạng thái --
-                                                                </option>
-                                                                <option value='Đã quy hoạch'>Đã quy hoạch</option>
-                                                                <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class='mb-3' id="locationImages">
-                                                            <label for='locationImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
-                                                            <div class='card border mb-3'>
-                                                                <div class='card-body'>
-                                                                    <p class='mb-0' id="edit_locationImages"></p>
+                                                                <input
+                                                                    type='file'
+                                                                    class='form-control reportImage'
+                                                                    id='edit_locationImages'
+                                                                    accept='image/*'
+                                                                />
+                                                            </div>
+                                                            <div class='button-container justify-content-center'>
+                                                                <div
+                                                                    id='recaptcha'
+                                                                    class='g-recaptcha'
+                                                                    data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                    data-callback='onSubmit'
+                                                                    data-size='invisible'
+                                                                ></div>
+                                                                <div class="d-flex justify-content-center">
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='deleteAdsPointButton'
+                                                                            type='submit'
+                                                                            class='btn btn-outline-danger btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            XÓA
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='saveAdsPointButton'
+                                                                            type='submit'
+                                                                            class='btn btn-success btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            CẬP NHẬT
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <input
-                                                                type='file'
-                                                                class='form-control reportImage'
-                                                                id='edit_locationImages'
-                                                                accept='image/*'
-                                                            />
-                                                        </div>
-                                                        <div class='button-container justify-content-center'>
-                                                            <div
-                                                                id='recaptcha'
-                                                                class='g-recaptcha'
-                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                                                                data-callback='onSubmit'
-                                                                data-size='invisible'
-                                                            ></div>
-                                                            <div class='d-grid gap-2 col-3 mx-auto'>
-                                                                <button
-                                                                    id='submitEditButton'
-                                                                    type='button'
-                                                                    class='btn btn-warning'
-                                                                    style='font-family: Inter'
-                                                                >
-                                                                    GỬI
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                        {{/each}}
-                                    {{/if}}
-                                </tbody>
-                        </table>
+                                        <div
+                                            class='modal fade'
+                                            id='requestEditAdsPointModal-{{_id}}'
+                                            tabindex='-1'
+                                            aria-labelledby='reportModalLabel'
+                                            aria-hidden='true'
+                                        >
+                                            <div class='modal-dialog'>
+                                                <div class='modal-content'>
+                                                    <div class='modal-header'>
+                                                        <img
+                                                            src='../../../public/assets/icons/Edit_icon_orange.svg'
+                                                            style='height: 40px; width: 40px;'
+                                                        />
+                                                        <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                            Yêu cầu chỉnh sửa thông tin
+                                                        </h5>
+                                                        <button
+                                                            type='button'
+                                                            class='btn-close'
+                                                            data-bs-dismiss='modal'
+                                                            aria-label='Close'
+                                                        ></button>
+                                                    </div>
+                                                    <div class='modal-body'>
+                                                        <form id='requestEditAdsPointForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                            <input type="hidden" id="lat-{{_id}}" name="lat" value="{{location.coords.lat}}">
+                                                            <input type="hidden" id="lng-{{_id}}" name="lng" value="{{location.coords.lng}}">
+                                                            <div class='mb-3' id='locationName'>
+                                                                <label for='locationName' class='form-label' style='font-family: Inter;'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Điểm quảng cáo</div> 
+                                                                    </div>
+                                                                </label>
+                                                                <input
+                                                                    type='text'
+                                                                    class='form-control fullNameReport'
+                                                                    id='edit_locationName-{{_id}}'
+                                                                    value="{{location.locationName}}"
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div class="d-flex flex-row column-gap-3">
+                                                                <div class='mb-3' id='district'>
+                                                                    <label for='district' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Quận</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select districtType' id='edit_district-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                                -- Chọn Quận --
+                                                                        </option>
+                                                                        {{#each ../districts}}
+                                                                             <option value={{districtName}} {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                                                        {{/each}}
+                                                                    </select>
+                                                                </div>
+                                                                <div class='mb-3' id='ward'>
+                                                                    <label for='ward' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Phường</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select wardType' id='edit_ward-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                                -- Chọn Phường --
+                                                                        </option>
+                                                                        <option value={{location.ward}} selected>{{location.ward}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class='mb-3' id="address">
+                                                                <label for='address' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                        <div class="nowrap">Địa chỉ chi tiết</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>    
+                                                                    </div>
+                                                                </label>
+                                                                <textarea
+                                                                    class='form-control fullNameReport'
+                                                                    id='edit_address-{{_id}}'
+                                                                    style="height: 100px;"
+                                                                    required
+                                                                >{{location.address}}</textarea>
+                                                            </div>
+                                                            <div class='mb-3' id="locationType">
+                                                                <label for='locationType' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Loại vị trí</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'>({{locationType}})</p>    
+                                                                    </div>
+                                                                </label>
+    <select class='form-select reportType' id='edit_locationType-{{_id}}' required>
+        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                -- Chọn loại vị trí --
+        </option>
+        <option
+            value='Đất công/Công viên/Hành lang an toàn giao thông'
+        >
+            Đất công/Công viên/Hành lang an toàn giao thông
+        </option>
+        <option value='Đất tư nhân/Nhà ở riêng lẻ'>
+            Đất tư nhân/Nhà ở riêng lẻ
+        </option>
+        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
+        <option value='Chợ'>Chợ</option>
+        <option value='Cây xăng'>Cây xăng</option>
+        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
+    </select>
+                                                            </div>
+                                                            <div class='mb-3' id="adsFormat">
+                                                                <label for="adsFormat" class="form-label" style="font-family: Inter">
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1'>
+                                                                        <div class="nowrap">Hình thức quảng cáo</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'>({{adsFormat.name}})</p>    
+                                                                    </div>
+                                                                </label>
+                                                                <select class='form-select reportType' id='edit_adsFormat-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                            -- Chọn hình thức quảng cáo --
+                                                                    </option>
+                                                                    {{#each ../adsFormats}}
+                                                                        <option value=`{{name}}`>{{name}}</option>
+                                                                    {{/each}}
+                                                                </select>
+                                                            </div>
+                                                            <div class='mb-3' id="planningStatus">
+                                                                <label for='planningStatus' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-0 column-gap-1 nowrap'>
+                                                                        <div>Trạng thái địa điểm</div>
+                                                                        {{#ifCond planningStatus "===" "Đã quy hoạch"}}
+                                                                        <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                                                                        {{else}}
+                                                                        <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
+                                                                        {{/ifCond}}
+                                                                    </div>
+                                                                </label>
+                                                                <select class='form-select reportType' id='edit_planningStatus-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                            -- Chọn trạng thái --
+                                                                    </option>
+                                                                    <option value='Đã quy hoạch'>Đã quy hoạch</option>
+                                                                    <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class='mb-3' id="locationImages">
+                                                                <label for='locationImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                                                                <div class='card border mb-3'>
+                                                                    <div class='card-body'>
+                                                                        <p class='mb-0' id="edit_locationImage_1-{{_id}}">image_url_1.jpg</p>
+                                                                        <p class='mb-0' id="edit_locationImage_2-{{_id}}">image_url_2.jpg</p>
+                                                                    </div>
+                                                                </div>
+                                                                <input
+                                                                    type='file'
+                                                                    class='form-control reportImage'
+                                                                    id='edit_locationImages'
+                                                                    accept='image/*'
+                                                                />
+                                                            </div>
+                                                            <div class='button-container justify-content-center'>
+                                                                <div
+                                                                    id='recaptcha'
+                                                                    class='g-recaptcha'
+                                                                    data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                    data-callback='onSubmit'
+                                                                    data-size='invisible'
+                                                                ></div>
+                                                                <div class='d-grid gap-2 col-3 mx-auto'>
+                                                                    <button
+                                                                        id='submitEditButton'
+                                                                        type='submit'
+                                                                        class='btn btn-warning'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        GỬI
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            {{/each}}
+                                        {{/if}}
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4">
+        <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-lg-2{{else}}col-lg-3{{/ifCond}} col-md-3">
             <div class="pe-4">
                 <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
                 <div class="filter-container mb-3">
+                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                     <select id="filter_district" class="list-select list-select-sm custom-select fw-bold">
                         <option selected disabled>-- Chọn Quận --</option>
                         {{#each districts}}
                             <option value="{{districtName}}">Quận {{districtName}}</option>
                         {{/each}}
                     </select>
+                    {{/ifCond}}
+                    {{#ifCond authUser.role '===' 'Quận'}}
+                    <select id="filter_district" class="list-select list-select-sm custom-select fw-bold" disabled>
+                        <option value="{{authUser.assignedArea.district}}">Quận {{authUser.assignedArea.district}}</option>
+                    </select>
+                    {{/ifCond}}
                 </div>
                 <div class="list-group">
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
@@ -379,3 +619,5 @@
 </div>
 
 <title>Danh sách điểm quảng cáo</title>
+
+{{> addAdsPoint}}
