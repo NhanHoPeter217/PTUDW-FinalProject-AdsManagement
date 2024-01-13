@@ -20,7 +20,7 @@ function updateCheckbox() {
             },
             body: JSON.stringify({
                 district: district,
-                wardList: wardList,
+                wardList: wardList
             })
         })
             .then((response) => {
@@ -97,12 +97,12 @@ $(document).ready(function () {
                 return;
             }
 
-            
             if ($('#filter_district').length > 0) {
-
                 const districts = district_data.districts;
                 const currentDistrict = $('#filter_district').val();
-                const currentDistrictData = districts.find((district) => district.districtName === currentDistrict);
+                const currentDistrictData = districts.find(
+                    (district) => district.districtName === currentDistrict
+                );
                 var wards = [];
                 if (currentDistrictData) {
                     wards = currentDistrictData.wards;
@@ -120,7 +120,7 @@ $(document).ready(function () {
                     });
                 }
 
-                updateCheckbox();   
+                updateCheckbox();
 
                 $('#filter_district').on('change', function () {
                     var selectedDistrict = $(this).val();
@@ -150,7 +150,6 @@ $(document).ready(function () {
                         });
 
                         updateCheckbox();
-                        
                     } else {
                         console.log('District not found!');
                     }
@@ -211,7 +210,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         const adsObject = e.currentTarget.getAttribute('data-id');
-        const adsType = "AdsPoint";
+        const adsType = 'AdsPoint';
         const lat = document.getElementById(`lat-${adsObject}`).value;
         const lng = document.getElementById(`lng-${adsObject}`).value;
         const locationName = document.getElementById(`edit_locationName-${adsObject}`).value;
@@ -222,12 +221,15 @@ $(document).ready(function () {
         const adsFormat = document.getElementById(`edit_adsFormat-${adsObject}`).value;
 
         const locationImages = [];
-        const locationImage1 = document.getElementById(`edit_locationImage_1-${adsObject}`).textContent;
-        const locationImage2 = document.getElementById(`edit_locationImage_2-${adsObject}`).textContent;
+        const locationImage1 = document.getElementById(
+            `edit_locationImage_1-${adsObject}`
+        ).textContent;
+        const locationImage2 = document.getElementById(
+            `edit_locationImage_2-${adsObject}`
+        ).textContent;
 
         const planningStatus = document.getElementById(`edit_planningStatus-${adsObject}`).value;
 
         // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
-
     });
 });

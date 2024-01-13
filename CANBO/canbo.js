@@ -3,7 +3,7 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
-var session = require('express-session')
+var session = require('express-session');
 // var Handlebars = require('handlebars');
 
 const app = express();
@@ -29,13 +29,15 @@ var corsOptions = {
     origin: whitelist
 };
 
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}))
+app.set('trust proxy', 1); // trust first proxy
+app.use(
+    session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }
+    })
+);
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
@@ -60,6 +62,7 @@ const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
+const requestRouter = require('./routes/Department/adsInfoEditingRequestRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
@@ -67,7 +70,6 @@ const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessin
 const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
-const requestRouter = require('./routes/request.route');
 const typeRouter = require('./routes/typeRoutes.js');
 const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 // import wardRoute from './routes/ward.route.js';
@@ -109,13 +111,13 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);
+app.use('/request', requestRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/reportProcessing', reportProcessingRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
-
 
 // FRONT END
 // Setup handlebars view engine
@@ -144,7 +146,6 @@ app.engine('hbs', engineWithHelpers);
 //     }
 // });
 
-
 // Basic setup
 app.set('view engine', 'hbs');
 app.set('views', './views');
@@ -152,10 +153,10 @@ app.set('title', 'Ads Management');
 
 app.use(function (req, res, next) {
     // console.log(req.session.auth);
-    if (typeof (req.session.auth) === 'undefined') {
-      req.session.auth = false;
+    if (typeof req.session.auth === 'undefined') {
+        req.session.auth = false;
     }
-  
+
     res.locals.auth = req.session.auth;
     res.locals.authUser = req.session.authUser;
     next();
@@ -236,7 +237,7 @@ app.get('/ward/:wardId/dist/:distId', function (req, res) {
     res.render('vwReport/listReport', { layout: 'canbo' });
 });
 
-app.use('/admin/request', requestRouter);
+// app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

@@ -2,13 +2,17 @@
     <link rel='stylesheet' href='http://localhost:4000/public/css/report.css' />
 {{/section}}
 
+{{#section 'js'}}
+<script src="http://localhost:4000/public/js/listReport.js"></script>
+{{/section}}
+
 <div class="container-fluid my-2">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <div class="card w-100">
                 <div class="card-body p-4">
-                <h5 class="card-title fw-semibold mb-4">Báo cáo đã nhận</h5>
+                <h5 class="card-title fw-semibold mb-4">Danh sách các báo cáo</h5>
                 <div class="table-responsive">
                     <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
@@ -174,7 +178,3 @@
         </div>
     </div>
 </div>
-
-{{#section 'js'}}
-<script src="http://localhost:4000/public/js/listReport.js"></script>
-{{/section}}

@@ -40,7 +40,12 @@ const createAdsLicenseRequest = async (req, res) => {
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
         const adsLicenseRequests = await AdsLicenseRequest.find({});
-        res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+        // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+        console.log(adsLicenseRequests);
+        res.render('vwAdsBoard/listLicenseAdsBoard', {
+            adsLicenseRequests: adsLicenseRequests,
+            adsLicenseRequestsEmpty: adsLicenseRequests.length === 0
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -63,7 +68,7 @@ const getSingleAdsLicenseRequest = async (req, res) => {
     }
 };
 
-const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
+const getAdsLicenseByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
 
@@ -78,9 +83,19 @@ const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
             query['wardAndDistrict.district'] = district;
         }
 
-        const adsLicenseRequests = await AdsLicenseRequest.find(query);
+        const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+        
+        const adsLicenseRequests_array = adsLicenseRequests.filter(
+            (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+        );
 
-        res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+        res.render('vwAdsBoard/listLicenseAdsBoard', {
+            authUser: req.session.authUser,
+            adsLicenseRequests: adsLicenseRequests_array,
+            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0
+        });
+
+        // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -182,7 +197,7 @@ module.exports = {
     createAdsLicenseRequest,
     getAllAdsLicenseRequests,
     getSingleAdsLicenseRequest,
-    getAdsLicenseRequestsByAssignedArea,
+    getAdsLicenseByAssignedArea,
     getAdsLicenseRequestsByWardAndDistrict,
     updateAdsLicenseRequestByAssignedArea,
     updateAdsLicenseRequestByDepartmentOfficier

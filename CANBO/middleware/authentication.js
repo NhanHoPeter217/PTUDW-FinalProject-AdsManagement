@@ -5,7 +5,6 @@ const { attachCookiesToResponse } = require('../utils');
 const Identifier = require('../models/Authentication/Identifier');
 
 const authenticateUser = async (req, res, next) => {
-
     if (req.session.auth === false) {
         req.session.retUrl = req.originalUrl;
         window.location.href = '/auth/login';

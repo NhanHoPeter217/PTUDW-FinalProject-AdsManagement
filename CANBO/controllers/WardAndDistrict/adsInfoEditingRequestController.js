@@ -38,12 +38,31 @@ const getAllAdsInfoEditingRequests = async (req, res) => {
     try {
         const adsInfoEditingRequests = await AdsInfoEditingRequest.find({})
             .populate('adsObject')
-            .populate('newInfo');
+            .populate('newInfo')
+            .lean();
 
-        res.status(StatusCodes.OK).json({
-            adsInfoEditingRequests,
-            count: adsInfoEditingRequests.length
+        const adsBoardRequestedEdits = adsInfoEditingRequests.filter(
+            (request) => request.adsType === 'AdsBoard'
+        );
+
+        const adsPointRequestedEdits = adsInfoEditingRequests.filter(
+            (request) => request.adsType === 'AdsPoint'
+        );
+
+        // console.log(adsBoardRequestedEdits);
+        // console.log(adsPointRequestedEdits);
+
+        res.render('vwRequest/listRequest', {
+            adsBoardRequestedEdits: adsBoardRequestedEdits,
+            adsPointRequestedEdits: adsPointRequestedEdits,
+            adsBoardRequestedEditsEmpty: adsBoardRequestedEdits.length === 0,
+            adsPointRequestedEditsEmpty: adsPointRequestedEdits.length === 0
         });
+
+        // res.status(StatusCodes.OK).json({
+        //     adsInfoEditingRequests,
+        //     count: adsInfoEditingRequests.length
+        // });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -204,7 +223,6 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });
             const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });
-
 
             newAdsObject.locationImages = newInformation.locationImages;
             newAdsObject.planningStatus = newInformation.planningStatus;

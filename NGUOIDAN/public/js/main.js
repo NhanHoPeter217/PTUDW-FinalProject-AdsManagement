@@ -81,14 +81,20 @@ async function getAllAdsPoints() {
                     >
                     <div class="d-flex align-items-start">
                         <div class="card-body ps-2" style="padding: 0px;">
-                        <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">${adsBoard.adsBoardType}</h5>
+                        <h5 class="card-title" style="font-size: 20px; font-family: Inter; font-weight: 600; margin-bottom: 4px;">${
+                            adsBoard.adsBoardType
+                        }</h5>
                         <p class="card-text">
                             <span class="label">Kích thước:</span>
-                            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${adsBoard.size.width}m x ${adsBoard.size.height}m</span>
+                            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${
+                                adsBoard.size.width
+                            }m x ${adsBoard.size.height}m</span>
                         </p>
                         <p class="card-text">
                             <span class="label">Số lượng:</span>
-                            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${adsBoard.quantity} trụ / bảng</span>
+                            <span class="value" style="font-size: 16px; font-family: Inter; font-weight: 700;">${
+                                adsBoard.quantity
+                            } trụ / bảng</span>
                         </p>
                         </div>
                     </div>
@@ -96,7 +102,9 @@ async function getAllAdsPoints() {
                     
                         <!-- Button to trigger the modal -->
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none" data-bs-toggle="modal" data-bs-target="#adboard-detail-modal-${adsBoard._id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 31 30" fill="none" data-bs-toggle="modal" data-bs-target="#adboard-detail-modal-${
+                            adsBoard._id
+                        }">
                             <path d="M14.2501 8.74994H16.7501V11.2499H14.2501V8.74994ZM14.2501 13.7499H16.7501V21.2499H14.2501V13.7499ZM15.5001 2.49994C8.60006 2.49994 3.00006 8.09994 3.00006 14.9999C3.00006 21.8999 8.60006 27.4999 15.5001 27.4999C22.4001 27.4999 28.0001 21.8999 28.0001 14.9999C28.0001 8.09994 22.4001 2.49994 15.5001 2.49994ZM15.5001 24.9999C9.98756 24.9999 5.50006 20.5124 5.50006 14.9999C5.50006 9.48744 9.98756 4.99994 15.5001 4.99994C21.0126 4.99994 25.5001 9.48744 25.5001 14.9999C25.5001 20.5124 21.0126 24.9999 15.5001 24.9999Z" fill="#1C89D0"/>
                         </svg>
                         <button
@@ -117,11 +125,15 @@ async function getAllAdsPoints() {
                     
                     
                         <!-- Carousel -->
-                        <div class="modal fade" id="adboard-detail-modal-${adsBoard._id}" aria-labelledby="adboard-detail-modal-label-${adsBoard._id}">
+                        <div class="modal fade" id="adboard-detail-modal-${
+                            adsBoard._id
+                        }" aria-labelledby="adboard-detail-modal-label-${adsBoard._id}">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="adboard-detail-modal-label-${adsBoard._id}">Chi tiết bảng quảng cáo</h1>
+                                        <h1 class="modal-title fs-5" id="adboard-detail-modal-label-${
+                                            adsBoard._id
+                                        }">Chi tiết bảng quảng cáo</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -163,7 +175,10 @@ async function getAllAdsPoints() {
                                             <!-- Single item -->
                                             <div class="carousel-item active">
                                                 <img
-                                                    src="${adsBoard.adsBoardImages?.[0] || '/public/images/IMG_7850.png'}"
+                                                    src="${
+                                                        adsBoard.adsBoardImages?.[0] ||
+                                                        '/public/images/IMG_7850.png'
+                                                    }"
                                                     class="d-block w-100"
                                                     alt="AdsBoard Image"
                                                 />
