@@ -1,82 +1,83 @@
 function updateCheckbox() {
-                        // Get all the checkbox elements
-                        const checkboxes = document.querySelectorAll('.checkbox-input');
-                        const wardList = [];
+    // Get all the checkbox elements
+    const checkboxes = document.querySelectorAll('.checkbox-input');
+    const wardList = [];
 
-                        function fetchAdsPointsByWardList() {
-                            const checkboxes = document.querySelectorAll('.checkbox-input');
-                            wardList.length = 0; // Clear the wardList array
+    function fetchAdsPointsByWardList(district) {
+        const checkboxes = document.querySelectorAll('.checkbox-input');
+        wardList.length = 0; // Clear the wardList array
 
-                            Array.from(checkboxes).forEach(function (checkbox) {
-                                if (checkbox.checked) {
-                                    wardList.push(checkbox.id);
-                                }
-                            });
+        Array.from(checkboxes).forEach(function (checkbox) {
+            if (checkbox.checked) {
+                wardList.push(checkbox.id);
+            }
+        });
 
-                            fetch('/adsPoint/wardList/api/v1', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    wardList: wardList
-                                })
-                            })
-                                .then((response) => {
-                                    return response.json();
-                                })
-                                .then((adsPoints_data) => {
-                                    $('#body').empty();
+        fetch('/adsPoint/wardList/byDistrict/api/v1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                district: district,
+                wardList: wardList,
+            })
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((adsPoints_data) => {
+                $('#body').empty();
 
-                                    console.log($('#body'));
+                console.log($('#body'));
 
-                                    if (!adsPoints_data) {
-                                        return;
-                                    }
+                if (!adsPoints_data) {
+                    return;
+                }
 
-                                    const adsPoints = adsPoints_data.adsPoints;
+                const adsPoints = adsPoints_data.adsPoints;
 
-                                    var index = 0;
+                var index = 0;
 
-                                    adsPoints.forEach(function (adsPoint) {
-                                        index += 1;
-                                        $('#body').append(`
-                                            <tr>
-                                                <td class="align-middle">${index}</td>
-                                                <td class="align-middle">
-                                                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-${adsPoint._id}">
-                                                        ${adsPoint.location.locationName}
-                                                    </button>
-                                                </td>
-                                                <td class="border-bottom-0 align-middle">
-                                                <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/${adsPoint._id}" role="button">
-                                                    <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
-                                                </a>
-                                                </td>
-                                                <td class="border-bottom-0 align-middle">
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-outline-warning m-1"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#requestEditAdsPointModal-${adsPoint._id}">
-                                                        <div id="buttonStyle">
-                                                            <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                            Yêu cầu chỉnh sửa
-                                                        </div>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                    `);
-                                    });
-                                });
-                        }
+                adsPoints.forEach(function (adsPoint) {
+                    index += 1;
+                    $('#body').append(`
+                        <tr>
+                            <td class="align-middle">${index}</td>
+                            <td class="align-middle">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailAdsPointModal-${adsPoint._id}">
+                                    ${adsPoint.location.locationName}
+                                </button>
+                            </td>
+                            <td class="border-bottom-0 align-middle">
+                            <a class="btn btn-primary m-1" href="/adsBoard/adsPoint/${adsPoint._id}" role="button">
+                                <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
+                            </a>
+                            </td>
+                            <td class="border-bottom-0 align-middle">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-warning m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#requestEditAdsPointModal-${adsPoint._id}">
+                                    <div id="buttonStyle">
+                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                    </div>
+                                </button>
+                            </td>
+                        </tr>
+                `);
+                });
+            });
+    }
 
-                        // Add event listeners to each checkbox
-                        checkboxes.forEach(function (checkbox) {
-                            checkbox.addEventListener('change', function () {
-                                fetchAdsPointsByWardList();
-                            });
-                        });
+    // Add event listeners to each checkbox
+    checkboxes.forEach(function (checkbox) {
+        const currentDistrict = $('#filter_district').val();
+        checkbox.addEventListener('change', function () {
+            fetchAdsPointsByWardList(currentDistrict);
+        });
+    });
 }
 
 $(document).ready(function () {
@@ -148,7 +149,7 @@ $(document).ready(function () {
                         `);
                         });
 
-                        updateCheckbox();    
+                        updateCheckbox();
                         
                     } else {
                         console.log('District not found!');

@@ -10,7 +10,10 @@
 
 <div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-md-9">
+        {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
+            <div class="col-md-1"></div>
+        {{/ifCond}}
+        <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-md-8{{else}}col-md-9{{/ifCond}}">
             <h5 class="card-title fw-bold mb-4">Quản lý quảng cáo</h5>
             <div class="card w-100 mb-4">
                 <div class="card-body p-4">
@@ -20,7 +23,7 @@
                             Danh sách các điểm đặt quảng cáo
                         </h5>
                         {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                        <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addAdsTypeModal">
+                        <button type="button" class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addAdsPointModal">
                             <img src="../../../public/assets/icons/Add_icon_white.svg" alt="" width="24" height="24" class="me-2" />
                             Thêm điểm quảng cáo
                         </button>
@@ -40,7 +43,7 @@
                                 <th scope="col">Điểm quảng cáo</th>
                                 <th scope="col">Bảng quảng cáo</th>
                                 {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                    <th scope="col">Chỉnh sửa</th>
+                                    <th scope="col">Thao tác</th>
                                 {{/ifCond}}
                                 {{#ifCond authUser.role '===' 'Quận'}}
                                     <th scope="col">Yêu cầu chỉnh sửa</th>
@@ -78,7 +81,7 @@
                                                 <img src="../../../public/assets/icons/Board_icon.svg" alt="" width="20" height="20" />
                                             </a>
                                             </td>
-                                            {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                                            {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
                                             <td class="border-bottom-0 align-middle">
                                                 <button
                                                     type="button"
@@ -90,33 +93,19 @@
                                                     </div>
                                                 </button>
                                             </td>
+                                            {{else}}
+                                            <td class="border-bottom-0 align-middle">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-warning m-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#requestEditAdsPointModal-{{_id}}">
+                                                    <div id="buttonStyle">
+                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                    </div>
+                                                </button>
+                                            </td>
                                             {{/ifCond}}
-                                            {{!-- {{#ifCond authUser.role '===' 'Quận'}}
-                                            <td class="border-bottom-0 align-middle">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-outline-warning m-1"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#requestEditAdsPointModal-{{_id}}">
-                                                    <div id="buttonStyle">
-                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                    </div>
-                                                </button>
-                                            </td>
-                                            {{/ifCond}} --}}
-                                            {{!-- {{#ifCond authUser.role '===' 'Phường'}}
-                                            <td class="border-bottom-0 align-middle">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-outline-warning m-1"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#requestEditAdsPointModal-{{_id}}">
-                                                    <div id="buttonStyle">
-                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                    </div>
-                                                </button>
-                                            </td>
-                                            {{/ifCond}} --}}
                                         </tr>
                                         <div
                                             class="modal fade"
@@ -372,15 +361,27 @@
                                                                     data-callback='onSubmit'
                                                                     data-size='invisible'
                                                                 ></div>
-                                                                <div class='d-grid gap-2 col-3 mx-auto'>
-                                                                    <button
-                                                                        id='submitEditButton'
-                                                                        type='submit'
-                                                                        class='btn btn-warning'
-                                                                        style='font-family: Inter'
-                                                                    >
-                                                                        GỬI
-                                                                    </button>
+                                                                <div class="d-flex justify-content-center">
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='deleteAdsPointButton'
+                                                                            type='submit'
+                                                                            class='btn btn-outline-danger btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            XÓA
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='saveAdsPointButton'
+                                                                            type='submit'
+                                                                            class='btn btn-success btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            CẬP NHẬT
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -403,7 +404,7 @@
                                                             style='height: 40px; width: 40px;'
                                                         />
                                                         <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                                            Chỉnh sửa thông tin
+                                                            Yêu cầu chỉnh sửa thông tin
                                                         </h5>
                                                         <button
                                                             type='button'
@@ -584,7 +585,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4">
+        <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-lg-2{{else}}col-lg-3{{/ifCond}} col-md-3">
             <div class="pe-4">
                 <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
                 <div class="filter-container mb-3">
@@ -618,3 +619,5 @@
 </div>
 
 <title>Danh sách điểm quảng cáo</title>
+
+{{> addAdsPoint}}

@@ -47,7 +47,6 @@ const login = async (req, res) => {
 
     req.session.auth = true;
     req.session.authUser = user;
-    console.log(req.session.authUser.role);
 
     // create refresh token
     let refreshToken = '';

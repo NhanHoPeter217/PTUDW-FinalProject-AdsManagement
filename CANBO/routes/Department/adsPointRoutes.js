@@ -8,6 +8,7 @@ const {
     getAllAdsPointsByAssignedArea,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,
+    getAllAdsPointsByWardListAndDistrict,
     getSingleAdsPoint,
     updateAdsPoint,
     deleteAdsPoint
@@ -28,6 +29,10 @@ router
 router
     .route('/wardList/api/v1')
     .post(authenticateUser, authorizePermissions('Quận'), getAllAdsPointsByWardList);
+
+    router
+    .route('/wardList/byDistrict/api/v1')
+    .post(authenticateUser, authorizePermissions('Sở VH-TT', 'Quận'), getAllAdsPointsByWardListAndDistrict);
 // router
 //     .route('/wardList/api/v1')
 //     .post(getAllAdsPointsByWardList);
