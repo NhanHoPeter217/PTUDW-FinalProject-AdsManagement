@@ -58,7 +58,7 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             empty: adsBoards.length === 0,
             adsFormats: adsFormats,
             districts: districts,
-            authUser: req.session.authUser
+            authUser: req.user
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
