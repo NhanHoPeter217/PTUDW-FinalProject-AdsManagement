@@ -3,10 +3,10 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
+var session = require('express-session')
 // var Handlebars = require('handlebars');
 
 const app = express();
-var pjax = require('express-pjax');
 
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
@@ -28,6 +28,14 @@ var corsOptions = {
     origin: whitelist
 };
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}))
+
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -35,7 +43,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(pjax());
+// app.use(pjax());
 app.use(cors(corsOptions));
 
 // routers
@@ -140,6 +148,17 @@ app.engine('hbs', engineWithHelpers);
 app.set('view engine', 'hbs');
 app.set('views', './views');
 app.set('title', 'Ads Management');
+
+app.use(function (req, res, next) {
+    // console.log(req.session.auth);
+    if (typeof (req.session.auth) === 'undefined') {
+      req.session.auth = false;
+    }
+  
+    res.locals.auth = req.session.auth;
+    res.locals.authUser = req.session.authUser;
+    next();
+});
 
 // Get pages
 app.get('/', (req, res) => {

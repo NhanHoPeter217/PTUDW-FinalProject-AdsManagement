@@ -37,7 +37,8 @@ const getAllAdsPoints = async (req, res) => {
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
-            districts: districts
+            districts: districts,
+            authUser: req.session.authUser
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);

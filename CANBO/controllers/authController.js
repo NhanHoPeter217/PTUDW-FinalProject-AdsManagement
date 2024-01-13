@@ -23,7 +23,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { account, password } = req.body;
-    console.log(req.body);
 
     if (!account || !password) {
         throw new BadRequestError('Please provide username/email and password');
@@ -43,6 +42,12 @@ const login = async (req, res) => {
         throw new CustomError.UnauthenticatedError('Invalid Credentials');
     }
     const tokenUser = createTokenUser(user);
+
+    user.password = undefined; // delete password from user object
+
+    req.session.auth = true;
+    req.session.authUser = user;
+    console.log(req.session.authUser.role);
 
     // create refresh token
     let refreshToken = '';
@@ -68,12 +73,13 @@ const login = async (req, res) => {
     await Token.create(userToken);
 
     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-    console.log(userToken);
 
     res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
 const logout = async (req, res) => {
+    req.session.auth = false;
+    req.session.authUser = undefined;
     await Token.findOneAndDelete({ user: req.user.userId });
 
     res.cookie('accessToken', 'logout', {

@@ -1,47 +1,4 @@
-$(document).ready(function () {
-    // Get all district and ward for the dropdown list
-    fetch('/district/api/v1', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((district_data) => {
-            if (!district_data) {
-                return;
-            }
-
-            if ($('#filter_district').length > 0) {
-                $('#filter_district').on('change', function () {
-                    var selectedDistrict = $(this).val();
-
-                    let selectedDistrictData;
-                    for (let i = 0; i < district_data.count; ++i) {
-                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
-                            selectedDistrictData = district_data.districts[i];
-                            break;
-                        }
-                    }
-
-                    if (selectedDistrictData) {
-                        const wards = selectedDistrictData.wards;
-
-                        $('#filter_ward').empty();
-
-                        wards.forEach(function (ward) {
-                            $('#filter_ward').append(`
-                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                                <label class="checkbox-container">
-                                    <input type="checkbox" class="checkbox-input" id="${ward}">
-                                    <span>Phường ${ward}</span>
-                                </label>
-                            </div>
-                        `);
-                        });
-
+function updateCheckbox() {
                         // Get all the checkbox elements
                         const checkboxes = document.querySelectorAll('.checkbox-input');
                         const wardList = [];
@@ -120,6 +77,79 @@ $(document).ready(function () {
                                 fetchAdsPointsByWardList();
                             });
                         });
+}
+
+$(document).ready(function () {
+    // Get all district and ward for the dropdown list
+
+    fetch('/district/api/v1', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((district_data) => {
+            if (!district_data) {
+                return;
+            }
+
+            
+            if ($('#filter_district').length > 0) {
+
+                const districts = district_data.districts;
+                const currentDistrict = $('#filter_district').val();
+                const currentDistrictData = districts.find((district) => district.districtName === currentDistrict);
+                var wards = [];
+                if (currentDistrictData) {
+                    wards = currentDistrictData.wards;
+                    $('#filter_ward').empty();
+
+                    wards.forEach(function (ward) {
+                        $('#filter_ward').append(`
+                        <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-input" id="${ward}">
+                                <span>Phường ${ward}</span>
+                            </label>
+                        </div>
+                    `);
+                    });
+                }
+
+                updateCheckbox();   
+
+                $('#filter_district').on('change', function () {
+                    var selectedDistrict = $(this).val();
+
+                    let selectedDistrictData;
+                    for (let i = 0; i < district_data.count; ++i) {
+                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                            selectedDistrictData = district_data.districts[i];
+                            break;
+                        }
+                    }
+
+                    if (selectedDistrictData) {
+                        wards = selectedDistrictData.wards;
+
+                        $('#filter_ward').empty();
+
+                        wards.forEach(function (ward) {
+                            $('#filter_ward').append(`
+                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="checkbox-input" id="${ward}">
+                                    <span>Phường ${ward}</span>
+                                </label>
+                            </div>
+                        `);
+                        });
+
+                        updateCheckbox();    
+                        
                     } else {
                         console.log('District not found!');
                     }

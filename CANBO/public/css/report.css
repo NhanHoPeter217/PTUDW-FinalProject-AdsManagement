@@ -122,6 +122,13 @@ body {
     text-align: left;
 }
 
+#buttonStyle {
+    transition: filter 0.1s ease-in-out;
+}
+#buttonStyle:hover {
+    filter: brightness(0) invert(1);
+}
+
 .districtType,
 .wardType,
 .reportType,
