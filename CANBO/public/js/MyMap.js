@@ -197,6 +197,8 @@ class InfoMarker extends MyMarker {
                     onclick="reportButtonHandler(event)"
                     data-relatedToType="Location"
                     data-relatedTo='${JSON.stringify(location)}'
+                    data-ward="${location.ward}"
+                    data-district="${location.district}"
                     style="width: fit-content;"
                 >
                     <img src='public/assets/icons/Report_icon.svg' fill="none"/>

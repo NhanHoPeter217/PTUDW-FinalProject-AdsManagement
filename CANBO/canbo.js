@@ -42,7 +42,6 @@ const jobsRouter = require('./routes/jobs');
 const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
-const reportRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
 
 const adsBoardRouter = require('./routes/Department/adsBoardRoutes');
 const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
@@ -87,12 +86,11 @@ app.use(xss());
 app.use('/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/forgotpassword', forgotpwRouter);
-app.use('/api/v1/report', reportProcessingRouter);
+app.use('/report', reportProcessingRouter);
 
 // routes after login
 app.use('/api/v1/jobs', jobsRouter);
 app.use('/api/v1/user', userRouter);
-app.use('/api/v1/report', reportRouter);
 
 app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
@@ -102,7 +100,6 @@ app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
-app.use('/api/v1/reportProcessing', reportProcessingRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
 // FRONT END
