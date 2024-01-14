@@ -7,7 +7,6 @@ const engineWithHelpers = require('./handlebars');
 
 const app = express();
 
-
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
 const axios = require('axios');
@@ -61,9 +60,6 @@ const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
 const typeRouter = require('./routes/typeRoutes.js');
-const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
-// import wardRoute from './routes/ward.route.js';
-// import districtRoute from './routes/district.route.js';
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -111,28 +107,6 @@ app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 // Setup handlebars view engine
 // sectionHandler(engine);
 app.engine('hbs', engineWithHelpers);
-// app.js
-// Handlebars.registerHelper('role', async function() {
-//     try {
-//         const response = await fetch('/api/v1/user', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-
-//         const infoUser_data = await response.json();
-
-//         if (!infoUser_data) {
-//             return "Phường";
-//         }
-
-//         return infoUser_data.infoUser.role || "Phường";
-//     } catch (error) {
-//         console.error('Error fetching user info:', error);
-//         return "Phường"; // Default value in case of an error
-//     }
-// });
 
 // Basic setup
 app.set('view engine', 'hbs');

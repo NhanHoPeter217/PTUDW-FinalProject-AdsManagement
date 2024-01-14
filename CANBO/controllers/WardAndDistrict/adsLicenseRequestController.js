@@ -104,7 +104,7 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         const role = req.user.role;
-        
+
         const adsLicenseRequests_array = adsLicenseRequests.filter(
             (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
         );
@@ -120,10 +120,9 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             res.render('vwAdsBoard/listLicenseAdsBoard', {
                 authUser: req.user,
                 adsLicenseRequests: adsLicenseRequests_array,
-                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0
             });
         }
-        
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -151,7 +150,7 @@ const getAllAdsLicenseByAssignedArea = async (req, res) => {
             }
 
             const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
-            
+
             const adsLicenseRequests_array = adsLicenseRequests.filter(
                 (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
             );

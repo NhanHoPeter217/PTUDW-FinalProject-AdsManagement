@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+
 const router = express.Router();
 const {
     getAllReportsByResident,
@@ -17,9 +19,46 @@ const {
     authorizePermissions
 } = require('../../middleware/authentication');
 
-const handleFileUpload = require('../../utils/handleFileUpload');
+const { getFormattedDate } = require('../../utils/handleFileUpload');
 
-router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, handleFileUpload, createReport);
+const handleFileUpload = (req, res, next) => {
+    const folderName = 'public/uploads/reportImages';
+    const maxImages = 2;
+    try {
+        var uploadedImages = {};
+        var body = null;
+
+        const storage = multer.diskStorage({
+            destination: function (req, file, cb) {
+                cb(null, folderName);
+            },
+            filename: function (req, file, cb) {
+                const fileName = `${getFormattedDate()}_${file.originalname}`;
+                cb(null, fileName);
+            }
+        });
+
+        const upload = multer({ storage: storage, limits: { files: maxImages } }).any();
+
+        upload(req, res, (err) => {
+            if (err) {
+                throw new Error(`Error uploading file: ${err}`);
+            }
+
+            req.files.forEach((file) => {
+                uploadedImages[file.fieldname] = file.path;
+            });
+
+            res.locals.uploadedImages = uploadedImages;
+
+            createReport(req, res);
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, handleFileUpload);
 
 router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAllReportsByResident);
 
