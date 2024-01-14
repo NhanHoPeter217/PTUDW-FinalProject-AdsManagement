@@ -40,12 +40,20 @@ const createAdsLicenseRequest = async (req, res) => {
 
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({});
+        const adsLicenseRequests = await AdsLicenseRequest.find({}).lean();
         // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
-        console.log(adsLicenseRequests);
+
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        const adsLicenseRequests_array = adsLicenseRequests.filter(
+            (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+        );
+
         res.render('vwAdsBoard/listLicenseAdsBoard', {
-            adsLicenseRequests: adsLicenseRequests,
-            adsLicenseRequestsEmpty: adsLicenseRequests.length === 0
+            authUser: req.user,
+            adsLicenseRequests: adsLicenseRequests_array,
+            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+            districts: districts
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -95,7 +103,7 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
 
         if (role === 'Quận') {
             res.render('vwAdsBoard/listLicenseAdsBoard', {
-                authUser: req.session.authUser,
+                authUser: req.user,
                 adsLicenseRequests: adsLicenseRequests_array,
                 adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
                 districts: districts
@@ -108,7 +116,6 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             });
         }
         
-        // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -117,6 +124,9 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
 const getAllAdsLicenseByAssignedArea = async (req, res) => {
     const district = req.body.district;
     const wardList = req.body.wardList;
+
+    console.log(district);
+    console.log(wardList);
 
     try {
         var allAdsLicense = [];

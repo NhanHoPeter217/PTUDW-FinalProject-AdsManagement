@@ -15,7 +15,7 @@ const {
 
 router.use(authenticateUser);
 
-router.route('/').get(authorizePermissions('Sở VH-TT'), getAllAdsLicenseRequests);
+router.route('/').get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllAdsLicenseRequests);
 
 router
     .route('/assignedArea')
@@ -23,7 +23,7 @@ router
 
 router
     .route('/assignedArea')
-    .post(authenticateUser, authorizePermissions('Quận'), getAllAdsLicenseByAssignedArea);
+    .post(authenticateUser, authorizePermissions('Quận', 'Sở VH-TT'), getAllAdsLicenseByAssignedArea);
 
 router
     .route('/dist/:distID/ward/:wardID')
