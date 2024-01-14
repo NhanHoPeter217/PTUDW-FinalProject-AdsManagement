@@ -275,3 +275,7 @@ p {
 .pac-container.pac-logo{
     z-index: 1056 !important;
 }
+
+justify-content-space-around {
+    justify-content: center !important;
+}

@@ -7,6 +7,7 @@ const {
     getAllAdsLicenseRequests,
     getSingleAdsLicenseRequest,
     getAdsLicenseByAssignedArea,
+    getAllAdsLicenseByAssignedArea,
     getAdsLicenseRequestsByWardAndDistrict,
     updateAdsLicenseRequestByAssignedArea,
     updateAdsLicenseRequestByDepartmentOfficier
@@ -18,7 +19,12 @@ router.route('/').get(authorizePermissions('Sở VH-TT'), getAllAdsLicenseReques
 
 router
     .route('/assignedArea')
-    .get(authorizePermissions('Phường', 'Quận'), getAdsLicenseByAssignedArea);
+    .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAdsLicenseByAssignedArea);
+
+router
+    .route('/assignedArea')
+    .post(authenticateUser, authorizePermissions('Quận'), getAllAdsLicenseByAssignedArea);
+
 router
     .route('/dist/:distID/ward/:wardID')
     .get(authorizePermissions('Sở VH-TT'), getAdsLicenseRequestsByWardAndDistrict);

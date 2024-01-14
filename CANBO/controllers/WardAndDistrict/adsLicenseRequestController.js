@@ -4,6 +4,7 @@ const AdsLicenseRequest = require('../../models/WardAndDistrict/AdsLicenseReques
 const LicenseRequestedAdsBoard = require('../../models/WardAndDistrict/LicenseRequestedAdsBoard');
 const AdsBoard = require('../../models/AdsBoard');
 const CustomError = require('../../errors');
+const District = require('../../models/Department/District');
 
 const createAdsLicenseRequest = async (req, res) => {
     try {
@@ -84,18 +85,65 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
         }
 
         const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        const role = req.user.role;
         
         const adsLicenseRequests_array = adsLicenseRequests.filter(
             (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
         );
 
-        res.render('vwAdsBoard/listLicenseAdsBoard', {
-            authUser: req.session.authUser,
-            adsLicenseRequests: adsLicenseRequests_array,
-            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0
-        });
-
+        if (role === 'Quận') {
+            res.render('vwAdsBoard/listLicenseAdsBoard', {
+                authUser: req.session.authUser,
+                adsLicenseRequests: adsLicenseRequests_array,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+                districts: districts
+            });
+        } else {
+            res.render('vwAdsBoard/listLicenseAdsBoard', {
+                authUser: req.session.authUser,
+                adsLicenseRequests: adsLicenseRequests_array,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+            });
+        }
+        
         // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllAdsLicenseByAssignedArea = async (req, res) => {
+    const district = req.body.district;
+    const wardList = req.body.wardList;
+
+    try {
+        var allAdsLicense = [];
+
+        for (let i = 0; i < wardList.length; ++i) {
+            let query = {};
+
+            if (wardList[i] !== '*') {
+                query['wardAndDistrict.ward'] = wardList[i];
+            }
+
+            if (district !== '*') {
+                query['wardAndDistrict.district'] = district;
+            }
+
+            const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+            
+            const adsLicenseRequests_array = adsLicenseRequests.filter(
+                (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+            );
+
+            allAdsLicense.push(...adsLicenseRequests_array);
+        }
+
+        console.log(allAdsLicense);
+
+        res.status(StatusCodes.OK).json({ allAdsLicense, count: allAdsLicense.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -198,6 +246,7 @@ module.exports = {
     getAllAdsLicenseRequests,
     getSingleAdsLicenseRequest,
     getAdsLicenseByAssignedArea,
+    getAllAdsLicenseByAssignedArea,
     getAdsLicenseRequestsByWardAndDistrict,
     updateAdsLicenseRequestByAssignedArea,
     updateAdsLicenseRequestByDepartmentOfficier

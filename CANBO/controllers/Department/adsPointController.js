@@ -31,7 +31,6 @@ const getAllAdsPoints = async (req, res) => {
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         const role = req.session.authUser.role;
-        console.log(role);
 
         if (role === 'Sở VH-TT') {
             res.render('vwAdsPoint/listAdsPoint', {
