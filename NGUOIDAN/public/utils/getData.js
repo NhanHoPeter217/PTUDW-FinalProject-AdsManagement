@@ -29,38 +29,36 @@ async function getAllAdsPoints() {
                 ${
                     adPoint.planningStatus === 'Đã quy hoạch'
                         ? `
-                <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>`
-                        : `
                 <img src="/public/assets/icons/Info_icon_Red.svg" class="icon" alt="" srcset=""/>`
+                        : `
+                <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>`
                 }            
-                <div class="details">
-                    <div class="d-flex justify-content-between align-items-center column-gap-3">
+                <div class="details" style="position: relative; padding-right: 130px;">
+                <div class="d-flex justify-content-between align-items-center column-gap-3">
+                    <div style="flex: 1;">
                         <!-- location.locationName -->
                         <h5>${adPoint.location.locationName}</h5>
                         <meta name="planningStatus" content="${adPoint.planningStatus}"></meta>
-                        <!-- Button to trigger the modal -->
-                        <button
-                            type="button"
-                            class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
-                            data-relatedToType="AdsPoint"
-                            data-relatedTo="${adPoint._id}"
-                            data-ward="${adPoint.location.ward}"
-                            data-district="${adPoint.location.district}"
-                            onclick="reportButtonHandler(event)"
-                            style="width:fit-content; min-width: 111px"
-                        >
-                            <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                            <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                                Báo cáo
-                            </span>
-                        </button>
                     </div>
-                    <!-- locationType -->
-                    <h6>${adPoint.locationType}</h6>
-                    <!-- location.address -->
-                    <p>Phường <b>${adPoint.location.ward}</b> Quận <b>${
-                        adPoint.location.district
-                    }</b></p>
+                    <!-- Button to trigger the modal -->
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger reportExclamation"
+                        style="min-width: 111px; width: fit-content; position: absolute; right: 0; top: 0;"
+                        data-relatedToType="AdsPoint"
+                        data-relatedTo="${adPoint._id}"
+                        data-ward="${adPoint.location.ward}"
+                        data-district="${adPoint.location.district}"
+                        onclick="reportButtonHandler(event)"
+                    >
+                        <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                        <span>Báo cáo</span>
+                    </button>
+                </div>
+                <!-- locationType -->
+                <h6>${adPoint.locationType}</h6>
+                <!-- location.address -->
+                <p>Phường <b>${adPoint.location.ward}</b> Quận <b>${adPoint.location.district}</b></p>
                 </div>
             </div>`,
                 'text/html'
@@ -114,7 +112,7 @@ async function getAllAdsPoints() {
                         >
                             <img src='public/assets/icons/Report_icon.svg' fill="none"/>
                             <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                            Báo cáo
+                            BÁO CÁO VI PHẠM
                             </span>
                         </button>
                         </div>
