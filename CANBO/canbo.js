@@ -7,7 +7,7 @@ const engineWithHelpers = require('./handlebars');
 
 const app = express();
 
-const fileUpload = require('express-fileupload');
+
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
 const axios = require('axios');
@@ -80,7 +80,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/public', express.static('public'));
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use(fileUpload());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());

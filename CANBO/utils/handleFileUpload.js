@@ -74,7 +74,9 @@ function getFormattedDate() {
 //     }
 // };
 
-const handleFileUpload = (req, folderName, maxImages) => {
+const handleFileUpload = (req, res) => {
+    const folderName = 'public/uploads/reportImages';
+    const maxImages = 2;
     try {
         const uploadedImages = {};
 
@@ -108,7 +110,7 @@ const handleFileUpload = (req, folderName, maxImages) => {
             });
         });
 
-        return uploadedImages;
+        res.next();
     } catch (error) {
         throw error;
     }
