@@ -87,11 +87,13 @@ const getSingleReport = async (req, res) => {
     }
 };
 
+
+
 const createReport = async (req, res) => {
     try {
         if(req.files) {
-
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
+            const uploadedImages = req.files;
+            
 
             Object.keys(uploadedImages).forEach((fieldName) => {
                 req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
@@ -125,6 +127,7 @@ const createReport = async (req, res) => {
         }
 
         req.body.residentID = req.residentID;
+        console.log(req.body);
         const reportProcessing = await ReportProcessing.create(req.body);
 
         res.status(StatusCodes.CREATED).json({ reportProcessing });

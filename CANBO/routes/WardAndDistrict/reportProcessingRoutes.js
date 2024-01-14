@@ -17,7 +17,9 @@ const {
     authorizePermissions
 } = require('../../middleware/authentication');
 
-router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, createReport);
+const handleFileUpload = require('../../utils/handleFileUpload');
+
+router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, handleFileUpload, createReport);
 
 router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAllReportsByResident);
 

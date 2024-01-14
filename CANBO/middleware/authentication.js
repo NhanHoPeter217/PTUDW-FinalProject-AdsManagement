@@ -39,6 +39,7 @@ const authenticateUser = async (req, res, next) => {
 };
 
 const authenticateResidentOfCreateReport = async (req, res, next) => {
+    console.log('hello from authenticate ', req.body);
     const { identifier } = req.signedCookies;
     try {
         if (identifier) {
