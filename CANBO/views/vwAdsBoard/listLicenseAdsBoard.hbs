@@ -241,42 +241,42 @@
                                                                 </div>
                                                             </div>
                                                             {{#ifCond requestApprovalStatus '===' 'Chưa được duyệt'}}
-                                                            {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                                            <div class="d-flex justify-content-center mt-2">
-                                                                <div class='d-grid col-md-3 mx-2'>
-                                                                    <button
-                                                                        id='deleteAdsTypeButton'
-                                                                        type='submit'
-                                                                        class='btn btn-outline-danger btn-block'
-                                                                        style='font-family: Inter'
-                                                                    >
-                                                                        KHÔNG DUYỆT
-                                                                    </button>
+                                                            {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
+                                                                <div class="d-flex justify-content-center mt-2">
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='deleteAdsTypeButton'
+                                                                            type='submit'
+                                                                            class='btn btn-outline-danger btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            KHÔNG DUYỆT
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='saveAdsTypeButton'
+                                                                            type='submit'
+                                                                            class='btn btn-success btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            DUYỆT
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
-                                                                <div class='d-grid col-md-3 mx-2'>
-                                                                    <button
-                                                                        id='saveAdsTypeButton'
-                                                                        type='submit'
-                                                                        class='btn btn-success btn-block'
-                                                                        style='font-family: Inter'
-                                                                    >
-                                                                        DUYỆT
-                                                                    </button>
-                                                                </div>
-                                                            </div>
                                                             {{else}}
-                                                            <div class="d-flex justify-content-center mt-2">
-                                                                <div class='d-grid col-md-3 mx-2'>
-                                                                    <button
-                                                                        id='deleteAdsTypeButton'
-                                                                        type='submit'
-                                                                        class='btn btn-outline-danger btn-block'
-                                                                        style='font-family: Inter'
-                                                                    >
-                                                                        HỦY YÊU CẦU
-                                                                    </button>
+                                                                <div class="d-flex justify-content-center mt-2">
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='deleteAdsTypeButton'
+                                                                            type='submit'
+                                                                            class='btn btn-outline-danger btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            HỦY YÊU CẦU
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
                                                             {{/ifCond}}
                                                             {{/ifCond}}
                                                         </div>

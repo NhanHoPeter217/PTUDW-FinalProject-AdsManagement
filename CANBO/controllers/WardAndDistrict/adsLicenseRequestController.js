@@ -110,7 +110,7 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             });
         } else {
             res.render('vwAdsBoard/listLicenseAdsBoard', {
-                authUser: req.session.authUser,
+                authUser: req.user,
                 adsLicenseRequests: adsLicenseRequests_array,
                 adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
             });
