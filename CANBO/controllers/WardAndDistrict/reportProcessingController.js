@@ -13,10 +13,15 @@ const { AUTH_EMAIL } = process.env;
 
 const getAllReportsByResident = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
-            'createdAt'
-        );
-        res.status(StatusCodes.OK).json({ reports });
+        if (!req.residentID) {
+            res.status(StatusCodes.OK).json({ reports: [] });
+        }
+        else {
+            const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
+                'createdAt'
+            );
+            res.status(StatusCodes.OK).json({ reports });
+        }
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
