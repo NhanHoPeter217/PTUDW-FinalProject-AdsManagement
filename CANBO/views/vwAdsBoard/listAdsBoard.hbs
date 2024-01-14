@@ -2,9 +2,35 @@
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
 <link rel="stylesheet" href="public/css/report.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 {{/section}}
 {{#section 'js'}}
 <script src='public/js/listAdsBoard.js' type="module"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/buffer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/filetype.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
+<script>
+  $('#fuMain').fileinput({
+    dropZoneEnabled: true,
+    maxFileCount: 5,
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    language: 'vi',
+    theme: 'fas',
+    uploadUrl: '/file-upload-batch/2',
+    uploadExtraData: function() {
+      return {
+        _token: $("input[name='_token']").val(),
+        _method: $("input[name='_method']").val(),
+        id: $("input[name='id']").val(),
+      };
+    },
+    initialPreviewAsData: true,
+    initialPreviewFileType: 'image',
+  });
+</script>
 {{/section}}
 
 {{!-- Role của User, lưu để script lấy xài --}}
@@ -584,12 +610,10 @@
                                                                     <p class='mb-0' id="edit_adsBoardImage_1-{{_id}}">image_url_111.jpg</p>
                                                                 </div>
                                                             </div>
-                                                            <input
-                                                                type='file'
-                                                                class='form-control reportImage'
-                                                                id="edit_adsBoardImages"
-                                                                accept='image/*'
-                                                            />
+<div class="form-group">
+    <label for="fuMain">Main Photo</label>
+    <input type="file" multiple id="fuMain" name="fuMain">
+</div>
                                                         </div>
                                                         <div class='button-container justify-content-center'>
                                                             <div
@@ -730,7 +754,6 @@
                                                                     <label for='contractEndDate' class='form-label' style='font-family: Inter;'>Ngày hết hạn hợp đồng</label>
                                                                     <input type='text' class='license_contractEndDate form-control license_contractEndDate-{{_id}}' id="license_contractEndDate-{{index}}" required />
                                                                 </div>
-                                                                {{!-- <div id="error-msg" style="color: red;"></div> --}}
                                                             </div>
                                                         </div>
                                                         <div class='mb-3' id="companyName">
