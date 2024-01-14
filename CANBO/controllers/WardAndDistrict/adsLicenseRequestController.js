@@ -151,8 +151,6 @@ const getAllAdsLicenseByAssignedArea = async (req, res) => {
             allAdsLicense.push(...adsLicenseRequests_array);
         }
 
-        console.log(allAdsLicense);
-
         res.status(StatusCodes.OK).json({ allAdsLicense, count: allAdsLicense.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
