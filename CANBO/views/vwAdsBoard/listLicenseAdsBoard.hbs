@@ -2,42 +2,18 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
+<link rel="stylesheet" href="public/css/adpointInfo.css" />
 {{/section}}
 
 {{#section 'js'}}
+<script src="public/js/listLicenseAdsBoard.js"></script>
 <script src="https://unpkg.com/js-datepicker"></script>
-<script>
-    const picker1 = datepicker('#dateExpired', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker2 = datepicker('#startContract', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-    const picker3 = datepicker('#endContract', {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString();
-            input.value = value; // => '1/25/2099'
-        },
-        overlayPlaceholder: 'Nhập năm',
-        customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
-    });
-</script>
 {{/section}}
 
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="card w-100">
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold mb-4">
@@ -47,13 +23,11 @@
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                             <colgroup>
                                 <col style="width: 3%">
-                                <col style="width: 17%">
-                                <col style="width: 18.5%">
-                                <col style="width: 15%">
-                                <col style="width: 12.5%">
-                                <col style="width: 12.5%">
-                                <col style="width: 10%">
-                                <col style="width: 10.5%">
+                                <col style="width: 26%">
+                                <col style="width: 23%">
+                                <col style="width: 23%">
+                                <col style="width: 11%">
+                                <col style="width: 12%">
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
@@ -61,8 +35,6 @@
                                     <th scope="col">Loại bảng quảng cáo</th>
                                     <th scope="col">Địa điểm</th>
                                     <th scope="col">Công ty đặt quảng cáo</th>
-                                    <th scope="col">Ngày bắt đầu</th>
-                                    <th scope="col">Ngày kết thúc</th>
                                     <th scope="col">Tình trạng</th>
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                                         <th scope="col">Xét duyệt</th>
@@ -76,13 +48,11 @@
                             <table class="table table-bordered table-hover text-center">
                                 <colgroup>
                                     <col style="width: 3%">
-                                    <col style="width: 17%">
-                                    <col style="width: 18.5%">
-                                    <col style="width: 15%">
-                                    <col style="width: 12.5%">
-                                    <col style="width: 12.5%">
-                                    <col style="width: 10%">
-                                    <col style="width: 10.5%">
+                                    <col style="width: 26%">
+                                    <col style="width: 23%">
+                                    <col style="width: 23%">
+                                    <col style="width: 11%">
+                                    <col style="width: 12%">
                                 </colgroup>
                                 <tbody id="body">
                                     {{#if adsLicenseRequestsEmpty}}
@@ -103,12 +73,6 @@
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{companyInfo.name}}</p>
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{contractStartDate}}</p>
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{licenseRequestedAdsBoard.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                         <td class="border-bottom-0 text-center align-middle">
@@ -267,15 +231,15 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class='card border'>
+                                                            <div class='card border text-center'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Tình trạng cấp phép</h5>
                                                                     {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
-                                                                        <div class="d-flex align-items-center gap-2">
+                                                                        <div class="d-flex align-items-center justify-content-center gap-2">
                                                                             <span class="badge bg-success rounded-3 fw-semibold">Đã được duyệt</span>
                                                                         </div>
                                                                     {{else}}
-                                                                        <div class="d-flex align-items-center gap-2">
+                                                                        <div class="d-flex align-items-center justify-content-center gap-2">
                                                                             <span class="badge bg-warning rounded-3 fw-semibold">Chưa được duyệt</span>
                                                                         </div>
                                                                     {{/ifCond}}
@@ -333,6 +297,36 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3">
+            <div class="pe-4">
+                <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
+                <div class="filter-container mb-3">
+                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                    <select id="filter_district" class="list-select list-select-sm custom-select fw-bold">
+                        <option selected disabled>-- Chọn Quận --</option>
+                        {{#each districts}}
+                            <option value="{{districtName}}">Quận {{districtName}}</option>
+                        {{/each}}
+                    </select>
+                    {{/ifCond}}
+                    {{#ifCond authUser.role '===' 'Quận'}}
+                    <select id="filter_district" class="list-select list-select-sm custom-select fw-bold" disabled>
+                        <option value="{{authUser.assignedArea.district}}">Quận {{authUser.assignedArea.district}}</option>
+                    </select>
+                    {{/ifCond}}
+                </div>
+                <div class="list-group shadow-sm">
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                        <span class="fw-bold">Danh sách các phường</span>
+                    </div>
+                    <div id="filter_ward" class="scrollable-list">
+                    </div>
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
