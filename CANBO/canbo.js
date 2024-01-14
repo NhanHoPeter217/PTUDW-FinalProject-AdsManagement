@@ -141,6 +141,14 @@ app.set('views', './views');
 app.set('title', 'Ads Management');
 
 // Get pages
+app.get('/forgotPassword', function (req, res) {
+    res.render('commonFeatures/forgotPassword', { layout: false });
+});
+
+app.get('/resetPassword', function (req, res) {
+    res.render('commonFeatures/resetPassword', { layout: false });
+});
+
 app.use(authenticateUser);
 app.get('/', async (req, res) => {
     async function getAllAdsPoints() {
@@ -163,14 +171,6 @@ app.get('/', async (req, res) => {
     res.render('home', { AdsPoints, AdsBoards });
 });
 
-app.get('/forgotPassword', function (req, res) {
-    res.render('commonFeatures/forgotPassword', { layout: false });
-});
-
-app.get('/resetPassword', function (req, res) {
-    res.render('commonFeatures/resetPassword', { layout: false });
-});
-
 app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
@@ -182,13 +182,6 @@ app.get('/updateInfo', function (req, res) {
 // app.get('/admin/adsboard/list', function (req, res) {
 //     res.render('vwAdsBoard/listAdsBoard', {});
 // });
-
-app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
-    const id = req.params.id;
-    const idString = id.toString();
-    console.log(id);
-    res.render('vwAdsBoard/listAdsBoard', { id: id });
-});
 
 // app.get('/admin/adspoint/list', function (req, res) {
 //     res.render('vwAdsPoint/listAdsPoint', {});
@@ -211,10 +204,6 @@ app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
 // });
 
 // app.use('/admin/adspoint', adsPointRoute);
-
-app.get('/ward/:wardId/dist/:distId', function (req, res) {
-    res.render('vwReport/listReport', { layout: 'canbo' });
-});
 
 // app.use('/admin/request', requestRouter);
 
