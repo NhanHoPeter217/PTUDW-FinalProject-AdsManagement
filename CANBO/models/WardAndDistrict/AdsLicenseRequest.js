@@ -70,7 +70,7 @@ adsLicenseRequestSchema.pre(/^find/, function (next) {
                     {
                         path: 'adsFormat',
                         model: 'AdsFormat'
-                    },
+                    }
                 ]
             }
         }

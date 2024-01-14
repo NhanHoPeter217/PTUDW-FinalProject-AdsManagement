@@ -15,8 +15,7 @@ const getAllReportsByResident = async (req, res) => {
     try {
         if (!req.residentID) {
             res.status(StatusCodes.OK).json({ reports: [] });
-        }
-        else {
+        } else {
             const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
                 'createdAt'
             );
@@ -89,9 +88,8 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if(req.files) {
-
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
+        if (req.files) {
+            const uploadedImages = res.locals.uploadedImages;
 
             Object.keys(uploadedImages).forEach((fieldName) => {
                 req.body[fieldName] = Array.isArray(uploadedImages[fieldName])

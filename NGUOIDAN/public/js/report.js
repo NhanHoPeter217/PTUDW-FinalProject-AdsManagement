@@ -148,7 +148,3 @@ function onSubmit(token) {
         });
     grecaptcha.reset();
 }
-
-function getReport() {
-    report;
-}
