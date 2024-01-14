@@ -15,7 +15,7 @@ const {
 } = require('../../controllers/Department/adsPointController');
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
-router.route('/allPoints').get(getAllAdsPoints);
+router.route('/allPoints').get(authenticateUser, getAllAdsPoints);
 router.route('/allPoints/api/v1').get(getAllAdsPointsAPI);
 
 router

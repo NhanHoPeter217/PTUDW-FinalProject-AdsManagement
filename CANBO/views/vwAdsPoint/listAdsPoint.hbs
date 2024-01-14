@@ -15,7 +15,7 @@
         {{/ifCond}}
         <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-md-8{{else}}col-md-9{{/ifCond}}">
             <h5 class="card-title fw-bold mb-4">Quản lý quảng cáo</h5>
-            <div class="card w-100 mb-4">
+            <div class="card w-100 mb-4 shadow-sm">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title fw-semibold" id="tableName">
@@ -612,7 +612,7 @@
                     </select>
                     {{/ifCond}}
                 </div>
-                <div class="list-group">
+                <div class="list-group shadow-sm">
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
                         <span class="fw-bold">Danh sách các phường</span>
                     </div>
@@ -621,7 +621,6 @@
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

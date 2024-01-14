@@ -30,8 +30,7 @@ const getAllAdsPoints = async (req, res) => {
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
-        const role = req.session.authUser.role;
-        console.log(role);
+        const role = req.user.role;
 
         if (role === 'Sở VH-TT') {
             res.render('vwAdsPoint/listAdsPoint', {
@@ -40,7 +39,7 @@ const getAllAdsPoints = async (req, res) => {
                 empty: adsPoints.length === 0,
                 adsFormats: adsFormats,
                 districts: districts,
-                authUser: req.session.authUser
+                authUser: req.user
             });
         } else {
             res.render('vwAdsPoint/listAdsPoint', {
@@ -48,7 +47,7 @@ const getAllAdsPoints = async (req, res) => {
                 empty: adsPoints.length === 0,
                 adsFormats: adsFormats,
                 districts: districts,
-                authUser: req.session.authUser
+                authUser: req.user
             });
         }
     } catch (error) {

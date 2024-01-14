@@ -61,6 +61,7 @@ const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
+const requestRouter = require('./routes/Department/adsInfoEditingRequestRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
@@ -68,7 +69,6 @@ const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessin
 const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
-const requestRouter = require('./routes/request.route');
 const typeRouter = require('./routes/typeRoutes.js');
 const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 // import wardRoute from './routes/ward.route.js';
@@ -109,6 +109,7 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);
+app.use('/request', requestRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
@@ -233,7 +234,7 @@ app.get('/ward/:wardId/dist/:distId', function (req, res) {
     res.render('vwReport/listReport', { layout: 'canbo' });
 });
 
-app.use('/admin/request', requestRouter);
+// app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
