@@ -1,13 +1,13 @@
-$enable-shadows body {
+enable-shadows body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
 #root {
-    margin: 0;
+    /* margin: 0; */
     display: grid;
-    grid-template-columns: 400px auto;
+    /* grid-template-columns: 400px 400px auto; */
     width: 100vw;
 }
 

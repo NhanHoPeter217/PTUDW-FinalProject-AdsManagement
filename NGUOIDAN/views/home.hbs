@@ -10,14 +10,35 @@
         .reportExclamation:hover > img {
             filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
         }
+
+        input::placeholder {        
+            color: #000000;
+            opacity: 0.5;
+            font-size: medium;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            font-size: medium;
+            font-weight: 500;
+        }
     </style>
 {{/section}}
 
+<button class="button-side-bar"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasExample"
+    aria-controls="offcanvasExample"
+>
+    <img src="public/assets/icons/Left_Arrow_icon.svg" alt="arrow-left" style="width: 30px; height: 30px; margin-right: 0px;">
+</button>
+
 <div id='root'>
-    <div id='left-bar' class='col'>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div class='input-group mb-3 flex-nowrap'>
             <input
-                type='text'
+                type='ztext'
                 class='form-control'
                 placeholder='Tìm kiếm địa điểm'
                 aria-label='Tìm địa điểm'
@@ -25,7 +46,7 @@
                 id='searchInput'
             />
         </div>
-        <h3>BẢNG QUẢNG CÁO</h3>
+        <h3 class="text-primary">BẢNG QUẢNG CÁO</h3>
         <div id="boards-container">
         </div>
     </div>
@@ -36,7 +57,7 @@
 
 <button
     id='report-canvas-button'
-    class='btn btn-primary'
+    class='btn btn-danger'
     type='button'
     data-bs-toggle='offcanvas'
     data-bs-target='#report-canvas'
@@ -204,5 +225,4 @@
         async defer>
     </script>
     <script src="/public/js/main.js" type="module"></script>
-
 {{/section}}
