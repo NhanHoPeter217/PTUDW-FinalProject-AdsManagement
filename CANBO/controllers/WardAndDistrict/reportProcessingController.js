@@ -89,8 +89,9 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if (req.files) {
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages');
+        if(req.files) {
+
+            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
 
             Object.keys(uploadedImages).forEach((fieldName) => {
                 req.body[fieldName] = Array.isArray(uploadedImages[fieldName])

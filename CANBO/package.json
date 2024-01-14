@@ -28,7 +28,8 @@
         "nodemailer": "^6.9.7",
         "nodemon": "^3.0.2",
         "rate-limiter": "^0.2.0",
-        "xss-clean": "^0.1.4"
+        "xss-clean": "^0.1.4",
+        "multer": "^1.4.5-lts.1"
     },
     "devDependencies": {
         "@faker-js/faker": "^8.3.1"
