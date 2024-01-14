@@ -247,4 +247,8 @@ $(document).ready(function () {
     // Init map with search box
     const requestEditAdsPointModal = document.getElementsByClassName('requestEditAdsPointModal');
     initMapWithSearchBox(requestEditAdsPointModal);
+
+    // Init map with search box
+    const createAdsPointModal = document.getElementsByClassName('addAdsPointModal');
+    initMapWithSearchBox(createAdsPointModal);
 });
