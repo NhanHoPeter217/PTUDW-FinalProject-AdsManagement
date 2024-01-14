@@ -89,7 +89,6 @@ const authenticateResidentOfGetAllReports = async (req, res, next) => {
                 throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
             }
             attachIdentiferToResponse({ res, resident: payload.resident });
-            console.log('payload', payload.resident.residentID);
 
             req.residentID = payload.resident.residentID;
             return next();

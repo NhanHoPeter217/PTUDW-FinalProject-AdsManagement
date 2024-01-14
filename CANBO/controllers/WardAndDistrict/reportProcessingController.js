@@ -89,16 +89,16 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if(req.files) {
+        console.log(req.body);
+        console.log("______________________");
+        console.log(req.files);
+        const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
 
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
-
-            Object.keys(uploadedImages).forEach((fieldName) => {
-                req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
-                    ? uploadedImages[fieldName]
-                    : [uploadedImages[fieldName]];
-            });
-        }
+        Object.keys(uploadedImages).forEach((fieldName) => {
+            req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
+                ? uploadedImages[fieldName]
+                : [uploadedImages[fieldName]];
+        });
 
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);
