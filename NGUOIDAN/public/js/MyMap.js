@@ -1,8 +1,6 @@
 import {
     Map,
     AdvancedMarkerElement,
-    SearchBox,
-    InfoWindow,
     getDataFromLatLng,
     getWardFromAddress,
     getDistrictFromAddress
@@ -238,12 +236,19 @@ class ReportMarker extends MyMarker {
 
 export class ReportMarkerManager {
     reportMarkers = [];
-
     constructor(myMap, reportProcessings) {
+        const bsOffcanvas = new bootstrap.Offcanvas('#report-canvas');
+
         reportProcessings.forEach((reportProcessing) => {
             const coords = reportProcessing.coords;
             const reportMarker = new ReportMarker(myMap, coords, reportProcessing);
+            reportMarker.marker.addListener('click', () => bsOffcanvas.toggle());
             this.reportMarkers.push(reportMarker);
+        });
+    }
+    destroy() {
+        this.reportMarkers.forEach((reportMarker) => {
+            reportMarker.hide();
         });
     }
 }

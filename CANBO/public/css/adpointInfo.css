@@ -105,13 +105,6 @@
     vertical-align: middle;
 }
 
-#buttonStyle {
-    transition: filter 0.1s ease-in-out;
-}
-#buttonStyle:hover {
-    filter: brightness(0) invert(1);
-}
-
 .limited-width-stt {
     width: 40px;
     overflow: auto;
@@ -269,4 +262,20 @@ p {
 
 .list-select option {
     text-align: center;
+}
+
+.map-view-only {
+    height: 200px;
+}
+
+.map-search-box {
+    height: 200px;
+}
+
+.pac-container.pac-logo{
+    z-index: 1056 !important;
+}
+
+justify-content-space-around {
+    justify-content: center !important;
 }

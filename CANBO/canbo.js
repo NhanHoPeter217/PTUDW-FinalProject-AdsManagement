@@ -3,6 +3,7 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
+// var Handlebars = require('handlebars');
 
 const app = express();
 
@@ -27,6 +28,8 @@ var corsOptions = {
     origin: whitelist
 };
 
+app.set('trust proxy', 1); // trust first proxy
+
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -34,6 +37,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+// app.use(pjax());
 app.use(cors(corsOptions));
 
 // routers
@@ -48,6 +52,7 @@ const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
+const requestRouter = require('./routes/Department/adsInfoEditingRequestRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
@@ -55,7 +60,6 @@ const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessin
 const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
-const requestRouter = require('./routes/request.route');
 const typeRouter = require('./routes/typeRoutes.js');
 const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 // import wardRoute from './routes/ward.route.js';
@@ -65,6 +69,7 @@ const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const { lang } = require('moment');
+const { authenticateUser } = require('./middleware/authentication.js');
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -96,6 +101,7 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);
+app.use('/request', requestRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
@@ -105,8 +111,29 @@ app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 // FRONT END
 // Setup handlebars view engine
 // sectionHandler(engine);
-
 app.engine('hbs', engineWithHelpers);
+// app.js
+// Handlebars.registerHelper('role', async function() {
+//     try {
+//         const response = await fetch('/api/v1/user', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//         });
+
+//         const infoUser_data = await response.json();
+
+//         if (!infoUser_data) {
+//             return "Phường";
+//         }
+
+//         return infoUser_data.infoUser.role || "Phường";
+//     } catch (error) {
+//         console.error('Error fetching user info:', error);
+//         return "Phường"; // Default value in case of an error
+//     }
+// });
 
 // Basic setup
 app.set('view engine', 'hbs');
@@ -114,6 +141,15 @@ app.set('views', './views');
 app.set('title', 'Ads Management');
 
 // Get pages
+app.get('/forgotPassword', function (req, res) {
+    res.render('commonFeatures/forgotPassword', { layout: false });
+});
+
+app.get('/resetPassword', function (req, res) {
+    res.render('commonFeatures/resetPassword', { layout: false });
+});
+
+app.use(authenticateUser);
 app.get('/', async (req, res) => {
     async function getAllAdsPoints() {
         try {
@@ -135,14 +171,6 @@ app.get('/', async (req, res) => {
     res.render('home', { AdsPoints, AdsBoards });
 });
 
-app.get('/forgotPassword', function (req, res) {
-    res.render('commonFeatures/forgotPassword', { layout: false });
-});
-
-app.get('/resetPassword', function (req, res) {
-    res.render('commonFeatures/resetPassword', { layout: false });
-});
-
 app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
@@ -155,20 +183,13 @@ app.get('/updateInfo', function (req, res) {
 //     res.render('vwAdsBoard/listAdsBoard', {});
 // });
 
-app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
-    const id = req.params.id;
-    const idString = id.toString();
-    console.log(id);
-    res.render('vwAdsBoard/listAdsBoard', { id: id });
-});
-
 // app.get('/admin/adspoint/list', function (req, res) {
 //     res.render('vwAdsPoint/listAdsPoint', {});
 // });
 
-app.get('/types/list', function (req, res) {
-    res.render('vwType/listType', { layout: 'canbo_So' });
-});
+// app.get('/types/list', function (req, res) {
+//     res.renderPjax('vwType/listType', { layout: 'canbo_So' });
+// });
 
 // app.get('/admin/adsboard/license/list', function (req, res) {
 //     res.render('vwAdsBoard/listAdsBoard');
@@ -184,11 +205,7 @@ app.get('/types/list', function (req, res) {
 
 // app.use('/admin/adspoint', adsPointRoute);
 
-app.get('/ward/:wardId/dist/:distId', function (req, res) {
-    res.render('vwReport/listReport', { layout: 'canbo' });
-});
-
-app.use('/admin/request', requestRouter);
+// app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

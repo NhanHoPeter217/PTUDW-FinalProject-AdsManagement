@@ -1,5 +1,5 @@
 <div
-    class='modal fade'
+    class='modal fade addAdsPointModal'
     id='addAdsPointModal'
     tabindex='-1'
     aria-labelledby='reportModalLabel'
@@ -19,7 +19,7 @@
                 ></button>
             </div>
             <div class='modal-body'>
-                <form class='report-form' id='addAdsPointForm' enctype='multipart/form-data'>
+                <form id='addAdsPointForm' enctype='multipart/form-data'>
                     <div class='mb-3'>
                         <label for='reportType' class='form-label' style='font-family: Inter;'>Điểm quảng cáo</label>
                         <input
@@ -32,11 +32,12 @@
                     <div class='mb-3'>
                         <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
                         <textarea
-                            class='form-control fullNameReport'
+                            class='form-control fullNameReport search-box'
                             id='address'
                             style="height: 100px;"
                             required
                         ></textarea>
+                        <div class="map-search-box"></div>
                     </div>
                     <div class='mb-3'>
                         <label for='locationType' class='form-label' style='font-family: Inter'>Loại vị trí</label>

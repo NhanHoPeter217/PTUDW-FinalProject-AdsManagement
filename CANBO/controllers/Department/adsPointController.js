@@ -30,13 +30,26 @@ const getAllAdsPoints = async (req, res) => {
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
-        res.render('vwAdsPoint/listAdsPoint', {
-            layout: 'canbo_So',
-            adsPoints: adsPoints,
-            empty: adsPoints.length === 0,
-            adsFormats: adsFormats,
-            districts: districts
-        });
+        const role = req.user.role;
+
+        if (role === 'Sở VH-TT') {
+            res.render('vwAdsPoint/listAdsPoint', {
+                layout: 'canbo_So',
+                adsPoints: adsPoints,
+                empty: adsPoints.length === 0,
+                adsFormats: adsFormats,
+                districts: districts,
+                authUser: req.user
+            });
+        } else {
+            res.render('vwAdsPoint/listAdsPoint', {
+                adsPoints: adsPoints,
+                empty: adsPoints.length === 0,
+                adsFormats: adsFormats,
+                districts: districts,
+                authUser: req.user
+            });
+        }
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -116,6 +129,29 @@ const getAllAdsPointsByAssignedArea = async (req, res) => {
 const getAllAdsPointsByWardList = async (req, res) => {
     const { assignedArea } = req.user;
     const district = assignedArea.district;
+    const wardList = req.body.wardList;
+    try {
+        const locationsID = await Location.find({
+            district,
+            ward: { $in: wardList }
+        }).select('_id');
+        const adsPoints = await AdsPoint.find({ location: locationsID })
+            .populate({
+                path: 'location',
+                model: 'Location'
+            })
+            .populate({
+                path: 'adsBoard',
+                model: 'AdsBoard'
+            });
+        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllAdsPointsByWardListAndDistrict = async (req, res) => {
+    const district = req.body.district;
     const wardList = req.body.wardList;
     try {
         const locationsID = await Location.find({
@@ -219,6 +255,7 @@ module.exports = {
     getAllAdsPoints,
     getAllAdsPointsAPI,
     getAllAdsPointsByAssignedArea,
+    getAllAdsPointsByWardListAndDistrict,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,
     getSingleAdsPoint,

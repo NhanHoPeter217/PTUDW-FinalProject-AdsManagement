@@ -6,6 +6,7 @@ const Identifier = require('../models/Authentication/Identifier');
 const crypto = require('crypto');
 
 const authenticateUser = async (req, res, next) => {
+
     const { refreshToken, accessToken } = req.signedCookies;
     try {
         if (accessToken) {
@@ -33,7 +34,7 @@ const authenticateUser = async (req, res, next) => {
         req.user = payload.user;
         next();
     } catch (error) {
-        throw new CustomError.UnauthenticatedError('Authentication Invalid');
+        res.redirect('/auth/login');
     }
 };
 

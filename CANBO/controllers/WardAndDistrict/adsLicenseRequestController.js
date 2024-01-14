@@ -4,6 +4,7 @@ const AdsLicenseRequest = require('../../models/WardAndDistrict/AdsLicenseReques
 const LicenseRequestedAdsBoard = require('../../models/WardAndDistrict/LicenseRequestedAdsBoard');
 const AdsBoard = require('../../models/AdsBoard');
 const CustomError = require('../../errors');
+const District = require('../../models/Department/District');
 
 const createAdsLicenseRequest = async (req, res) => {
     try {
@@ -39,8 +40,21 @@ const createAdsLicenseRequest = async (req, res) => {
 
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({});
-        res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+        const adsLicenseRequests = await AdsLicenseRequest.find({}).lean();
+        // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        const adsLicenseRequests_array = adsLicenseRequests.filter(
+            (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+        );
+
+        res.render('vwAdsBoard/listLicenseAdsBoard', {
+            authUser: req.user,
+            adsLicenseRequests: adsLicenseRequests_array,
+            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+            districts: districts
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -63,7 +77,7 @@ const getSingleAdsLicenseRequest = async (req, res) => {
     }
 };
 
-const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
+const getAdsLicenseByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
     const { ward, district } = assignedArea;
 
@@ -78,9 +92,66 @@ const getAdsLicenseRequestsByAssignedArea = async (req, res) => {
             query['wardAndDistrict.district'] = district;
         }
 
-        const adsLicenseRequests = await AdsLicenseRequest.find(query);
+        const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
-        res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
+        const role = req.user.role;
+        
+        const adsLicenseRequests_array = adsLicenseRequests.filter(
+            (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+        );
+
+        if (role === 'Quận') {
+            res.render('vwAdsBoard/listLicenseAdsBoard', {
+                authUser: req.user,
+                adsLicenseRequests: adsLicenseRequests_array,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+                districts: districts
+            });
+        } else {
+            res.render('vwAdsBoard/listLicenseAdsBoard', {
+                authUser: req.user,
+                adsLicenseRequests: adsLicenseRequests_array,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+            });
+        }
+        
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
+const getAllAdsLicenseByAssignedArea = async (req, res) => {
+    const district = req.body.district;
+    const wardList = req.body.wardList;
+
+    console.log(district);
+    console.log(wardList);
+
+    try {
+        var allAdsLicense = [];
+
+        for (let i = 0; i < wardList.length; ++i) {
+            let query = {};
+
+            if (wardList[i] !== '*') {
+                query['wardAndDistrict.ward'] = wardList[i];
+            }
+
+            if (district !== '*') {
+                query['wardAndDistrict.district'] = district;
+            }
+
+            const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+            
+            const adsLicenseRequests_array = adsLicenseRequests.filter(
+                (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
+            );
+
+            allAdsLicense.push(...adsLicenseRequests_array);
+        }
+
+        res.status(StatusCodes.OK).json({ allAdsLicense, count: allAdsLicense.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -182,7 +253,8 @@ module.exports = {
     createAdsLicenseRequest,
     getAllAdsLicenseRequests,
     getSingleAdsLicenseRequest,
-    getAdsLicenseRequestsByAssignedArea,
+    getAdsLicenseByAssignedArea,
+    getAllAdsLicenseByAssignedArea,
     getAdsLicenseRequestsByWardAndDistrict,
     updateAdsLicenseRequestByAssignedArea,
     updateAdsLicenseRequestByDepartmentOfficier

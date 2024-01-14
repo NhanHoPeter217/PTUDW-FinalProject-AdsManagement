@@ -43,6 +43,8 @@ const login = async (req, res) => {
     }
     const tokenUser = createTokenUser(user);
 
+    user.password = undefined; // delete password from user object
+
     // create refresh token
     let refreshToken = '';
     // check for existing token
@@ -86,7 +88,7 @@ const logout = async (req, res) => {
         message: 'Logout successfully'
     });
 
-    window.location.href = '/login';
+    res.redirect('/auth/login');
 };
 
 module.exports = {

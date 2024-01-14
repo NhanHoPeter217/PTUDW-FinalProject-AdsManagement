@@ -40,15 +40,22 @@
 
 {{#section 'js'}}
 <script src='../../public/js/listType.js'></script>
+<script>
+    $('#add-new-test').click(function (event) {
+        $.get('/types/list').then(function (data) {
+            $('#main').html(data);
+        });
+    });
+</script>
 {{/section}}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4" id="main">
     <div class="row">
         <div class="col-md-11 pb-4">
             <h5 class="card-title fw-bold mb-4">Quản lý phân loại</h5>
 
             <!-- Card 1: Các loại hình quảng cáo -->
-            <div class="card mb-3">
+            <div class="card mb-3 shadow-sm">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title fw-bold">
@@ -197,7 +204,7 @@
             </div>
 
             <!-- Card 2: Các loại hình thức báo cáo -->
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title fw-bold">

@@ -1,316 +1,346 @@
-{{> navbar}}
-
 {{#section 'css'}}
 <link rel="stylesheet" href="../../public/css/report.css" />
+{{/section}}
+
+{{#section 'js'}}
+<script src="../../public/js/listRequest.js"></script>
 {{/section}}
 
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <h5 class="card-title fw-semibold mb-4">Danh sách các yêu cầu</h5>
+            <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách các yêu cầu</h5>
             <div class="card w-100 mt-3">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Bảng quảng cáo</h5>
+                    <h5 class="card-title fw-semibold mb-4" id="tableName">
+                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                        Bảng quảng cáo
+                    </h5>
                     <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
-                            <thead class="text-dark fs-4">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 3%">
+                                <col style="width: 21%">
+                                <col style="width: 12.5%">
+                                <col style="width: 10%">
+                                <col style="width: 12.5%">
+                                <col style="width: 12.5%">
+                                <col style="width: 15%">
+                                <col style="width: 12.5%">
+                            </colgroup>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">#</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Bảng quảng cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Loại bảng quảng cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Kích thước</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Số lượng</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Quận</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Hết hạn hợp đồng</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
-                                    </th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Loại bảng quảng cáo</th>
+                                    <th scope="col">Kích thước</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Quận</th>
+                                    <th scope="col">Hết hạn hợp đồng</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">1</h6>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-link m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailAdsBoardRequestModal">
-                                            OMG
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Trụ bảng hiflex</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">2</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">7</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-primary rounded-3 fw-semibold"
-                                                >Đã quy hoạch</span
-                                            >
-                                        </div>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-warning rounded-3 fw-semibold"
-                                                >Đang chờ duyệt</span
-                                            >
-                                        </div>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-success m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#">
-                                            Duyệt
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-danger m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsBoardModal">
-                                            Không duyệt
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
                         </table>
+                        <div class="table-body-container" style="height: 18vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center">
+                                <colgroup>
+                                    <col style="width: 3%">
+                                    <col style="width: 21%">
+                                    <col style="width: 12.5%">
+                                    <col style="width: 10%">
+                                    <col style="width: 12.5%">
+                                    <col style="width: 12.5%">
+                                    <col style="width: 15%">
+                                    <col style="width: 12.5%">
+                                </colgroup>
+                                <tbody id="body">
+                                {{#if adsBoardRequestedEditsEmpty}}
+                                    <tr>
+                                        <td class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa bảng quảng cáo</td>
+                                    </tr>
+                                {{else}}
+                                {{#each adsBoardRequestedEdits as |adsBoardRequestedEdits index|}}
+                                    <tr>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailAdsBoardRequestModal">
+                                                {{adsObject.adsBoardType}}
+                                            </button>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <p class="mb-0 fw-normal">{{adsObject.size.width}}m x {{adsObject.size.height}}m</p>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <p class="mb-0 fw-normal">{{adsObject.quantity}}</p>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <p class="mb-0 fw-normal">{{adsObject.contractEndDate}}</p>
+                                        </td>
+                                        {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                    <span class="badge bg-success rounded-3 fw-semibold">Đã được duyệt</span>
+                                                </div>
+                                            </td>
+                                        {{/ifCond}}
+                                        {{#ifCond requestApprovalStatus '===' 'Chưa được duyệt'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                    <span class="badge bg-warning rounded-3 fw-semibold">Chưa được duyệt</span>
+                                                </div>
+                                            </td>
+                                        {{/ifCond}}
+                                        {{#ifCond requestApprovalStatus '===' 'Không được duyệt'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                    <span class="badge bg-danger rounded-3 fw-semibold">Không được duyệt</span>
+                                                </div>
+                                            </td>
+                                        {{/ifCond}}
+                                        <td class="border-bottom-0 align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailAdsBoardRequestModal-{{_id}}">
+                                                <img src="../../../public/assets/icons/Detail_&_Verify_icon.svg" alt="" width="24" height="24" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <div
+                                        class='modal fade'
+                                        id='detailAdsBoardRequestModal-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-detail-body'>
+                                                    <form id='detailAdsBoardRequestForm' enctype='multipart/form-data'>
+                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
+                                                                    {{#ifCond adsObject.adsBoardType '!==' newInfo.adsBoardType}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsBoardType}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsBoardType}}</p>
+                                                                    {{else}}
+                                                                        <p class='mb-0'>{{newInfo.adsBoardType}}</p>
+                                                                    {{/ifCond}}
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa điểm:</h5>
+                                                                    {{!-- {{#ifCond adsObject.}} --}}
+                                                                    <p class='mb-0'>Thanh Đa</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                    <p class='mb-0'>227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Loại vị trí</h5>
+                                                                    <p class='mb-0'>Gì đó</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Hình thức quảng cáo</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
+                                                                    <p class='mb-0'>Đã quy hoạch</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Loại bảng quảng cáo</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Kích thước</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Số lượng</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Ngày hết hạn của hợp đồng
+                                                                        quảng cáo</h5>
+                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                                {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="card w-100 mt-3">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">Điểm quảng cáo</h5>
+                    <h5 class="card-title fw-semibold mb-4" id="tableName">
+                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+                        Điểm quảng cáo
+                    </h5>
                     <div class="table-responsive">
-                        <table class="table text-nowrap mb-0 align-middle">
-                            <thead class="text-dark fs-4">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 3%">
+                                <col style="width: 20%">
+                                <col style="width: 17%">
+                                <col style="width: 13%">
+                                <col style="width: 15%">
+                                <col style="width: 13%">
+                                <col style="width: 12%">
+                            </colgroup>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">#</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Điểm quảng cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Loại vị trí</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Hình thức quảng cáo</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Phường</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Quận</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Trạng thái quy hoạch</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">&nbsp;</h6>
-                                    </th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Điểm quảng cáo</th>
+                                    <th scope="col">Loại vị trí</th>
+                                    <th scope="col">Quận</th>
+                                    <th scope="col">Trạng thái quy hoạch</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                        </table>
+                        <div class="table-body-container" style="height: 18vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center">
+                                <colgroup>
+                                    <col style="width: 3%">
+                                    <col style="width: 20%">
+                                    <col style="width: 17%">
+                                    <col style="width: 13%">
+                                    <col style="width: 15%">
+                                    <col style="width: 13%">
+                                    <col style="width: 12%">
+                                </colgroup>
+                            <tbody id="body">
+                                {{#if adsPointRequestedEditsEmpty}}
                                 <tr>
-                                    <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">1</h6>
+                                    <td class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa điểm quảng cáo</td>
+                                </tr>
+                                {{else}}
+                                {{#each adsPointRequestedEdits as |adsPointRequestedEdits index|}}
+                                <tr>
+                                    <td class="border-bottom-0 text-center align-middle">
+                                        <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
                                     </td>
-                                    <td class="border-bottom-0">
+                                    <td class="border-bottom-0 text-center align-middle">
                                         <button
                                             type="button"
                                             class="btn btn-link m-1"
                                             data-bs-toggle="modal"
                                             data-bs-target="#detailAdsPointRequestModal">
-                                            Thanh Đa
+                                            {{newInfo.locationName}}
                                         </button>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
+                                    <td class="border-bottom-0 text-center align-middle">
+                                        <p class="mb-0 fw-normal">{{adsObject.locationType}}</p>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
+                                    <td class="border-bottom-0 text-center align-middle">
+                                        <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">2</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">7</p>
-                                    </td>
-                                    <td class="border-bottom-0">
+                                    {{#ifCond adsObject.planningStatus '===' 'Đã quy hoạch'}}
+                                    <td class="border-bottom-0 text-center align-middle">
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge bg-primary rounded-3 fw-semibold"
                                                 >Đã quy hoạch</span
                                             >
                                         </div>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-success rounded-3 fw-semibold"
-                                                >Đã duyệt</span
-                                            >
-                                        </div>
-                                    </td>
-                                    {{!-- <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-success m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#">
-                                            Duyệt
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-danger m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsPointModal">
-                                            Không duyệt
-                                        </button>
-                                    </td> --}}
-                                </tr>
-                                <tr>
-                                    <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">1</h6>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-link m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailAdsPointRequestModal">
-                                            Thanh Đa
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">2</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">7</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-primary rounded-3 fw-semibold"
-                                                >Đã quy hoạch</span
-                                            >
-                                        </div>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-warning rounded-3 fw-semibold"
-                                                >Đang chờ duyệt</span
-                                            >
-                                        </div>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-success m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#">
-                                            Duyệt
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-danger m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#requestEditAdsPointModal">
-                                            Không duyệt
-                                        </button>
-                                    </td>
-                                </tr>
-                                {{!-- <tr>
-                                    <td class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">2</h6>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <button
-                                            type="button"
-                                            class="btn btn-link m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailAdsPointModal">
-                                            Thanh Đa
-                                        </button>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Trung tâm thương mại</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">Cổ động chính trị</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">2</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <p class="mb-0 fw-normal">7</p>
-                                    </td>
-                                    <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
+                                    {{else}}
+                                    <td class="border-bottom-0 text-center align-middle">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
                                             <span class="badge bg-danger rounded-3 fw-semibold"
                                                 >Chưa quy hoạch</span
                                             >
                                         </div>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <button type="button" class="btn btn-primary m-1">
-                                            Các bảng quảng cáo
+                                    {{/ifCond}}
+                                    {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                <span class="badge bg-success rounded-3 fw-semibold">Đã được duyệt</span>
+                                            </div>
+                                        </td>
+                                    {{/ifCond}}
+                                    {{#ifCond requestApprovalStatus '===' 'Chưa được duyệt'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                <span class="badge bg-warning rounded-3 fw-semibold">Chưa được duyệt</span>
+                                            </div>
+                                        </td>
+                                    {{/ifCond}}
+                                    {{#ifCond requestApprovalStatus '===' 'Không được duyệt'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+                                                <span class="badge bg-danger rounded-3 fw-semibold">Không được duyệt</span>
+                                            </div>
+                                        </td>
+                                    {{/ifCond}}
+                                    <td class="border-bottom-0 text-center align-middle">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary m-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#">
+                                            <img src="../../../public/assets/icons/Detail_&_Verify_icon.svg" alt="" width="24" height="24" />
                                         </button>
                                     </td>
-                                    <td class="border-bottom-0">
-                                        <button type="button" class="btn btn-outline-warning m-1">
-                                            Yêu cầu chỉnh sửa
-                                        </button>
-                                    </td>
-                                </tr> --}}
+                                </tr>
+                            {{/each}}
+                            {{/if}}
                             </tbody>
                         </table>
                     </div>

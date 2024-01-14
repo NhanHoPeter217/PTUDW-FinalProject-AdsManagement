@@ -8,13 +8,14 @@ const {
     getAllAdsPointsByAssignedArea,
     getAllAdsPointByWardAndDistrict,
     getAllAdsPointsByWardList,
+    getAllAdsPointsByWardListAndDistrict,
     getSingleAdsPoint,
     updateAdsPoint,
     deleteAdsPoint
 } = require('../../controllers/Department/adsPointController');
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
-router.route('/allPoints').get(getAllAdsPoints);
+router.route('/allPoints').get(authenticateUser, getAllAdsPoints);
 router.route('/allPoints/api/v1').get(getAllAdsPointsAPI);
 
 router
@@ -28,6 +29,14 @@ router
 router
     .route('/wardList/api/v1')
     .post(authenticateUser, authorizePermissions('Quận'), getAllAdsPointsByWardList);
+
+router
+    .route('/wardList/byDistrict/api/v1')
+    .post(
+        authenticateUser,
+        authorizePermissions('Sở VH-TT', 'Quận'),
+        getAllAdsPointsByWardListAndDistrict
+    );
 // router
 //     .route('/wardList/api/v1')
 //     .post(getAllAdsPointsByWardList);

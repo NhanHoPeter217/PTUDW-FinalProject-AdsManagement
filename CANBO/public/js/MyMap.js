@@ -1,8 +1,6 @@
 import {
     Map,
     AdvancedMarkerElement,
-    SearchBox,
-    InfoWindow,
     getDataFromLatLng,
     getWardFromAddress,
     getDistrictFromAddress
@@ -15,20 +13,49 @@ export class MyMap {
     clientMarker;
     activeInfoMarker;
     places_service;
+    center = { lat: 10.7625216, lng: 106.6823262 }; // default center at HCMUS
 
     constructor(activeInfoMarker) {
         this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
         this.activeInfoMarker = activeInfoMarker;
     }
 
+    initMapViewOnly(Element, coords) {
+        this.map = new Map(Element, {
+            zoom: 16,
+            center: coords || this.center,
+            mapId: '4fde48b8a0296373',
+            disableDoubleClickZoom: true,
+            draggable: false,
+            keyboardShortcuts: false,
+            navigationControl: false,
+            scaleControl: false,
+            scrollwheel: false,
+            streetViewControl: false,
+            disableDefaultUI: true,
+            draggableCursor: 'auto',
+            streetView: false,
+            streetViewCotrol: false,
+            streetViewControlOptions: false,
+            clickableIcons: false
+        });
+
+        // Client icon set
+        this.clientMarker = new AdvancedMarkerElement({
+            map: this.map,
+            position: coords || this.center,
+            zIndex: google.maps.Marker.MAX_ZINDEX
+        });
+    }
+
     async initMap(Element) {
-        const center = await getClientLocation();
+        this.center = await getClientLocation();
 
         this.map = new Map(Element, {
             zoom: 17,
             minZoom: 12,
-            maxZoom: 100,
-            center: center,
+            maxZoom: 22,
+            center: this.center,
             mapId: '4fde48b8a0296373',
             keyboardShortcuts: false,
             disableDefaultUI: true,
@@ -45,7 +72,7 @@ export class MyMap {
         // Client icon set
         this.clientMarker = new AdvancedMarkerElement({
             map: this.map,
-            position: center,
+            position: this.center,
             content: $(
                 '<img src="\\public\\assets\\icons\\ClientLocation.svg" alt="client" width="30" height="30">'
             )[0],
@@ -178,7 +205,7 @@ class InfoMarker extends MyMarker {
                 district: data.district
             };
             const content = `
-                <div class="d-flex align-items-center column-gap-2 info-board mb-2">
+            <div class="d-flex align-items-center column-gap-2 info-board mb-2">
                 <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g>
                     <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -189,21 +216,7 @@ class InfoMarker extends MyMarker {
                     <h6 class="mb-1">${location.locationName}</h6>
                     <p>Phường <b>${location.ward}</b>\t Quận <b>${location.district}</b></p>
                 </div>
-                </div>
-                <!-- Button to trigger the modal -->
-                <button
-                    type="button"
-                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
-                    onclick="reportButtonHandler(event)"
-                    data-relatedToType="Location"
-                    data-relatedTo='${JSON.stringify(location)}'
-                    style="width: fit-content;"
-                >
-                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                        Báo cáo
-                    </span>
-                </button>
+            </div>
             `;
             return content;
         }
@@ -229,7 +242,7 @@ export class MarkerManager {
         this.map = myMap.map;
 
         // Set list markers
-        this.adPoints = Array.from(adPoints);
+        this.adPoints = adPoints;
 
         // Init markers
         for (const adPoint of this.adPoints) {
@@ -316,7 +329,7 @@ export class MySearchBox {
         this.activeInfoMarker = activeInfoMarker;
     }
 
-    async initSearchBox() {
+    initSearchBox(bindToMap = true) {
         const options = {
             componentRestrictions: { country: 'vn' },
             fields: ['address_components', 'geometry', 'name', 'formatted_address', 'place_id'],
@@ -326,7 +339,7 @@ export class MySearchBox {
         this.autocomplete = new google.maps.places.Autocomplete(this.input, options);
 
         // Set bounds automatically
-        this.autocomplete.bindTo('bounds', this.map);
+        bindToMap && this.autocomplete.bindTo('bounds', this.map);
 
         // Add event listener
         this.autocomplete.addListener('place_changed', () => {

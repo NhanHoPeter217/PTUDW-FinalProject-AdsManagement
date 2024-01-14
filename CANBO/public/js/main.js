@@ -17,7 +17,7 @@ async function main() {
         await map.initMap(mapElement);
 
         // get all locations element
-        const adPointElements = document.getElementsByClassName('adpointInfo');
+        const adPointElements = document.querySelectorAll('.adpointInfo');
 
         // Hide all ad-board
         for (let item of document.getElementsByClassName('ad-board')) {
