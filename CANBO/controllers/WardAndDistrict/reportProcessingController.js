@@ -13,10 +13,15 @@ const { AUTH_EMAIL } = process.env;
 
 const getAllReportsByResident = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
-            'createdAt'
-        );
-        res.status(StatusCodes.OK).json({ reports });
+        if (!req.residentID) {
+            res.status(StatusCodes.OK).json({ reports: [] });
+        }
+        else {
+            const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
+                'createdAt'
+            );
+            res.status(StatusCodes.OK).json({ reports });
+        }
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
@@ -84,8 +89,9 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if (req.files) {
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages');
+        if(req.files) {
+
+            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages', 2);
 
             Object.keys(uploadedImages).forEach((fieldName) => {
                 req.body[fieldName] = Array.isArray(uploadedImages[fieldName])

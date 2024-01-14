@@ -11,14 +11,15 @@ const {
 } = require('../../controllers/WardAndDistrict/reportProcessingController');
 
 const {
-    authenticateResident,
+    authenticateResidentOfCreateReport,
+    authenticateResidentOfGetAllReports,
     authenticateUser,
     authorizePermissions
 } = require('../../middleware/authentication');
 
-router.route('/resident/api/v1').post(authenticateResident, createReport);
+router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, createReport);
 
-router.route('/resident/api/v1').get(authenticateResident, getAllReportsByResident);
+router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAllReportsByResident);
 
 router
     .route('/dist/:distID/ward/:wardID')

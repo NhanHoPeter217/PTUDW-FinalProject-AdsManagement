@@ -38,7 +38,7 @@ const authenticateUser = async (req, res, next) => {
     }
 };
 
-const authenticateResident = async (req, res, next) => {
+const authenticateResidentOfCreateReport = async (req, res, next) => {
     const { identifier } = req.signedCookies;
     try {
         if (identifier) {
@@ -74,6 +74,35 @@ const authenticateResident = async (req, res, next) => {
     }
 };
 
+
+const authenticateResidentOfGetAllReports = async (req, res, next) => {
+    const { identifier } = req.signedCookies;
+    try {
+        if (identifier) {
+            console.log('had identifier');
+            const payload = isTokenValid(identifier);
+            const existingIdentifier = await Identifier.findOne({
+                residentID: payload.resident.residentID
+            });
+
+            if (!existingIdentifier || !existingIdentifier?.isValid) {
+                throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
+            }
+            attachIdentiferToResponse({ res, resident: payload.resident });
+            console.log('payload', payload.resident.residentID);
+
+            req.residentID = payload.resident.residentID;
+            return next();
+        } else {
+            console.log('did not have identifier');
+            return next();
+        }
+    } catch (error) {
+        console.log(error);
+        throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
+    }
+};
+
 const authorizePermissions = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
@@ -86,5 +115,6 @@ const authorizePermissions = (...roles) => {
 module.exports = {
     authenticateUser,
     authorizePermissions,
-    authenticateResident
+    authenticateResidentOfCreateReport,
+    authenticateResidentOfGetAllReports
 };
