@@ -72,27 +72,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(document).ready(function () {
-    $(document).on('submit', '#requestLicenseAdsBoardForm', function (e) {
+    $('.requestLicenseAdsBoardForm').on('submit', function (e) {
         e.preventDefault();
-
         const id = e.currentTarget.getAttribute('data-id');
         const adsBoardType = document.getElementById(`license_adsBoardType-${id}`).value;
         const width = parseInt(document.getElementById(`license_width-${id}`).value);
         const height = parseInt(document.getElementById(`license_height-${id}`).value);
         const quantity = parseInt(document.getElementById(`license_quantity-${id}`).value);
 
-        const adsBoardImages = [];
-        const adsBoardImage1 = document.getElementById(`license_adsBoardImage_1-${id}`).textContent;
-        const adsBoardImage2 = document.getElementById(`license_adsBoardImage_2-${id}`).textContent;
-        if (adsBoardImage1) adsBoardImages.push(adsBoardImage1);
-        if (adsBoardImage2) adsBoardImages.push(adsBoardImage2);
-
         const contractEndDate = document.getElementsByClassName(
             `license_contractEndDate-${id}`
-        ).textContent;
+        )[0].value;
         const contractStartDate = document.getElementsByClassName(
             `license_contractStartDate-${id}`
-        ).textContent;
+        )[0].value;
         const adsContent = document.getElementById(`license_adsContent-${id}`).value;
         const name = document.getElementById(`license_companyName-${id}`).value;
         const email = document.getElementById(`license_companyEmail-${id}`).value;
@@ -107,7 +100,7 @@ $(document).ready(function () {
                     height: height
                 },
                 quantity: quantity,
-                adsBoardImages: adsBoardImages,
+                images: 'temp',
                 contractEndDate: contractEndDate
             },
             adsContent: adsContent,
@@ -120,17 +113,19 @@ $(document).ready(function () {
             contractStartDate: contractStartDate
         };
 
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(licenseRequestData));
+        console.log(e.currentTarget)
+        console.log( $(`#image-input-${id}`).prop('files'));
+        formData.append('images', $('.image-input').val());
+
+
         console.log(licenseRequestData);
 
-        fetch(`/api/v1/adsLicenseRequest/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(licenseRequestData)
+        axios.post(`/adsLicenseRequest/${id}`, {
+            data: formData
         })
-            .then((response) => response.json())
-            .then((data) => {
+            .then((response) => {
                 window.location.reload();
             })
             .catch((error) => {
@@ -138,7 +133,7 @@ $(document).ready(function () {
             });
     });
 
-    $(document).on('submit', '#requestEditAdsBoardForm', function (e) {
+    $('.requestEditAdsBoardForm').on('submit', function (e) {
         e.preventDefault();
 
         const adsObject = e.currentTarget.getAttribute('data-id');

@@ -132,7 +132,7 @@ module.exports = { configureUpload };
 
 // var storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
-//     cb(null, 'public/uploads/reportImages')
+//     cb(null, 'public/uploads/image-inputs')
 //   },
 //   filename: function (req, file, cb) {
 //     const fileName = `${getFormattedDate()}_${file.originalname}`;

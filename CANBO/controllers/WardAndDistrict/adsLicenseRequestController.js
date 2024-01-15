@@ -27,7 +27,7 @@ const createAdsLicenseRequest = async (req, res) => {
                 select: 'ward district'
             }
         });
-
+        req.body = JSON.parse(req.body);
         req.body.wardAndDistrict = {
             ward: adsBoard.adsPoint.location.ward,
             district: adsBoard.adsPoint.location.district

@@ -148,37 +148,6 @@ app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
 
-// app.get('/signin', function (req, res) {
-//     res.render('commonFeatures/signin', { layout: false });
-// });
-
-// app.get('/admin/adsboard/list', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard', {});
-// });
-
-// app.get('/admin/adspoint/list', function (req, res) {
-//     res.render('vwAdsPoint/listAdsPoint', {});
-// });
-
-// app.get('/types/list', function (req, res) {
-//     res.renderPjax('vwType/listType', { layout: 'canbo_So' });
-// });
-
-// app.get('/admin/adsboard/license/list', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.get('/admin/adsboard/license/list/manage', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.get('/admin/adsboard/list/manage', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.use('/admin/adspoint', adsPointRoute);
-
-// app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

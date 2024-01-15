@@ -37,6 +37,8 @@ const adsLicenseRequestSchema = new Schema(
             enum: ['Chưa được duyệt', 'Đã được duyệt'],
             default: 'Chưa được duyệt'
         },
+        
+        images: [{ type: String }],
 
         wardAndDistrict: {
             ward: {
