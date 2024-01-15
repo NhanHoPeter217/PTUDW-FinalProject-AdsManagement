@@ -1,5 +1,5 @@
 var multer = require('multer');
-var path = require('path')
+var path = require('path');
 function getFormattedDate() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -14,20 +14,19 @@ function getFormattedDate() {
 
 const configureUpload = (folderName, maxImages) => {
     const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, folderName);
-      },
-      filename: function (req, file, cb) {
-        const fileName = `${getFormattedDate()}_${file.originalname}`;
-        console.log(fileName);
-        cb(null, fileName);
-      }
+        destination: function (req, file, cb) {
+            cb(null, folderName);
+        },
+        filename: function (req, file, cb) {
+            const fileName = `${getFormattedDate()}_${file.originalname}`;
+            cb(null, fileName);
+        }
     });
-  
+
     const upload = multer({ storage: storage, limits: { files: maxImages } }).any();
     return upload;
-  };
-  
+};
+
 module.exports = { configureUpload };
 
 // const path = require('path');
@@ -133,7 +132,7 @@ module.exports = { configureUpload };
 
 // var storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
-//     cb(null, 'public/uploads/reportImages')
+//     cb(null, 'public/uploads/image-inputs')
 //   },
 //   filename: function (req, file, cb) {
 //     const fileName = `${getFormattedDate()}_${file.originalname}`;
