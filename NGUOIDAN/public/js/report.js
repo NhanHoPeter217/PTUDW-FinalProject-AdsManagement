@@ -121,7 +121,7 @@ function onSubmit(token) {
     formData.append('email', email);
     formData.append('phone', phone);
     formData.append('content', content);
-    formData.append('images', document.getElementById('images').files);
+    formData.append('images', document.getElementById('image1').files[0]);
 
     // Display the key/value pairs
     for (let pair of formData.entries()) {

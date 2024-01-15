@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(document).ready(function () {
-    $('.requestLicenseAdsBoardForm').on('submit', function (e) {
+    $('.requestLicenseAdsBoardForm').on('submit',async function (e) {
         e.preventDefault();
         const id = e.currentTarget.getAttribute('data-id');
         const adsBoardType = document.getElementById(`license_adsBoardType-${id}`).value;
@@ -114,23 +114,29 @@ $(document).ready(function () {
         };
 
         const formData = new FormData();
+        
+
+        const files = $('#image-input-' + id).prop('files');
+        for (let file of files) {
+            formData.append('images[]', file);
+        }
         formData.append('data', JSON.stringify(licenseRequestData));
-        console.log(e.currentTarget)
-        console.log( $(`#image-input-${id}`).prop('files'));
-        formData.append('images', $('.image-input').val());
 
 
-        console.log(licenseRequestData);
+        // Display the key/value pairs
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
 
-        axios.post(`/adsLicenseRequest/${id}`, {
-            data: formData
-        })
+        await axios.post(`/adsLicenseRequest/${id}`, formData)
             .then((response) => {
-                window.location.reload();
+                // window.location.reload();
+                alert('Yêu cầu cấp phép quảng cáo thành công!');
             })
             .catch((error) => {
                 console.error('Lỗi khi yêu cầu cấp phép quảng cáo:', error);
             });
+    
     });
 
     $('.requestEditAdsBoardForm').on('submit', function (e) {
@@ -194,7 +200,7 @@ $(document).ready(function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                window.location.reload();
+                // window.location.reload();
             })
             .catch((error) => {
                 console.error('Lỗi khi yêu cầu chỉnh sửa quảng cáo:', error);

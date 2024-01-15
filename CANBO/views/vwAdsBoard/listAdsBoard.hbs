@@ -1,5 +1,4 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
 <link rel="stylesheet" href="public/css/report.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
@@ -14,13 +13,6 @@
     allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
     language: 'vi',
     theme: 'fas',
-    uploadExtraData: function() {
-      return {
-        _token: $("input[name='_token']").val(),
-        _method: $("input[name='_method']").val(),
-        id: $("input[name='id']").val(),
-      };
-    },
     initialPreviewAsData: true,
     initialPreviewFileType: 'image',
     showUpload: false,
@@ -28,6 +20,8 @@
     disableZoomTitle: true,
   });
 </script>
+
+
 {{/section}}
 
 {{!-- Role của User, lưu để script lấy xài --}}
@@ -278,7 +272,7 @@
 
 
                                         
-                                        {{!-- Edit AdsBoard Modal --}}
+                                        {{!-- Edit AdsBoard Modal (Sở) --}}
                                     {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
                                     <div
                                         class='modal fade requestEditAdsBoardModal'
@@ -462,7 +456,7 @@
                                     {{else}}
 
 
-                                    {{!-- Request Edit AdsBoard Modal --}}
+                                    {{!-- Request Edit AdsBoard Modal (Phường Quận) --}}
                                     <div
                                         class='modal fade requestEditAdsBoardModal'
                                         id='requestEditAdsBoardModal-{{index}}'
@@ -599,15 +593,11 @@
                                                         </div>
                                                         <div class='mb-3' id="adsBoardImages{{index}}">
                                                             <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
-                                                            <div class='card border mb-3'>
-                                                                <div class='card-body'>
-                                                                    <p class='mb-0' id="edit_adsBoardImage_1-{{_id}}">image_url_111.jpg</p>
-                                                                </div>
-                                                            </div>
-<div class="form-group">
-    <label for="images{{_id}}">Cập nhật hình ảnh</label>
-    <input type="file" multiple id="images{{_id}}" class="images">
-</div>
+                                                            <input type="file" id="edit-adsboard-{{_id}}" class="image-input" multiple>
+                                                        <div class="form-group">
+                                                            <label for="images{{_id}}">Cập nhật hình ảnh</label>
+                                                            <input type="file" multiple id="images{{_id}}" class="image-input">
+                                                        </div>
                                                         </div>
                                                         <div class='button-container justify-content-center'>
                                                             <div
@@ -722,7 +712,7 @@
                                                         </div>
                                                         <div class='mb-3' id="license_adsBoardImages">
                                                             <label class='form-label' style='font-family: Inter'>Hình ảnh bảng quảng cáo</label>
-                                                            <input type="file" id="image-input-{{_id}}" class="image-input">
+                                                            <input type="file" id="image-input-{{_id}}" class="image-input" multiple>
                                                         </div>
                                                         <div class='mb-3' id="adsContent">
                                                             <label for='adsContent' class='form-label' style='font-family: Inter'>Nội dung quảng cáo</label>
