@@ -8,8 +8,6 @@ const CustomError = require('../../errors');
 const sendEmail = require('../../utils/sendEmail');
 const fs = require('fs').promises;
 const path = require('path');
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
 
 const { AUTH_EMAIL } = process.env;
 
@@ -100,18 +98,7 @@ const getAllReportsByAssignedArea = async (req, res) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
 
-        const contents = reports.map(report => {
-            const dom = new JSDOM(report.content);
-            const paragraphElement = dom.window.document.querySelector('p');
-            if (paragraphElement) {
-                return paragraphElement.textContent;
-            } else {
-                return '';
-            }
-        });
-
-        reports.forEach((report, index) => {
-            report.content = contents[index];
+        reports.forEach((report) => {
             for (let i = 0; i < report.images.length; i++) {
                 report.images[i] = report.images[i].replace(/\\/g, '/');
             }

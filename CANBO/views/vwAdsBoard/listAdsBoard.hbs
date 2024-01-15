@@ -16,10 +16,9 @@
   $('#fuMain').fileinput({
     dropZoneEnabled: true,
     maxFileCount: 5,
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
     language: 'vi',
     theme: 'fas',
-    uploadUrl: '/file-upload-batch/2',
     uploadExtraData: function() {
       return {
         _token: $("input[name='_token']").val(),
@@ -29,6 +28,8 @@
     },
     initialPreviewAsData: true,
     initialPreviewFileType: 'image',
+    showUpload: false,
+    maxFileSize: 5120,
   });
 </script>
 {{/section}}
@@ -611,7 +612,7 @@
                                                                 </div>
                                                             </div>
 <div class="form-group">
-    <label for="fuMain">Main Photo</label>
+    <label for="fuMain">Cập nhật hình ảnh</label>
     <input type="file" multiple id="fuMain" name="fuMain">
 </div>
                                                         </div>

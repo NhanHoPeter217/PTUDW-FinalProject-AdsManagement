@@ -8,6 +8,7 @@
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="../../public/js/listLicenseAdsBoard.js" type="module"></script>
+<script src="../../public/js/listReport.js" type="module"></script>
 {{/section}}
 
 <div class="container-fluid mt-3">
@@ -82,8 +83,8 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#detailReport-{{_id}}">
                                                 <div><span class="fw-semibold">Bảng: </span>{{relatedTo.adsBoardType}}</div>
-                                                <div><span class="fw-semibold text-primary">Của Điểm: </span><span>{{relatedTo.adsPoint.location.locationName}}</span></div>
                                             </button>
+                                            <div><span class="fw-semibold text-primary">Của Điểm: </span><span>{{relatedTo.adsPoint.location.locationName}}</span></div>
                                         </td>
                                         {{/ifCond}}
                                         {{#ifCond relatedToType '===' 'AdsPoint'}}
@@ -265,7 +266,8 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Nội dung báo cáo</h5>
-                                                                    <p class='mb-0'>{{content}}</p>
+                                                                    <p class='mb-0'>{{{content}}}</p>
+                                                                    {{!-- <div id="reportContent"></div> --}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
@@ -308,7 +310,65 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    <div
+                                        class='modal fade'
+                                        id='tackleMethod-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Verify_icon_blue.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>
+                                                        Cách thức xử lý
+                                                    </h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form id='addAdsTypeForm' enctype='multipart/form-data'>
+                                                        <div class='mb-3'>
+                                                            <label for='adsTypeFormName' class='form-label' style='font-family: Inter;'>Cách thức xử lý</label>
+                                                            <textarea
+                                                                class='form-control fullNameReport search-box'
+                                                                id='edit_address-{{_id}}'
+                                                                style="height: 100px;"
+                                                                required
+                                                            >{{processingMethod}}</textarea>
+                                                        </div>
+                                                        <div class='button-container justify-content-center'>
+                                                            <div
+                                                                id='recaptcha'
+                                                                class='g-recaptcha'
+                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                data-callback='onSubmit'
+                                                                data-size='invisible'
+                                                            ></div>
+                                                            <div class='d-grid gap-2 col-3 mx-auto'>
+                                                                <button
+                                                                    id='addAdsTypeButton'
+                                                                    type='submit'
+                                                                    class='btn btn-primary m1'
+                                                                    style='font-family: Inter'
+                                                                >
+                                                                    CẬP NHẬT
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {{/each}}
                                     {{/if}}
                                 </tbody>
