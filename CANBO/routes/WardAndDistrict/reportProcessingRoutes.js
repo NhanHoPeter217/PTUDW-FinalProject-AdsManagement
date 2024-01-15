@@ -19,8 +19,8 @@ const {
 } = require('../../middleware/authentication');
 
 const { configureUpload } = require('../../utils/handleFileUpload');
-const folderName = 'public/uploads/reportImages'; 
-const maxImages = 2; 
+const folderName = 'public/uploads/reportImages';
+const maxImages = 2;
 const upload = configureUpload(folderName, maxImages);
 
 router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, upload, createReport);

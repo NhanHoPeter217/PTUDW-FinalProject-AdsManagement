@@ -17,8 +17,8 @@ const {
 router.use(authenticateUser);
 
 const { configureUpload } = require('../../utils/handleFileUpload');
-const folderName = 'public/uploads/adsLicenseRequestImages'; 
-const maxImages = 5; 
+const folderName = 'public/uploads/adsLicenseRequestImages';
+const maxImages = 5;
 const upload = configureUpload(folderName, maxImages);
 
 router.route('/').get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllAdsLicenseRequests);
