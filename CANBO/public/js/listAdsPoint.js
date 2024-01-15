@@ -84,6 +84,30 @@ function updateCheckbox() {
 }
 
 $(document).ready(function () {
+
+    const addAdsPointImages = $('.addAdsPointImages');
+    for (let i = 0; i < addAdsPointImages.length; ++i) {
+        const addAdsPointImage = addAdsPointImages[i].id;
+        $(`#${addAdsPointImage}`).fileinput({
+            dropZoneEnabled: true,
+            maxFileCount: 5,
+            allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
+            language: 'vi',
+            theme: 'fas',
+            uploadExtraData: function() {
+            return {
+                _token: $("input[name='_token']").val(),
+                _method: $("input[name='_method']").val(),
+                id: $("input[name='id']").val(),
+            };
+            },
+            initialPreviewAsData: true,
+            initialPreviewFileType: 'image',
+            showUpload: false,
+            maxFileSize: 5120,
+        });
+    }
+
     // Get all district and ward for the dropdown list
 
     fetch('/district/api/v1', {
