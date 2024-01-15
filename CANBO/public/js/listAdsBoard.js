@@ -1,7 +1,16 @@
 import initMapViewOnly from './miniMap_viewonly.js';
 import initMapWithSearchBox from './miniMap_searchBox.js';
 
-document.addEventListener('DOMContentLoaded', function () {
+var date = new Date();
+const formattedDate = () => {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // getMonth() returns a zero-based value (0-11)
+    var day = date.getDate();
+
+    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+};
+
+$(document).ready(function () {
     const inputContractEndDate = $('.license_contractEndDate');
     const inputContractStartDate = $('.license_contractStartDate');
     const inputs = $('.edit_contractEndDate');
@@ -16,35 +25,28 @@ document.addEventListener('DOMContentLoaded', function () {
             'Content-Type': 'application/json'
         }
     })
-        .then((response) => {
-            return response.json();
-        })
+        .then((response) => response.json())
         .then((district_data) => {
             if (!district_data) {
                 return;
             }
-            if ($('.districtType').length > 0) {
-                $('.districtType').on('change', function () {
+            if ($('.edit_district').length > 0) {
+                $('.edit_district').on('change', function () {
+                    const wardElement = $(this).parent().parent().find('.edit_ward');
                     var selectedDistrict = $(this).val();
 
-                    let selectedDistrictData;
-                    for (let i = 0; i < district_data.count; ++i) {
-                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
-                            selectedDistrictData = district_data.districts[i];
-                            break;
-                        }
-                    }
+                    let wards = district_data.districts.find(
+                        (d) => d.districtName === selectedDistrict
+                    ).wards;
 
-                    if (selectedDistrictData) {
-                        const wards = selectedDistrictData.wards;
-
-                        $('.wardType').empty();
-                        $('.wardType').append(
+                    if (wards) {
+                        wardElement.empty();
+                        wardElement.append(
                             `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
                         );
 
                         wards.forEach(function (ward) {
-                            $('.wardType').append(`<option value="${ward}">${ward}</option>`);
+                            wardElement.append(`<option value="${ward}">${ward}</option>`);
                         });
                     } else {
                         console.log('District not found!');
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     function initializeDatepicker(inputId) {
-        const picker = datepicker(inputId, {
+        datepicker(inputId, {
             formatter: (input, date, instance) => {
                 const options = {
                     day: 'numeric',
@@ -72,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(document).ready(function () {
-    $('.requestLicenseAdsBoardForm').on('submit',async function (e) {
+    $('.requestLicenseAdsBoardForm').on('submit', async function (e) {
         e.preventDefault();
         const id = e.currentTarget.getAttribute('data-id');
         const adsBoardType = document.getElementById(`license_adsBoardType-${id}`).value;
@@ -80,9 +82,8 @@ $(document).ready(function () {
         const height = parseInt(document.getElementById(`license_height-${id}`).value);
         const quantity = parseInt(document.getElementById(`license_quantity-${id}`).value);
 
-        const contractEndDate = document.getElementsByClassName(
-            `license_contractEndDate-${id}`
-        )[0].value;
+        const contractEndDate = document.getElementsByClassName(`license_contractEndDate-${id}`)[0]
+            .value;
         const contractStartDate = document.getElementsByClassName(
             `license_contractStartDate-${id}`
         )[0].value;
@@ -114,96 +115,84 @@ $(document).ready(function () {
         };
 
         const formData = new FormData();
-        
 
         const files = $('#image-input-' + id).prop('files');
-        for (let file of files) {
-            formData.append('images[]', file);
+        if (files) {
+            for (let file of files) {
+                formData.append('images[]', file);
+            }
         }
         formData.append('data', JSON.stringify(licenseRequestData));
-
 
         // Display the key/value pairs
         for (let pair of formData.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
 
-        await axios.post(`/adsLicenseRequest/${id}`, formData)
+        await axios
+            .post(`/adsLicenseRequest/${id}`, formData)
             .then((response) => {
-                // window.location.reload();
                 alert('Yêu cầu cấp phép quảng cáo thành công!');
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Lỗi khi yêu cầu cấp phép quảng cáo:', error);
             });
-    
     });
 
-    $('.requestEditAdsBoardForm').on('submit', function (e) {
+    $('.requestEditAdsBoardForm').on('submit', async function (e) {
         e.preventDefault();
-
         const adsObject = e.currentTarget.getAttribute('data-id');
-        const adsType = 'AdsBoard';
         const adsBoardType = document.getElementById(`edit_adsBoardType-${adsObject}`).value;
         const width = parseInt(document.getElementById(`edit_width-${adsObject}`).value);
         const height = parseInt(document.getElementById(`edit_height-${adsObject}`).value);
         const quantity = parseInt(document.getElementById(`edit_quantity-${adsObject}`).value);
-
-        const adsBoardImages = [];
-        const adsBoardImage1 = document.getElementById(
-            `edit_adsBoardImage_1-${adsObject}`
-        ).textContent;
-        const adsBoardImage2 = document.getElementById(
-            `edit_adsBoardImage_2-${adsObject}`
-        ).textContent;
-        if (adsBoardImage1) adsBoardImages.push(adsBoardImage1);
-        if (adsBoardImage2) adsBoardImages.push(adsBoardImage2);
-
+        const reason = document.getElementById(`edit_reason-${adsObject}`).value;
         const contractEndDate = document.getElementsByClassName(
             `edit_contractEndDate-${adsObject}`
-        ).textContent;
-
-        // will add more
-
+        )[0].value;
         const ward = document.getElementById(`edit_ward-${adsObject}`).value;
         const district = document.getElementById(`edit_district-${adsObject}`).value;
 
-        // const editRequestData = {
-        //     licenseRequestedAdsBoard: {
-        //         adsBoardType: adsBoardType,
-        //         size: {
-        //             width: width,
-        //             height: height
-        //         },
-        //         quantity: quantity,
-        //         adsBoardImages: adsBoardImages,
-        //         contractEndDate: contractEndDate
-        //     },
-        //     adsContent: adsContent,
-        //     companyInfo: {
-        //         name: name,
-        //         email: email,
-        //         phone: phone,
-        //         address: address
-        //     },
-        //     contractStartDate: contractStartDate
-        // };
-
-        console.log(editRequestData);
-
-        fetch(`/api/v1/adsInfoEditingRequest/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        const editRequestData = {
+            adsObject: adsObject,
+            adsType: 'AdsBoard',
+            newInfo: {
+                adsBoardType: adsBoardType,
+                size: {
+                    width: width,
+                    height: height
+                },
+                quantity: quantity,
+                contractEndDate: contractEndDate
             },
-            body: JSON.stringify(editRequestData)
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // window.location.reload();
+            editRequestTime: formattedDate(),
+            editReason: reason,
+            wardAndDistrict: {
+                ward: ward,
+                district: district
+            }
+        };
+
+        const formData = new FormData();
+        const files = $(`#image-input-${adsObject}`).prop('files');
+        console.log(files);
+        if (files) {
+            for (let file of files) {
+                formData.append('images[]', file);
+            }
+        }
+        formData.append('data', JSON.stringify(editRequestData));
+
+        // axios
+        await axios
+            .post(`/adsInfoEditingRequest`, formData)
+            .then((response) => {
+                alert('Yêu cầu / Chỉnh sửa thông tin quảng cáo thành công!');
+                window.location.reload();
             })
             .catch((error) => {
-                console.error('Lỗi khi yêu cầu chỉnh sửa quảng cáo:', error);
+                console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
             });
     });
 

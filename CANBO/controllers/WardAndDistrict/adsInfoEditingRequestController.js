@@ -15,19 +15,19 @@ const { AUTH_EMAIL } = process.env;
 
 const createAdsInfoEditingRequest = async (req, res) => {
     const { email } = req.user;
+    req.body = JSON.parse(req.body.data);
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
-            req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
+            if (req.files) req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
 
             const adsBoard = await AdsBoard.findOne({ _id: adsObject });
             req.body.newInfo.adsPoint = adsBoard.adsPoint;
             adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsBoardRequestedEdit._id;
-
         } else if (adsType === 'AdsPoint') {
             req.body.newInfo.locationImages = req.files.map((file) => file.path);
-            
+
             adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }

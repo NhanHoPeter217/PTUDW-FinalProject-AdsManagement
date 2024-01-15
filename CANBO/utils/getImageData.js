@@ -3,10 +3,10 @@ const path = require('path');
 
 function getContentTypeFromExtension(extension) {
     const contentTypeMap = {
-        'png': 'image/png',
-        'jpeg': 'image/jpeg',
-        'jpg': 'image/jpeg',
-        'pdf': 'application/pdf',
+        png: 'image/png',
+        jpeg: 'image/jpeg',
+        jpg: 'image/jpeg',
+        pdf: 'application/pdf'
     };
 
     return contentTypeMap[extension.toLowerCase()] || 'application/octet-stream';
@@ -22,10 +22,10 @@ function getImageData(absolutePath, imagePath) {
     return {
         filename: path.basename(imagePath),
         contentType: getContentTypeFromExtension(getFileExtension(imagePath)),
-        data: imageBuffer.toString('base64'),
+        data: imageBuffer.toString('base64')
     };
 }
 
 module.exports = {
-    getImageData,
+    getImageData
 };

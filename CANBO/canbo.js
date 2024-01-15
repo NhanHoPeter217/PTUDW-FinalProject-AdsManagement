@@ -51,7 +51,6 @@ const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
-const requestRouter = require('./routes/Department/adsInfoEditingRequestRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
@@ -96,10 +95,9 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);
-app.use('/request', requestRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
-app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
+app.use('/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
@@ -147,7 +145,6 @@ app.get('/', async (req, res) => {
 app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
-
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

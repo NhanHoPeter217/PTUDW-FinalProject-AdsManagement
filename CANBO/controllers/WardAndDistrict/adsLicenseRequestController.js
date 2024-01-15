@@ -18,11 +18,11 @@ const createAdsLicenseRequest = async (req, res) => {
                 select: 'ward district'
             }
         });
-        
+
         // Parse the body
         req.body = JSON.parse(req.body.data);
 
-        if (req.files){
+        if (req.files) {
             const imgArr = req.files.map((file) => file.path);
             req.body.licenseRequestedAdsBoard.adsBoardImages = imgArr;
         }
