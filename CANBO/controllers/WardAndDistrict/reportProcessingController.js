@@ -121,7 +121,6 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-
         req.body.images = req.files.map((file) => file.path);
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);
