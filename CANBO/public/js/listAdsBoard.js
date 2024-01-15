@@ -56,6 +56,7 @@ $(document).ready(function () {
                 console.log('.districtType not found!');
             }
         });
+        
     function initializeDatepicker(inputId) {
         datepicker(inputId, {
             formatter: (input, date, instance) => {
@@ -71,6 +72,7 @@ $(document).ready(function () {
             customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
         });
     }
+
 });
 
 $(document).ready(function () {
