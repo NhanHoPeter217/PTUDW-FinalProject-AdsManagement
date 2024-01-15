@@ -18,14 +18,20 @@ const createAdsInfoEditingRequest = async (req, res) => {
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
+            req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
+
             const adsBoard = await AdsBoard.findOne({ _id: adsObject });
             req.body.newInfo.adsPoint = adsBoard.adsPoint;
             adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsBoardRequestedEdit._id;
+
         } else if (adsType === 'AdsPoint') {
+            req.body.newInfo.locationImages = req.files.map((file) => file.path);
+            
             adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
+
         req.body.officerEmail = email;
         const adsInfoEditingRequest = await AdsInfoEditingRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsInfoEditingRequest });

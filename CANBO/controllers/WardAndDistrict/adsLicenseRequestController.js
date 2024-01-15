@@ -15,6 +15,7 @@ const createAdsLicenseRequest = async (req, res) => {
         //         ? uploadedImages[fieldName]
         //         : [uploadedImages[fieldName]];
         // });
+        req.body.licenseRequestedAdsBoard.adsBoardImages = req.files.map((file) => file.path);
 
         const adsBoardId = req.params.id;
         const adsBoard = await AdsBoard.findOne({ _id: adsBoardId }).populate({
