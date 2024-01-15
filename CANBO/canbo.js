@@ -91,7 +91,7 @@ app.use(xss());
 app.use('/auth', authRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/forgotpassword', forgotpwRouter);
-app.use('/report', reportProcessingRouter);
+app.use('/reportProcessing', reportProcessingRouter);
 
 // routes after login
 app.use('/api/v1/jobs', jobsRouter);

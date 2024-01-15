@@ -3,11 +3,14 @@ const ReportProcessing = require('../../models/WardAndDistrict/ReportProcessing'
 const Location = require('../../models/Location');
 const AdsPoint = require('../../models/AdsPoint');
 const AdsBoard = require('../../models/AdsBoard');
+const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
 const { handleFileUpload } = require('../../utils/handleFileUpload');
 const sendEmail = require('../../utils/sendEmail');
 const fs = require('fs').promises;
 const path = require('path');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
 
 const { AUTH_EMAIL } = process.env;
 
@@ -49,9 +52,81 @@ const getAllReportsByAssignedArea = async (req, res) => {
         if (district !== '*') {
             query['district'] = district;
         }
-        const reports = await ReportProcessing.find(query).sort('createdAt');
 
-        res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        const reportAdsBoard = await ReportProcessing.find({...query, relatedToType: 'AdsBoard'}).populate([
+            {
+                path: 'relatedTo',
+                model: 'AdsBoard',
+            },
+            {
+                path: 'reportFormat',
+                model: 'ReportFormat',
+            }
+        ]).lean();
+
+        const reportAdsPoint = await ReportProcessing.find({...query, relatedToType: 'AdsPoint'}).populate([
+            {
+                path: 'relatedTo',
+                model: 'AdsPoint',
+                populate: {
+                    path: 'location',
+                    model: 'Location',
+                }
+            },
+            {
+                path: 'reportFormat',
+                model: 'ReportFormat',
+            }
+        ]).lean();
+
+        const reportLocation = await ReportProcessing.find({...query, relatedToType: 'Location'}).populate([
+            {
+                path: 'relatedTo',
+                model: 'Location',
+            },
+            {
+                path: 'reportFormat',
+                model: 'ReportFormat',
+            }
+        ]).lean();
+
+        const reports = reportAdsBoard.concat(reportAdsPoint).concat(reportLocation).sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
+        const contents = reports.map(report => {
+            const dom = new JSDOM(report.content);
+            const paragraphElement = dom.window.document.querySelector('p');
+            if (paragraphElement) {
+                return paragraphElement.textContent;
+            } else {
+                return '';
+            }
+        });
+
+        reports.forEach((report, index) => {
+            report.content = contents[index];
+        });
+
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+        const role = req.user.role;
+
+        if (role === 'Quận') {
+            res.render('vwReport/listReport', {
+                reports,
+                reportsEmpty: reports.length === 0,
+                districts,
+                authUser: req.user,
+            });
+        } else {
+            res.render('vwReport/listReport', {
+                reports,
+                reportsEmpty: reports.length === 0,
+                authUser: req.user,
+            });
+        }
+
+        // res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
