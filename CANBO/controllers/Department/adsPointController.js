@@ -32,24 +32,24 @@ const getAllAdsPoints = async (req, res) => {
 
         const role = req.user.role;
 
-        if (role === 'Sở VH-TT') {
-            res.render('vwAdsPoint/listAdsPoint', {
-                layout: 'canbo_So',
-                adsPoints: adsPoints,
-                empty: adsPoints.length === 0,
-                adsFormats: adsFormats,
-                districts: districts,
-                authUser: req.user
-            });
-        } else {
-            res.render('vwAdsPoint/listAdsPoint', {
-                adsPoints: adsPoints,
-                empty: adsPoints.length === 0,
-                adsFormats: adsFormats,
-                districts: districts,
-                authUser: req.user
-            });
-        }
+        // if (role === 'Sở VH-TT') {
+        res.render('vwAdsPoint/listAdsPoint', {
+            layout: 'canbo_So',
+            adsPoints: adsPoints,
+            empty: adsPoints.length === 0,
+            adsFormats: adsFormats,
+            districts: districts,
+            authUser: req.user
+        });
+        // } else {
+        //     res.render('vwAdsPoint/listAdsPoint', {
+        //         adsPoints: adsPoints,
+        //         empty: adsPoints.length === 0,
+        //         adsFormats: adsFormats,
+        //         districts: districts,
+        //         authUser: req.user
+        //     });
+        // }
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -95,8 +95,21 @@ const getAllAdsPointsByAssignedArea = async (req, res) => {
             .populate({
                 path: 'location',
                 model: 'Location'
+            })
+            .populate('adsFormat')
+            .lean();
+
+            const adsFormats = await AdsFormat.find({}).lean();
+            const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+            res.render('vwAdsPoint/listAdsPoint', {
+                adsPoints: adsPoints,
+                empty: adsPoints.length === 0,
+                adsFormats: adsFormats,
+                districts: districts,
+                authUser: req.user
             });
-        res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
+        // res.status(StatusCodes.OK).json({ adsPoints, count: adsPoints.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }

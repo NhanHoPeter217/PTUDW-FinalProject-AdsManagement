@@ -32,7 +32,6 @@ const createAdsInfoEditingRequest = async (req, res) => {
             req.body.newInfo.coords.lat = parseFloat(req.body.newInfo.coords.lat);
             req.body.newInfo.coords.lng = parseFloat(req.body.newInfo.coords.lng);
             req.body.newInfo.locationImages = req.files.map((file) => file.path);
-            console.log(req.body);
             let adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
