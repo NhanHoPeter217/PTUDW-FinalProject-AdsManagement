@@ -5,7 +5,6 @@ const AdsPoint = require('../../models/AdsPoint');
 const AdsBoard = require('../../models/AdsBoard');
 const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
-const { handleFileUpload } = require('../../utils/handleFileUpload');
 const sendEmail = require('../../utils/sendEmail');
 const fs = require('fs').promises;
 const path = require('path');
@@ -174,16 +173,8 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if (req.files) {
-            const uploadedImages = res.locals.uploadedImages;
 
-            Object.keys(uploadedImages).forEach((fieldName) => {
-                req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
-                    ? uploadedImages[fieldName]
-                    : [uploadedImages[fieldName]];
-            });
-        }
-
+        req.body.images = req.files.map((file) => file.path);
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);
             const location = await Location.create(locationData);
