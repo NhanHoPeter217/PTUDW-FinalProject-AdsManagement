@@ -63,7 +63,7 @@
                                         <td class="border-bottom-0 text-center align-middle">
                                             <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-link m-1"
@@ -82,7 +82,7 @@
                                             <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{adsObject.contractEndDate}}</p>
+                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
