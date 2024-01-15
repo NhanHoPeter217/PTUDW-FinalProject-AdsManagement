@@ -81,7 +81,8 @@
                                                 class="btn btn-link m-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#detailReport-{{_id}}">
-                                                <span class="fw-semibold">Bảng: </span>{{relatedTo.adsBoardType}}
+                                                <div><span class="fw-semibold">Bảng: </span>{{relatedTo.adsBoardType}}</div>
+                                                <div><span class="fw-semibold text-primary">Của Điểm: </span><span>{{relatedTo.adsPoint.location.locationName}}</span></div>
                                             </button>
                                         </td>
                                         {{/ifCond}}
@@ -110,33 +111,19 @@
                                         <td class="border-bottom-0 text-center align-middle">
                                             {{reportFormat.name}}
                                         </td>
-                                        {{#ifCond processingStatus '===' 'Đã xử lý'}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <span class="badge bg-success rounded-3 fw-semibold">Đã xử lý</span>
-                                            </div>
+                                            <select class="form-select badge bg-danger rounded-3 fs-6 tackle-status" aria-label="Default select example" id="tackle-status-{{_id}}">
+                                                <option value="Chưa xử lý" class="bg-white text-primary">Chưa xử lý</option>
+                                                <option value="Đang xử lý" class="bg-white text-primary">Đang xử lý</option>
+                                                <option value="Đã xử lý" class="bg-white text-primary">Đã xử lý</option>
+                                            </select>
                                         </td>
-                                        {{/ifCond}}
-                                        {{#ifCond processingStatus '===' 'Đang xử lý'}}
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <span class="badge bg-warning rounded-3 fw-semibold">Đang xử lý</span>
-                                            </div>
-                                        </td>
-                                        {{/ifCond}}
-                                        {{#ifCond processingStatus '===' 'Chưa xử lý'}}
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <span class="badge bg-danger rounded-3 fw-semibold">Chưa xử lý</span>
-                                            </div>
-                                        </td>
-                                        {{/ifCond}}
                                         <td class="border-bottom-0 align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-primary m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#detailLicenseAdsBoardModal-{{_id}}">
+                                                data-bs-target="#tackleMethod-{{_id}}">
                                                 <div class="d-flex">
                                                 <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
                                                 <div style="color: white">Xử lý</div>
@@ -194,11 +181,13 @@
                                         </div>
                                     </div>
                                     <div
-                                        class='modal fade'
+                                        class='modal fade detailReport'
                                         id='detailReport-{{_id}}'
                                         tabindex='-1'
                                         aria-labelledby='reportModalLabel'
                                         aria-hidden='true'
+                                        data-lat="{{coords.lat}}"
+                                        data-lng="{{coords.lng}}"
                                     >
                                         <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
                                             <div class='modal-content'>
@@ -222,7 +211,7 @@
                                                                 {{#ifCond relatedToType '===' 'AdsBoard'}}
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Loại báo cáo</h5>
-                                                                        <span class="fw-semibold text-primary">Bảng: </span><span class="fw-semibold text-primary">{{relatedTo.adsBoardType}}</span>
+                                                                        <div><span class="fw-semibold text-primary">Bảng: </span><span class="fw-semibold text-primary">{{relatedTo.adsBoardType}}</span></div>
                                                                 </div>
                                                                 {{/ifCond}}
                                                                 {{#ifCond relatedToType '===' 'AdsPoint'}}
@@ -235,6 +224,23 @@
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Loại báo cáo</h5>
                                                                         <span class="fw-semibold text-primary">Địa chỉ: </span><span class="fw-semibold text-primary">{{relatedTo.address}}</span>
+                                                                        <div class="map-view-only mt-2"></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                            <div class='card border'>
+                                                                {{#ifCond relatedToType '===' 'AdsBoard'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                    <p class='mb-0'>{{relatedTo.adsPoint.location.address}}</p>
+                                                                    <div class="map-view-only mt-2"></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                                {{#ifCond relatedToType '===' 'AdsPoint'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                    <p class='mb-0'>{{relatedTo.location.address}}</p>
+                                                                    <div class="map-view-only mt-2"></div>
                                                                 </div>
                                                                 {{/ifCond}}
                                                             </div>
@@ -265,12 +271,9 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
-                                                                    {{#if images1}}
-                                                                    <img src="{{image1}}">
-                                                                    {{/if}}
-                                                                    {{#if images2}}
-                                                                    <img src="{{image2}}">
-                                                                    {{/if}}
+                                                                    {{#each images as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                             <div class="card border">
@@ -305,6 +308,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     {{/each}}
                                     {{/if}}
                                 </tbody>

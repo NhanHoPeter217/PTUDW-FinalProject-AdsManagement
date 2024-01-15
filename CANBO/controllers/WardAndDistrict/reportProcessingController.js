@@ -56,6 +56,14 @@ const getAllReportsByAssignedArea = async (req, res) => {
             {
                 path: 'relatedTo',
                 model: 'AdsBoard',
+                populate: {
+                    path: 'adsPoint',
+                    model: 'AdsPoint',
+                    populate: {
+                        path: 'location',
+                        model: 'Location',
+                    }
+                }
             },
             {
                 path: 'reportFormat',
@@ -105,6 +113,9 @@ const getAllReportsByAssignedArea = async (req, res) => {
 
         reports.forEach((report, index) => {
             report.content = contents[index];
+            for (let i = 0; i < report.images.length; i++) {
+                report.images[i] = report.images[i].replace(/\\/g, '/');
+            }
         });
 
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
