@@ -23,7 +23,11 @@ router
 
 router
     .route('/assignedArea')
-    .post(authenticateUser, authorizePermissions('Quận', 'Sở VH-TT'), getAllAdsLicenseByAssignedArea);
+    .post(
+        authenticateUser,
+        authorizePermissions('Quận', 'Sở VH-TT'),
+        getAllAdsLicenseByAssignedArea
+    );
 
 router
     .route('/dist/:distID/ward/:wardID')

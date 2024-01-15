@@ -6,7 +6,6 @@ const Identifier = require('../models/Authentication/Identifier');
 const crypto = require('crypto');
 
 const authenticateUser = async (req, res, next) => {
-
     const { refreshToken, accessToken } = req.signedCookies;
     try {
         if (accessToken) {
@@ -73,7 +72,6 @@ const authenticateResidentOfCreateReport = async (req, res, next) => {
         throw new CustomError.UnauthenticatedError('Resident Authentication Invalid');
     }
 };
-
 
 const authenticateResidentOfGetAllReports = async (req, res, next) => {
     const { identifier } = req.signedCookies;
