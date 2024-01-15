@@ -227,7 +227,7 @@
                                                         ></button>
                                                     </div>
                                                     <div class='modal-body'>
-                                                        <form id='requestEditAdsPointForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                        <form id='editAdsPointForm' enctype='multipart/form-data' data-id="{{_id}}">
                                                             <input type="hidden" id="lat-{{_id}}" name="lat" value="{{location.coords.lat}}">
                                                             <input type="hidden" id="lng-{{_id}}" name="lng" value="{{location.coords.lng}}">
                                                             <div class='mb-3' id='locationName'>
@@ -257,7 +257,7 @@
                                                                                 -- Chọn Quận --
                                                                         </option>
                                                                         {{#each ../districts}}
-                                                                             <option value={{districtName}} {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                                                             <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
                                                                         {{/each}}
                                                                     </select>
                                                                 </div>
@@ -439,7 +439,7 @@
                                                                 <input
                                                                     type='text'
                                                                     class='form-control fullNameReport'
-                                                                    id='edit_locationName-{{_id}}'
+                                                                    id='request_edit_locationName-{{_id}}'
                                                                     value="{{location.locationName}}"
                                                                     required
                                                                 />
@@ -452,12 +452,12 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select districtType' id='edit_district-{{_id}}' required>
+                                                                    <select class='form-select districtType requestDistrict' id='request_edit_district-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Quận --
                                                                         </option>
                                                                         {{#each ../districts}}
-                                                                             <option value={{districtName}} {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                                                            <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
                                                                         {{/each}}
                                                                     </select>
                                                                 </div>
@@ -468,11 +468,11 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select wardType' id='edit_ward-{{_id}}' required>
+                                                                    <select class='form-select wardType' id='request_edit_ward-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Phường --
                                                                         </option>
-                                                                        <option value={{location.ward}} selected>{{location.ward}}</option>
+                                                                        <option value="{{location.ward}}" selected>{{location.ward}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -485,50 +485,88 @@
                                                                 </label>
                                                                 <textarea
                                                                     class='form-control fullNameReport search-box mb-1'
-                                                                    id='edit_address-{{_id}}'
+                                                                    id='request_edit_address-{{_id}}'
                                                                     style="height: 100px;"
                                                                     required
                                                                 >{{location.address}}</textarea>
-                                                                <div class="map-search-box"></div>
+                                                                <div class="map-search-box mt-2 rounded"></div>
                                                             </div>
                                                             <div class='mb-3' id="locationType">
                                                                 <label for='locationType' class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div class="nowrap">Loại vị trí</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{locationType}})</p>    
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
-    <select class='form-select reportType' id='edit_locationType-{{_id}}' required>
-        <option class='mb-0 softer-text fw-nomral' selected disabled>
-                -- Chọn loại vị trí --
-        </option>
-        <option
-            value='Đất công/Công viên/Hành lang an toàn giao thông'
-        >
-            Đất công/Công viên/Hành lang an toàn giao thông
-        </option>
-        <option value='Đất tư nhân/Nhà ở riêng lẻ'>
-            Đất tư nhân/Nhà ở riêng lẻ
-        </option>
-        <option value='Trung tâm thương mại'>Trung tâm thương mại</option>
-        <option value='Chợ'>Chợ</option>
-        <option value='Cây xăng'>Cây xăng</option>
-        <option value='Nhà chờ xe buýt'>Nhà chờ xe buýt</option>
-    </select>
+                                                                <select class='form-select requestLocationType' id='request_edit_locationType-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                            -- Chọn loại vị trí --
+                                                                    </option>
+                                                                    {{#ifCond locationType '===' 'Đất công/Công viên/Hành lang an toàn giao thông'}}
+                                                                        <option value='Đất công/Công viên/Hành lang an toàn giao thông' selected>Đất công/Công viên/Hành lang an toàn giao thông</option>
+                                                                    {{else}}
+                                                                        <option value='Đất công/Công viên/Hành lang an toàn giao thông'>Đất công/Công viên/Hành lang an toàn giao thông</option>
+                                                                    {{/ifCond}}
+                                                                    {{#ifCond locationType '===' 'Đất tư nhân/Nhà ở riêng lẻ'}}
+                                                                    <option value='Đất tư nhân/Nhà ở riêng lẻ' selected>
+                                                                        Đất tư nhân/Nhà ở riêng lẻ
+                                                                    </option>
+                                                                    {{else}}
+                                                                    <option value='Đất tư nhân/Nhà ở riêng lẻ'>
+                                                                        Đất tư nhân/Nhà ở riêng lẻ
+                                                                    </option>
+                                                                    {{/ifCond}}
+                                                                    {{#ifCond locationType '===' 'Trung tâm thương mại'}}
+                                                                    <option value='Trung tâm thương mại' selected>
+                                                                        Trung tâm thương mại
+                                                                    </option>
+                                                                    {{else}}
+                                                                    <option value='Trung tâm thương mại'>
+                                                                        Trung tâm thương mại
+                                                                    </option>
+                                                                    {{/ifCond}}
+                                                                    {{#ifCond locationType '===' 'Chợ'}}
+                                                                    <option value='Chợ' selected>
+                                                                        Chợ
+                                                                    </option>
+                                                                    {{else}}
+                                                                    <option value='Chợ'>
+                                                                        Chợ
+                                                                    </option>
+                                                                    {{/ifCond}}
+                                                                    {{#ifCond locationType '===' 'Cây xăng'}}
+                                                                    <option value='Cây xăng' selected>
+                                                                        Cây xăng
+                                                                    </option>
+                                                                    {{else}}
+                                                                    <option value='Cây xăng'>
+                                                                        Cây xăng
+                                                                    </option>
+                                                                    {{/ifCond}}
+                                                                    {{#ifCond locationType '===' 'Nhà chờ xe buýt'}}
+                                                                    <option value='Nhà chờ xe buýt' selected>
+                                                                        Nhà chờ xe buýt
+                                                                    </option>
+                                                                    {{else}}
+                                                                    <option value='Nhà chờ xe buýt'>
+                                                                        Nhà chờ xe buýt
+                                                                    </option>
+                                                                    {{/ifCond}}
+                                                                </select>
                                                             </div>
                                                             <div class='mb-3' id="adsFormat">
                                                                 <label for="adsFormat" class="form-label" style="font-family: Inter">
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div class="nowrap">Hình thức quảng cáo</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'>({{adsFormat.name}})</p>    
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
-                                                                <select class='form-select reportType' id='edit_adsFormat-{{_id}}' required>
+                                                                <select class='form-select reportType' id='request_edit_adsFormat-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                             -- Chọn hình thức quảng cáo --
                                                                     </option>
                                                                     {{#each ../adsFormats}}
-                                                                        <option value=`{{name}}`>{{name}}</option>
+                                                                        <option value={{_id}} {{#ifCond name '===' ../adsFormat.name}}selected{{/ifCond}}>{{name}}</option>
                                                                     {{/each}}
                                                                 </select>
                                                             </div>
@@ -536,19 +574,14 @@
                                                                 <label for='planningStatus' class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1 nowrap'>
                                                                         <div>Trạng thái địa điểm</div>
-                                                                        {{#ifCond planningStatus "===" "Đã quy hoạch"}}
-                                                                        <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
-                                                                        {{else}}
-                                                                        <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
-                                                                        {{/ifCond}}
                                                                     </div>
                                                                 </label>
-                                                                <select class='form-select reportType' id='edit_planningStatus-{{_id}}' required>
+                                                                <select class='form-select requestEditPlanningStatus' id='request_edit_planningStatus-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                             -- Chọn trạng thái --
                                                                     </option>
-                                                                    <option value='Đã quy hoạch'>Đã quy hoạch</option>
-                                                                    <option value='Chưa quy hoạch'>Chưa quy hoạch</option>
+                                                                    <option value='Đã quy hoạch' {{#ifCond planningStatus '===' 'Đã quy hoạch'}}selected{{/ifCond}}>Đã quy hoạch</option>
+                                                                    <option value='Chưa quy hoạch' {{#ifCond planningStatus '===' 'Chưa quy hoạch'}}selected{{/ifCond}}>Chưa quy hoạch</option>
                                                                 </select>
                                                             </div>
                                                             <div class='mb-3' id="locationImages">
@@ -559,6 +592,23 @@
                                                                         <p class='mb-0' id="edit_locationImage_2-{{_id}}">image_url_2.jpg</p>
                                                                     </div>
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label for="requestAddAdsPointImages">Cập nhật hình ảnh</label>
+                                                                    <input type="file" multiple class="requestAddAdsPointImages" id="requestAddAdsPointImages-{{_id}}" name="requestAddAdsPointImages">
+                                                                </div>
+                                                            </div>
+                                                            <div class='mb-3'>
+                                                                <label for='request_edit_editRequestTime' class='form-label' style='font-family: Inter'>Ngày yêu cầu chỉnh sửa</label>
+                                                                <input type='text' id='request_edit_editRequestTime-{{_id}}' class='form-control inputRequestEditDate' required />
+                                                            </div>
+                                                            <div class='mb-3' id="request_edit_editReason">
+                                                                <label for='request_edit_editReason' class='form-label' style='font-family: Inter'>Lý do chỉnh sửa</label>
+                                                                <textarea
+                                                                    class='form-control'
+                                                                    id='request_edit_editReason-{{_id}}'
+                                                                    style="height: 100px;"
+                                                                    required
+                                                                ></textarea>
                                                             </div>
                                                             <div class='button-container justify-content-center'>
                                                                 <div

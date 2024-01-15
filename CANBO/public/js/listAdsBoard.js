@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('.districtType not found!');
             }
         });
+        
     function initializeDatepicker(inputId) {
         const picker = datepicker(inputId, {
             formatter: (input, date, instance) => {

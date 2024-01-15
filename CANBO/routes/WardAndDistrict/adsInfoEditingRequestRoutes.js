@@ -13,7 +13,7 @@ router.use(authenticateUser);
 
 const { configureUpload } = require('../../utils/handleFileUpload');
 const folderName = 'public/uploads/adsInfoEditingRequestImages'; 
-const maxImages = 5; 
+const maxImages = 5;
 const upload = configureUpload(folderName, maxImages);
 
 router.route('/').get(authorizePermissions('Sở VH-TT'), getAllAdsInfoEditingRequests);
