@@ -6,10 +6,27 @@ const AdsBoard = require('../../models/AdsBoard');
 const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
 const sendEmail = require('../../utils/sendEmail');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
+const { getImageData } = require('../../utils/getImageData');
 
 const { AUTH_EMAIL } = process.env;
+
+// const getAllReportsByResident = async (req, res) => {
+//     try {
+//         if (!req.residentID) {
+//             res.status(StatusCodes.OK).json({ reports: [] });
+//         }
+//         else {
+//             const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
+//                 'createdAt'
+//             );
+//             res.status(StatusCodes.OK).json({ reports });
+//         }
+//     } catch (error) {
+//         throw new CustomError.BadRequestError(error.message);
+//     }
+// };
 
 const getAllReportsByResident = async (req, res) => {
     try {
@@ -19,7 +36,24 @@ const getAllReportsByResident = async (req, res) => {
             const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
                 'createdAt'
             );
-            res.status(StatusCodes.OK).json({ reports });
+
+            const reportsWithImages = await Promise.all(
+                reports.map(async (report) => {
+                    const images = await Promise.all(
+                        report.images.map(async (imagePath) => {
+                            const absolutePath = path.join(__dirname, '../..', imagePath);
+
+                            const imageData = getImageData(absolutePath, imagePath);
+
+                            return imageData;
+                        })
+                    );
+
+                    return { ...report.toObject(), images };
+                })
+            );
+
+            res.status(StatusCodes.OK).json({ reports: reportsWithImages });
         }
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
@@ -160,7 +194,6 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-
         req.body.images = req.files.map((file) => file.path);
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);

@@ -14,18 +14,29 @@ const path = require('path');
 const { AUTH_EMAIL } = process.env;
 
 const createAdsInfoEditingRequest = async (req, res) => {
+    // console.log(req.files);
     const { email } = req.user;
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
+            req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
+
             const adsBoard = await AdsBoard.findOne({ _id: adsObject });
             req.body.newInfo.adsPoint = adsBoard.adsPoint;
-            adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
+            let adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsBoardRequestedEdit._id;
+
         } else if (adsType === 'AdsPoint') {
-            adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
+            req.body.newInfo = JSON.parse(req.body.newInfo);
+            req.body.wardAndDistrict = JSON.parse(req.body.wardAndDistrict);
+            req.body.newInfo.coords.lat = parseFloat(req.body.newInfo.coords.lat);
+            req.body.newInfo.coords.lng = parseFloat(req.body.newInfo.coords.lng);
+            req.body.newInfo.locationImages = req.files.map((file) => file.path);
+            console.log(req.body);
+            let adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
+
         req.body.officerEmail = email;
         const adsInfoEditingRequest = await AdsInfoEditingRequest.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsInfoEditingRequest });

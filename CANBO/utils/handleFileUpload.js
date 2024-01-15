@@ -19,6 +19,7 @@ const configureUpload = (folderName, maxImages) => {
       },
       filename: function (req, file, cb) {
         const fileName = `${getFormattedDate()}_${file.originalname}`;
+        console.log(fileName);
         cb(null, fileName);
       }
     });

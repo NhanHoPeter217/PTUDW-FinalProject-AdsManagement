@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('.districtType not found!');
             }
         });
+        
     function initializeDatepicker(inputId) {
         const picker = datepicker(inputId, {
             formatter: (input, date, instance) => {
@@ -69,9 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
             customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
         });
     }
+
 });
 
 $(document).ready(function () {
+
     $(document).on('submit', '#requestLicenseAdsBoardForm', function (e) {
         e.preventDefault();
 
