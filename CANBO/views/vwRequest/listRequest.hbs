@@ -77,7 +77,6 @@
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
-                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
@@ -144,13 +143,8 @@
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
-                                                                    {{#ifCond adsObject.adsBoardType '!==' newInfo.adsBoardType}}
-                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsBoardType}}</p>
-                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsBoardType}}</p>
-                                                                    {{else}}
-                                                                        <p class='mb-0'>{{newInfo.adsBoardType}}</p>
-                                                                    {{/ifCond}}
+                                                                    <h5 class='card-title fw-semibold'>Địa chỉ</h5>
+                                                                        <p class='mb-0'>{{adsObject.adsPoint.location.address}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="row gx-2">

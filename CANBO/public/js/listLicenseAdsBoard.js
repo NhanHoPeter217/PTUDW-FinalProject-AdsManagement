@@ -265,3 +265,45 @@ $(document).ready(function () {
     initMapViewOnly(detailReports);
 
 });
+
+$(document).ready(function () {
+    $(document).on('submit', '#detailLicenseAdsBoardForm', function (e) {
+        e.preventDefault();
+
+        const submitedButtonId = $(document.activeElement).attr('id');
+        const id = e.currentTarget.getAttribute('data-id');
+
+        if (submitedButtonId === 'deleteRequestLicense') {
+            fetch(`/adsLicenseRequest/AssignedArea/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "activeStatus": 'Đã hủy bỏ' })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi hủy yêu cầu cấp phép quảng cáo:', error);
+                });
+        } else if (submitedButtonId === 'verifyRequestLicense') {
+            fetch(`/adsLicenseRequest/department/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "requestApprovalStatus": 'Đã được duyệt' })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi duyệt yêu cầu cấp phép quảng cáo:', error);
+                });
+        }
+    });
+}
+);
