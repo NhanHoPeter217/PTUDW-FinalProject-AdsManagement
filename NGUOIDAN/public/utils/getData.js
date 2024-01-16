@@ -58,9 +58,10 @@ async function getAllAdsPoints() {
                     <!-- locationType -->
                     <h6>${adPoint.locationType}</h6>
                     <!-- location.address -->
-                    <p>Phường <b>${adPoint.location.ward}</b> Quận <b>${
+                    <p class="mb-1">Phường <b>${adPoint.location.ward}</b> Quận <b>${
                         adPoint.location.district
                     }</b></p>
+                    <p>Trạng thái: <b>${adPoint.planningStatus}</b></p>
                 </div>
             </div>`,
                 'text/html'
