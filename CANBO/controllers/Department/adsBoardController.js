@@ -6,6 +6,9 @@ const District = require('../../models/Department/District');
 
 const createAdsBoard = async (req, res) => {
     try {
+        req.body = JSON.parse(req.body.data);
+        if (req.files) req.body.adsBoardImages = req.files.map((file) => file.path);
+        console.log(req.body);
         const adsBoard = await AdsBoard.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsBoard });
     } catch (error) {
@@ -50,13 +53,28 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             })
             .lean();
 
+        const adsPoint = adsBoards[0].adsPoint;
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
+        const adsBoardTypes = [
+            'Trụ bảng hiflex',
+            'Trụ màn hình điện tử LED',
+            'Trụ hộp đèn',
+            'Bảng hiflex ốp tường',
+            'Màn hình điện tử ốp tường',
+            'Trụ treo băng rôn dọc',
+            'Trụ treo băng rôn ngang',
+            'Trụ/Cụm pano',
+            'Cổng chào',
+            'Trung tâm thương mại'
+        ];
         res.render('vwAdsBoard/listAdsBoard', {
             adsBoards: adsBoards,
             empty: adsBoards.length === 0,
             adsFormats: adsFormats,
+            adsPoint: adsPoint,
+            adsBoardTypes: adsBoardTypes,
             districts: districts,
             authUser: req.user
         });
@@ -91,6 +109,7 @@ const getSingleAdsBoard = async (req, res) => {
 const updateAdsBoard = async (req, res) => {
     try {
         req.body = JSON.parse(req.body.data);
+        if (req.files) req.body.adsBoardImages = req.files.map((file) => file.path);
         const { id: adsBoardId } = req.params;
         const adsBoard = await AdsBoard.findOneAndUpdate({ _id: adsBoardId }, req.body, {
             new: true,

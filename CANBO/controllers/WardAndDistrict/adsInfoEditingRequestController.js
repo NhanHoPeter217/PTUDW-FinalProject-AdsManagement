@@ -16,10 +16,10 @@ const { AUTH_EMAIL } = process.env;
 const createAdsInfoEditingRequest = async (req, res) => {
     // console.log(req.files);
     const { email } = req.user;
-    req.body = JSON.parse(req.body.data);
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
+            req.body = JSON.parse(req.body.data);
             if (req.files) req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
 
             const adsBoard = await AdsBoard.findOne({ _id: adsObject });
@@ -229,7 +229,6 @@ const updateAdsInfoEditingRequest = async (req, res) => {
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
                 { new: true, runValidators: true }
             );
-        } else if (adsType === 'AdsPoint') {
         } else if (adsType === 'AdsPoint') {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });

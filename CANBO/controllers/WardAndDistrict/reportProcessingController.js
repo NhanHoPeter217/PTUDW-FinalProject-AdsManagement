@@ -83,54 +83,63 @@ const getAllReportsByAssignedArea = async (req, res) => {
             query['district'] = district;
         }
 
-        const reportAdsBoard = await ReportProcessing.find({...query, relatedToType: 'AdsBoard'}).populate([
-            {
-                path: 'relatedTo',
-                model: 'AdsBoard',
-                populate: {
-                    path: 'adsPoint',
+        const reportAdsBoard = await ReportProcessing.find({ ...query, relatedToType: 'AdsBoard' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: {
+                            path: 'location',
+                            model: 'Location'
+                        }
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportAdsPoint = await ReportProcessing.find({ ...query, relatedToType: 'AdsPoint' })
+            .populate([
+                {
+                    path: 'relatedTo',
                     model: 'AdsPoint',
                     populate: {
                         path: 'location',
-                        model: 'Location',
+                        model: 'Location'
                     }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
                 }
-            },
-            {
-                path: 'reportFormat',
-                model: 'ReportFormat',
-            }
-        ]).lean();
+            ])
+            .lean();
 
-        const reportAdsPoint = await ReportProcessing.find({...query, relatedToType: 'AdsPoint'}).populate([
-            {
-                path: 'relatedTo',
-                model: 'AdsPoint',
-                populate: {
-                    path: 'location',
-                    model: 'Location',
+        const reportLocation = await ReportProcessing.find({ ...query, relatedToType: 'Location' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'Location'
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
                 }
-            },
-            {
-                path: 'reportFormat',
-                model: 'ReportFormat',
-            }
-        ]).lean();
+            ])
+            .lean();
 
-        const reportLocation = await ReportProcessing.find({...query, relatedToType: 'Location'}).populate([
-            {
-                path: 'relatedTo',
-                model: 'Location',
-            },
-            {
-                path: 'reportFormat',
-                model: 'ReportFormat',
-            }
-        ]).lean();
-
-        const reports = reportAdsBoard.concat(reportAdsPoint).concat(reportLocation).sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
+        const reports = reportAdsBoard
+            .concat(reportAdsPoint)
+            .concat(reportLocation)
+            .sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
 
         reports.forEach((report) => {
             for (let i = 0; i < report.images.length; i++) {
@@ -146,13 +155,13 @@ const getAllReportsByAssignedArea = async (req, res) => {
                 reports,
                 reportsEmpty: reports.length === 0,
                 districts,
-                authUser: req.user,
+                authUser: req.user
             });
         } else {
             res.render('vwReport/listReport', {
                 reports,
                 reportsEmpty: reports.length === 0,
-                authUser: req.user,
+                authUser: req.user
             });
         }
 

@@ -98,17 +98,17 @@ $(document).ready(function () {
             allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
             language: 'vi',
             theme: 'fas',
-            uploadExtraData: function() {
-            return {
-                _token: $("input[name='_token']").val(),
-                _method: $("input[name='_method']").val(),
-                id: $("input[name='id']").val(),
-            };
+            uploadExtraData: function () {
+                return {
+                    _token: $("input[name='_token']").val(),
+                    _method: $("input[name='_method']").val(),
+                    id: $("input[name='id']").val()
+                };
             },
             initialPreviewAsData: true,
             initialPreviewFileType: 'image',
             showUpload: false,
-            maxFileSize: 5120,
+            maxFileSize: 5120
         });
     }
     const requestAddAdsPointImages = $('.requestAddAdsPointImages');
@@ -120,17 +120,17 @@ $(document).ready(function () {
             allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
             language: 'vi',
             theme: 'fas',
-            uploadExtraData: function() {
-            return {
-                _token: $("input[name='_token']").val(),
-                _method: $("input[name='_method']").val(),
-                id: $("input[name='id']").val(),
-            };
+            uploadExtraData: function () {
+                return {
+                    _token: $("input[name='_token']").val(),
+                    _method: $("input[name='_method']").val(),
+                    id: $("input[name='id']").val()
+                };
             },
             initialPreviewAsData: true,
             initialPreviewFileType: 'image',
             showUpload: false,
-            maxFileSize: 5120,
+            maxFileSize: 5120
         });
     }
 
@@ -254,7 +254,6 @@ $(document).ready(function () {
             } else {
                 console.log('.wardType not found!');
             }
-
         });
 
     function initializeDatepicker(inputId) {
@@ -308,23 +307,31 @@ $(document).ready(function () {
         const adsType = 'AdsPoint';
         const lat = document.getElementById(`lat-${adsObject}`).value;
         const lng = document.getElementById(`lng-${adsObject}`).value;
-        const locationName = document.getElementById(`request_edit_locationName-${adsObject}`).value;
+        const locationName = document.getElementById(
+            `request_edit_locationName-${adsObject}`
+        ).value;
         const address = document.getElementById(`request_edit_address-${adsObject}`).value;
         const ward = document.getElementById(`request_edit_ward-${adsObject}`).value;
         const district = document.getElementById(`request_edit_district-${adsObject}`).value;
-        const locationType = document.getElementById(`request_edit_locationType-${adsObject}`).value;
+        const locationType = document.getElementById(
+            `request_edit_locationType-${adsObject}`
+        ).value;
         const adsFormat = document.getElementById(`request_edit_adsFormat-${adsObject}`).value;
-        const planningStatus = document.getElementById(`request_edit_planningStatus-${adsObject}`).value;
-        const editRequestTime = document.getElementById(`request_edit_editRequestTime-${adsObject}`).value;
+        const planningStatus = document.getElementById(
+            `request_edit_planningStatus-${adsObject}`
+        ).value;
+        const editRequestTime = document.getElementById(
+            `request_edit_editRequestTime-${adsObject}`
+        ).value;
         const editReason = document.getElementById(`request_edit_editReason-${adsObject}`).value;
-        
+
         const requestEditAdsPointData = {
             adsObject: adsObject,
             adsType: adsType,
             newInfo: {
                 coords: {
                     lat: lat,
-                    lng: lng,
+                    lng: lng
                 },
                 locationName: locationName,
                 address: address,
@@ -332,20 +339,22 @@ $(document).ready(function () {
                 district: district,
                 locationType: locationType,
                 adsFormat: adsFormat,
-                planningStatus: planningStatus,
+                planningStatus: planningStatus
             },
             editRequestTime: editRequestTime,
             editReason: editReason,
             wardAndDistrict: {
-              ward: ward,
-              district: district
+                ward: ward,
+                district: district
             }
         };
 
         // const jsonData = JSON.stringify(requestEditAdsPointData);
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
-        requestEditAdsPointData.wardAndDistrict = JSON.stringify(requestEditAdsPointData.wardAndDistrict);
-        
+        requestEditAdsPointData.wardAndDistrict = JSON.stringify(
+            requestEditAdsPointData.wardAndDistrict
+        );
+
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
             form_data.append(key, requestEditAdsPointData[key]);
@@ -363,7 +372,7 @@ $(document).ready(function () {
 
         fetch('/api/v1/adsInfoEditingRequest', {
             method: 'POST',
-            body: form_data,
+            body: form_data
         }).then((response) => {
             if (response.ok) {
                 alert('Yêu cầu chỉnh sửa đã được gửi thành công!');
@@ -392,8 +401,8 @@ $(document).ready(function () {
     initMapWithSearchBox(createAdsPointModal);
 });
 
-
-{/* <select class='form-select districtType' id='edit_district-{{_id}}' required>
+{
+    /* <select class='form-select districtType' id='edit_district-{{_id}}' required>
 <option class='mb-0 softer-text fw-nomral' selected value='0'>
         -- Chọn Quận --
 </option>
@@ -403,4 +412,5 @@ $(document).ready(function () {
 <option class='mb-0 softer-text fw-nomral' value='2'>
         2
 </option>
-</select> */}
+</select> */
+}

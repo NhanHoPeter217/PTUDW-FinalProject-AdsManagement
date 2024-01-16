@@ -14,49 +14,37 @@ $(document).ready(function () {
     const inputContractEndDate = $('.license_contractEndDate');
     const inputContractStartDate = $('.license_contractStartDate');
     const inputs = $('.edit_contractEndDate');
+    const inputAddAdsBoard = $('#add-adboard-form').find('input[name="contractEndDate"]');
+
     for (let i = 0; i < inputContractEndDate.length; ++i) {
         initializeDatepicker(`#` + inputContractEndDate[i].getAttribute('id'));
         initializeDatepicker(`#` + inputContractStartDate[i].getAttribute('id'));
         initializeDatepicker(`#` + inputs[i].getAttribute('id'));
     }
-    fetch('/district/api/v1', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    initializeDatepicker(`#` + inputAddAdsBoard[0].getAttribute('id'));
+
+    $('.edit_district').on('change', function () {
+        const wardElement = $(this).parent().parent().find('.edit_ward');
+        var selectedDistrict = $(this).val();
+
+        try {
+            let wards = district_data.find((d) => d.districtName === selectedDistrict).wards;
+
+            wardElement.empty();
+            wardElement.append(
+                `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
+            );
+
+            wards.forEach(function (ward) {
+                wardElement.append(`<option value="${ward}">${ward}</option>`);
+            });
+        } catch (error) {
+            wardElement.html(
+                `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Không có phường --</option>`
+            );
         }
-    })
-        .then((response) => response.json())
-        .then((district_data) => {
-            if (!district_data) {
-                return;
-            }
-            if ($('.edit_district').length > 0) {
-                $('.edit_district').on('change', function () {
-                    const wardElement = $(this).parent().parent().find('.edit_ward');
-                    var selectedDistrict = $(this).val();
+    });
 
-                    let wards = district_data.districts.find(
-                        (d) => d.districtName === selectedDistrict
-                    ).wards;
-
-                    if (wards) {
-                        wardElement.empty();
-                        wardElement.append(
-                            `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
-                        );
-
-                        wards.forEach(function (ward) {
-                            wardElement.append(`<option value="${ward}">${ward}</option>`);
-                        });
-                    } else {
-                        console.log('District not found!');
-                    }
-                });
-            } else {
-                console.log('.districtType not found!');
-            }
-        });
-        
     function initializeDatepicker(inputId) {
         datepicker(inputId, {
             formatter: (input, date, instance) => {
@@ -72,7 +60,6 @@ $(document).ready(function () {
             customDays: ['S', 'M', 'T', 'W', 'Th', 'F', 'S']
         });
     }
-
 });
 
 $(document).ready(function () {
@@ -134,8 +121,8 @@ $(document).ready(function () {
         await axios
             .post(`/adsLicenseRequest/${id}`, formData)
             .then((response) => {
-                alert('Yêu cầu cấp phép quảng cáo thành công!');
-                // window.location.reload();
+                // alert('Yêu cầu cấp phép quảng cáo thành công!');
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Lỗi khi yêu cầu cấp phép quảng cáo:', error);
@@ -155,7 +142,7 @@ $(document).ready(function () {
         )[0].value;
 
         let reason, ward, district;
-        if (mode === "Yêu cầu chỉnh sửa"){
+        if (mode === 'Yêu cầu chỉnh sửa') {
             reason = document.getElementById(`edit_reason-${adsObject}`).value;
             ward = document.getElementById(`edit_ward-${adsObject}`).value;
             district = document.getElementById(`edit_district-${adsObject}`).value;
@@ -189,33 +176,95 @@ $(document).ready(function () {
                 formData.append('images[]', file);
             }
         }
-        if (mode === "Yêu cầu chỉnh sửa"){
+        if (mode === 'Yêu cầu chỉnh sửa') {
+            formData.append('adsType', 'AdsBoard');
+            formData.append('adsObject', adsObject);
             formData.append('data', JSON.stringify(editRequestData));
             // axios
             await axios
                 .post(`/adsInfoEditingRequest`, formData)
                 .then((response) => {
-                    alert('Yêu cầu thông tin quảng cáo thành công!');
-                    // window.location.reload();
+                    // alert('Yêu cầu thông tin quảng cáo thành công!');
+                    window.location.reload();
                 })
                 .catch((error) => {
                     console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
                 });
+        } else {
+            formData.append('data', JSON.stringify(editRequestData.newInfo));
+            // axios
+            await axios
+                .patch(`/adsBoard/` + adsObject, formData)
+                .then((response) => {
+                    // alert('Chỉnh sửa thông tin quảng cáo thành công!');
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
+                });
+        }
+    });
+
+    // Delete ads board
+    $('.delete-ads-board-btn').on('click', async function (e) {
+        e.preventDefault();
+        const adsBoardId = e.currentTarget.getAttribute('data-id');
+        await axios
+            .delete(`/adsBoard/${adsBoardId}`)
+            .then((response) => {
+                // alert('Xóa bảng quảng cáo thành công!');
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Lỗi khi xóa bảng quảng cáo:', error);
+            });
+    });
+
+    // Add ads board Form
+    const addAdsBoardForm = $('#add-adboard-form');
+    addAdsBoardForm.on('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        const adsPoint = addAdsBoardForm.find('input[name="adsPoint"]').val();
+        const adsBoardType = addAdsBoardForm.find('select[name="adsBoardType"]').val();
+        const width = parseInt(addAdsBoardForm.find('input[name="width"]').val());
+        const height = parseInt(addAdsBoardForm.find('input[name="height"]').val());
+        const quantity = parseInt(addAdsBoardForm.find('input[name="quantity"]').val());
+        const contractEndDate = addAdsBoardForm.find('input[name="contractEndDate"]').val();
+        const files = addAdsBoardForm.find('input[type="file"]').prop('files');
+        if (files) {
+            for (let file of files) {
+                formData.append('images[]', file);
             }
-            else {
-                formData.append('data', JSON.stringify(editRequestData.newInfo));
-                // axios
-                await axios
-                    .patch(`/adsBoard/` + adsObject, formData)
-                    .then((response) => {
-                        alert('Chỉnh sửa thông tin quảng cáo thành công!');
-                        // window.location.reload();
-                    })
-                    .catch((error) => {
-                        console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
-                    });
         }
 
+        const adsBoardData = {
+            adsPoint: adsPoint,
+            adsBoardType: adsBoardType,
+            size: {
+                width: width,
+                height: height
+            },
+            quantity: quantity,
+            contractEndDate: contractEndDate
+        };
+
+        formData.append('data', JSON.stringify(adsBoardData));
+
+        // Display the key/value pairs
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        await axios
+            .post(`/adsBoard/`, formData)
+            .then((response) => {
+                // alert('Thêm bảng quảng cáo thành công!');
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Lỗi khi thêm bảng quảng cáo:', error);
+            });
     });
 
     // Init map view only
