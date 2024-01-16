@@ -1,5 +1,6 @@
 {{#section 'css'}}
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
+<link rel="stylesheet" href="public/css/adsBoard.css" />
 <link rel="stylesheet" href="public/css/report.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 {{/section}}
@@ -81,11 +82,12 @@
                             <colgroup>
                                 <col style="width: 3%">
                                 <col style="width: 20%">
+                                <col style="width: 13%">
                                 <col style="width: 10%">
+                                <col style="width: 12%">
                                 <col style="width: 10%">
-                                <col style="width: 20%">
-                                <col style="width: 15%">
-                                <col style="width: 15%">
+                                <col style="width: 13%">
+                                <col style="width: 13%">
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
@@ -94,6 +96,7 @@
                                     <th scope="col">Kích thước</th>
                                     <th scope="col">Số lượng</th>
                                     <th scope="col">Hạn hợp đồng</th>
+                                    <th scope="col">Giấy phép</th>
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                                         <th scope="col">Cấp phép</th>
                                     {{else}}
@@ -112,11 +115,12 @@
                                 <colgroup>
                                     <col style="width: 3%">
                                     <col style="width: 20%">
+                                    <col style="width: 13%">
                                     <col style="width: 10%">
+                                    <col style="width: 12%">
                                     <col style="width: 10%">
-                                    <col style="width: 20%">
-                                    <col style="width: 15%">
-                                    <col style="width: 15%">
+                                    <col style="width: 13%">
+                                    <col style="width: 13%">
                                 </colgroup>
                                 <tbody id="body">
                                     {{#if this.empty}}
@@ -156,6 +160,17 @@
                                         <td class="border-bottom-0">
                                             <button
                                                 type="button"
+                                                class="btn m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#requestLicenseAdsBoardModal-{{index}}">
+                                                <div>
+                                                    <img src="public/assets/icons/Tick_icon.svg" alt="" width="24" height="24" />
+                                                </div>
+                                            </button>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <button
+                                                type="button"
                                                 class="btn btn-success m-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#requestLicenseAdsBoardModal-{{index}}">
@@ -176,8 +191,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    
-
 
                                     {{!-- Detail AdsBoard Modal --}}
                                     <div
