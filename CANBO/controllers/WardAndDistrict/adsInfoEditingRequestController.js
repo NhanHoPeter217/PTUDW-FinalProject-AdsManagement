@@ -254,7 +254,6 @@ const updateAdsInfoEditingRequest = async (req, res) => {
                 { new: true, runValidators: true }
             );
         } else if (adsType === 'AdsPoint') {
-        } else if (adsType === 'AdsPoint') {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });
             const newInformation = await AdsPointRequestedEdit.findOne({ _id: newInfo });

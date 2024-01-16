@@ -141,6 +141,17 @@
                                                                     {{/ifCond}}
                                                                 </div>
                                                             </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
+                                                                    {{#ifCond adsObject.adsBoardType '!==' newInfo.adsBoardType}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsBoardType}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsBoardType}}</p>
+                                                                    {{else}}
+                                                                        <p class='mb-0'>{{newInfo.adsBoardType}}</p>
+                                                                    {{/ifCond}}
+                                                                </div>
+                                                            </div>
                                                             <div class="row gx-2">
                                                                 <div class='col-md-6'>
                                                                     <div class='card border'>
