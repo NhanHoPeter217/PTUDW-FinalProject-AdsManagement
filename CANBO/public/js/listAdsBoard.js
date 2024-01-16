@@ -90,7 +90,6 @@ $(document).ready(function () {
                     height: height
                 },
                 quantity: quantity,
-                images: 'temp',
                 contractEndDate: contractEndDate
             },
             adsContent: adsContent,

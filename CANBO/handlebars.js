@@ -81,6 +81,9 @@ const engineWithHelpers = engine({
             const year = date.getFullYear();
 
             return `${day}/${month}/${year}`;
+        },
+        includes(array, value) {
+            return array.includes(value);
         }
     }
 });

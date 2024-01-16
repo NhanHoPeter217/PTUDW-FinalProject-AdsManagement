@@ -27,19 +27,19 @@ router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, upload
 
 router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAllReportsByResident);
 
-router
-    .route('/dist/:distID/ward/:wardID')
-    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
+// router
+//     .route('/dist/:distID/ward/:wardID')
+//     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
 
-router
-    .route('/list')
-    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
+// router
+//     .route('/list')
+//     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
 
 router
     .route('/assignedArea')
-    .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
+    .get(authenticateUser, getAllReportsByAssignedArea);
 
-router.route('/:id').get(authenticateUser, getSingleReport);
+// router.route('/:id').get(authenticateUser, getSingleReport);
 
 router.route('/:id').patch(authenticateUser, authorizePermissions('Phường', 'Quận'), updateReport);
 

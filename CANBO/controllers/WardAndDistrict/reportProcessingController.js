@@ -135,19 +135,38 @@ const getAllReportsByDepartmentOfficer = async (req, res) => {
 
 const getAllReportsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
-    const { ward, district } = assignedArea;
+    const role = req.user.role;
+    var wardAssigned, districtAssigned;
+    var districtList, wardList;
+    districtList = await District.find({}).sort({ districtName: 1 }).lean();
     try {
-        let query = {};
+        if (role === 'Sở VH-TT') { // district = *, ward = *
+            wardAssigned = req.query.ward;
+            districtAssigned = req.query.dist;
+            districtAssigned && (wardList = districtList.find((district) => district.districtName == districtAssigned).wards);
+            
+        } else if (role === 'Quận') { // district assigned, ward = *
+            districtAssigned = assignedArea.district;
+            wardAssigned = req.query.ward;
+            wardList = districtList.find((district) => district.districtName == districtAssigned).wards;
 
-        if (ward !== '*') {
-            query['ward'] = ward;
+        } else if (role === 'Phường') { // district assigned, ward assigned
+            districtAssigned = assignedArea.district;
+            wardAssigned = assignedArea.ward;
         }
+        else throw new CustomError.BadRequestError('Invalid role');
 
-        if (district !== '*') {
-            query['district'] = district;
-        }
+        const mongooseQuery = {};
 
-        const reportAdsBoard = await ReportProcessing.find({ ...query, relatedToType: 'AdsBoard' })
+        if (districtAssigned && districtAssigned !== '*')
+            mongooseQuery.district = districtAssigned;
+
+        if (wardAssigned && wardAssigned !== '*')
+            mongooseQuery.ward = wardAssigned;
+
+        console.log("The Query: ", mongooseQuery);
+        
+        const reportAdsBoard = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'AdsBoard' })
             .populate([
                 {
                     path: 'relatedTo',
@@ -168,7 +187,7 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportAdsPoint = await ReportProcessing.find({ ...query, relatedToType: 'AdsPoint' })
+        const reportAdsPoint = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'AdsPoint' })
             .populate([
                 {
                     path: 'relatedTo',
@@ -185,7 +204,7 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportLocation = await ReportProcessing.find({ ...query, relatedToType: 'Location' })
+        const reportLocation = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'Location' })
             .populate([
                 {
                     path: 'relatedTo',
@@ -211,29 +230,20 @@ const getAllReportsByAssignedArea = async (req, res) => {
             }
         });
 
-        const districts = await District.find({}).sort({ districtName: 1 }).lean();
-        const role = req.user.role;
 
-        console.log(reports);
 
-        if (role === 'Quận') {
-            res.render('vwReport/listReport', {
-                reports,
-                reportsEmpty: reports.length === 0,
-                districts,
-                authUser: req.user
-            });
-        } else {
-            res.render('vwReport/listReport', {
-                reports,
-                reportsEmpty: reports.length === 0,
-                authUser: req.user
-            });
-        }
-
-        // res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        res.render('vwReport/listReport', {
+            reports,
+            reportsEmpty: reports.length === 0,
+            districtList,
+            wardList,
+            districtAssigned,
+            wardAssigned,
+            authUser: req.user
+        });
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        console.log(error);
+        res.status(StatusCodes.BAD_REQUEST).send('[ReportProcessingController.js Error]' + error.message);
     }
 };
 
