@@ -243,20 +243,13 @@ async function getAllReports() {
     const reports = result.data.reports;
 
     for (let report of reports) {
-        const img1 = report.image1;
-        const img2 = report.image2;
-        const content = `
-    <div class="card" style="width: 100%;">
-        ${
-            img1
-                ? `<img src="http:\\\\localhost:4000\\${img1}" class="card-img-top" alt="Report Image 1">`
-                : ''
-        }
-        ${
-            img2
-                ? `<img src="http:\\\\localhost:4000\\${img2}" class="card-img-top" alt="Report Image 2">`
-                : ''
-        }
+        let content = `<div class="card" style="width: 100%;">`;
+        console.log(report.images);
+        for (let img of report.images)
+            content += `
+            <img src="data:${img.contentType};base64,${img.data}" class="card-img-top" alt="Report Image">
+        `;
+        content += `
         <div class="card-body">
             <h4 class="card-title text-success">${report.reportFormat.name}</h4>
             <h6 class="card-subtitle text-secondary">${report.createdAt}</h6>
