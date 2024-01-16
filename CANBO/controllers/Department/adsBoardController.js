@@ -51,6 +51,15 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
                     }
                 ]
             })
+            .populate({
+                path: 'licenseRequestedAdsBoard',
+                populate: [
+                    {
+                        path: 'adsLicenseRequest',
+                        model: 'AdsLicenseRequest'
+                    }
+                ]
+            })
             .lean();
 
         const adsPoint = adsBoards[0].adsPoint;
