@@ -38,6 +38,12 @@ const licenseRequestedAdsBoardSchema = new Schema(
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+licenseRequestedAdsBoardSchema.virtual('adsLicenseRequest', {
+    ref: 'AdsLicenseRequest',
+    localField: '_id',
+    foreignField: 'licenseRequestedAdsBoard'
+});
+
 licenseRequestedAdsBoardSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'adsPoint'
