@@ -236,15 +236,15 @@ $(document).ready(function () {
 
     for (let i = 0; i < selectElements.length; ++i) {
         const selectElement = selectElements[i].id;
-    
+
         // Add event listener for 'change' event using jQuery
         $('#' + selectElement).on('change', function () {
             // Get the selected value using jQuery
             const selectedValue = $('#' + selectElement).val();
-    
+
             // Remove existing background color classes using jQuery
             $('#' + selectElement).removeClass('bg-danger bg-success bg-warning');
-    
+
             // Update color based on the selected value using jQuery
             switch (selectedValue) {
                 case 'Đang xử lý':
@@ -263,7 +263,6 @@ $(document).ready(function () {
     // Init map view only
     const detailReports = document.getElementsByClassName('detailReport');
     initMapViewOnly(detailReports);
-
 });
 
 $(document).ready(function () {

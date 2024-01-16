@@ -24,6 +24,7 @@ const createAdsLicenseRequest = async (req, res) => {
 
         if (req.files) {
             const imgArr = req.files.map((file) => file.path);
+            console.log(imgArr);
             req.body.licenseRequestedAdsBoard.adsBoardImages = imgArr;
         }
         req.body.wardAndDistrict = {

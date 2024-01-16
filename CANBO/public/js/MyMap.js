@@ -345,7 +345,7 @@ export class MySearchBox {
         this.autocomplete.addListener('place_changed', () => {
             const place = this.autocomplete.getPlace();
             if (!place.geometry || !place.geometry.location) {
-                window.alert("No details available for input: '" + place.name + "'");
+                window.alert("Không tìm thấy địa chỉ với địa chỉ: '" + place.name + "'");
                 return;
             }
 

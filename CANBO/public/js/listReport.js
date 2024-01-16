@@ -39,7 +39,7 @@
 // tableBody.append(`                        <tr>
 // <td class="border-bottom-0"><h6 class="fw-semibold mb-0">${reportTemplate.id}</h6></td>
 // <td class="border-bottom-0">
-//     <h6 class="fw-semibold mb-1">${reportTemplate.location}</h6>                   
+//     <h6 class="fw-semibold mb-1">${reportTemplate.location}</h6>
 // </td>
 // <td class="border-bottom-0">
 //     <p class="mb-0 fw-normal">${reportTemplate.type}</p>
@@ -78,5 +78,7 @@
 // });
 
 document.addEventListener('DOMContentLoaded', () => {
-    $('#reportContent').html(`<p><strong>dasdasd</strong></p><p><em><strong>sdfsdf</strong></em></p><p style="text-align: center;"><span style="text-decoration:underline;">sdfsdf<br><br><em>sdfsdf</em><br></span></p>`); 
+    $('#reportContent').html(
+        `<p><strong>dasdasd</strong></p><p><em><strong>sdfsdf</strong></em></p><p style="text-align: center;"><span style="text-decoration:underline;">sdfsdf<br><br><em>sdfsdf</em><br></span></p>`
+    );
 });
