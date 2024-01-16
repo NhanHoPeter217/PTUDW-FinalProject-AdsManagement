@@ -21,8 +21,8 @@ async function getAllAdsPoints() {
                 `
             ${
                 adPoint.planningStatus === 'Đã quy hoạch'
-                    ? `<div class="adpointInfo adPointRed" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
-                    : `<div class="adpointInfo adPointBlue" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
+                    ? `<div class="adpointInfo adPointBlue" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
+                    : `<div class="adpointInfo adPointRed" data-id="${adPoint._id}" data-lat="${adPoint.location.coords.lat}" data-lng="${adPoint.location.coords.lng}">`
             }
                 <div class="markerPlaceholder" alt="" srcset="">${adPoint.adsBoard.length}</div>
             
