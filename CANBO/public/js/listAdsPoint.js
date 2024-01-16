@@ -32,8 +32,6 @@ function updateCheckbox() {
             .then((adsPoints_data) => {
                 $('#body').empty();
 
-                console.log($('#body'));
-
                 if (!adsPoints_data) {
                     return;
                 }
@@ -81,6 +79,53 @@ function updateCheckbox() {
             fetchAdsPointsByWardList(currentDistrict);
         });
     });
+}
+
+function updateWardAndDistrict(district_data, classDistrict, classWard) {
+    if ($(classDistrict).length > 0) {
+        $(classDistrict).on('change', function () {
+            var selectedDistrict = $(this).val();
+
+            let selectedDistrictData;
+            for (let i = 0; i < district_data.count; ++i) {
+                if (district_data.districts[i].districtName === `${selectedDistrict}`) {
+                    selectedDistrictData = district_data.districts[i];
+                    break;
+                }
+            }
+
+            // remove selected option of district
+            $(`${classDistrict} option:selected`).removeAttr('selected');
+            $(`${classDistrict} option[value="${selectedDistrict}"]`).prop('selected', true);
+
+            if (selectedDistrictData) {
+                const wards = selectedDistrictData.wards;
+
+                $(classWard).empty();
+                $(classWard).append(`<option>-- Chọn Phường --</option>`);
+
+                wards.forEach(function (ward) {
+                    $(classWard).append(`<option value="${ward}">${ward}</option>`);
+                });
+            } else {
+                console.log('District not found!');
+            }
+        });
+    } else {
+        console.log(`${classDistrict} not found!`);
+    }
+
+    if ($(classWard).length > 0) {
+        $(classWard).on('change', function () {
+            var selectedWard = $(this).val();
+
+            // remove selected option of ward
+            $(`${classWard} option:selected`).removeAttr('selected');
+            $(`${classWard} option[value="${selectedWard}"]`).prop('selected', true);
+        });
+    } else {
+        console.log(`${classWard} not found!`);
+    }
 }
 
 $(document).ready(function () {
@@ -134,6 +179,29 @@ $(document).ready(function () {
         });
     }
 
+    // fetch AdsFormat
+    fetch('/api/v1/adsFormat', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((adsFormat_data) => {
+            if (!adsFormat_data) {
+                return;
+            }
+
+            const adsFormats = adsFormat_data.adsFormats;
+            for (let i = 0; i < adsFormats.length; ++i) {
+                $('#add_adsType').append(`<option value="${adsFormats[i]._id}">${adsFormats[i].name}</option>`);
+            }
+
+        });
+
+
     fetch('/district/api/v1', {
         method: 'GET',
         headers: {
@@ -146,6 +214,11 @@ $(document).ready(function () {
         .then((district_data) => {
             if (!district_data) {
                 return;
+            }
+
+            const districts = district_data.districts;
+            for (let i = 0; i < districts.length; ++i) {
+                $('.addDistrictType').append(`<option value="${districts[i].districtName}">${districts[i].districtName}</option>`);
             }
 
             if ($('#filter_district').length > 0) {
@@ -209,51 +282,9 @@ $(document).ready(function () {
                 console.log('#filter_district not found!');
             }
 
-            if ($('.districtType').length > 0) {
-                $('.districtType').on('change', function () {
-                    var selectedDistrict = $(this).val();
-
-                    let selectedDistrictData;
-                    for (let i = 0; i < district_data.count; ++i) {
-                        if (district_data.districts[i].districtName === `${selectedDistrict}`) {
-                            selectedDistrictData = district_data.districts[i];
-                            break;
-                        }
-                    }
-
-                    // remove selected option of district
-                    $(`.districtType option:selected`).removeAttr('selected');
-                    $(`.districtType option[value="${selectedDistrict}"]`).prop('selected', true);
-
-                    if (selectedDistrictData) {
-                        const wards = selectedDistrictData.wards;
-
-                        $('.wardType').empty();
-                        $('.wardType').append(`<option>-- Chọn Phường --</option>`);
-
-                        wards.forEach(function (ward) {
-                            $('.wardType').append(`<option value="${ward}">${ward}</option>`);
-                        });
-                    } else {
-                        console.log('District not found!');
-                    }
-                });
-            } else {
-                console.log('.districtType not found!');
-            }
-
-            // wardType
-            if ($('.wardType').length > 0) {
-                $('.wardType').on('change', function () {
-                    var selectedWard = $(this).val();
-
-                    // remove selected option of ward
-                    $(`.wardType option:selected`).removeAttr('selected');
-                    $(`.wardType option[value="${selectedWard}"]`).prop('selected', true);
-                });
-            } else {
-                console.log('.wardType not found!');
-            }
+            updateWardAndDistrict(district_data, '.editDistrict', '.editWard');
+            updateWardAndDistrict(district_data, '.requestDistrict', '.requestWard');
+            updateWardAndDistrict(district_data, '.addDistrictType', '.addWardType');
         });
 
     function initializeDatepicker(inputId) {
@@ -353,7 +384,7 @@ $(document).ready(function () {
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
         requestEditAdsPointData.wardAndDistrict = JSON.stringify(requestEditAdsPointData.wardAndDistrict);
 
-        console.log(requestEditAdsPointData);
+        // console.log(requestEditAdsPointData);
         
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
@@ -382,6 +413,142 @@ $(document).ready(function () {
             }
         });
         // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
+    });
+
+    $(document).on('submit', '#addAdsPointForm', function (e) {
+        e.preventDefault();
+
+        const locationName = document.getElementById(`add_locationName`).value;
+        const lat = document.getElementById(`add_address`).getAttribute('data-lat');
+        const lng = document.getElementById(`add_address`).getAttribute('data-lng');
+        const address = document.getElementById(`add_address`).value;
+        const ward = document.getElementById(`add_ward`).value;
+        const district = document.getElementById(`add_district`).value;
+        const locationType = document.getElementById(`add_locationType`).value;
+        const adsFormat = document.getElementById(`add_adsType`).value;
+        const planningStatus = document.getElementById(`add_planningStatus`).value;
+
+        // console.log(lat);
+        // console.log(lng);
+        // console.log(address);
+        // console.log(ward);
+        // console.log(district);
+        // console.log(locationType);
+        // console.log(adsFormat);
+        // console.log(planningStatus);
+        // console.log(locationName);
+
+        const addAdsPointData = {
+            location: {
+                coords: {
+                    lat: lat,
+                    lng: lng,
+                },
+                locationName: locationName,
+                address: address,
+                ward: ward,
+                district: district,
+            },
+            locationType: locationType,
+            adsFormat: adsFormat,
+            planningStatus: planningStatus,
+        };
+        
+        addAdsPointData.location = JSON.stringify(addAdsPointData.location);
+        
+        var formData = new FormData();
+        for (var key in addAdsPointData) {
+            formData.append(key, addAdsPointData[key]);
+        }
+
+        const fileInput = $(`#add_adsPointImages`).prop('files');
+
+        for (const file of fileInput) {
+            formData.append('add_adsPointImages', file);
+        }
+
+        console.log('Im here');
+
+        fetch('/adsPoint/', {
+            method: 'POST',
+            body: formData,
+        }).then((response) => {
+            if (response.ok) {
+                alert('Tạo điểm quảng cáo mới thành công!');
+                location.reload();
+            } else {
+                alert('Đã xảy ra lỗi khi tạo bảng quảng cáo mới!');
+            }
+        });
+    });
+
+    $(document).on('submit', '#editAdsPointForm', function (e) {
+            e.preventDefault();
+
+            const submitedButtonId = $(document.activeElement).attr('id');
+
+            const adsObject = e.currentTarget.getAttribute('data-id');
+
+            if (submitedButtonId === `saveAdsPointButton`) {
+            const planningStatus = document.getElementById(`edit_planningStatus-${adsObject}`).value;
+            const locationType = document.getElementById(`edit_locationType-${adsObject}`).value;
+            const adsFormat = document.getElementById(`edit_adsFormat-${adsObject}`).value;
+            const locationName = document.getElementById(`edit_locationName-${adsObject}`).value;
+            const address = document.getElementById(`edit_address-${adsObject}`).value;
+            const lat = document.getElementById(`edit_address-${adsObject}`).getAttribute('data-lat');
+            const lng = document.getElementById(`edit_address-${adsObject}`).getAttribute('data-lng');
+            const ward = document.getElementById(`edit_ward-${adsObject}`).value;
+            const district = document.getElementById(`edit_district-${adsObject}`).value;
+
+            const editAdsPointData = {
+                planningStatus: planningStatus,
+                locationType: locationType,
+                adsFormat: adsFormat,
+                locationName: locationName,
+                address: address,
+                lat: lat,
+                lng: lng,
+                ward: ward,
+                district: district,
+            };
+
+            // editAdsPointData.newInfo = JSON.stringify(editAdsPointData.newInfo);
+            // editAdsPointData.wardAndDistrict = JSON.stringify(editAdsPointData.wardAndDistrict);
+
+            var form_data = new FormData();
+            for (var key in editAdsPointData) {
+                form_data.append(key, editAdsPointData[key]);
+            }
+
+            const fileInput = $(`#edit_adsPointImages-${adsObject}`).prop('files');
+
+            for (const file of fileInput) {
+                form_data.append('edit_adsPointImages', file);
+            }
+
+            fetch(`/adsPoint/${adsObject}`, {
+                method: 'PATCH',
+                body: form_data,
+            }).then((response) => {
+                if (response.ok) {
+                    alert('Cập nhật thông tin điểm quảng cáo thành công!');
+                    location.reload();
+                } else {
+                    alert('Đã xảy ra lỗi khi cập nhật thông tin điểm quảng cáo!');
+                }
+            });
+        } else if (submitedButtonId === `deleteAdsPointButton`) {
+            fetch(`/adsPoint/${adsObject}`, {
+                method: 'DELETE',
+            }).then((response) => {
+                if (response.ok) {
+                    alert('Xóa điểm quảng cáo thành công!');
+                    location.reload();
+                } else {
+                    alert('Đã xảy ra lỗi khi xóa điểm quảng cáo!');
+                }
+            });
+        }
     });
 
     // Init map view only

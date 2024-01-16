@@ -13,6 +13,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/filetype.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
+
+<script>
+  $('.add_adsPointImages').fileinput({
+    dropZoneEnabled: true,
+    maxFileCount: 5,
+    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
+    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
+    language: 'vi',
+    theme: 'fas',
+    initialPreviewAsData: true,
+    initialPreviewFileType: 'image',
+    showUpload: false,
+    maxFileSize: 5120,
+    disableZoomTitle: true,
+  });
+</script>
 {{/section}}
 
 <div class="container-fluid mt-4">
@@ -47,7 +63,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Điểm quảng cáo</th>
+                                <th scope="col">Tên điểm quảng cáo</th>
                                 <th scope="col">Bảng quảng cáo</th>
                                 {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                                     <th scope="col">Thao tác</th>
@@ -143,7 +159,7 @@
                                                             <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
                                                                 <div class='card border'>
                                                                     <div class='card-body'>
-                                                                        <h5 class='card-title fw-semibold mb-4'>Điểm quảng cáo:</h5>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Tên điểm quảng cáo:</h5>
                                                                         <p class='mb-0 text-primary fw-semibold' id="locationName">{{location.locationName}}</p>
                                                                     </div>
                                                                 </div>
@@ -233,7 +249,7 @@
                                                             <div class='mb-3' id='locationName'>
                                                                 <label for='locationName' class='form-label' style='font-family: Inter;'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                        <div class="nowrap">Điểm quảng cáo</div> 
+                                                                        <div class="nowrap">Tên điểm quảng cáo</div> 
                                                                     </div>
                                                                 </label>
                                                                 <input
@@ -252,7 +268,7 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select districtType' id='edit_district-{{_id}}' required>
+                                                                    <select class='form-select districtType editDistrict' id='edit_district-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Quận --
                                                                         </option>
@@ -268,7 +284,7 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select wardType' id='edit_ward-{{_id}}' required>
+                                                                    <select class='form-select wardType editWard' id='edit_ward-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Phường --
                                                                         </option>
@@ -393,14 +409,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="mb-3 form-group">
-                                                                <label for="addAdsPointImages">Cập nhật hình ảnh</label>
-                                                                <input
-                                                                    type='file'
-                                                                    class='form-control image-input'
-                                                                    id='edit_locationImages'
-                                                                    accept='image/*'
-                                                                />
+                                                            <div class="form-group">
+                                                                <label for="edit_adsPointImages" class='form-label' style='font-family: Inter'>Cập nhật hình ảnh</label>
+                                                                <input type="file" multiple class="edit_adsPointImages" id="edit_adsPointImages-{{_id}}" name="edit_adsPointImages">
                                                             </div>
                                                             <div class='button-container justify-content-center'>
                                                                 <div
@@ -471,7 +482,7 @@
                                                             <div class='mb-3' id='locationName'>
                                                                 <label for='locationName' class='form-label' style='font-family: Inter;'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
-                                                                        <div class="nowrap">Điểm quảng cáo</div> 
+                                                                        <div class="nowrap">Tên điểm quảng cáo</div> 
                                                                     </div>
                                                                 </label>
                                                                 <input
@@ -506,7 +517,7 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select wardType' id='request_edit_ward-{{_id}}' required>
+                                                                    <select class='form-select wardType requestWard' id='request_edit_ward-{{_id}}' required>
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Phường --
                                                                         </option>
@@ -631,7 +642,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="requestAddAdsPointImages">Cập nhật hình ảnh</label>
+                                                                    <label for="requestAddAdsPointImages" class='form-label' style='font-family: Inter'>Cập nhật hình ảnh</label>
                                                                     <input type="file" multiple class="requestAddAdsPointImages" id="requestAddAdsPointImages-{{_id}}" name="requestAddAdsPointImages">
                                                                 </div>
                                                             </div>

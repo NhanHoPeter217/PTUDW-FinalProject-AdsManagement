@@ -77,7 +77,6 @@
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
-                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
@@ -220,8 +219,8 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold'>Ngày hết hạn của hợp đồng quảng cáo</h5>
-                                                                    {{#ifCond (format_date adsObject.contractEndDate) '!==' newInfo.contractEndDate}}
-                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{format_date adsObject.contractEndDate}}</p>
+                                                                    {{#ifCond adsObject.contractEndDate '!==' newInfo.contractEndDate}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.contractEndDate}}</p>
                                                                         <p class='mb-0 text-danger fw-semibold'>{{newInfo.contractEndDate}}</p>
                                                                     {{else}}
                                                                         <p class='mb-0'>{{newInfo.contractEndDate}}</p>
