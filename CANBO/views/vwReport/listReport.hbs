@@ -26,8 +26,7 @@
                                 <col style="width: 5%">
                                 <col style="width: 14%">
                                 <col style="width: 19%">
-                                <col style="width: 16%">
-                                <col style="width: 17%">
+                                <col style="width: 22%">
                                 <col style="width: 13%">
                                 <col style="width: 13%">
                             </colgroup>
@@ -37,8 +36,7 @@
                                     <th scope="col">Thời điểm gửi</th>
                                     <th scope="col">Người gửi</th>
                                     <th scope="col">Thông tin báo cáo</th>
-                                    <th scope="col">Hình thức</th>
-                                    <th scope="col">Tình trạng xử lý</th>
+                                    <th scope="col">Tình trạng</th>
                                     <th scope="col">Cách thức xử lý</th>
                                 </tr>
                             </thead>
@@ -49,8 +47,7 @@
                                 <col style="width: 5%">
                                 <col style="width: 14%">
                                 <col style="width: 19%">
-                                <col style="width: 16%">
-                                <col style="width: 17%">
+                                <col style="width: 22%">
                                 <col style="width: 13%">
                                 <col style="width: 13%">
                                 </colgroup>
@@ -63,6 +60,7 @@
                                         <td class="border-bottom-0 text-center align-middle">
                                             <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
                                         </td>
+                                        {{log createdAt}}
                                         <td class="border-bottom-0 text-center align-middle">
                                             {{format_date createdAt}}
                                         </td>
@@ -110,16 +108,20 @@
                                         </td>
                                         {{/ifCond}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            {{reportFormat.name}}
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <select class="form-select badge bg-danger rounded-3 fs-6 tackle-status" aria-label="Default select example" id="tackle-status-{{_id}}">
-                                                <option value="Chưa xử lý" class="bg-white text-primary">Chưa xử lý</option>
-                                                <option value="Đang xử lý" class="bg-white text-primary">Đang xử lý</option>
-                                                <option value="Đã xử lý" class="bg-white text-primary">Đã xử lý</option>
-                                            </select>
+                                            <div class="card border">
+                                            {{#ifCond processingStatus '===' 'Đã xử lý'}}
+                                                <span class="badge bg-success rounded-3 fw-semibold">Đã xử lý</span>
+                                            {{/ifCond}}
+                                            {{#ifCond processingStatus '===' 'Đang xử lý'}}
+                                                <span class="badge bg-warning rounded-3 fw-semibold">Đang xử lý</span>
+                                            {{/ifCond}}
+                                            {{#ifCond processingStatus '===' 'Chưa xử lý'}}
+                                                <span class="badge bg-danger rounded-3 fw-semibold">Chưa xử lý</span>
+                                            {{/ifCond}}
+                                            </div>
                                         </td>
                                         <td class="border-bottom-0 align-middle">
+                                            {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
                                             <button
                                                 type="button"
                                                 class="btn btn-primary m-1"
@@ -127,9 +129,19 @@
                                                 data-bs-target="#tackleMethod-{{_id}}">
                                                 <div class="d-flex">
                                                 <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
+                                            </button>
+                                            {{else}}
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#updateTackleMethod-{{_id}}">
+                                                <div class="d-flex">
+                                                <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
                                                 <div style="color: white">Xử lý</div>
                                                 </div>
                                             </button>
+                                            {{/ifCond}}
                                         </td>
                                     </tr>
                                     <div
@@ -287,19 +299,19 @@
                                                             <div class="card border">
                                                             {{#ifCond processingStatus '===' 'Đã xử lý'}}
                                                             <div class='card-body'>
-                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng</h5>
                                                                 <span class="badge bg-success rounded-3 fw-semibold">Đã xử lý</span>
                                                             </div>
                                                             {{/ifCond}}
                                                             {{#ifCond processingStatus '===' 'Đang xử lý'}}
                                                             <div class='card-body'>
-                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng</h5>
                                                                 <span class="badge bg-warning rounded-3 fw-semibold">Đang xử lý</span>
                                                             </div>
                                                             {{/ifCond}}
                                                             {{#ifCond processingStatus '===' 'Chưa xử lý'}}
                                                             <div class='card-body'>
-                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng</h5>
                                                                 <span class="badge bg-danger rounded-3 fw-semibold">Chưa xử lý</span>
                                                             </div>
                                                             {{/ifCond}}
@@ -325,6 +337,24 @@
                                     >
                                         <div class='modal-dialog'>
                                             <div class='modal-content'>
+                                                <div class='card border'>
+                                                    <div class='card-body'>
+                                                        <h5 class='card-title fw-semibold mb-4 text-primary'>Cách thức xử lý</h5>
+                                                        <p class='mb-0'>{{{processingMethod}}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class='modal fade'
+                                        id='updateTackleMethod-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
                                                 <div class='modal-header'>
                                                     <img
                                                         src='../../../public/assets/icons/Verify_icon_blue.svg'
@@ -343,7 +373,6 @@
                                                 <div class='modal-body'>
                                                     <form id='addAdsTypeForm' enctype='multipart/form-data'>
                                                         <div class='mb-3'>
-                                                            <label for='adsTypeFormName' class='form-label' style='font-family: Inter;'>Cách thức xử lý</label>
                                                             <textarea
                                                                 class='form-control fullNameReport search-box'
                                                                 id='edit_address-{{_id}}'
