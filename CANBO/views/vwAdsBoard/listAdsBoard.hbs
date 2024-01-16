@@ -277,7 +277,7 @@
                                     {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
                                     <div
                                         class='modal fade requestEditAdsBoardModal'
-                                        id='requestEditAdsBoardModal-{{index}}'
+                                        id='requestEditAdsBoardModal-{{_id}}'
                                         tabindex='-1'
                                         aria-hidden='true'
                                     >
@@ -299,10 +299,10 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='requestEditAdsBoardForm_{{index}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}">
-                                                        <div class='mb-3' id='adsBoardType'>
+                                                    <form id='requestEditAdsBoardForm-{{_id}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}" data-mode="Chỉnh sửa">
+                                                        <div class='mb-3'>
                                                             <div>
-                                                                <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div class="nowrap">Loại bảng quảng cáo</div>
                                                                         <p class='mb-0 softer-text fw-nomral'></p>    
@@ -348,7 +348,7 @@
                                                                         <p class='mb-0 softer-text fw-nomral'></p>
                                                                     </div>
                                                                 </label>
-                                                                <select class='form-select edit_district' id='edit_ward-{{_id}}' required>
+                                                                <select class='form-select edit_ward' id='edit_ward-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                             -- Chọn Phường --
                                                                     </option>
@@ -365,7 +365,7 @@
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_height-{{_id}}'
                                                                     value="{{size.height}}"
                                                                     required
@@ -379,29 +379,29 @@
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_width-{{_id}}'
                                                                     value="{{size.width}}"
                                                                     required
                                                                 />
                                                             </div>
-                                                            <div class='mb-3' id="quantity">
-                                                                <label for='quantity' class='form-label' style='font-family: Inter'>
+                                                            <div class='mb-3'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div>Số lượng</div>    
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_quantity-{{_id}}'
                                                                     value="{{quantity}}"
                                                                     required
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div class='mb-3' id="contractEndDate">
-                                                            <label for='contractEndDate' class='form-label' style='font-family: Inter'>
+                                                        <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter'>
                                                                 <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                     <div>Ngày hết hạn của hợp đồng quảng cáo</div>  
                                                                 </div>
@@ -409,11 +409,11 @@
                                                             <input type='text' class='edit_contractEndDate form-control edit_contractEndDate-{{_id}}' id='edit_contractEndDate-{{index}}' value="{{format_date contractEndDate}}" required />
                                                         </div>
                                                         <div class='mb-3'>
-                                                            <label for='adsBoardImages{{index}}' class='form-label' style='font-family: Inter'>Hình ảnh</label>
+                                                            <label class='form-label' style='font-family: Inter'>Hình ảnh</label>
                                                             <input
                                                                 type='file'
                                                                 class='form-control image-input'
-                                                                id="adsBoardImages{{index}}"
+                                                                id="image-input-{{_id}}"
                                                             />
                                                         </div>
                                                         <div class='button-container justify-content-center'>
@@ -483,7 +483,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='requestEditAdsBoardForm-{{_id}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}">
+                                                    <form id='requestEditAdsBoardForm-{{_id}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}" data-mode="Yêu cầu chỉnh sửa">
                                                         <div class='mb-3'>
                                                             <div>
                                                                 <label class='form-label' style='font-family: Inter'>
@@ -598,7 +598,7 @@
                                                         <div class='mb-3'>
                                                             <div class="form-group">
                                                                 <label>Cập nhật hình ảnh</label>
-                                                                <input type="file" multiple class="image-input" id="image-input-{{_id}}">
+                                                                <input type="file" class="form-control image-input" id="image-input-{{_id}}" multiple>
                                                             </div>
                                                         </div>
                                                         <div class='button-container justify-content-center'>
@@ -714,7 +714,7 @@
                                                         </div>
                                                         <div class='mb-3' id="license_adsBoardImages">
                                                             <label class='form-label' style='font-family: Inter'>Hình ảnh bảng quảng cáo</label>
-                                                            <input type="file" id="image-input-{{_id}}" class="image-input" multiple>
+                                                            <input type="file" id="image-input-license-{{_id}}" class="form-control image-input" multiple>
                                                         </div>
                                                         <div class='mb-3' id="adsContent">
                                                             <label for='adsContent' class='form-label' style='font-family: Inter'>Nội dung quảng cáo</label>

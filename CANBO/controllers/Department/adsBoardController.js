@@ -90,6 +90,7 @@ const getSingleAdsBoard = async (req, res) => {
 
 const updateAdsBoard = async (req, res) => {
     try {
+        req.body = JSON.parse(req.body.data);
         const { id: adsBoardId } = req.params;
         const adsBoard = await AdsBoard.findOneAndUpdate({ _id: adsBoardId }, req.body, {
             new: true,

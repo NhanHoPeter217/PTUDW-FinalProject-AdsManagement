@@ -118,7 +118,7 @@ $(document).ready(function () {
 
         const formData = new FormData();
 
-        const files = $('#image-input-' + id).prop('files');
+        const files = $(`#image-input-license-${id}`).prop('files');
         if (files) {
             for (let file of files) {
                 formData.append('images[]', file);
@@ -135,7 +135,7 @@ $(document).ready(function () {
             .post(`/adsLicenseRequest/${id}`, formData)
             .then((response) => {
                 alert('Yêu cầu cấp phép quảng cáo thành công!');
-                window.location.reload();
+                // window.location.reload();
             })
             .catch((error) => {
                 console.error('Lỗi khi yêu cầu cấp phép quảng cáo:', error);
@@ -144,17 +144,22 @@ $(document).ready(function () {
 
     $('.requestEditAdsBoardForm').on('submit', async function (e) {
         e.preventDefault();
+        const mode = e.currentTarget.getAttribute('data-mode');
         const adsObject = e.currentTarget.getAttribute('data-id');
         const adsBoardType = document.getElementById(`edit_adsBoardType-${adsObject}`).value;
         const width = parseInt(document.getElementById(`edit_width-${adsObject}`).value);
         const height = parseInt(document.getElementById(`edit_height-${adsObject}`).value);
         const quantity = parseInt(document.getElementById(`edit_quantity-${adsObject}`).value);
-        const reason = document.getElementById(`edit_reason-${adsObject}`).value;
         const contractEndDate = document.getElementsByClassName(
             `edit_contractEndDate-${adsObject}`
         )[0].value;
-        const ward = document.getElementById(`edit_ward-${adsObject}`).value;
-        const district = document.getElementById(`edit_district-${adsObject}`).value;
+
+        let reason, ward, district;
+        if (mode === "Yêu cầu chỉnh sửa"){
+            reason = document.getElementById(`edit_reason-${adsObject}`).value;
+            ward = document.getElementById(`edit_ward-${adsObject}`).value;
+            district = document.getElementById(`edit_district-${adsObject}`).value;
+        }
 
         const editRequestData = {
             adsObject: adsObject,
@@ -184,18 +189,33 @@ $(document).ready(function () {
                 formData.append('images[]', file);
             }
         }
-        formData.append('data', JSON.stringify(editRequestData));
+        if (mode === "Yêu cầu chỉnh sửa"){
+            formData.append('data', JSON.stringify(editRequestData));
+            // axios
+            await axios
+                .post(`/adsInfoEditingRequest`, formData)
+                .then((response) => {
+                    alert('Yêu cầu thông tin quảng cáo thành công!');
+                    // window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
+                });
+            }
+            else {
+                formData.append('data', JSON.stringify(editRequestData.newInfo));
+                // axios
+                await axios
+                    .patch(`/adsBoard/` + adsObject, formData)
+                    .then((response) => {
+                        alert('Chỉnh sửa thông tin quảng cáo thành công!');
+                        // window.location.reload();
+                    })
+                    .catch((error) => {
+                        console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
+                    });
+        }
 
-        // axios
-        await axios
-            .post(`/adsInfoEditingRequest`, formData)
-            .then((response) => {
-                alert('Yêu cầu / Chỉnh sửa thông tin quảng cáo thành công!');
-                window.location.reload();
-            })
-            .catch((error) => {
-                console.error('Lỗi khi yêu cầu chỉnh sửa thông tin quảng cáo:', error);
-            });
     });
 
     // Init map view only
