@@ -78,6 +78,9 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             'Cổng chào',
             'Trung tâm thương mại'
         ];
+
+        console.log(adsBoards[0].licenseRequestedAdsBoard);
+
         res.render('vwAdsBoard/listAdsBoard', {
             adsBoards: adsBoards,
             empty: adsBoards.length === 0,
