@@ -345,6 +345,8 @@ $(document).ready(function () {
         // const jsonData = JSON.stringify(requestEditAdsPointData);
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
         requestEditAdsPointData.wardAndDistrict = JSON.stringify(requestEditAdsPointData.wardAndDistrict);
+
+        console.log(requestEditAdsPointData);
         
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
@@ -361,7 +363,7 @@ $(document).ready(function () {
             form_data.append('requestAddAdsPointImages', file);
         }
 
-        fetch('/api/v1/adsInfoEditingRequest', {
+        fetch('/adsInfoEditingRequest/', {
             method: 'POST',
             body: form_data,
         }).then((response) => {

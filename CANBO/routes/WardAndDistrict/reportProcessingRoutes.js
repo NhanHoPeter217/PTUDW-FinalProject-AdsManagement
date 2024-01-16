@@ -32,7 +32,7 @@ router
     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
 
 router
-    .route('/')
+    .route('/list')
     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
 
 router
