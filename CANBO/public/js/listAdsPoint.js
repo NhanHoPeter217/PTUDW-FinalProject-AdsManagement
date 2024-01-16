@@ -504,13 +504,21 @@ $(document).ready(function () {
                 planningStatus: planningStatus,
                 locationType: locationType,
                 adsFormat: adsFormat,
-                locationName: locationName,
-                address: address,
-                lat: lat,
-                lng: lng,
-                ward: ward,
-                district: district,
+                location: {
+                    coords: {
+                        lat: lat,
+                        lng: lng,
+                    },
+                    locationName: locationName,
+                    address: address,
+                    ward: ward,
+                    district: district,
+                },
             };
+
+            editAdsPointData.location = JSON.stringify(editAdsPointData.location);
+
+            console.log(editAdsPointData);
 
             // editAdsPointData.newInfo = JSON.stringify(editAdsPointData.newInfo);
             // editAdsPointData.wardAndDistrict = JSON.stringify(editAdsPointData.wardAndDistrict);
@@ -537,18 +545,18 @@ $(document).ready(function () {
                     alert('Đã xảy ra lỗi khi cập nhật thông tin điểm quảng cáo!');
                 }
             });
-        } else if (submitedButtonId === `deleteAdsPointButton`) {
-            fetch(`/adsPoint/${adsObject}`, {
-                method: 'DELETE',
-            }).then((response) => {
-                if (response.ok) {
-                    alert('Xóa điểm quảng cáo thành công!');
-                    location.reload();
-                } else {
-                    alert('Đã xảy ra lỗi khi xóa điểm quảng cáo!');
-                }
-            });
-        }
+            } else if (submitedButtonId === `deleteAdsPointButton`) {
+                fetch(`/adsPoint/${adsObject}`, {
+                    method: 'DELETE',
+                }).then((response) => {
+                    if (response.ok) {
+                        alert('Xóa điểm quảng cáo thành công!');
+                        location.reload();
+                    } else {
+                        alert('Đã xảy ra lỗi khi xóa điểm quảng cáo!');
+                    }
+                });
+            }
     });
 
     // Init map view only

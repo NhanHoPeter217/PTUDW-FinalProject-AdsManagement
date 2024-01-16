@@ -76,7 +76,7 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             adsPoint: adsPoint,
             adsBoardTypes: adsBoardTypes,
             districts: districts,
-            authUser: req.user
+            authUser: req.user,
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
