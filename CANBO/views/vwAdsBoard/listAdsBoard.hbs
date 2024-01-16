@@ -86,7 +86,9 @@
                                 <col style="width: 10%">
                                 <col style="width: 12%">
                                 <col style="width: 10%">
+                                {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
                                 <col style="width: 13%">
+                                {{/ifCond}}
                                 <col style="width: 13%">
                             </colgroup>
                             <thead class="thead-dark">
@@ -97,9 +99,7 @@
                                     <th scope="col">Số lượng</th>
                                     <th scope="col">Hạn hợp đồng</th>
                                     <th scope="col">Giấy phép</th>
-                                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                        <th scope="col">Cấp phép</th>
-                                    {{else}}
+                                    {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
                                         <th scope="col">Yêu cầu cấp phép</th>
                                     {{/ifCond}}
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
@@ -119,7 +119,9 @@
                                     <col style="width: 10%">
                                     <col style="width: 12%">
                                     <col style="width: 10%">
+                                    {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
                                     <col style="width: 13%">
+                                    {{/ifCond}}
                                     <col style="width: 13%">
                                 </colgroup>
                                 <tbody id="body">
@@ -157,18 +159,41 @@
                                                 <p class="mb-0 fw-normal">{{contractEndDate}}</p>
                                             </div>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        {{#ifCond licenseRequestedAdsBoard.adsLicenseRequest.activeStatus '===' 'Đang tồn tại'}}
+                                        {{#ifCond licenseRequestedAdsBoard.adsLicenseRequest.requestApprovalStatus '===' 'Đã được duyệt'}}
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#requestLicenseAdsBoardModal-{{index}}">
+                                                data-bs-target="#licenseDetailModal-{{index}}">
                                                 <div>
                                                     <img src="public/assets/icons/Tick_icon.svg" alt="" width="24" height="24" />
                                                 </div>
                                             </button>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        {{else}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#licenseDetailModal-{{index}}">
+                                                <div>
+                                                    <img src="public/assets/icons/Pending_icon.svg" alt="" width="24" height="24" />
+                                                </div>
+                                            </button>
+                                        </td>
+                                        {{/ifCond}}
+                                        {{else}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <div>
+                                                <img src="public/assets/icons/Ban_icon.svg" alt="" width="24" height="24" />
+                                            </div>
+                                        </td>
+                                        {{/ifCond}}
+                                        {{#ifCond ../authUser.role '!==' 'Sở VH-TT'}}
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-success m-1"
@@ -179,7 +204,8 @@
                                                 </div>
                                             </button>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        {{/ifCond}}
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
@@ -307,8 +333,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                         
                                         {{!-- Edit AdsBoard Modal (Sở) --}}
                                     {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
@@ -325,7 +349,7 @@
                                                         src='public/assets/icons/Edit_icon_orange.svg'
                                                         style='height: 40px; width: 40px;'
                                                     />
-                                                    <h5 class='modal-Edit-title' id='reportModalLabel'>
+                                                    <h5 class='modal-Edit-title modal-requestEdit-title' id='reportModalLabel'>
                                                         Chỉnh sửa thông tin
                                                     </h5>
                                                     <button
@@ -347,20 +371,20 @@
                                                                         <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
-    <select class='form-select edit_adsBoardType' id='edit_adsBoardType-{{_id}}' required>
-        <option class='mb-0 softer-text fw-nomral' disabled>
-                -- Chọn loại bảng quảng cáo --
-        </option>
-        <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
-        <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
-        <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
-        <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
-        <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
-        <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
-        <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
-        <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
+                                                                <select class='form-select edit_adsBoardType' id='edit_adsBoardType-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                            -- Chọn loại bảng quảng cáo --
+                                                                    </option>
+                                                                    <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
+                                                                    <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
+                                                                    <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
+                                                                    <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
+                                                                    <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
+                                                                    <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
+                                                                    <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
+                                                                    <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
 
-    </select>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="d-flex flex-row column-gap-3">
@@ -480,7 +504,7 @@
                                                         style='height: 40px; width: 40px;'
                                                     />
                                                     <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                                        Chỉnh sửa thông tin
+                                                        Yêu cầu chỉnh sửa thông tin
                                                     </h5>
                                                     <button
                                                         type='button'
@@ -642,7 +666,7 @@
                                                                         <div class="nowrap">Loại bảng quảng cáo</div>
                                                                     </div>
                                                                 </label>
-    <select class='form-select reportType' id='license_adsBoardType-{{_id}}' disabled>
+    <select class='form-select reportType' id='license_adsBoardType-{{_id}}' required>
         <option class='mb-0 softer-text fw-nomral' disabled>
                 -- Chọn loại bảng quảng cáo --
         </option>
@@ -667,7 +691,7 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_height-{{_id}}'
                                                                     value="{{size.height}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                             <div class='mb-3' id="width">
@@ -677,7 +701,7 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_width-{{_id}}'
                                                                     value="{{size.width}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                             <div class='mb-3' id="quantity">
@@ -687,7 +711,7 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_quantity-{{_id}}'
                                                                     value="{{quantity}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                         </div>
@@ -776,6 +800,162 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                    
+
+                                    {{!-- License Detail Modal --}}
+                                    <div
+                                        class='modal fade licenseDetailModal'
+                                        id="licenseDetailModal-{{index}}"
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                        data-lat="{{adsPoint.location.coords.lat}}"
+                                        data-lng="{{adsPoint.location.coords.lng}}"
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='public/assets/icons/Info_icon.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin cấp phép</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-detail-body'>
+                                                    <form id='detailAdsBoardForm' data-id={{_id}} enctype='multipart/form-data'>
+                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
+                                                                    <p class='mb-0 text-primary fw-semibold' id="adsBoardType">{{licenseRequestedAdsBoard.adsBoardType}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Địa điểm:</h5>
+                                                                    <p class='mb-0' id="locationName">{{adsPoint.location.locationName}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Địa chỉ</h5>
+                                                                    <p class='mb-1' id="address">{{adsPoint.location.address}}</p>
+                                                                    <div class="map-view-only"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Loại vị trí</h5>
+                                                                    <p class='mb-0' id="locationType">{{adsPoint.locationType}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Hình thức quảng cáo</h5>
+                                                                    <p class='mb-0' id="adsFormat">{{adsPoint.adsFormat.name}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
+                                                                    {{#ifCond adsPoint.planningStatus "===" "Đã quy hoạch"}}
+                                                                    <span class="badge bg-primary rounded-3 fw-semibold">Đã quy hoạch</span>
+                                                                    {{else}}
+                                                                    <span class="badge bg-danger rounded-3 fw-semibold">Chưa quy hoạch</span>
+                                                                    {{/ifCond}}
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Kích thước</h5>
+                                                                    <p class='mb-0' id="size">{{licenseRequestedAdsBoard.size.width}}m x {{licenseRequestedAdsBoard.size.height}}m</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Số lượng</h5>
+                                                                    <p class='mb-0' id="quantity">{{licenseRequestedAdsBoard.quantity}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Hình ảnh</h5>
+                                                                    {{#each licenseRequestedAdsBoard.adsBoardImages}}
+                                                                    <img src="{{this}}" alt="" width="100%"/>
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Tên công ty đặt quảng cáo</h5>
+                                                                    <p class='mb-0' id="contractEndDate">{{licenseRequestedAdsBoard.adsLicenseRequest.companyInfo.name}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Email công ty</h5>
+                                                                    <p class='mb-0' id="contractEndDate">{{licenseRequestedAdsBoard.adsLicenseRequest.companyInfo.email}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Điện thoại công ty</h5>
+                                                                    <p class='mb-0' id="contractEndDate">{{licenseRequestedAdsBoard.adsLicenseRequest.companyInfo.phone}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Địa chỉ công ty</h5>
+                                                                    <p class='mb-0' id="contractEndDate">{{licenseRequestedAdsBoard.adsLicenseRequest.companyInfo.address}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row gx-2">
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Ngày bắt đầu hợp đồng</h5>
+                                                                            <p class='mb-0'>{{licenseRequestedAdsBoard.adsLicenseRequest.contractStartDate}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Ngày kết thúc hợp đồng</h5>
+                                                                            <p class='mb-0'>{{licenseRequestedAdsBoard.contractEndDate}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Tình trạng cấp phép</h5>
+                                                                    {{#ifCond licenseRequestedAdsBoard.adsLicenseRequest.requestApprovalStatus '===' 'Đã được duyệt'}}
+                                                                        <div class="d-flex gap-2">
+                                                                            <span class="badge bg-success rounded-3 fw-semibold">Đã được duyệt</span>
+                                                                        </div>
+                                                                    {{else}}
+                                                                        <div class="d-flex gap-2">
+                                                                            <span class="badge bg-warning rounded-3 fw-semibold">Chưa được duyệt</span>
+                                                                        </div>
+                                                                    {{/ifCond}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {{/each}}
                                     {{/if}}
                                 </tbody>
