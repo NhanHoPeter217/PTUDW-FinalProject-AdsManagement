@@ -10,7 +10,7 @@ const {
 } = require('../../controllers/Department/districtController');
 
 router.use(authenticateUser);
-router.use(authorizePermissions('Sở VH-TT'));
+// router.use(authorizePermissions('Sở VH-TT'));
 
 router.get('/', (req, res) => res.redirect('/district/1'));
 router.get('/:distName', getAllDistricts);

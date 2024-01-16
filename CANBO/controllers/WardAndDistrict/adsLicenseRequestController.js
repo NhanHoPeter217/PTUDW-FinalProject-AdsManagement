@@ -26,6 +26,7 @@ const createAdsLicenseRequest = async (req, res) => {
             const imgArr = req.files.map((file) => file.path);
             console.log(imgArr);
             req.body.licenseRequestedAdsBoard.adsBoardImages = imgArr;
+            req.body.images = imgArr;
         }
         req.body.wardAndDistrict = {
             ward: adsBoard.adsPoint.location.ward,
@@ -48,27 +49,29 @@ const createAdsLicenseRequest = async (req, res) => {
 
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({}).populate({
-            path: 'licenseRequestedAdsBoard',
-            populate: {
-                path: 'adsBoard',
-                model: 'AdsBoard',
+        const adsLicenseRequests = await AdsLicenseRequest.find({})
+            .populate({
+                path: 'licenseRequestedAdsBoard',
                 populate: {
-                    path: 'adsPoint',
-                    model: 'AdsPoint',
-                    populate: [
-                        {
-                            path: 'location',
-                            model: 'Location'
-                        },
-                        {
-                            path: 'adsFormat',
-                            model: 'AdsFormat'
-                        }
-                    ]
+                    path: 'adsBoard',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: [
+                            {
+                                path: 'location',
+                                model: 'Location'
+                            },
+                            {
+                                path: 'adsFormat',
+                                model: 'AdsFormat'
+                            }
+                        ]
+                    }
                 }
-            }
-        }).lean();
+            })
+            .lean();
         // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
 
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
@@ -121,27 +124,29 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             query['wardAndDistrict.district'] = district;
         }
 
-        const adsLicenseRequests = await AdsLicenseRequest.find(query).populate({
-            path: 'licenseRequestedAdsBoard',
-            populate: {
-                path: 'adsBoard',
-                model: 'AdsBoard',
+        const adsLicenseRequests = await AdsLicenseRequest.find(query)
+            .populate({
+                path: 'licenseRequestedAdsBoard',
                 populate: {
-                    path: 'adsPoint',
-                    model: 'AdsPoint',
-                    populate: [
-                        {
-                            path: 'location',
-                            model: 'Location'
-                        },
-                        {
-                            path: 'adsFormat',
-                            model: 'AdsFormat'
-                        }
-                    ]
+                    path: 'adsBoard',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: [
+                            {
+                                path: 'location',
+                                model: 'Location'
+                            },
+                            {
+                                path: 'adsFormat',
+                                model: 'AdsFormat'
+                            }
+                        ]
+                    }
                 }
-            }
-        }).lean();
+            })
+            .lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         const role = req.user.role;

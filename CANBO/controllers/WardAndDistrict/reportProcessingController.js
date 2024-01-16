@@ -125,7 +125,7 @@ const getAllReportsByDepartmentOfficer = async (req, res) => {
             reports,
             reportsEmpty: reports.length === 0,
             authUser: req.user,
-            districts: districts,
+            districts: districts
         });
         // res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
@@ -135,19 +135,44 @@ const getAllReportsByDepartmentOfficer = async (req, res) => {
 
 const getAllReportsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
-    const { ward, district } = assignedArea;
+    const role = req.user.role;
+    var wardAssigned, districtAssigned;
+    var districtList, wardList;
+    districtList = await District.find({}).sort({ districtName: 1 }).lean();
     try {
-        let query = {};
+        if (role === 'Sở VH-TT') {
+            // district = *, ward = *
+            wardAssigned = req.query.ward;
+            districtAssigned = req.query.dist;
+            districtAssigned &&
+                (wardList = districtList.find(
+                    (district) => district.districtName == districtAssigned
+                ).wards);
+        } else if (role === 'Quận') {
+            // district assigned, ward = *
+            districtAssigned = assignedArea.district;
+            wardAssigned = req.query.ward;
+            wardList = districtList.find(
+                (district) => district.districtName == districtAssigned
+            ).wards;
+        } else if (role === 'Phường') {
+            // district assigned, ward assigned
+            districtAssigned = assignedArea.district;
+            wardAssigned = assignedArea.ward;
+        } else throw new CustomError.BadRequestError('Invalid role');
 
-        if (ward !== '*') {
-            query['ward'] = ward;
-        }
+        const mongooseQuery = {};
 
-        if (district !== '*') {
-            query['district'] = district;
-        }
+        if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;
 
-        const reportAdsBoard = await ReportProcessing.find({ ...query, relatedToType: 'AdsBoard' })
+        if (wardAssigned && wardAssigned !== '*') mongooseQuery.ward = wardAssigned;
+
+        console.log('The Query: ', mongooseQuery);
+
+        const reportAdsBoard = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsBoard'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -168,7 +193,10 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportAdsPoint = await ReportProcessing.find({ ...query, relatedToType: 'AdsPoint' })
+        const reportAdsPoint = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsPoint'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -185,7 +213,10 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportLocation = await ReportProcessing.find({ ...query, relatedToType: 'Location' })
+        const reportLocation = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'Location'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -211,29 +242,20 @@ const getAllReportsByAssignedArea = async (req, res) => {
             }
         });
 
-        const districts = await District.find({}).sort({ districtName: 1 }).lean();
-        const role = req.user.role;
-
-        console.log(reports);
-
-        if (role === 'Quận') {
-            res.render('vwReport/listReport', {
-                reports,
-                reportsEmpty: reports.length === 0,
-                districts,
-                authUser: req.user
-            });
-        } else {
-            res.render('vwReport/listReport', {
-                reports,
-                reportsEmpty: reports.length === 0,
-                authUser: req.user
-            });
-        }
-
-        // res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        res.render('vwReport/listReport', {
+            reports,
+            reportsEmpty: reports.length === 0,
+            districtList,
+            wardList,
+            districtAssigned,
+            wardAssigned,
+            authUser: req.user
+        });
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        console.log(error);
+        res.status(StatusCodes.BAD_REQUEST).send(
+            '[ReportProcessingController.js Error]' + error.message
+        );
     }
 };
 
@@ -310,7 +332,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
 
         const subject = 'New announcement: The status and processing method of your report';
 
-        const htmlContent = await fs.readFile(
+        const htmlContent = fs.readFileSync(
             path.join(__dirname, '../../public/html/reportStatusNotificationEmail.html'),
             'utf8'
         );
@@ -352,7 +374,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
             .replace('{{senderName}}', senderName)
             .replace('{{phone}}', phone)
             .replace('{{content}}', content)
-            .replace('{{relatedTo}}', relatedTo)
+            .replace('{{relatedTo}}', relatedToType)
             .replace('{{locationName}}', locationName)
             .replace('{{address}}', address)
             .replace('{{createdAt}}', createdAt)

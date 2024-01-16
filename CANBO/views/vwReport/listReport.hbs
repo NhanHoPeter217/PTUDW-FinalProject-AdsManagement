@@ -1,5 +1,5 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+{{!-- <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" /> --}}
 <link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
@@ -7,8 +7,8 @@
 
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="../../public/js/listLicenseAdsBoard.js" type="module"></script>
-<script src="../../public/js/listReport.js" type="module"></script>
+{{!-- <script src="public/js/listLicenseAdsBoard.js" type="module"></script> --}}
+<script src="public/js/listReport.js" type="module"></script>
 {{/section}}
 
 <div class="container-fluid mt-3">
@@ -37,7 +37,7 @@
                                     <th scope="col">Người gửi</th>
                                     <th scope="col">Thông tin báo cáo</th>
                                     <th scope="col">Tình trạng</th>
-                                    <th scope="col">Cách thức xử lý</th>
+                                    <th scope="col">Cập nhật</th>
                                 </tr>
                             </thead>
                         </table>
@@ -361,7 +361,7 @@
                                                         style='height: 40px; width: 40px;'
                                                     />
                                                     <h5 class='modal-detail-title' id='reportModalLabel'>
-                                                        Cách thức xử lý
+                                                        Xử lý
                                                     </h5>
                                                     <button
                                                         type='button'
@@ -371,23 +371,25 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='addAdsTypeForm' enctype='multipart/form-data'>
+                                                    <form data-id="{{_id}}" class="tackle-form">
                                                         <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter;'>Cách thức xử lý</label>
                                                             <textarea
-                                                                class='form-control fullNameReport search-box'
-                                                                id='edit_address-{{_id}}'
+                                                                class='form-control'
+                                                                name="processingMethod"
                                                                 style="height: 100px;"
                                                                 required
                                                             >{{processingMethod}}</textarea>
                                                         </div>
+                                                        <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter;'>Tình trạng xử lý</label>
+                                                            <select class="form-select badge bg-light rounded-3 fs-6 text-body-emphasis" name="processingStatus">
+                                                                <option value="Chưa xử lý" class="bg-white text-primary">Chưa xử lý</option>
+                                                                <option value="Đang xử lý" class="bg-white text-primary">Đang xử lý</option>
+                                                                <option value="Đã xử lý" class="bg-white text-primary">Đã xử lý</option>
+                                                            </select>
+                                                        </div>
                                                         <div class='button-container justify-content-center'>
-                                                            <div
-                                                                id='recaptcha'
-                                                                class='g-recaptcha'
-                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                                                                data-callback='onSubmit'
-                                                                data-size='invisible'
-                                                            ></div>
                                                             <div class='d-grid gap-2 col-3 mx-auto'>
                                                                 <button
                                                                     id='addAdsTypeButton'
@@ -413,8 +415,7 @@
                 </div>
             </div>
         </div>
-        {{#ifCond authUser.role '===' 'Phường'}}
-        {{else}}
+        {{#ifCond authUser.role '!==' 'Phường'}}
         <div class="col-lg-2 col-md-3">
             <div class="pe-4">
                 <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
@@ -422,8 +423,12 @@
                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                     <select id="license_filter_district" class="list-select list-select-sm custom-select fw-bold">
                         <option selected disabled>-- Chọn Quận --</option>
-                        {{#each districts}}
+                        {{#each districtList}}
+                            {{#ifCond districtName '===' ../districtAssigned}}
+                            <option value="{{districtName}}" selected>Quận {{districtName}}</option>
+                            {{else}}
                             <option value="{{districtName}}">Quận {{districtName}}</option>
+                            {{/ifCond}}
                         {{/each}}
                     </select>
                     {{/ifCond}}
@@ -437,7 +442,15 @@
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
                         <span class="fw-bold">Danh sách các phường</span>
                     </div>
-                    <div id="license_filter_ward" class="scrollable-list">
+                    <div class="scrollable-list">
+                        {{#each wardList}}
+                        <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="checkbox-input" data-ward="{{this}}">
+                            <span>Phường {{this}}</span>
+                        </label>
+                        </div>
+                        {{/each}}
                     </div>
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
                     </div>
@@ -445,14 +458,7 @@
             </div>
         </div>
         {{/ifCond}}
-        {{#ifCond authUser.role '===' 'Quận'}}
-        {{/ifCond}}
     </div>
 </div>
 
 <title>Danh sách các báo cáo</title>
-
-{{> detailAdsBoard}}
-{{> detailAdsPoint}}
-{{> detailLicenseAdsBoard}}
-{{> requestEditAdsBoard}}

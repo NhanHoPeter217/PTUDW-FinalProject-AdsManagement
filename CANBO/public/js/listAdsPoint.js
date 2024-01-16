@@ -196,11 +196,11 @@ $(document).ready(function () {
 
             const adsFormats = adsFormat_data.adsFormats;
             for (let i = 0; i < adsFormats.length; ++i) {
-                $('#add_adsType').append(`<option value="${adsFormats[i]._id}">${adsFormats[i].name}</option>`);
+                $('#add_adsType').append(
+                    `<option value="${adsFormats[i]._id}">${adsFormats[i].name}</option>`
+                );
             }
-
         });
-
 
     fetch('/district/api/v1', {
         method: 'GET',
@@ -218,7 +218,9 @@ $(document).ready(function () {
 
             const districts = district_data.districts;
             for (let i = 0; i < districts.length; ++i) {
-                $('.addDistrictType').append(`<option value="${districts[i].districtName}">${districts[i].districtName}</option>`);
+                $('.addDistrictType').append(
+                    `<option value="${districts[i].districtName}">${districts[i].districtName}</option>`
+                );
             }
 
             if ($('#filter_district').length > 0) {
@@ -382,10 +384,12 @@ $(document).ready(function () {
 
         // const jsonData = JSON.stringify(requestEditAdsPointData);
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
-        requestEditAdsPointData.wardAndDistrict = JSON.stringify(requestEditAdsPointData.wardAndDistrict);
+        requestEditAdsPointData.wardAndDistrict = JSON.stringify(
+            requestEditAdsPointData.wardAndDistrict
+        );
 
         // console.log(requestEditAdsPointData);
-        
+
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
             form_data.append(key, requestEditAdsPointData[key]);
@@ -442,20 +446,20 @@ $(document).ready(function () {
             location: {
                 coords: {
                     lat: lat,
-                    lng: lng,
+                    lng: lng
                 },
                 locationName: locationName,
                 address: address,
                 ward: ward,
-                district: district,
+                district: district
             },
             locationType: locationType,
             adsFormat: adsFormat,
-            planningStatus: planningStatus,
+            planningStatus: planningStatus
         };
-        
+
         addAdsPointData.location = JSON.stringify(addAdsPointData.location);
-        
+
         var formData = new FormData();
         for (var key in addAdsPointData) {
             formData.append(key, addAdsPointData[key]);
@@ -471,7 +475,7 @@ $(document).ready(function () {
 
         fetch('/adsPoint/', {
             method: 'POST',
-            body: formData,
+            body: formData
         }).then((response) => {
             if (response.ok) {
                 alert('Tạo điểm quảng cáo mới thành công!');
@@ -483,20 +487,26 @@ $(document).ready(function () {
     });
 
     $(document).on('submit', '#editAdsPointForm', function (e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            const submitedButtonId = $(document.activeElement).attr('id');
+        const submitedButtonId = $(document.activeElement).attr('id');
 
-            const adsObject = e.currentTarget.getAttribute('data-id');
+        const adsObject = e.currentTarget.getAttribute('data-id');
 
-            if (submitedButtonId === `saveAdsPointButton`) {
-            const planningStatus = document.getElementById(`edit_planningStatus-${adsObject}`).value;
+        if (submitedButtonId === `saveAdsPointButton`) {
+            const planningStatus = document.getElementById(
+                `edit_planningStatus-${adsObject}`
+            ).value;
             const locationType = document.getElementById(`edit_locationType-${adsObject}`).value;
             const adsFormat = document.getElementById(`edit_adsFormat-${adsObject}`).value;
             const locationName = document.getElementById(`edit_locationName-${adsObject}`).value;
             const address = document.getElementById(`edit_address-${adsObject}`).value;
-            const lat = document.getElementById(`edit_address-${adsObject}`).getAttribute('data-lat');
-            const lng = document.getElementById(`edit_address-${adsObject}`).getAttribute('data-lng');
+            const lat = document
+                .getElementById(`edit_address-${adsObject}`)
+                .getAttribute('data-lat');
+            const lng = document
+                .getElementById(`edit_address-${adsObject}`)
+                .getAttribute('data-lng');
             const ward = document.getElementById(`edit_ward-${adsObject}`).value;
             const district = document.getElementById(`edit_district-${adsObject}`).value;
 
@@ -507,13 +517,13 @@ $(document).ready(function () {
                 location: {
                     coords: {
                         lat: lat,
-                        lng: lng,
+                        lng: lng
                     },
                     locationName: locationName,
                     address: address,
                     ward: ward,
-                    district: district,
-                },
+                    district: district
+                }
             };
 
             editAdsPointData.location = JSON.stringify(editAdsPointData.location);
@@ -536,7 +546,7 @@ $(document).ready(function () {
 
             fetch(`/adsPoint/${adsObject}`, {
                 method: 'PATCH',
-                body: form_data,
+                body: form_data
             }).then((response) => {
                 if (response.ok) {
                     alert('Cập nhật thông tin điểm quảng cáo thành công!');
@@ -545,18 +555,18 @@ $(document).ready(function () {
                     alert('Đã xảy ra lỗi khi cập nhật thông tin điểm quảng cáo!');
                 }
             });
-            } else if (submitedButtonId === `deleteAdsPointButton`) {
-                fetch(`/adsPoint/${adsObject}`, {
-                    method: 'DELETE',
-                }).then((response) => {
-                    if (response.ok) {
-                        alert('Xóa điểm quảng cáo thành công!');
-                        location.reload();
-                    } else {
-                        alert('Đã xảy ra lỗi khi xóa điểm quảng cáo!');
-                    }
-                });
-            }
+        } else if (submitedButtonId === `deleteAdsPointButton`) {
+            fetch(`/adsPoint/${adsObject}`, {
+                method: 'DELETE'
+            }).then((response) => {
+                if (response.ok) {
+                    alert('Xóa điểm quảng cáo thành công!');
+                    location.reload();
+                } else {
+                    alert('Đã xảy ra lỗi khi xóa điểm quảng cáo!');
+                }
+            });
+        }
     });
 
     // Init map view only
