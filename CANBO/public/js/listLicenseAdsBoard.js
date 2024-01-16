@@ -278,7 +278,7 @@ $(document).ready(function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ "activeStatus": 'Đã hủy bỏ' })
+                body: JSON.stringify({ activeStatus: 'Đã hủy bỏ' })
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -293,7 +293,7 @@ $(document).ready(function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ "requestApprovalStatus": 'Đã được duyệt' })
+                body: JSON.stringify({ requestApprovalStatus: 'Đã được duyệt' })
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -304,5 +304,4 @@ $(document).ready(function () {
                 });
         }
     });
-}
-);
+});

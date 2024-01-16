@@ -47,7 +47,9 @@ router
 //     .post(getAllAdsPointsByWardList);
 
 router.route('/:id').get(getSingleAdsPoint);
-router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), upload, updateAdsPoint);
+router
+    .route('/:id')
+    .patch(authenticateUser, authorizePermissions('Sở VH-TT'), upload, updateAdsPoint);
 router.route('/:id').delete(authenticateUser, authorizePermissions('Sở VH-TT'), deleteAdsPoint);
 
 module.exports = router;

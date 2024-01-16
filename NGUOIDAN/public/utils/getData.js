@@ -253,9 +253,7 @@ async function getAllReports() {
         <div class="card-body">
             <h4 class="card-title text-success">${report.reportFormat.name}</h4>
             <h6 class="card-subtitle text-secondary">${report.createdAt}</h6>
-            <iframe style="width: 100%; height: 100px; overflow: hidden;" srcdoc="${
-                report.content
-            }" frameborder="0" title="Report Content"></iframe>
+            <iframe style="width: 100%; height: 100px; overflow: hidden;" srcdoc="${report.content}" frameborder="0" title="Report Content"></iframe>
             <p class="card-text">Phường <b>${report.ward}</b> Quận <b>${report.district}</b></p>
             <p class="card-text text-danger"><em><b>${report.processingStatus}</b></em></p>
         </div>

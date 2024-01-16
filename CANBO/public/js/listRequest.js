@@ -6,20 +6,20 @@ $(document).ready(function () {
         const id = e.currentTarget.getAttribute('data-id');
 
         // if (submitedButtonId === 'noVerifyRequestEditAdsBoard') {
-            fetch(`/adsInfoEditingRequest/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ "requestApprovalStatus": 'Đã được duyệt' })
+        fetch(`/adsInfoEditingRequest/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ requestApprovalStatus: 'Đã được duyệt' })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                window.location.reload();
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error('Lỗi khi duyệt yêu cầu chỉnh sửa bảng quảng cáo:', error);
-                });
+            .catch((error) => {
+                console.error('Lỗi khi duyệt yêu cầu chỉnh sửa bảng quảng cáo:', error);
+            });
         // } else {
         //     const name = $(`#edit_adsFormatName-${id}`).val();
 
@@ -51,19 +51,19 @@ $(document).ready(function () {
 
         const id = e.currentTarget.getAttribute('data-id');
 
-            fetch(`/adsInfoEditingRequest/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ "requestApprovalStatus": 'Đã được duyệt' })
+        fetch(`/adsInfoEditingRequest/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ requestApprovalStatus: 'Đã được duyệt' })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                window.location.reload();
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error('Lỗi khi duyệt yêu cầu chỉnh sửa điểm quảng cáo:', error);
-                });
+            .catch((error) => {
+                console.error('Lỗi khi duyệt yêu cầu chỉnh sửa điểm quảng cáo:', error);
+            });
     });
 });

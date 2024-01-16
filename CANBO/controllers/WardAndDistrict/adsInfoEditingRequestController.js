@@ -45,23 +45,23 @@ const createAdsInfoEditingRequest = async (req, res) => {
 
 const getAllAdsInfoEditingRequests = async (req, res) => {
     try {
-        const adsPointRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsPoint'})
+        const adsPointRequestedEdits = await AdsInfoEditingRequest.find({ adsType: 'AdsPoint' })
             .populate({
                 path: 'adsObject',
                 populate: {
-                    path: 'location',
+                    path: 'location'
                 }
             })
             .populate('newInfo')
             .lean();
 
-        const adsBoardRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsBoard'})
+        const adsBoardRequestedEdits = await AdsInfoEditingRequest.find({ adsType: 'AdsBoard' })
             .populate({
                 path: 'adsObject',
                 populate: {
                     path: 'adsPoint',
                     populate: {
-                        path: 'location',
+                        path: 'location'
                     }
                 }
             })
@@ -70,7 +70,7 @@ const getAllAdsInfoEditingRequests = async (req, res) => {
                 populate: {
                     path: 'adsPoint',
                     populate: {
-                        path: 'location',
+                        path: 'location'
                     }
                 }
             })

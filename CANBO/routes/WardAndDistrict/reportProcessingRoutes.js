@@ -35,9 +35,7 @@ router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAll
 //     .route('/list')
 //     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
 
-router
-    .route('/assignedArea')
-    .get(authenticateUser, getAllReportsByAssignedArea);
+router.route('/assignedArea').get(authenticateUser, getAllReportsByAssignedArea);
 
 // router.route('/:id').get(authenticateUser, getSingleReport);
 

@@ -125,7 +125,7 @@ const getAllReportsByDepartmentOfficer = async (req, res) => {
             reports,
             reportsEmpty: reports.length === 0,
             authUser: req.user,
-            districts: districts,
+            districts: districts
         });
         // res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
@@ -140,33 +140,39 @@ const getAllReportsByAssignedArea = async (req, res) => {
     var districtList, wardList;
     districtList = await District.find({}).sort({ districtName: 1 }).lean();
     try {
-        if (role === 'Sở VH-TT') { // district = *, ward = *
+        if (role === 'Sở VH-TT') {
+            // district = *, ward = *
             wardAssigned = req.query.ward;
             districtAssigned = req.query.dist;
-            districtAssigned && (wardList = districtList.find((district) => district.districtName == districtAssigned).wards);
-            
-        } else if (role === 'Quận') { // district assigned, ward = *
+            districtAssigned &&
+                (wardList = districtList.find(
+                    (district) => district.districtName == districtAssigned
+                ).wards);
+        } else if (role === 'Quận') {
+            // district assigned, ward = *
             districtAssigned = assignedArea.district;
             wardAssigned = req.query.ward;
-            wardList = districtList.find((district) => district.districtName == districtAssigned).wards;
-
-        } else if (role === 'Phường') { // district assigned, ward assigned
+            wardList = districtList.find(
+                (district) => district.districtName == districtAssigned
+            ).wards;
+        } else if (role === 'Phường') {
+            // district assigned, ward assigned
             districtAssigned = assignedArea.district;
             wardAssigned = assignedArea.ward;
-        }
-        else throw new CustomError.BadRequestError('Invalid role');
+        } else throw new CustomError.BadRequestError('Invalid role');
 
         const mongooseQuery = {};
 
-        if (districtAssigned && districtAssigned !== '*')
-            mongooseQuery.district = districtAssigned;
+        if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;
 
-        if (wardAssigned && wardAssigned !== '*')
-            mongooseQuery.ward = wardAssigned;
+        if (wardAssigned && wardAssigned !== '*') mongooseQuery.ward = wardAssigned;
 
-        console.log("The Query: ", mongooseQuery);
-        
-        const reportAdsBoard = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'AdsBoard' })
+        console.log('The Query: ', mongooseQuery);
+
+        const reportAdsBoard = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsBoard'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -187,7 +193,10 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportAdsPoint = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'AdsPoint' })
+        const reportAdsPoint = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsPoint'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -204,7 +213,10 @@ const getAllReportsByAssignedArea = async (req, res) => {
             ])
             .lean();
 
-        const reportLocation = await ReportProcessing.find({ ...mongooseQuery, relatedToType: 'Location' })
+        const reportLocation = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'Location'
+        })
             .populate([
                 {
                     path: 'relatedTo',
@@ -230,8 +242,6 @@ const getAllReportsByAssignedArea = async (req, res) => {
             }
         });
 
-
-
         res.render('vwReport/listReport', {
             reports,
             reportsEmpty: reports.length === 0,
@@ -243,7 +253,9 @@ const getAllReportsByAssignedArea = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        res.status(StatusCodes.BAD_REQUEST).send('[ReportProcessingController.js Error]' + error.message);
+        res.status(StatusCodes.BAD_REQUEST).send(
+            '[ReportProcessingController.js Error]' + error.message
+        );
     }
 };
 
@@ -320,7 +332,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
 
         const subject = 'New announcement: The status and processing method of your report';
 
-        const htmlContent = await fs.readFile(
+        const htmlContent = fs.readFileSync(
             path.join(__dirname, '../../public/html/reportStatusNotificationEmail.html'),
             'utf8'
         );
@@ -362,7 +374,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
             .replace('{{senderName}}', senderName)
             .replace('{{phone}}', phone)
             .replace('{{content}}', content)
-            .replace('{{relatedTo}}', relatedTo)
+            .replace('{{relatedTo}}', relatedToType)
             .replace('{{locationName}}', locationName)
             .replace('{{address}}', address)
             .replace('{{createdAt}}', createdAt)
