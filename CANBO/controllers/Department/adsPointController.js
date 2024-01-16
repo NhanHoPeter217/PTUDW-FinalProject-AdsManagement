@@ -7,6 +7,11 @@ const District = require('../../models/Department/District');
 
 const createAdsPoint = async (req, res) => {
     try {
+        req.body.location = JSON.parse(req.body.location);
+        if (req.files) req.body.locationImages = req.files.map((file) => file.path);
+
+        req.body.location.coords.lat = parseFloat(req.body.location.coords.lat);
+        req.body.location.coords.lng = parseFloat(req.body.location.coords.lng);
         const location = await Location.create(req.body.location);
         req.body.location = location._id;
         const adsPoint = await AdsPoint.create(req.body);
@@ -228,16 +233,63 @@ const getSingleAdsPoint = async (req, res) => {
     }
 };
 
+// const updateAdsPoint = async (req, res) => {
+//     try {
+//         const { id: adsPointId } = req.params;
+//         const adsPoint = await AdsPoint.findOneAndUpdate({ _id: adsPointId }, req.body, {
+//             new: true,
+//             runValidators: true
+//         });
+
+//         if (!adsPoint) {
+//             throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
+//         }
+
+//         res.status(StatusCodes.OK).json({ adsPoint });
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
+//     }
+// };
+
 const updateAdsPoint = async (req, res) => {
     try {
+        // console.log(req.body);
+        req.body.location = JSON.parse(req.body.location);
+        if (req.files) req.body.locationImages = req.files.map((file) => file.path);
+        req.body.location.coords.lat = parseFloat(req.body.location.coords.lat);
+        req.body.location.coords.lng = parseFloat(req.body.location.coords.lng);
+        
         const { id: adsPointId } = req.params;
-        const adsPoint = await AdsPoint.findOneAndUpdate({ _id: adsPointId }, req.body, {
-            new: true,
-            runValidators: true
-        });
-
-        if (!adsPoint) {
-            throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
+        const { planningStatus, locationType, adsFormat, locationImages } = req.body;
+        // console.log(adsPointId);
+        
+        const adsPoint = await AdsPoint.findOneAndUpdate({ _id: adsPointId },
+            {
+                planningStatus,
+                locationType,
+                adsFormat,
+                locationImages
+            },
+            {
+                new: true,
+                runValidators: true
+            });
+            console.log(adsPoint);
+            
+            if (!adsPoint) {
+                throw new CustomError.NotFoundError(`No ads point with id : ${adsPointId}`);
+            }
+            
+            const location = await Location.findOneAndUpdate({ _id: adsPoint.location },
+                req.body.location,
+                {
+                    new: true,
+                    runValidators: true
+                });
+                
+        console.log(location);
+        if (!location) {
+            throw new CustomError.NotFoundError(`No location with id : ${adsPoint.location}`);
         }
 
         res.status(StatusCodes.OK).json({ adsPoint });

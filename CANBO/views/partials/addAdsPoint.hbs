@@ -25,23 +25,56 @@
                         <input
                             type='text'
                             class='form-control fullNameReport'
-                            id='fullName'
+                            id='add_locationName'
                             required
                         />
+                    </div>
+                    <div class="d-flex flex-row column-gap-3">
+                        <div class='mb-3' id='addDistrict'>
+                            <label for='addDistrict' class='form-label' style='font-family: Inter'>
+                                <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                    <div class="nowrap">Quận</div>
+                                    <p class='mb-0 softer-text fw-nomral'></p>
+                                </div>
+                            </label>
+                            <select class='form-select addDistrictType' id='add_district' required>
+                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                        -- Chọn Quận --
+                                </option>
+                                {{!-- {{#each ../districts}}
+                                        <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                {{/each}} --}}
+
+                            </select>
+                        </div>
+                        <div class='mb-3' id='addWard'>
+                            <label for='addWard' class='form-label' style='font-family: Inter'>
+                                <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                    <div class="nowrap">Phường</div>
+                                    <p class='mb-0 softer-text fw-nomral'></p>
+                                </div>
+                            </label>
+                            <select class='form-select addWardType' id='add_ward' required>
+                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                        -- Chọn Phường --
+                                </option>
+                                <option value={{location.ward}} selected>{{location.ward}}</option>
+                            </select>
+                        </div>
                     </div>
                     <div class='mb-3'>
                         <label for='address' class='form-label' style='font-family: Inter'>Địa chỉ</label>
                         <textarea
                             class='form-control fullNameReport search-box'
-                            id='address'
+                            id='add_address'
                             style="height: 100px;"
                             required
                         ></textarea>
-                        <div class="map-search-box"></div>
+                        <div class="map-search-box mt-2 rounded"></div>
                     </div>
                     <div class='mb-3'>
-                        <label for='locationType' class='form-label' style='font-family: Inter'>Loại vị trí</label>
-                        <select class='form-select reportType' id='locationType' required>
+                        <label for='add_locationType' class='form-label' style='font-family: Inter'>Loại vị trí</label>
+                        <select class='form-select reportType' id='add_locationType' required>
                             <option
                                 disabled
                                 selected
@@ -63,21 +96,18 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='adsType' class='form-label' style='font-family: Inter'>Hình thức quảng cáo</label>
-                        <select class='form-select reportType' id='adsType' required>
+                        <label for='add_adsType' class='form-label' style='font-family: Inter'>Hình thức quảng cáo</label>
+                        <select class='form-select reportType' id='add_adsType' required>
                             <option
                                 disabled
                                 selected
                             > --- Chọn hình thức ---
                             </option>
-                            <option value='Cổ động chính trị' selected>Cổ động chính trị</option>
-                            <option value='Quảng cáo thương mại'>Quảng cáo thương mại</option>
-                            <option value='Xã hội hóa'>Xã hội hóa</option>
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='stateType' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
-                        <select class='form-select reportType' id='stateType' required>
+                        <label for='add_planningStatus' class='form-label' style='font-family: Inter'>Trạng thái địa điểm</label>
+                        <select class='form-select reportType' id='add_planningStatus' required>
                             <option
                                 disabled
                                 selected
@@ -88,13 +118,10 @@
                         </select>
                     </div>
                     <div class='mb-3'>
-                        <label for='image1' class='form-label' style='font-family: Inter'>Hình ảnh</label>
-                        <input
-                            type='file'
-                            class='form-control reportImage'
-                            id='editInfoAdsPoint_image'
-                            accept='image/*'
-                        />
+                        <div class="form-group">
+                            <label for="add_adsPointImages" class='form-label' style='font-family: Inter'>Cập nhật hình ảnh</label>
+                            <input type="file" multiple class="add_adsPointImages" id="add_adsPointImages" name="add_adsPointImages">
+                        </div>
                     </div>
                     <div class='button-container justify-content-center'>
                         <div

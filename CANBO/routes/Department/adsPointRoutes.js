@@ -14,7 +14,12 @@ const {
     deleteAdsPoint
 } = require('../../controllers/Department/adsPointController');
 
-router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), createAdsPoint);
+const { configureUpload } = require('../../utils/handleFileUpload');
+const folderName = 'public/uploads/adsPointImages';
+const maxImages = 5;
+const upload = configureUpload(folderName, maxImages);
+
+router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), upload, createAdsPoint);
 router.route('/allPoints').get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllAdsPoints);
 router.route('/allPoints/api/v1').get(getAllAdsPointsAPI);
 
@@ -42,7 +47,7 @@ router
 //     .post(getAllAdsPointsByWardList);
 
 router.route('/:id').get(getSingleAdsPoint);
-router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), updateAdsPoint);
+router.route('/:id').patch(authenticateUser, authorizePermissions('Sở VH-TT'), upload, updateAdsPoint);
 router.route('/:id').delete(authenticateUser, authorizePermissions('Sở VH-TT'), deleteAdsPoint);
 
 module.exports = router;

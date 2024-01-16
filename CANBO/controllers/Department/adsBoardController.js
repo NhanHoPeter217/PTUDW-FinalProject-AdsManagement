@@ -78,16 +78,15 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             'Cổng chào',
             'Trung tâm thương mại'
         ];
-        // res.render('vwAdsBoard/listAdsBoard', {
-        //     adsBoards: adsBoards,
-        //     empty: adsBoards.length === 0,
-        //     adsFormats: adsFormats,
-        //     adsPoint: adsPoint,
-        //     adsBoardTypes: adsBoardTypes,
-        //     districts: districts,
-        //     authUser: req.user
-        // });
-        res.status(StatusCodes.OK).json({ adsBoards, count: adsBoards.length });
+        res.render('vwAdsBoard/listAdsBoard', {
+            adsBoards: adsBoards,
+            empty: adsBoards.length === 0,
+            adsFormats: adsFormats,
+            adsPoint: adsPoint,
+            adsBoardTypes: adsBoardTypes,
+            districts: districts,
+            authUser: req.user,
+        });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
