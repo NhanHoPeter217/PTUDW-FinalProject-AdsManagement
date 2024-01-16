@@ -62,8 +62,72 @@ const getAllReportsByResident = async (req, res) => {
 
 const getAllReportsByDepartmentOfficer = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({}).sort('createdAt');
-        res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        const reportAdsBoard = await ReportProcessing.find({ relatedToType: 'AdsBoard' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: {
+                            path: 'location',
+                            model: 'Location'
+                        }
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportAdsPoint = await ReportProcessing.find({ relatedToType: 'AdsPoint' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsPoint',
+                    populate: {
+                        path: 'location',
+                        model: 'Location'
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportLocation = await ReportProcessing.find({ relatedToType: 'Location' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'Location'
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reports = reportAdsBoard
+            .concat(reportAdsPoint)
+            .concat(reportLocation)
+            .sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        res.render('vwReport/listReport', {
+            reports,
+            reportsEmpty: reports.length === 0,
+            authUser: req.user,
+            districts: districts,
+        });
+        // res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
@@ -149,6 +213,8 @@ const getAllReportsByAssignedArea = async (req, res) => {
 
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
         const role = req.user.role;
+
+        console.log(reports);
 
         if (role === 'Quận') {
             res.render('vwReport/listReport', {

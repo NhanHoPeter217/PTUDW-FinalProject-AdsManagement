@@ -77,13 +77,13 @@ const getAllAdsLicenseRequests = async (req, res) => {
             (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
         );
 
-        // res.render('vwAdsBoard/listLicenseAdsBoard', {
-        //     authUser: req.user,
-        //     adsLicenseRequests: adsLicenseRequests_array,
-        //     adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
-        //     districts: districts
-        // });
-        res.status(StatusCodes.OK).json({ adsLicenseRequests_array, count: adsLicenseRequests_array.length });
+        res.render('vwAdsBoard/listLicenseAdsBoard', {
+            authUser: req.user,
+            adsLicenseRequests: adsLicenseRequests_array,
+            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+            districts: districts
+        });
+        // res.status(StatusCodes.OK).json({ adsLicenseRequests_array, count: adsLicenseRequests_array.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
