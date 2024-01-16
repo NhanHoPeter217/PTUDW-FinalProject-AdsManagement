@@ -48,7 +48,27 @@ const createAdsLicenseRequest = async (req, res) => {
 
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({}).lean();
+        const adsLicenseRequests = await AdsLicenseRequest.find({}).populate({
+            path: 'licenseRequestedAdsBoard',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard',
+                populate: {
+                    path: 'adsPoint',
+                    model: 'AdsPoint',
+                    populate: [
+                        {
+                            path: 'location',
+                            model: 'Location'
+                        },
+                        {
+                            path: 'adsFormat',
+                            model: 'AdsFormat'
+                        }
+                    ]
+                }
+            }
+        }).lean();
         // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
 
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
@@ -57,12 +77,13 @@ const getAllAdsLicenseRequests = async (req, res) => {
             (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
         );
 
-        res.render('vwAdsBoard/listLicenseAdsBoard', {
-            authUser: req.user,
-            adsLicenseRequests: adsLicenseRequests_array,
-            adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
-            districts: districts
-        });
+        // res.render('vwAdsBoard/listLicenseAdsBoard', {
+        //     authUser: req.user,
+        //     adsLicenseRequests: adsLicenseRequests_array,
+        //     adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+        //     districts: districts
+        // });
+        res.status(StatusCodes.OK).json({ adsLicenseRequests_array, count: adsLicenseRequests_array.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -100,7 +121,27 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             query['wardAndDistrict.district'] = district;
         }
 
-        const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+        const adsLicenseRequests = await AdsLicenseRequest.find(query).populate({
+            path: 'licenseRequestedAdsBoard',
+            populate: {
+                path: 'adsBoard',
+                model: 'AdsBoard',
+                populate: {
+                    path: 'adsPoint',
+                    model: 'AdsPoint',
+                    populate: [
+                        {
+                            path: 'location',
+                            model: 'Location'
+                        },
+                        {
+                            path: 'adsFormat',
+                            model: 'AdsFormat'
+                        }
+                    ]
+                }
+            }
+        }).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         const role = req.user.role;
