@@ -6,7 +6,7 @@ $(document).ready(function () {
         const id = e.currentTarget.getAttribute('data-id');
 
         // if (submitedButtonId === 'noVerifyRequestEditAdsBoard') {
-            fetch(`/api/v1/adsInfoEditingRequest/${id}`, {
+            fetch(`/adsInfoEditingRequest/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

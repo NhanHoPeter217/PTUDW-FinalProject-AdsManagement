@@ -77,6 +77,7 @@
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
+                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
@@ -130,6 +131,17 @@
                                                 <div class='modal-detail-body'>
                                                     <form id='detailAdsBoardRequestForm' data-id={{_id}} enctype='multipart/form-data'>
                                                         <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
+                                                                    {{#ifCond adsObject.adsBoardType '!==' newInfo.adsBoardType}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsBoardType}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsBoardType}}</p>
+                                                                    {{else}}
+                                                                        <p class='mb-0'>{{newInfo.adsBoardType}}</p>
+                                                                    {{/ifCond}}
+                                                                </div>
+                                                            </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold'>Loại bảng quảng cáo</h5>
