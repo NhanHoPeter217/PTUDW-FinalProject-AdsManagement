@@ -14,7 +14,6 @@ const path = require('path');
 const { AUTH_EMAIL } = process.env;
 
 const createAdsInfoEditingRequest = async (req, res) => {
-    // console.log(req.files);
     const { email } = req.user;
     try {
         const { adsObject, adsType } = req.body;
@@ -32,8 +31,7 @@ const createAdsInfoEditingRequest = async (req, res) => {
             req.body.newInfo.coords.lat = parseFloat(req.body.newInfo.coords.lat);
             req.body.newInfo.coords.lng = parseFloat(req.body.newInfo.coords.lng);
             req.body.newInfo.locationImages = req.files.map((file) => file.path);
-
-            adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
+            let adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
 
@@ -47,21 +45,47 @@ const createAdsInfoEditingRequest = async (req, res) => {
 
 const getAllAdsInfoEditingRequests = async (req, res) => {
     try {
-        const adsInfoEditingRequests = await AdsInfoEditingRequest.find({})
-            .populate('adsObject')
+        const adsPointRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsPoint'})
+            .populate({
+                path: 'adsObject',
+                populate: {
+                    path: 'location',
+                }
+            })
             .populate('newInfo')
             .lean();
 
-        const adsBoardRequestedEdits = adsInfoEditingRequests.filter(
-            (request) => request.adsType === 'AdsBoard'
-        );
+        const adsBoardRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsBoard'})
+            .populate({
+                path: 'adsObject',
+                populate: {
+                    path: 'adsPoint',
+                    populate: {
+                        path: 'location',
+                    }
+                }
+            })
+            .populate({
+                path: 'newInfo',
+                populate: {
+                    path: 'adsPoint',
+                    populate: {
+                        path: 'location',
+                    }
+                }
+            })
+            .lean();
 
-        const adsPointRequestedEdits = adsInfoEditingRequests.filter(
-            (request) => request.adsType === 'AdsPoint'
-        );
+        // const adsBoardRequestedEdits = adsInfoEditingRequests.filter(
+        //     (request) => request.adsType === 'AdsBoard'
+        // );
 
-        // console.log(adsBoardRequestedEdits);
-        // console.log(adsPointRequestedEdits);
+        // const adsPointRequestedEdits = adsInfoEditingRequests.filter(
+        //     (request) => request.adsType === 'AdsPoint'
+        // );
+
+        // console.log(adsBoardRequestedEdits[0].adsObject.adsPoint);
+        // console.log(adsPointRequestedEdits[0].adsObject.location);
 
         res.render('vwRequest/listRequest', {
             adsBoardRequestedEdits: adsBoardRequestedEdits,
@@ -223,6 +247,8 @@ const updateAdsInfoEditingRequest = async (req, res) => {
         if (adsType === 'AdsBoard') {
             const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
                 await AdsBoardRequestedEdit.findOne({ _id: newInfo });
+
+            console.log(quantity);
 
             await AdsBoard.findOneAndUpdate(
                 { _id: adsObject },
