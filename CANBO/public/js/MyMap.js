@@ -375,6 +375,8 @@ export class MySearchBox {
                 place.geometry.location.toJSON()
             );
             this.activeInfoMarker.marker.open();
+            this.input.setAttribute('data-lat', place.geometry.location.lat());
+            this.input.setAttribute('data-lng', place.geometry.location.lng());
         });
     }
 }

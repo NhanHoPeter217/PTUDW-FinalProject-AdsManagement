@@ -7,6 +7,11 @@ const District = require('../../models/Department/District');
 
 const createAdsPoint = async (req, res) => {
     try {
+        req.body.location = JSON.parse(req.body.location);
+        if (req.files) req.body.locationImages = req.files.map((file) => file.path);
+
+        req.body.location.coords.lat = parseFloat(req.body.location.coords.lat);
+        req.body.location.coords.lng = parseFloat(req.body.location.coords.lng);
         const location = await Location.create(req.body.location);
         req.body.location = location._id;
         const adsPoint = await AdsPoint.create(req.body);
