@@ -1,180 +1,429 @@
 {{#section 'css'}}
-    <link rel='stylesheet' href='http://localhost:4000/public/css/report.css' />
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+<link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
+<link rel="stylesheet" href="public/css/adpointInfo.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 {{/section}}
 
 {{#section 'js'}}
-<script src="http://localhost:4000/public/js/listReport.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="../../public/js/listLicenseAdsBoard.js" type="module"></script>
+<script src="../../public/js/listReport.js" type="module"></script>
 {{/section}}
 
-<div class="container-fluid my-2">
+<div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-10">
+        <div class=" {{#ifCond authUser.role '===' 'Phường'}}col-md-10{{else}}col-md-8{{/ifCond}}">
             <div class="card w-100">
                 <div class="card-body p-4">
-                <h5 class="card-title fw-semibold mb-4">Danh sách các báo cáo</h5>
-                <div class="table-responsive">
-                    <table class="table text-nowrap mb-0 align-middle">
-                    <thead class="text-dark fs-4">
-                        <tr>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">#</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Địa điểm</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Loại</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Hình thức báo cáo</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">&nbsp;</h6>
-                        </th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-semibold mb-1">Dinh Độc Lập</h6>
-                                {{!-- <span class="fw-normal">Web Designer</span>                           --}}
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-normal">Điểm quảng cáo</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-primary rounded-3 fw-semibold">Đăng ký nội dung</span>
-                                </div>
-                            </td>
-                            <td class="border-bottom-0">
-                                <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>
-                            </td>
-                        </tr>
-                        <tr>
-                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">2</h6></td>
-                        <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
-                            {{!-- <span class="fw-normal">Project Manager</span>                           --}}
-                        </td>
-                        <td class="border-bottom-0">
-                            <p class="mb-0 fw-normal">Bảng quảng cáo</p>
-                        </td>
-                        <td class="border-bottom-0">
-                            <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-secondary rounded-3 fw-semibold">Đóng góp ý kiến</span>
-                            </div>
-                        </td>
-                        <td class="border-bottom-0">
-                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>                        </td>
-                        </tr> 
-                        <tr>
-                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">3</h6></td>
-                        <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
-                            {{!-- <span class="fw-normal">Project Manager</span>                           --}}
-                        </td>
-                        <td class="border-bottom-0">
-                            <p class="mb-0 fw-normal">Điểm ngẫu nhiên</p>
-                        </td>
-                        <td class="border-bottom-0">
-                            <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-danger rounded-3 fw-semibold">Tố giác sai phạm</span>
-                            </div>
-                        </td>
-                        <td class="border-bottom-0">
-                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>                        </td>
-                        </tr>      
-                        <tr>
-                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">4</h6></td>
-                        <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
-                            {{!-- <span class="fw-normal">Frontend Engineer</span>                           --}}
-                        </td>
-                        <td class="border-bottom-0">
-                            <p class="mb-0 fw-normal">Bảng quảng cáo</p>
-                        </td>
-                        <td class="border-bottom-0">
-                            <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-success rounded-3 fw-semibold">Giải đáp thắc mắc</span>
-                            </div>
-                        </td>
-                        <td class="border-bottom-0">
-                            <button type="button" class="btn btn-outline-primary m-1 viewReport">Xem báo cáo</button>
-                        </td>
-                        </tr>                       
-                    </tbody>
-                    </table>
-                </div>
+                    <h5 class="card-title fw-semibold mb-4">
+                        Danh sách các báo cáo
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 14%">
+                                <col style="width: 19%">
+                                <col style="width: 16%">
+                                <col style="width: 17%">
+                                <col style="width: 13%">
+                                <col style="width: 13%">
+                            </colgroup>
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Thời điểm gửi</th>
+                                    <th scope="col">Người gửi</th>
+                                    <th scope="col">Thông tin báo cáo</th>
+                                    <th scope="col">Hình thức</th>
+                                    <th scope="col">Tình trạng xử lý</th>
+                                    <th scope="col">Cách thức xử lý</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="table-body-container" style="height: 67vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center">
+                                <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 14%">
+                                <col style="width: 19%">
+                                <col style="width: 16%">
+                                <col style="width: 17%">
+                                <col style="width: 13%">
+                                <col style="width: 13%">
+                                </colgroup>
+                                <tbody id="body">
+                                    {{#if reportsEmpty}}
+                                        <div class="card-body text-primary fw-semibold">Không có báo cáo nào</div>
+                                    {{else}}
+                                    {{#each reports as |reports index|}}
+                                    <tr>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            {{format_date createdAt}}
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailResident-{{_id}}">
+                                                {{senderName}}
+                                            </button>
+                                        </td>
+                                        {{#ifCond relatedToType '===' 'AdsBoard'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailReport-{{_id}}">
+                                                <div><span class="fw-semibold">Bảng: </span>{{relatedTo.adsBoardType}}</div>
+                                            </button>
+                                            <div><span class="fw-semibold text-primary">Của Điểm: </span><span>{{relatedTo.adsPoint.location.locationName}}</span></div>
+                                        </td>
+                                        {{/ifCond}}
+                                        {{#ifCond relatedToType '===' 'AdsPoint'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailReport-{{_id}}">
+                                                <span class="fw-semibold">Điểm: </span>{{relatedTo.location.locationName}}
+                                            </button>
+                                        </td>
+                                        {{/ifCond}}
+                                        {{#ifCond relatedToType '===' 'Location'}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailReport-{{_id}}">
+                                                <span class="fw-semibold">Địa chỉ: </span>{{relatedTo.address}}
+                                            </button>
+                                        </td>
+                                        {{/ifCond}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            {{reportFormat.name}}
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <select class="form-select badge bg-danger rounded-3 fs-6 tackle-status" aria-label="Default select example" id="tackle-status-{{_id}}">
+                                                <option value="Chưa xử lý" class="bg-white text-primary">Chưa xử lý</option>
+                                                <option value="Đang xử lý" class="bg-white text-primary">Đang xử lý</option>
+                                                <option value="Đã xử lý" class="bg-white text-primary">Đã xử lý</option>
+                                            </select>
+                                        </td>
+                                        <td class="border-bottom-0 align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#tackleMethod-{{_id}}">
+                                                <div class="d-flex">
+                                                <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
+                                                <div style="color: white">Xử lý</div>
+                                                </div>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <div
+                                        class='modal fade'
+                                        id='detailResident-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Info_icon.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin người báo cáo</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-detail-body'>
+                                                    <form id='detailResident' enctype='multipart/form-data'>
+                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Họ tên</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{senderName}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Email</h5>
+                                                                    <p class='mb-0'>{{email}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Số điện thoại</h5>
+                                                                    <p class='mb-0'>{{phone}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class='modal fade detailReport'
+                                        id='detailReport-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                        data-lat="{{coords.lat}}"
+                                        data-lng="{{coords.lng}}"
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Info_icon.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin báo cáo</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-detail-body'>
+                                                    <form id='detailReport' enctype='multipart/form-data'>
+                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                {{#ifCond relatedToType '===' 'AdsBoard'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Loại báo cáo</h5>
+                                                                        <div><span class="fw-semibold text-primary">Bảng: </span><span class="fw-semibold text-primary">{{relatedTo.adsBoardType}}</span></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                                {{#ifCond relatedToType '===' 'AdsPoint'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Loại báo cáo</h5>
+                                                                        <span class="fw-semibold text-primary">Điểm: </span><span class="fw-semibold text-primary">{{relatedTo.location.locationName}}</span>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                                {{#ifCond relatedToType '===' 'Location'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Loại báo cáo</h5>
+                                                                        <span class="fw-semibold text-primary">Địa chỉ: </span><span class="fw-semibold text-primary">{{relatedTo.address}}</span>
+                                                                        <div class="map-view-only mt-2"></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                            <div class='card border'>
+                                                                {{#ifCond relatedToType '===' 'AdsBoard'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                    <p class='mb-0'>{{relatedTo.adsPoint.location.address}}</p>
+                                                                    <div class="map-view-only mt-2"></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                                {{#ifCond relatedToType '===' 'AdsPoint'}}
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
+                                                                    <p class='mb-0'>{{relatedTo.location.address}}</p>
+                                                                    <div class="map-view-only mt-2"></div>
+                                                                </div>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                            <div class="row gx-2">
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Quận</h5>
+                                                                            <p class='mb-0'>{{district}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Phường</h5>
+                                                                            <p class='mb-0'>{{ward}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Hình thức báo cáo</h5>
+                                                                    <p class='mb-0'>{{reportFormat.name}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Nội dung báo cáo</h5>
+                                                                    <p class='mb-0'>{{{content}}}</p>
+                                                                    {{!-- <div id="reportContent"></div> --}}
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
+                                                                    {{#each images as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="card border">
+                                                            {{#ifCond processingStatus '===' 'Đã xử lý'}}
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <span class="badge bg-success rounded-3 fw-semibold">Đã xử lý</span>
+                                                            </div>
+                                                            {{/ifCond}}
+                                                            {{#ifCond processingStatus '===' 'Đang xử lý'}}
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <span class="badge bg-warning rounded-3 fw-semibold">Đang xử lý</span>
+                                                            </div>
+                                                            {{/ifCond}}
+                                                            {{#ifCond processingStatus '===' 'Chưa xử lý'}}
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Tình trạng xử lý</h5>
+                                                                <span class="badge bg-danger rounded-3 fw-semibold">Chưa xử lý</span>
+                                                            </div>
+                                                            {{/ifCond}}
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Cách thức xử lý</h5>
+                                                                    <p class='mb-0'>{{processingMethod}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class='modal fade'
+                                        id='tackleMethod-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Verify_icon_blue.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>
+                                                        Cách thức xử lý
+                                                    </h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-body'>
+                                                    <form id='addAdsTypeForm' enctype='multipart/form-data'>
+                                                        <div class='mb-3'>
+                                                            <label for='adsTypeFormName' class='form-label' style='font-family: Inter;'>Cách thức xử lý</label>
+                                                            <textarea
+                                                                class='form-control fullNameReport search-box'
+                                                                id='edit_address-{{_id}}'
+                                                                style="height: 100px;"
+                                                                required
+                                                            >{{processingMethod}}</textarea>
+                                                        </div>
+                                                        <div class='button-container justify-content-center'>
+                                                            <div
+                                                                id='recaptcha'
+                                                                class='g-recaptcha'
+                                                                data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
+                                                                data-callback='onSubmit'
+                                                                data-size='invisible'
+                                                            ></div>
+                                                            <div class='d-grid gap-2 col-3 mx-auto'>
+                                                                <button
+                                                                    id='addAdsTypeButton'
+                                                                    type='submit'
+                                                                    class='btn btn-primary m1'
+                                                                    style='font-family: Inter'
+                                                                >
+                                                                    CẬP NHẬT
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                    {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        {{#ifCond authUser.role '===' 'Phường'}}
+        {{else}}
+        <div class="col-lg-2 col-md-3">
+            <div class="pe-4">
+                <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
+                <div class="filter-container mb-3">
+                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                    <select id="license_filter_district" class="list-select list-select-sm custom-select fw-bold">
+                        <option selected disabled>-- Chọn Quận --</option>
+                        {{#each districts}}
+                            <option value="{{districtName}}">Quận {{districtName}}</option>
+                        {{/each}}
+                    </select>
+                    {{/ifCond}}
+                    {{#ifCond authUser.role '===' 'Quận'}}
+                    <select id="license_filter_district" class="list-select list-select-sm custom-select fw-bold" disabled>
+                        <option value="{{authUser.assignedArea.district}}">Quận {{authUser.assignedArea.district}}</option>
+                    </select>
+                    {{/ifCond}}
+                </div>
+                <div class="list-group shadow-sm">
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                        <span class="fw-bold">Danh sách các phường</span>
+                    </div>
+                    <div id="license_filter_ward" class="scrollable-list">
+                    </div>
+                    <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/ifCond}}
+        {{#ifCond authUser.role '===' 'Quận'}}
+        {{/ifCond}}
     </div>
 </div>
 
-<!-- Report Modal View only-->
-<div
-    class='modal fade'
-    id='reportModal'
-    tabindex='-1'
-    aria-labelledby='reportModalLabel'
-    aria-hidden='true'
->
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h5 class='modal-title' id='reportModalLabel'></h5>
-                <button
-                    type='button'
-                    class='btn-close'
-                    data-bs-dismiss='modal'
-                    aria-label='Close'
-                ></button>
-            </div>
-            <div class='modal-body'>
-                <form class='report-form' id='reportForm' enctype='multipart/form-data'>
-                    <div class='mb-3'>
-                        <label for='schema' class='form-label'>Đối tượng</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='schema'
-                            required disabled
-                        />
-                    </div>
-                    <div class='mb-3'>
-                        <label for='fullName' class='form-label'>Họ và tên</label>
-                        <input
-                            type='text'
-                            class='form-control fullNameReport'
-                            id='fullName'
-                            required disabled
-                        />
-                    </div>
-                    <div class='mb-3'>
-                        <label for='email' class='form-label'>Email</label>
-                        <input type='email' class='form-control reportEmail' id='email' required disabled/>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='phone' class='form-label'>Số điện thoại liên lạc</label>
-                        <input type='tel' class='form-control' id='phone' required disabled/>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='reportContent' class='form-label'>Nội dung</label>
-                        <iframe id="reportContent" frameborder="0" style="width: 100%;"></iframe>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='image1' class='form-label'>Hình ảnh 1</label>
-                        <input type='file' class='form-control' id='image1' accept='image/*' disabled/>
-                    </div>
-                    <div class='mb-3'>
-                        <label for='image2' class='form-label'>Hình ảnh 2</label>
-                        <input type='file' class='form-control' id='image2' accept='image/*' disabled/>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<title>Danh sách các báo cáo</title>
+
+{{> detailAdsBoard}}
+{{> detailAdsPoint}}
+{{> detailLicenseAdsBoard}}
+{{> requestEditAdsBoard}}

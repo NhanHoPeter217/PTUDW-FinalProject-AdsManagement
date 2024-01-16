@@ -56,23 +56,15 @@
                                 </colgroup>
                                 <tbody id="body">
                                 {{#if adsBoardRequestedEditsEmpty}}
-                                    <tr>
-                                        <td class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa bảng quảng cáo</td>
-                                    </tr>
+                                    <div class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa bảng quảng cáo</div>
                                 {{else}}
                                 {{#each adsBoardRequestedEdits as |adsBoardRequestedEdits index|}}
                                     <tr>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
                                         </td>
-                                        <td class="border-bottom-0">
-                                            <button
-                                                type="button"
-                                                class="btn btn-link m-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#detailAdsBoardRequestModal">
-                                                {{adsObject.adsBoardType}}
-                                            </button>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <p class="mb-0 fw-semibold">{{adsObject.adsBoardType}}</p>
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{adsObject.size.width}}m x {{adsObject.size.height}}m</p>
@@ -84,7 +76,8 @@
                                             <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{adsObject.contractEndDate}}</p>
+                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
+                                            <p class="mb-0 fw-normal">{{format_date adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
@@ -127,7 +120,7 @@
                                         <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
                                             <div class='modal-content'>
                                                 <div class='modal-header'>
-                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin cập nhật</h5>
                                                     <button
                                                         type='button'
                                                         class='btn-close'
@@ -136,7 +129,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-detail-body'>
-                                                    <form id='detailAdsBoardRequestForm' enctype='multipart/form-data'>
+                                                    <form id='detailAdsBoardRequestForm' data-id={{_id}} enctype='multipart/form-data'>
                                                         <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
@@ -151,72 +144,156 @@
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Địa điểm:</h5>
-                                                                    {{!-- {{#ifCond adsObject.}} --}}
-                                                                    <p class='mb-0'>Thanh Đa</p>
+                                                                    <h5 class='card-title fw-semibold'>Địa chỉ</h5>
+                                                                        <p class='mb-0'>{{adsObject.adsPoint.location.address}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row gx-2">
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Quận</h5>
+                                                                            {{#ifCond adsObject.adsPoint.location.district '!==' newInfo.adsPoint.location.district}}
+                                                                            <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsPoint.location.district}}</p>
+                                                                            <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsPoint.location.district}}</p>
+                                                                            {{else}}
+                                                                                <p class='mb-0'>{{newInfo.adsPoint.location.district}}</p>
+                                                                            {{/ifCond}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-6'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Phường</h5>
+                                                                            {{#ifCond adsObject.adsPoint.location.ward '!==' newInfo.adsPoint.location.ward}}
+                                                                            <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsPoint.location.ward}}</p>
+                                                                            <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsPoint.location.ward}}</p>
+                                                                            {{else}}
+                                                                                <p class='mb-0'>{{newInfo.adsPoint.location.ward}}</p>
+                                                                            {{/ifCond}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row gx-2">
+                                                                <div class='col-md-4'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Chiều cao</h5>
+                                                                            {{#ifCond adsObject.size.height '!==' newInfo.size.height}}
+                                                                            <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.size.height}}</p>
+                                                                            <p class='mb-0 text-danger fw-semibold'>{{newInfo.size.height}}</p>
+                                                                            {{else}}
+                                                                                <p class='mb-0'>{{newInfo.size.height}}</p>
+                                                                            {{/ifCond}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Chiều rộng</h5>
+                                                                            {{#ifCond adsObject.size.width '!==' newInfo.size.width}}
+                                                                            <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.size.width}}</p>
+                                                                            <p class='mb-0 text-danger fw-semibold'>{{newInfo.size.width}}</p>
+                                                                            {{else}}
+                                                                                <p class='mb-0'>{{newInfo.size.width}}</p>
+                                                                            {{/ifCond}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <div class='card border'>
+                                                                        <div class='card-body'>
+                                                                            <h5 class='card-title fw-semibold mb-4'>Số lượng</h5>
+                                                                            {{#ifCond adsObject.quantity '!==' newInfo.quantity}}
+                                                                            <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.quantity}}</p>
+                                                                            <p class='mb-0 text-danger fw-semibold'>{{newInfo.quantity}}</p>
+                                                                            {{else}}
+                                                                                <p class='mb-0'>{{newInfo.quantity}}</p>
+                                                                            {{/ifCond}}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
-                                                                    <p class='mb-0'>227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</p>
+                                                                    <h5 class='card-title fw-semibold'>Ngày hết hạn của hợp đồng quảng cáo</h5>
+                                                                    {{#ifCond (format_date adsObject.contractEndDate) '!==' newInfo.contractEndDate}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{format_date adsObject.contractEndDate}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.contractEndDate}}</p>
+                                                                    {{else}}
+                                                                        <p class='mb-0'>{{newInfo.contractEndDate}}</p>
+                                                                    {{/ifCond}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Loại vị trí</h5>
-                                                                    <p class='mb-0'>Gì đó</p>
+                                                                    <h5 class='card-title fw-semibold mb-4 text-danger'>Hình cũ</h5>
+                                                                    {{#each adsObject.adsBoardImages as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Hình thức quảng cáo</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                    <h5 class='card-title fw-semibold mb-4 text-primary'>Hình mới</h5>
+                                                                    {{#each newInfo.adsBoardImages as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Trạng thái địa điểm</h5>
-                                                                    <p class='mb-0'>Đã quy hoạch</p>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Thời điểm xin chỉnh sửa</h5>
+                                                                    <p class='mb-0'>{{editRequestTime}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Loại bảng quảng cáo</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Lý do chỉnh sửa</h5>
+                                                                    <p class='mb-0'>{{editReason}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Kích thước</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Email</h5>
+                                                                    <p class='mb-0'>{{officerEmail}}</p>
                                                                 </div>
                                                             </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Số lượng</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                            {{!-- <div class="d-flex justify-content-center mt-2">
+                                                                <div class='d-grid col-md-3 mx-2'>
+                                                                    <button
+                                                                        id='noVerifyRequestEditAdsBoard'
+                                                                        type='submit'
+                                                                        class='btn btn-outline-danger btn-block'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        KHÔNG DUYỆT
+                                                                    </button>
+                                                                </div> --}}
+                                                                {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
+                                                                {{else}}
+                                                                <div class='d-grid gap-2 col-3 mx-auto'>
+                                                                    <button
+                                                                        id='verifyRequestEditAdsBoard'
+                                                                        type='submit'
+                                                                        class='btn btn-success'
+                                                                        style='font-family: Inter'
+                                                                    >
+                                                                        DUYỆT
+                                                                    </button>
                                                                 </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class='card border'>
-                                                                <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Ngày hết hạn của hợp đồng
-                                                                        quảng cáo</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
-                                                                </div>
-                                                            </div>
+                                                                {{/ifCond}}
+                                                            {{!-- </div> --}}
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 {{/each}}
                                 {{/if}}
                                 </tbody>
@@ -267,9 +344,7 @@
                                 </colgroup>
                             <tbody id="body">
                                 {{#if adsPointRequestedEditsEmpty}}
-                                <tr>
-                                    <td class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa điểm quảng cáo</td>
-                                </tr>
+                                    <div class="card-body text-primary fw-semibold">Không có yêu cầu chỉnh sửa điểm quảng cáo</div>
                                 {{else}}
                                 {{#each adsPointRequestedEdits as |adsPointRequestedEdits index|}}
                                 <tr>
@@ -277,23 +352,17 @@
                                         <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
                                     </td>
                                     <td class="border-bottom-0 text-center align-middle">
-                                        <button
-                                            type="button"
-                                            class="btn btn-link m-1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailAdsPointRequestModal">
-                                            {{newInfo.locationName}}
-                                        </button>
+                                        <p class="mb-0 fw-semibold">{{adsObject.location.locationName}}</p>
                                     </td>
                                     <td class="border-bottom-0 text-center align-middle">
                                         <p class="mb-0 fw-normal">{{adsObject.locationType}}</p>
                                     </td>
                                     <td class="border-bottom-0 text-center align-middle">
-                                        <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
+                                        <p class="mb-0 fw-normal">{{adsObject.location.district}}</p>
                                     </td>
                                     {{#ifCond adsObject.planningStatus '===' 'Đã quy hoạch'}}
                                     <td class="border-bottom-0 text-center align-middle">
-                                        <div class="d-flex align-items-center gap-2">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
                                             <span class="badge bg-primary rounded-3 fw-semibold"
                                                 >Đã quy hoạch</span
                                             >
@@ -334,11 +403,181 @@
                                             type="button"
                                             class="btn btn-primary m-1"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#">
+                                            data-bs-target="#detailAdsPointRequestModal-{{_id}}">
                                             <img src="../../../public/assets/icons/Detail_&_Verify_icon.svg" alt="" width="24" height="24" />
                                         </button>
                                     </td>
                                 </tr>
+                                <div
+                                    class='modal fade'
+                                    id='detailAdsPointRequestModal-{{_id}}'
+                                    tabindex='-1'
+                                    aria-labelledby='reportModalLabel'
+                                    aria-hidden='true'
+                                >
+                                    <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                                <button
+                                                    type='button'
+                                                    class='btn-close'
+                                                    data-bs-dismiss='modal'
+                                                    aria-label='Close'
+                                                ></button>
+                                            </div>
+                                            <div class='modal-detail-body'>
+                                                <form id='detailAdsPointRequestForm' data-id={{_id}} enctype='multipart/form-data'>
+                                                    <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold'>Điểm quảng cáo</h5>
+                                                                {{#ifCond adsObject.location.locationName '!==' newInfo.locationName}}
+                                                                    <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.location.locationName}}</p>
+                                                                    <p class='mb-0 text-danger fw-semibold'>{{newInfo.locationName}}</p>
+                                                                {{else}}
+                                                                    <p class='mb-0'>{{newInfo.locationName}}</p>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row gx-2">
+                                                            <div class='col-md-6'>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Quận</h5>
+                                                                        {{#ifCond adsObject.location.district '!==' newInfo.district}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.location.district}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.district}}</p>
+                                                                        {{else}}
+                                                                            <p class='mb-0'>{{newInfo.district}}</p>
+                                                                        {{/ifCond}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='col-md-6'>
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Phường</h5>
+                                                                        {{#ifCond adsObject.location.ward '!==' newInfo.ward}}
+                                                                        <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.location.ward}}</p>
+                                                                        <p class='mb-0 text-danger fw-semibold'>{{newInfo.ward}}</p>
+                                                                        {{else}}
+                                                                            <p class='mb-0'>{{newInfo.ward}}</p>
+                                                                        {{/ifCond}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold'>Địa chỉ chi tiết</h5>
+                                                                {{#ifCond adsObject.location.address '!==' newInfo.address}}
+                                                                    <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.location.address}}</p>
+                                                                    <p class='mb-0 text-danger fw-semibold'>{{newInfo.address}}</p>
+                                                                {{else}}
+                                                                    <p class='mb-0'>{{newInfo.address}}</p>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold'>Loại vị trí</h5>
+                                                                {{#ifCond adsObject.locationType '!==' newInfo.locationType}}
+                                                                    <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.locationType}}</p>
+                                                                    <p class='mb-0 text-danger fw-semibold'>{{newInfo.locationType}}</p>
+                                                                {{else}}
+                                                                    <p class='mb-0'>{{newInfo.locationType}}</p>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold'>Loại vị trí</h5>
+                                                                {{#ifCond adsObject.adsFormat.name '!==' newInfo.adsFormat.name}}
+                                                                    <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.adsFormat.name}}</p>
+                                                                    <p class='mb-0 text-danger fw-semibold'>{{newInfo.adsFormat.name}}</p>
+                                                                {{else}}
+                                                                    <p class='mb-0'>{{newInfo.adsFormat.name}}</p>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold'>Trạng thái địa điểm</h5>
+                                                                {{#ifCond adsObject.planningStatus '!==' newInfo.planningStatus}}
+                                                                    <p class='mb-0 text-black-50 fw-normal text-decoration-line-through'>{{adsObject.planningStatus}}</p>
+                                                                    <p class='mb-0 text-danger fw-semibold'>{{newInfo.planningStatus}}</p>
+                                                                {{else}}
+                                                                    <p class='mb-0'>{{newInfo.planningStatus}}</p>
+                                                                {{/ifCond}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4 text-danger'>Hình cũ</h5>
+                                                                {{#each adsObject.locationImages as |image|}}
+                                                                <img src="{{image}}" width="650" class="mb-2">
+                                                                {{/each}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4 text-primary'>Hình mới</h5>
+                                                                {{#each newInfo.locationImages as |image|}}
+                                                                <img src="{{image}}" width="650" class="mb-2">
+                                                                {{/each}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Thời điểm xin chỉnh sửa</h5>
+                                                                <p class='mb-0'>{{editRequestTime}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Lý do chỉnh sửa</h5>
+                                                                <p class='mb-0'>{{editReason}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class='card border'>
+                                                            <div class='card-body'>
+                                                                <h5 class='card-title fw-semibold mb-4'>Email</h5>
+                                                                <p class='mb-0'>{{officerEmail}}</p>
+                                                            </div>
+                                                        </div>
+                                                        {{!-- <div class="d-flex justify-content-center mt-2">
+                                                            <div class='d-grid col-md-3 mx-2'>
+                                                                <button
+                                                                    id='noVerifyRequestEditAdsPoint'
+                                                                    type='submit'
+                                                                    class='btn btn-outline-danger btn-block'
+                                                                    style='font-family: Inter'
+                                                                >
+                                                                    KHÔNG DUYỆT
+                                                                </button>
+                                                            </div> --}}
+                                                            {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
+                                                            <div></div>
+                                                            {{else}}
+                                                            <div class='d-grid gap-2 col-3 mx-auto'>
+                                                                <button
+                                                                    id='verifyRequestEditAdsPoint'
+                                                                    type='submit'
+                                                                    class='btn btn-success'
+                                                                    style='font-family: Inter'
+                                                                >
+                                                                    DUYỆT
+                                                                </button>
+                                                            </div>
+                                                            {{/ifCond}}
+                                                        {{!-- </div> --}}
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {{/each}}
                             {{/if}}
                             </tbody>
@@ -351,8 +590,3 @@
 </div>
 
 <title>Danh sách điểm quảng cáo</title>
-
-{{> detailAdsPoint}}
-{{> detailAdsBoardRequest}}
-{{> detailAdsPointRequest}}
-{{> requestEditAdsPoint}}

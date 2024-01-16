@@ -8,15 +8,6 @@ const District = require('../../models/Department/District');
 
 const createAdsLicenseRequest = async (req, res) => {
     try {
-        // const uploadedImages = handleFileUpload(req, 'public/uploads/adsLicenseRequestImages', 2);
-
-        // Object.keys(uploadedImages).forEach((fieldName) => {
-        //     req.body.licenseRequestedAdsBoard[fieldName] = Array.isArray(uploadedImages[fieldName])
-        //         ? uploadedImages[fieldName]
-        //         : [uploadedImages[fieldName]];
-        // });
-        req.body.licenseRequestedAdsBoard.adsBoardImages = req.files.map((file) => file.path);
-
         const adsBoardId = req.params.id;
         const adsBoard = await AdsBoard.findOne({ _id: adsBoardId }).populate({
             path: 'adsPoint',
@@ -28,6 +19,14 @@ const createAdsLicenseRequest = async (req, res) => {
             }
         });
 
+        // Parse the body
+        req.body = JSON.parse(req.body.data);
+
+        if (req.files) {
+            const imgArr = req.files.map((file) => file.path);
+            console.log(imgArr);
+            req.body.licenseRequestedAdsBoard.adsBoardImages = imgArr;
+        }
         req.body.wardAndDistrict = {
             ward: adsBoard.adsPoint.location.ward,
             district: adsBoard.adsPoint.location.district

@@ -18,17 +18,20 @@ const createAdsInfoEditingRequest = async (req, res) => {
     try {
         const { adsObject, adsType } = req.body;
         if (adsType === 'AdsBoard') {
-            req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
+            req.body = JSON.parse(req.body.data);
+            if (req.files) req.body.newInfo.adsBoardImages = req.files.map((file) => file.path);
 
             const adsBoard = await AdsBoard.findOne({ _id: adsObject });
             req.body.newInfo.adsPoint = adsBoard.adsPoint;
-            adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
+            let adsBoardRequestedEdit = await AdsBoardRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsBoardRequestedEdit._id;
-
         } else if (adsType === 'AdsPoint') {
+            req.body.newInfo = JSON.parse(req.body.newInfo);
+            req.body.wardAndDistrict = JSON.parse(req.body.wardAndDistrict);
+            req.body.newInfo.coords.lat = parseFloat(req.body.newInfo.coords.lat);
+            req.body.newInfo.coords.lng = parseFloat(req.body.newInfo.coords.lng);
             req.body.newInfo.locationImages = req.files.map((file) => file.path);
-            
-            adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
+            let adsPointRequestedEdit = await AdsPointRequestedEdit.create(req.body.newInfo);
             req.body.newInfo = adsPointRequestedEdit._id;
         }
 
@@ -42,21 +45,47 @@ const createAdsInfoEditingRequest = async (req, res) => {
 
 const getAllAdsInfoEditingRequests = async (req, res) => {
     try {
-        const adsInfoEditingRequests = await AdsInfoEditingRequest.find({})
-            .populate('adsObject')
+        const adsPointRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsPoint'})
+            .populate({
+                path: 'adsObject',
+                populate: {
+                    path: 'location',
+                }
+            })
             .populate('newInfo')
             .lean();
 
-        const adsBoardRequestedEdits = adsInfoEditingRequests.filter(
-            (request) => request.adsType === 'AdsBoard'
-        );
+        const adsBoardRequestedEdits = await AdsInfoEditingRequest.find({adsType: 'AdsBoard'})
+            .populate({
+                path: 'adsObject',
+                populate: {
+                    path: 'adsPoint',
+                    populate: {
+                        path: 'location',
+                    }
+                }
+            })
+            .populate({
+                path: 'newInfo',
+                populate: {
+                    path: 'adsPoint',
+                    populate: {
+                        path: 'location',
+                    }
+                }
+            })
+            .lean();
 
-        const adsPointRequestedEdits = adsInfoEditingRequests.filter(
-            (request) => request.adsType === 'AdsPoint'
-        );
+        // const adsBoardRequestedEdits = adsInfoEditingRequests.filter(
+        //     (request) => request.adsType === 'AdsBoard'
+        // );
 
-        // console.log(adsBoardRequestedEdits);
-        // console.log(adsPointRequestedEdits);
+        // const adsPointRequestedEdits = adsInfoEditingRequests.filter(
+        //     (request) => request.adsType === 'AdsPoint'
+        // );
+
+        // console.log(adsBoardRequestedEdits[0].adsObject.adsPoint);
+        // console.log(adsPointRequestedEdits[0].adsObject.location);
 
         res.render('vwRequest/listRequest', {
             adsBoardRequestedEdits: adsBoardRequestedEdits,
@@ -219,12 +248,13 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
                 await AdsBoardRequestedEdit.findOne({ _id: newInfo });
 
+            console.log(quantity);
+
             await AdsBoard.findOneAndUpdate(
                 { _id: adsObject },
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
                 { new: true, runValidators: true }
             );
-        } else if (adsType === 'AdsPoint') {
         } else if (adsType === 'AdsPoint') {
             const newAdsObject = await AdsPoint.findOne({ _id: adsObject });
             const newLocation = await Location.findOne({ _id: newAdsObject.location });

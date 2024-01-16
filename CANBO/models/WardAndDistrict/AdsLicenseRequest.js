@@ -38,6 +38,8 @@ const adsLicenseRequestSchema = new Schema(
             default: 'Chưa được duyệt'
         },
 
+        images: [{ type: String }],
+
         wardAndDistrict: {
             ward: {
                 type: 'String'

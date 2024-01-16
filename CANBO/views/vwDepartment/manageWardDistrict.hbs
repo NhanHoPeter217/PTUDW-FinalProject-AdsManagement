@@ -303,7 +303,7 @@
                 wards: wards
             }
 
-            axios.patch(`./`, data)
+            axios.patch(`/district`, data)
             .then(response => {
                 window.location.reload();
             })
@@ -329,7 +329,7 @@
                     wards: wards
                 }
 
-                axios.patch(`./`, data)
+                axios.patch(`./district`, data)
                 .then(response => {
                     window.location.reload();
                 })
@@ -378,7 +378,7 @@
                 wards: wards
             }
 
-            axios.patch(`./`, data)
+            axios.patch(`./district`, data)
             .then(response => {
                 window.location.href = `/district/${newDistName}`;
             })
@@ -411,7 +411,7 @@
             }
             console.log(data);
 
-            axios.post(`./`, data)
+            axios.post(`./district`, data)
             .then(response => {
                 window.location.href = `/district`;
             })
