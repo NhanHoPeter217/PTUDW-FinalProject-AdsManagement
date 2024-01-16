@@ -248,6 +248,8 @@ const updateAdsInfoEditingRequest = async (req, res) => {
             const { quantity, adsBoardImages, adsBoardType, size, contractEndDate } =
                 await AdsBoardRequestedEdit.findOne({ _id: newInfo });
 
+            console.log(quantity);
+
             await AdsBoard.findOneAndUpdate(
                 { _id: adsObject },
                 { quantity, adsBoardImages, adsBoardType, size, contractEndDate },
