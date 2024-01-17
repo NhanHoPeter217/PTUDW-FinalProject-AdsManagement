@@ -10,23 +10,42 @@
         .reportExclamation:hover > img {
             filter: brightness(0) invert(1); /* Adjust brightness and invert to change the color */
         }
+
+        input::placeholder {        
+            color: #000000;
+            opacity: 0.5;
+            font-size: medium;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            font-size: medium;
+            font-weight: 500;
+        }
+
     </style>
 {{/section}}
 
 <div id='root'>
-    <div id='left-bar' class='col'>
-        <div class='input-group mb-3 flex-nowrap'>
+    <div>
+    <div id='left-bar' class="sidebar-header" style="height: 100px">
+        <div class='input-group mb-3 flex-nowrap justify-content-center mt-3'>
+            <div class="search-icon">
+                <i class="bi bi-search"></i>
+            </div>
             <input
                 type='text'
-                class='form-control'
-                placeholder='Tìm địa điểm'
+                class='search-bar'
+                placeholder='Tìm kiếm địa điểm'
                 aria-label='Tìm địa điểm'
                 aria-describedby='button-addon2'
                 id='searchInput'
             />
         </div>
-        <h3>Các bảng quảng cáo</h3>
-        <div id="boards-container">
+        <div class="sidebar-title d-flex align-items-center justify-content-center">
+            <div class="white-text text-center fw-semibold align-text-bottom">CÁC BẢNG QUẢNG CÁO</div>
+        </div>
+        <div id="boards-container" class="mt-4">
         {{#each AdsBoards}}
             <div
               class="ad-board card default-background primary-text"
@@ -50,6 +69,8 @@
         {{/each}}
         </div>
     </div>
+    </div>
+    
     <div id='map'>
     </div>
 </div>
@@ -86,7 +107,7 @@
 
 <!-- Filter Board -->
 <div class="filterBoard shadow-sm">
-    <div class='form-check form-switch'>
+    <div class='form-check form-switch' style="bottom: 100px">
         <input class='form-check-input' type='checkbox' role='switch' id='filterButton' checked />
         <label class='form-check-label' for='filterButton'>Điểm đặt</label>
     </div>
@@ -106,12 +127,34 @@
         } );
     </script>
 
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/buffer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/filetype.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
+    
     {{! Marker Clusterer }}
     <script src='https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
     <script src="/public/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="/public/js/tinymce.js"></script>
 
+    {{!-- Report processing --}}
+    <script src="/public/js/report.js" async defer></script>
+
+    <script src="https://www.google.com/recaptcha/api.js"
+        async defer>
+    </script>
     <script src="/public/js/main.js" type="module"></script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var halfSidebarWidth = sidebar.offsetWidth;
+
+            sidebar.classList.toggle('closed');
+            sidebar.style.left = sidebar.classList.contains('closed') ? `calc(-${halfSidebarWidth}px)` : '0';
+        }
+    </script>
 {{/section}}

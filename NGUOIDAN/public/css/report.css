@@ -59,7 +59,7 @@ body {
     letter-spacing: 0em;
     text-align: left; */
     min-width: 360px;
-    padding: 0 20px;
+    /* padding: 0 20px; */
 }
 .form-label {
     font-weight: 600;
