@@ -22,11 +22,6 @@ function initFilter() {
 
     // Ward filter
     var checkBoxes = $('.checkbox-input');
-    checkBoxes.each(function () {
-        if (wardAssigned.includes(this.getAttribute('data-ward'))) {
-            this.checked = true;
-        }
-    });
     checkBoxes.on('change', function () {
         if (this.checked) {
             wardAssigned.push(this.getAttribute('data-ward'));
