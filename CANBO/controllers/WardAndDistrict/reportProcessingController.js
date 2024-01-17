@@ -294,7 +294,7 @@ const createReport = async (req, res) => {
         req.body.images = req.files.map((file) => file.path);
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);
-            const location = await Location.create(locationData);
+            const location = await Location.create({ ...locationData, reportRelated: true });
             req.body.relatedTo = location._id;
             req.body.coords = locationData.coords;
         } else if (req.body.relatedToType === 'AdsPoint') {

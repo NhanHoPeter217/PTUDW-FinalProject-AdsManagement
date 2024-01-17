@@ -279,3 +279,7 @@ p {
 justify-content-space-around {
     justify-content: center !important;
 }
+
+.page-item:hover {
+    cursor: pointer;
+}

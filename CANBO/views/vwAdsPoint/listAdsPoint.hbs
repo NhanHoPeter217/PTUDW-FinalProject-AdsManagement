@@ -6,7 +6,7 @@
 {{/section}}
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src='public/js/listAdsPoint.js' type="module"></script>
+<script src='public/js/listAdsPoint.js' type="module" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/buffer.min.js"></script>
@@ -43,7 +43,25 @@
   });
 </script>
 {{/section}}
+{{!-- This is script for paging --}}
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
 
+    function toPage(page) {
+        urlParams.set('page', page);
+        window.location.href = '/adsPoint/allPoints?' + urlParams.toString();
+    }
+
+    function nextPage() {
+        const page = parseInt(urlParams.get('page')) + 1;
+        toPage(page);
+    }
+
+    function previousPage() {
+        const page = parseInt(urlParams.get('page')) - 1;
+        toPage(page);
+    }
+</script>
 <div class="container-fluid mt-4">
     <div class="row">
         {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
@@ -285,11 +303,11 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select districtType editDistrict' id='edit_district-{{_id}}' required>
-                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                    <select class='form-select editDistrict' id='edit_district-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' disabled>
                                                                                 -- Chọn Quận --
                                                                         </option>
-                                                                        {{#each ../districts}}
+                                                                        {{#each ../districtList}}
                                                                              <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
                                                                         {{/each}}
                                                                     </select>
@@ -301,8 +319,8 @@
                                                                             <p class='mb-0 softer-text fw-nomral'></p>
                                                                         </div>
                                                                     </label>
-                                                                    <select class='form-select wardType editWard' id='edit_ward-{{_id}}' required>
-                                                                        <option class='mb-0 softer-text fw-nomral' selected disabled>
+                                                                    <select class='form-select editWard' id='edit_ward-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' disabled>
                                                                                 -- Chọn Phường --
                                                                         </option>
                                                                         <option value={{location.ward}} selected>{{location.ward}}</option>
@@ -522,9 +540,7 @@
                                                                         <option class='mb-0 softer-text fw-nomral' selected disabled>
                                                                                 -- Chọn Quận --
                                                                         </option>
-                                                                        {{#each ../districts}}
-                                                                            <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
-                                                                        {{/each}}
+                                                                        <option value="{{location.district}}" selected>{{location.district}}</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class='mb-3' id='ward'>
@@ -711,7 +727,7 @@
                 <ul class="pagination">
                 {{#if this.hasPrevious}}
                     <li class="page-item">
-                    <a class="page-link" href="/adsPoint/allPoints/?page={{previousPage}}">Previous</a>
+                    <a class="page-link" onclick="previousPage()">Previous</a>
                     </li>
                 {{else}}
                     <li class="page-item disabled">
@@ -723,18 +739,18 @@
                 {{#each this.pageNumbers}}
                 {{#if isActive}}
                 <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="/adsPoint/allPoints/#">{{value}}</a>
+                    <a class="page-link">{{value}}</a>
                 </li>
                 {{else}}
                 <li class="page-item">
-                    <a class="page-link" href="/adsPoint/allPoints/?page={{value}}">{{value}}</a>
+                    <a class="page-link" onclick="toPage('{{value}}')">{{value}}</a>
                 </li>
                 {{/if}}
                 {{/each}}
                 
                 {{#if this.hasNext}}
                     <li class="page-item">
-                    <a class="page-link" href="/adsPoint/allPoints/?page={{nextPage}}">Next</a>
+                    <a class="page-link" onclick="nextPage()">Next</a>
                     </li>
                 {{else}}
                     <li class="page-item disabled">
@@ -753,7 +769,7 @@
                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                     <select id="filter_district" class="list-select list-select-sm custom-select fw-bold">
                         <option selected disabled>-- Chọn Quận --</option>
-                        {{#each districts}}
+                        {{#each districtList}}
                             <option value="{{districtName}}">Quận {{districtName}}</option>
                         {{/each}}
                     </select>
@@ -769,6 +785,23 @@
                         <span class="fw-bold">Danh sách các phường</span>
                     </div>
                     <div id="filter_ward" class="scrollable-list">
+                        {{#each wardList}}
+                        {{#if (includes ../wardAssigned this)}}
+                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-input" data-ward="{{this}}" checked>
+                                <span>Phường {{this}}</span>
+                            </label>
+                            </div>
+                        {{else}}
+                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-input" data-ward="{{this}}">
+                                <span>Phường {{this}}</span>
+                            </label>
+                            </div>
+                        {{/if}}
+                        {{/each}}
                     </div>
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">
                     </div>
@@ -780,4 +813,4 @@
 
 <title>Danh sách điểm quảng cáo</title>
 
-{{> addAdsPoint}}
+{{> addAdsPoint adsFormats=adsFormats districtList=districtList}}

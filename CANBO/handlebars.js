@@ -91,9 +91,9 @@ const engineWithHelpers = engine({
             return array.includes(value);
         },
 
-        getElement (array, index) {
+        getElement(array, index) {
             return array[index];
-        },
+        }
     }
 });
 

@@ -22,27 +22,66 @@ const createAdsPoint = async (req, res) => {
 };
 
 const getAllAdsPoints = async (req, res) => {
+    const { assignedArea } = req.user;
+    const role = req.user.role;
+    var wardAssigned, districtAssigned;
+    var districtList, wardList;
+    districtList = await District.find({}).sort({ districtName: 1 }).lean();
+
+    if (role === 'Sở VH-TT') {
+        // district = *, ward = *
+        wardAssigned = req.query.ward;
+        districtAssigned = req.query.dist;
+        districtAssigned &&
+            (wardList = districtList.find(
+                (district) => district.districtName == districtAssigned
+            ).wards);
+    } else if (role === 'Quận') {
+        // district assigned, ward = *
+        districtAssigned = assignedArea.district;
+        wardAssigned = req.query.ward;
+        wardList = districtList.find((district) => district.districtName == districtAssigned).wards;
+    } else if (role === 'Phường') {
+        // district assigned, ward assigned
+        districtAssigned = assignedArea.district;
+        wardAssigned = assignedArea.ward;
+    } else throw new CustomError.BadRequestError('Invalid role');
+
+    const mongooseQuery = {};
+
+    if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;
+
+    if (wardAssigned && wardAssigned !== '*') mongooseQuery.ward = wardAssigned;
+
+    console.log('The Query: ', mongooseQuery);
+
     const page = req.query.page || 1;
-  
+
     const limit = 6;
     const offset = (page - 1) * limit;
-  
-    const total = await AdsPoint.find({}).countDocuments();
+
+    const total = await Location.find({ ...mongooseQuery, reportRelated: false }).countDocuments();
     console.log(total);
     const nPages = Math.ceil(total / limit);
     const pageNumbers = [];
     for (let i = 1; i <= nPages; i++) {
-      pageNumbers.push({
-        value: i,
-        isActive: i === +page
-      });
+        pageNumbers.push({
+            value: i,
+            isActive: i === +page
+        });
     }
-  
+
     const hasPrevious = page > 1;
     const hasNext = page < nPages;
     console.log(hasPrevious, hasNext);
     try {
-        const adsPoints = await AdsPoint.find({}).limit(Number(limit)).skip(Number(offset))
+        const locations = await Location.find({ ...mongooseQuery, reportRelated: false })
+            .limit(Number(limit))
+            .skip(Number(offset))
+            .lean();
+        const adsPoints = await AdsPoint.find({
+            location: locations.map((location) => location._id)
+        })
             .populate({
                 path: 'adsBoard',
                 model: 'AdsBoard'
@@ -52,23 +91,25 @@ const getAllAdsPoints = async (req, res) => {
             .lean();
 
         const adsFormats = await AdsFormat.find({}).lean();
-        const districts = await District.find({}).sort({ districtName: 1 }).lean();
         res.render('vwAdsPoint/listAdsPoint', {
             layout: 'canbo_So',
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
-            districts: districts,
+            districtList: districtList,
+            wardList: wardList,
+            districtAssigned: districtAssigned,
+            wardAssigned: wardAssigned,
             authUser: req.user,
             pageNumbers: pageNumbers,
             currentPage: +page,
             hasPrevious: hasPrevious,
             hasNext: hasNext,
             previousPage: +page - 1,
-            nextPage: +page + 1,
+            nextPage: +page + 1
         });
     } catch (error) {
-      res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
