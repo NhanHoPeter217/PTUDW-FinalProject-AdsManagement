@@ -2,6 +2,22 @@
     <link href='public/css/utils.maps.css' rel='stylesheet' />
     <link rel='stylesheet' href='public/css/report.css' />
     <link rel="stylesheet" href="public/css/adpointInfo.css">
+
+    <!-- Google Fonts -->
+    {{!-- <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="public/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="public/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="public/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="public/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="public/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="public/assets/css/style.css" rel="stylesheet"> --}}
     <style>
         .reportExclamation > img {
             transition: filter 0.1s ease-in-out; /* Add a transition effect */
@@ -25,33 +41,69 @@
     </style>
 {{/section}}
 
-<button class="button-side-bar"
+{{!-- Button toggle sidebar --}}
+{{!-- <header id="header" class="header fixed-top d-flex align-items-center">
+    <img src="public/assets/icons/Left_Arrow_icon.svg" alt="arrow-left" style="width: 30px; height: 30px; margin-right: 0px;" class="toggle-sidebar-btn">
+</header> --}}
+
+
+{{!-- Button click out sidebar --}} 
+{{!-- <button class="button-side-bar"
     type="button"
     data-bs-toggle="offcanvas"
     data-bs-target="#offcanvasExample"
     aria-controls="offcanvasExample"
 >
     <img src="public/assets/icons/Left_Arrow_icon.svg" alt="arrow-left" style="width: 30px; height: 30px; margin-right: 0px;">
-</button>
+</button> --}}
 
-<div id='root'>
+{{!-- Search bar --}} 
+
+
+{{!-- <div id='root'>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class='input-group mb-3 flex-nowrap'>
-            <input
-                type='ztext'
-                class='form-control'
-                placeholder='Tìm kiếm địa điểm'
-                aria-label='Tìm địa điểm'
-                aria-describedby='button-addon2'
-                id='searchInput'
-            />
-        </div>
         <h3 class="text-primary">BẢNG QUẢNG CÁO</h3>
         <div id="boards-container">
         </div>
     </div>
     <div id='map'>
     </div>
+</div> --}}
+
+
+<aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-header" style="height: 100px">
+        <div class='input-group mb-3 flex-nowrap justify-content-center mt-3'>
+            <div class="search-icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <input
+                type='text'
+                class='search-bar'
+                placeholder='Tìm kiếm địa điểm'
+                aria-label='Tìm địa điểm'
+                aria-describedby='button-addon2'
+                id='searchInput'
+            />
+        </div>
+
+        <div class="sidebar-title d-flex align-items-center justify-content-center">
+            <div class="white-text text-center fw-semibold align-text-bottom">CÁC BẢNG QUẢNG CÁO</div>
+        </div>
+    </div>
+
+    <div class="sidebar-body">
+        <div id="boards-container" class="mt-4">
+        </div>
+    </div>
+
+</aside>
+
+<div id="modals">
+</div>
+
+<div id='map'>
 </div>
 
 
@@ -114,7 +166,7 @@
                     alt='report-icon'
                     style='height: 30px; width: 30px;'
                 />
-                <h5 class='modal-title' id='reportModalLabel'>Báo cáo</h5>
+                <h5 class='modal-title' id='reportModalLabel'>Báo cáo vi phạm</h5>
                 <button
                     type='button'
                     class='btn-close'
