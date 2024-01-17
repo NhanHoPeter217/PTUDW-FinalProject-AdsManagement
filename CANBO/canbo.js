@@ -3,12 +3,10 @@ require('express-async-errors');
 
 const express = require('express');
 const engineWithHelpers = require('./handlebars');
-var session = require('express-session');
 // var Handlebars = require('handlebars');
 
 const app = express();
 
-const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
 const axios = require('axios');
@@ -30,14 +28,6 @@ var corsOptions = {
 };
 
 app.set('trust proxy', 1); // trust first proxy
-app.use(
-    session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }
-    })
-);
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
@@ -61,7 +51,6 @@ const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
 const adsPointRouter = require('./routes/Department/adsPointRoutes');
 const districtRouter = require('./routes/Department/districtRoutes');
 const reportFormatRouter = require('./routes/Department/reportFormatRoutes');
-const requestRouter = require('./routes/Department/adsInfoEditingRequestRoutes');
 
 const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEditingRequestRoutes');
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
@@ -70,14 +59,12 @@ const locationRouter = require('./routes/locationRoutes');
 
 // const adsBoardRoute = require('./routes/ads-board.route');
 const typeRouter = require('./routes/typeRoutes.js');
-const adsBoardRoutes = require('./routes/Department/adsBoardRoutes.js');
-// import wardRoute from './routes/ward.route.js';
-// import districtRoute from './routes/district.route.js';
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const { lang } = require('moment');
+const { authenticateUser } = require('./middleware/authentication.js');
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -88,7 +75,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/public', express.static('public'));
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use(fileUpload());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -109,10 +95,9 @@ app.use('/adsBoard', adsBoardRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);
-app.use('/request', requestRouter);
 app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
-app.use('/api/v1/adsInfoEditingRequest', adsInfoEditingRequestRouter);
+app.use('/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
 app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 
@@ -120,46 +105,22 @@ app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
 // Setup handlebars view engine
 // sectionHandler(engine);
 app.engine('hbs', engineWithHelpers);
-// app.js
-// Handlebars.registerHelper('role', async function() {
-//     try {
-//         const response = await fetch('/api/v1/user', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-
-//         const infoUser_data = await response.json();
-
-//         if (!infoUser_data) {
-//             return "Phường";
-//         }
-
-//         return infoUser_data.infoUser.role || "Phường";
-//     } catch (error) {
-//         console.error('Error fetching user info:', error);
-//         return "Phường"; // Default value in case of an error
-//     }
-// });
 
 // Basic setup
 app.set('view engine', 'hbs');
 app.set('views', './views');
 app.set('title', 'Ads Management');
 
-app.use(function (req, res, next) {
-    // console.log(req.session.auth);
-    if (typeof req.session.auth === 'undefined') {
-        req.session.auth = false;
-    }
-
-    res.locals.auth = req.session.auth;
-    res.locals.authUser = req.session.authUser;
-    next();
+// Get pages
+app.get('/forgotPassword', function (req, res) {
+    res.render('commonFeatures/forgotPassword', { layout: false });
 });
 
-// Get pages
+app.get('/resetPassword', function (req, res) {
+    res.render('commonFeatures/resetPassword', { layout: false });
+});
+
+app.use(authenticateUser);
 app.get('/', async (req, res) => {
     async function getAllAdsPoints() {
         try {
@@ -181,60 +142,9 @@ app.get('/', async (req, res) => {
     res.render('home', { AdsPoints, AdsBoards });
 });
 
-app.get('/forgotPassword', function (req, res) {
-    res.render('commonFeatures/forgotPassword', { layout: false });
-});
-
-app.get('/resetPassword', function (req, res) {
-    res.render('commonFeatures/resetPassword', { layout: false });
-});
-
 app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });
 });
-
-// app.get('/signin', function (req, res) {
-//     res.render('commonFeatures/signin', { layout: false });
-// });
-
-// app.get('/admin/adsboard/list', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard', {});
-// });
-
-app.get('/admin/adsboard/byAdspoint/:id', function (req, res) {
-    const id = req.params.id;
-    const idString = id.toString();
-    console.log(id);
-    res.render('vwAdsBoard/listAdsBoard', { id: id });
-});
-
-// app.get('/admin/adspoint/list', function (req, res) {
-//     res.render('vwAdsPoint/listAdsPoint', {});
-// });
-
-// app.get('/types/list', function (req, res) {
-//     res.renderPjax('vwType/listType', { layout: 'canbo_So' });
-// });
-
-// app.get('/admin/adsboard/license/list', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.get('/admin/adsboard/license/list/manage', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.get('/admin/adsboard/list/manage', function (req, res) {
-//     res.render('vwAdsBoard/listAdsBoard');
-// });
-
-// app.use('/admin/adspoint', adsPointRoute);
-
-app.get('/ward/:wardId/dist/:distId', function (req, res) {
-    res.render('vwReport/listReport', { layout: 'canbo' });
-});
-
-// app.use('/admin/request', requestRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

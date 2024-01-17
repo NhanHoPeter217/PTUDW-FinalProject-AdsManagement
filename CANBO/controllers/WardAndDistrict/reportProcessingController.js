@@ -3,20 +3,58 @@ const ReportProcessing = require('../../models/WardAndDistrict/ReportProcessing'
 const Location = require('../../models/Location');
 const AdsPoint = require('../../models/AdsPoint');
 const AdsBoard = require('../../models/AdsBoard');
+const District = require('../../models/Department/District');
 const CustomError = require('../../errors');
-const { handleFileUpload } = require('../../utils/handleFileUpload');
 const sendEmail = require('../../utils/sendEmail');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
+const { getImageData } = require('../../utils/getImageData');
 
 const { AUTH_EMAIL } = process.env;
 
+// const getAllReportsByResident = async (req, res) => {
+//     try {
+//         if (!req.residentID) {
+//             res.status(StatusCodes.OK).json({ reports: [] });
+//         }
+//         else {
+//             const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
+//                 'createdAt'
+//             );
+//             res.status(StatusCodes.OK).json({ reports });
+//         }
+//     } catch (error) {
+//         throw new CustomError.BadRequestError(error.message);
+//     }
+// };
+
 const getAllReportsByResident = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
-            'createdAt'
-        );
-        res.status(StatusCodes.OK).json({ reports });
+        if (!req.residentID) {
+            res.status(StatusCodes.OK).json({ reports: [] });
+        } else {
+            const reports = await ReportProcessing.find({ residentID: req.residentID }).sort(
+                'createdAt'
+            );
+
+            const reportsWithImages = await Promise.all(
+                reports.map(async (report) => {
+                    const images = await Promise.all(
+                        report.images.map(async (imagePath) => {
+                            const absolutePath = path.join(__dirname, '../..', imagePath);
+
+                            const imageData = getImageData(absolutePath, imagePath);
+
+                            return imageData;
+                        })
+                    );
+
+                    return { ...report.toObject(), images };
+                })
+            );
+
+            res.status(StatusCodes.OK).json({ reports: reportsWithImages });
+        }
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
@@ -24,8 +62,72 @@ const getAllReportsByResident = async (req, res) => {
 
 const getAllReportsByDepartmentOfficer = async (req, res) => {
     try {
-        const reports = await ReportProcessing.find({}).sort('createdAt');
-        res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        const reportAdsBoard = await ReportProcessing.find({ relatedToType: 'AdsBoard' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: {
+                            path: 'location',
+                            model: 'Location'
+                        }
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportAdsPoint = await ReportProcessing.find({ relatedToType: 'AdsPoint' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsPoint',
+                    populate: {
+                        path: 'location',
+                        model: 'Location'
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportLocation = await ReportProcessing.find({ relatedToType: 'Location' })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'Location'
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reports = reportAdsBoard
+            .concat(reportAdsPoint)
+            .concat(reportLocation)
+            .sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+        res.render('vwReport/listReport', {
+            reports,
+            reportsEmpty: reports.length === 0,
+            authUser: req.user,
+            districts: districts
+        });
+        // res.status(StatusCodes.OK).json({ reports, count: reports.length });
     } catch (error) {
         throw new CustomError.BadRequestError(error.message);
     }
@@ -33,22 +135,127 @@ const getAllReportsByDepartmentOfficer = async (req, res) => {
 
 const getAllReportsByAssignedArea = async (req, res) => {
     const { assignedArea } = req.user;
-    const { ward, district } = assignedArea;
+    const role = req.user.role;
+    var wardAssigned, districtAssigned;
+    var districtList, wardList;
+    districtList = await District.find({}).sort({ districtName: 1 }).lean();
     try {
-        let query = {};
+        if (role === 'Sở VH-TT') {
+            // district = *, ward = *
+            wardAssigned = req.query.ward;
+            districtAssigned = req.query.dist;
+            districtAssigned &&
+                (wardList = districtList.find(
+                    (district) => district.districtName == districtAssigned
+                ).wards);
+        } else if (role === 'Quận') {
+            // district assigned, ward = *
+            districtAssigned = assignedArea.district;
+            wardAssigned = req.query.ward;
+            wardList = districtList.find(
+                (district) => district.districtName == districtAssigned
+            ).wards;
+        } else if (role === 'Phường') {
+            // district assigned, ward assigned
+            districtAssigned = assignedArea.district;
+            wardAssigned = assignedArea.ward;
+        } else throw new CustomError.BadRequestError('Invalid role');
 
-        if (ward !== '*') {
-            query['ward'] = ward;
-        }
+        const mongooseQuery = {};
 
-        if (district !== '*') {
-            query['district'] = district;
-        }
-        const reports = await ReportProcessing.find(query).sort('createdAt');
+        if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;
 
-        res.status(StatusCodes.OK).json({ reports, count: reports.length });
+        if (wardAssigned && wardAssigned !== '*') mongooseQuery.ward = wardAssigned;
+
+        console.log('The Query: ', mongooseQuery);
+
+        const reportAdsBoard = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsBoard'
+        })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: {
+                            path: 'location',
+                            model: 'Location'
+                        }
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportAdsPoint = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'AdsPoint'
+        })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'AdsPoint',
+                    populate: {
+                        path: 'location',
+                        model: 'Location'
+                    }
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reportLocation = await ReportProcessing.find({
+            ...mongooseQuery,
+            relatedToType: 'Location'
+        })
+            .populate([
+                {
+                    path: 'relatedTo',
+                    model: 'Location'
+                },
+                {
+                    path: 'reportFormat',
+                    model: 'ReportFormat'
+                }
+            ])
+            .lean();
+
+        const reports = reportAdsBoard
+            .concat(reportAdsPoint)
+            .concat(reportLocation)
+            .sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+
+        reports.forEach((report) => {
+            for (let i = 0; i < report.images.length; i++) {
+                report.images[i] = report.images[i].replace(/\\/g, '/');
+            }
+        });
+
+        res.render('vwReport/listReport', {
+            reports,
+            reportsEmpty: reports.length === 0,
+            districtList,
+            wardList,
+            districtAssigned,
+            wardAssigned,
+            authUser: req.user
+        });
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        console.log(error);
+        res.status(StatusCodes.BAD_REQUEST).send(
+            '[ReportProcessingController.js Error]' + error.message
+        );
     }
 };
 
@@ -84,16 +291,7 @@ const getSingleReport = async (req, res) => {
 
 const createReport = async (req, res) => {
     try {
-        if (req.files) {
-            const uploadedImages = handleFileUpload(req, 'public/uploads/reportImages');
-
-            Object.keys(uploadedImages).forEach((fieldName) => {
-                req.body[fieldName] = Array.isArray(uploadedImages[fieldName])
-                    ? uploadedImages[fieldName]
-                    : [uploadedImages[fieldName]];
-            });
-        }
-
+        req.body.images = req.files.map((file) => file.path);
         if (req.body.relatedToType === 'Location') {
             let locationData = JSON.parse(req.body.relatedTo);
             const location = await Location.create(locationData);
@@ -134,7 +332,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
 
         const subject = 'New announcement: The status and processing method of your report';
 
-        const htmlContent = await fs.readFile(
+        const htmlContent = fs.readFileSync(
             path.join(__dirname, '../../public/html/reportStatusNotificationEmail.html'),
             'utf8'
         );
@@ -176,7 +374,7 @@ const sendReportStatusNotification = async (reportProcessing) => {
             .replace('{{senderName}}', senderName)
             .replace('{{phone}}', phone)
             .replace('{{content}}', content)
-            .replace('{{relatedTo}}', relatedTo)
+            .replace('{{relatedTo}}', relatedToType)
             .replace('{{locationName}}', locationName)
             .replace('{{address}}', address)
             .replace('{{createdAt}}', createdAt)

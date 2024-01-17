@@ -1,4 +1,3 @@
-
 {{#section 'css'}}
 <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
@@ -18,7 +17,7 @@
             <div class="card w-100">
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold mb-4">
-                        Danh sách các cấp phép
+                        Danh sách các yêu cầu cấp phép
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
@@ -54,9 +53,7 @@
                                 </colgroup>
                                 <tbody id="body">
                                     {{#if adsLicenseRequestsEmpty}}
-                                        <tr>
-                                            <td class="card-body text-primary fw-semibold">Không có cấp phép nào</td>
-                                        </tr>
+                                        <div class="card-body text-primary fw-semibold">Không có cấp phép nào</div>
                                     {{else}}
                                     {{#each adsLicenseRequests as |adsLicenseRequests index|}}
                                     <tr>
@@ -118,7 +115,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-detail-body'>
-                                                    <form id='detailLicenseAdsBoardForm' enctype='multipart/form-data'>
+                                                    <form id='detailLicenseAdsBoardForm' data-id={{_id}} enctype='multipart/form-data'>
                                                         <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
@@ -181,7 +178,11 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                    {{#each licenseRequestedAdsBoard.adsBoardImages as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
@@ -242,33 +243,33 @@
                                                             </div>
                                                             {{#ifCond requestApprovalStatus '===' 'Chưa được duyệt'}}
                                                             {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
-                                                                <div class="d-flex justify-content-center mt-2">
+                                                                {{!-- <div class="d-flex justify-content-center mt-2">
                                                                     <div class='d-grid col-md-3 mx-2'>
                                                                         <button
-                                                                            id='deleteAdsTypeButton'
+                                                                            id='noVerifyRequestLicense'
                                                                             type='submit'
                                                                             class='btn btn-outline-danger btn-block'
                                                                             style='font-family: Inter'
                                                                         >
                                                                             KHÔNG DUYỆT
                                                                         </button>
-                                                                    </div>
-                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                    </div> --}}
+                                                                    <div class='d-grid gap-2 col-3 mx-auto'>
                                                                         <button
-                                                                            id='saveAdsTypeButton'
+                                                                            id='verifyRequestLicense'
                                                                             type='submit'
-                                                                            class='btn btn-success btn-block'
+                                                                            class='btn btn-success'
                                                                             style='font-family: Inter'
                                                                         >
                                                                             DUYỆT
                                                                         </button>
                                                                     </div>
-                                                                </div>
+                                                                {{!-- </div> --}}
                                                             {{else}}
                                                                 <div class="d-flex justify-content-center mt-2">
                                                                     <div class='d-grid col-md-3 mx-2'>
                                                                         <button
-                                                                            id='deleteAdsTypeButton'
+                                                                            id='deleteRequestLicense'
                                                                             type='submit'
                                                                             class='btn btn-outline-danger btn-block'
                                                                             style='font-family: Inter'

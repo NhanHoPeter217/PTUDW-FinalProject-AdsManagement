@@ -39,6 +39,12 @@ const adsBoardSchema = new Schema(
     { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+adsBoardSchema.virtual('licenseRequestedAdsBoard', {
+    ref: 'LicenseRequestedAdsBoard',
+    localField: '_id',
+    foreignField: 'adsBoard'
+});
+
 // adsBoardSchema.pre(/^find/, function (next) {
 
 //     this.populate({

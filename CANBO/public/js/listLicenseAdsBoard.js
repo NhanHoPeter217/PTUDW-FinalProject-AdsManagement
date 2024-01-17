@@ -1,3 +1,5 @@
+import initMapViewOnly from './miniMap_viewonly.js';
+
 function updateCheckbox() {
     // Get all the checkbox elements
     const checkboxes = document.querySelectorAll('.checkbox-input');
@@ -121,7 +123,6 @@ function updateCheckbox() {
 $(document).ready(function () {
     // Get all district and ward for the dropdown list
 
-    console.log(1);
     fetch('/district/api/v1', {
         method: 'GET',
         headers: {
@@ -229,4 +230,78 @@ $(document).ready(function () {
                 console.log('.districtType not found!');
             }
         });
+
+    // Get the select element
+    const selectElements = document.getElementsByClassName('tackle-status');
+
+    for (let i = 0; i < selectElements.length; ++i) {
+        const selectElement = selectElements[i].id;
+
+        // Add event listener for 'change' event using jQuery
+        $('#' + selectElement).on('change', function () {
+            // Get the selected value using jQuery
+            const selectedValue = $('#' + selectElement).val();
+
+            // Remove existing background color classes using jQuery
+            $('#' + selectElement).removeClass('bg-danger bg-success bg-warning');
+
+            // Update color based on the selected value using jQuery
+            switch (selectedValue) {
+                case 'Đang xử lý':
+                    $('#' + selectElement).addClass('bg-warning');
+                    break;
+                case 'Đã xử lý':
+                    $('#' + selectElement).addClass('bg-success');
+                    break;
+                default:
+                    $('#' + selectElement).addClass('bg-danger');
+                    break;
+            }
+        });
+    }
+
+    // Init map view only
+    const detailReports = document.getElementsByClassName('detailReport');
+    initMapViewOnly(detailReports);
+});
+
+$(document).ready(function () {
+    $(document).on('submit', '#detailLicenseAdsBoardForm', function (e) {
+        e.preventDefault();
+
+        const submitedButtonId = $(document.activeElement).attr('id');
+        const id = e.currentTarget.getAttribute('data-id');
+
+        if (submitedButtonId === 'deleteRequestLicense') {
+            fetch(`/adsLicenseRequest/AssignedArea/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ activeStatus: 'Đã hủy bỏ' })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi hủy yêu cầu cấp phép quảng cáo:', error);
+                });
+        } else if (submitedButtonId === 'verifyRequestLicense') {
+            fetch(`/adsLicenseRequest/department/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ requestApprovalStatus: 'Đã được duyệt' })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi duyệt yêu cầu cấp phép quảng cáo:', error);
+                });
+        }
+    });
 });

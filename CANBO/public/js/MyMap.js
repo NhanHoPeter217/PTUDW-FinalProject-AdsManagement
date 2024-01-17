@@ -344,7 +344,7 @@ export class MySearchBox {
         this.autocomplete.addListener('place_changed', () => {
             const place = this.autocomplete.getPlace();
             if (!place.geometry || !place.geometry.location) {
-                window.alert("No details available for input: '" + place.name + "'");
+                window.alert("Không tìm thấy địa chỉ với địa chỉ: '" + place.name + "'");
                 return;
             }
 
@@ -374,6 +374,8 @@ export class MySearchBox {
                 place.geometry.location.toJSON()
             );
             this.activeInfoMarker.marker.open();
+            this.input.setAttribute('data-lat', place.geometry.location.lat());
+            this.input.setAttribute('data-lng', place.geometry.location.lng());
         });
     }
 }

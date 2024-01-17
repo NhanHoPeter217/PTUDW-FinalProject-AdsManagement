@@ -1,5 +1,5 @@
-const path = require('path');
-const fs = require('fs');
+var multer = require('multer');
+var path = require('path');
 function getFormattedDate() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -12,64 +12,134 @@ function getFormattedDate() {
     return `${year}.${month}.${day}_${hours}.${minutes}.${seconds}_${Date.now()}`;
 }
 
-// const handleFileUpload = (req, fieldName, folderName) => {
-//     if (req.files && req.files[fieldName]) {
-//         const file = req.files[fieldName];
-//         const mainDirectory = path.resolve(__dirname, '..');
-//         const uploadPath = path.join(mainDirectory, folderName);
+const configureUpload = (folderName, maxImages) => {
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, folderName);
+        },
+        filename: function (req, file, cb) {
+            const fileName = `${getFormattedDate()}_${file.originalname}`;
+            cb(null, fileName);
+        }
+    });
 
-//         // Create the folder if it doesn't exist
-//         if (!fs.existsSync(uploadPath)) {
-//             fs.mkdirSync(uploadPath, { recursive: true });
-//         }
-//         const fileName = `${getFormattedDate()}_${fieldName}_${file.name}`;
-//         const filePath = path.join(uploadPath, fileName);
+    const upload = multer({ storage: storage, limits: { files: maxImages } }).any();
+    return upload;
+};
 
-//         file.mv(filePath, (err) => {
+module.exports = { configureUpload };
+
+// const path = require('path');
+// const fs = require('fs');
+// const multer = require('multer');
+
+// // const handleFileUpload = (req, fieldName, folderName) => {
+// //     if (req.files && req.files[fieldName]) {
+// //         const file = req.files[fieldName];
+// //         const mainDirectory = path.resolve(__dirname, '..');
+// //         const uploadPath = path.join(mainDirectory, folderName);
+
+// //         // Create the folder if it doesn't exist
+// //         if (!fs.existsSync(uploadPath)) {
+// //             fs.mkdirSync(uploadPath, { recursive: true });
+// //         }
+// //         const fileName = `${getFormattedDate()}_${fieldName}_${file.name}`;
+// //         const filePath = path.join(uploadPath, fileName);
+
+// //         file.mv(filePath, (err) => {
+// //             if (err) {
+// //                 throw new Error(`Error uploading file: ${err}`);
+// //             }
+// //         });
+// //         return filePath;
+// //     }
+// //     return null;
+// // };
+
+// // const handleFileUpload = (req, folderName) => {
+// //     try {
+// //         const uploadedImages = {};
+
+// //         const fieldNames = Object.keys(req.files);
+
+// //         fieldNames.forEach((fieldName) => {
+// //             const files = req.files[fieldName];
+// //             const mainDirectory = path.resolve(__dirname, '..');
+// //             const uploadPath = path.join(mainDirectory, folderName);
+
+// //             if (!fs.existsSync(uploadPath)) {
+// //                 fs.mkdirSync(uploadPath, { recursive: true });
+// //             }
+
+// //             const filePaths = files.map((file) => {
+// //                 const fileName = `${getFormattedDate()}_${file.name}`;
+// //                 const filePath = path.join(uploadPath, fileName);
+
+// //                 file.mv(filePath, (err) => {
+// //                     if (err) {
+// //                         throw new Error(`Error uploading file: ${err}`);
+// //                     }
+// //                 });
+
+// //                 return filePath;
+// //             });
+
+// //             uploadedImages[fieldName] = filePaths;
+// //         });
+
+// //         return uploadedImages;
+// //     } catch (error) {
+// //         throw error;
+// //     }
+// // };
+
+// const handleFileUpload = (req, folderName, maxImages, fieldName) => {
+//     try {
+//         const uploadedImages = {};
+
+//         const storage = multer.diskStorage({
+//             destination: function (req, file, cb) {
+//                 cb(null, folderName);
+//             },
+//             filename: function (req, file, cb) {
+//                 const fileName = `${getFormattedDate()}_${file.originalname}`;
+//                 cb(null, fileName);
+//             }
+//         });
+
+//         const upload = multer({ storage: storage, limits: { files: maxImages } }).single(fieldName);
+
+//         upload(req, null, (err) => {
 //             if (err) {
 //                 throw new Error(`Error uploading file: ${err}`);
 //             }
+//             console.log(req.files);
+//             const files = req.files;
+
+//             if (files) {
+//                 const filePath = files.path;
+//                 uploadedImages[fieldName] = [filePath];
+//             }
 //         });
-//         return filePath;
+
+//         return uploadedImages;
+//     } catch (error) {
+//         throw error;
 //     }
-//     return null;
 // };
 
-const handleFileUpload = (req, folderName) => {
-    try {
-        const uploadedImages = {};
+// module.exports = handleFileUpload;
 
-        const fieldNames = Object.keys(req.files);
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'public/uploads/image-inputs')
+//   },
+//   filename: function (req, file, cb) {
+//     const fileName = `${getFormattedDate()}_${file.originalname}`;
+//     cb(null, fileName)
+//   }
+// })
 
-        fieldNames.forEach((fieldName) => {
-            const files = req.files[fieldName];
-            const mainDirectory = path.resolve(__dirname, '..');
-            const uploadPath = path.join(mainDirectory, folderName);
+// var upload = multer({ storage: storage });
 
-            if (!fs.existsSync(uploadPath)) {
-                fs.mkdirSync(uploadPath, { recursive: true });
-            }
-
-            const filePaths = files.map((file) => {
-                const fileName = `${getFormattedDate()}_${file.name}`;
-                const filePath = path.join(uploadPath, fileName);
-
-                file.mv(filePath, (err) => {
-                    if (err) {
-                        throw new Error(`Error uploading file: ${err}`);
-                    }
-                });
-
-                return filePath;
-            });
-
-            uploadedImages[fieldName] = filePaths;
-        });
-
-        return uploadedImages;
-    } catch (error) {
-        throw error;
-    }
-};
-
-module.exports = { handleFileUpload };
+// module.exports = { upload };

@@ -1,0 +1,5 @@
+.btn:active {
+    outline: none; /* Remove the outline when clicking */
+    box-shadow: none; /* Remove any box shadow when clicking */
+    /* Add any other styles you want to remove during the click event */
+}

@@ -42,9 +42,7 @@ const ReportProcessingSchema = new Schema(
             required: true
         },
 
-        image1: [{ type: String }],
-
-        image2: [{ type: String }],
+        images: [{ type: String }],
 
         processingStatus: {
             type: String,

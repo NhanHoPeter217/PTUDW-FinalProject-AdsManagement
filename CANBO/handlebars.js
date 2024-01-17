@@ -74,6 +74,7 @@ const engineWithHelpers = engine({
         create_order(val) {
             return val + 1;
         },
+
         format_date(dateString) {
             const date = new Date(dateString);
             const day = date.getDate().toString().padStart(2, '0');
@@ -81,7 +82,15 @@ const engineWithHelpers = engine({
             const year = date.getFullYear();
 
             return `${day}/${month}/${year}`;
-        }
+        },
+
+        includes(array, value) {
+            return array.includes(value);
+        },
+
+        getElement (array, index) {
+            return array[index];
+        },
     }
 });
 

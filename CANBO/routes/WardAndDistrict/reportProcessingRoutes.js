@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const {
     getAllReportsByResident,
@@ -11,28 +12,32 @@ const {
 } = require('../../controllers/WardAndDistrict/reportProcessingController');
 
 const {
-    authenticateResident,
+    authenticateResidentOfCreateReport,
+    authenticateResidentOfGetAllReports,
     authenticateUser,
     authorizePermissions
 } = require('../../middleware/authentication');
 
-router.route('/resident/api/v1').post(authenticateResident, createReport);
+const { configureUpload } = require('../../utils/handleFileUpload');
+const folderName = 'public/uploads/reportImages';
+const maxImages = 2;
+const upload = configureUpload(folderName, maxImages);
 
-router.route('/resident/api/v1').get(authenticateResident, getAllReportsByResident);
+router.route('/resident/api/v1').post(authenticateResidentOfCreateReport, upload, createReport);
 
-router
-    .route('/dist/:distID/ward/:wardID')
-    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
+router.route('/resident/api/v1').get(authenticateResidentOfGetAllReports, getAllReportsByResident);
 
-router
-    .route('/')
-    .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
+// router
+//     .route('/dist/:distID/ward/:wardID')
+//     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByWardAndDistrict);
 
-router
-    .route('/assignedArea')
-    .get(authenticateUser, authorizePermissions('Phường', 'Quận'), getAllReportsByAssignedArea);
+// router
+//     .route('/list')
+//     .get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllReportsByDepartmentOfficer);
 
-router.route('/:id').get(authenticateUser, getSingleReport);
+router.route('/assignedArea').get(authenticateUser, getAllReportsByAssignedArea);
+
+// router.route('/:id').get(authenticateUser, getSingleReport);
 
 router.route('/:id').patch(authenticateUser, authorizePermissions('Phường', 'Quận'), updateReport);
 

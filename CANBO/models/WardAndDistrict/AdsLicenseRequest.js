@@ -38,6 +38,8 @@ const adsLicenseRequestSchema = new Schema(
             default: 'Chưa được duyệt'
         },
 
+        images: [{ type: String }],
+
         wardAndDistrict: {
             ward: {
                 type: 'String'
@@ -54,27 +56,6 @@ const adsLicenseRequestSchema = new Schema(
 
 adsLicenseRequestSchema.pre(/^find/, function (next) {
     this.find({ ActiveStatus: { $ne: 'Đã hủy bỏ' } });
-    this.populate({
-        path: 'licenseRequestedAdsBoard',
-        populate: {
-            path: 'adsBoard',
-            model: 'AdsBoard',
-            populate: {
-                path: 'adsPoint',
-                model: 'AdsPoint',
-                populate: [
-                    {
-                        path: 'location',
-                        model: 'Location'
-                    },
-                    {
-                        path: 'adsFormat',
-                        model: 'AdsFormat'
-                    },
-                ]
-            }
-        }
-    });
     next();
 });
 

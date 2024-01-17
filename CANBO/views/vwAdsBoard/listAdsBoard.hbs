@@ -1,10 +1,44 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
+<link rel="stylesheet" href="public/css/adsBoard.css" />
 <link rel="stylesheet" href="public/css/report.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 {{/section}}
 {{#section 'js'}}
+<script>
+    const district_data = [];
+    function appendDistrict(){
+        let wards = [];
+        {{#each districts}}
+        wards = `{{this.wards}}`.split(',');
+        district_data.push({
+            districtName: `{{this.districtName}}`,
+            wards: wards
+        });
+        {{/each}}
+    }
+
+    appendDistrict();
+</script>
 <script src='public/js/listAdsBoard.js' type="module"></script>
+
+<script>
+  $('.image-input').fileinput({
+    dropZoneEnabled: true,
+    maxFileCount: 5,
+    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
+    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
+    language: 'vi',
+    theme: 'fas',
+    initialPreviewAsData: true,
+    initialPreviewFileType: 'image',
+    showUpload: false,
+    maxFileSize: 5120,
+    disableZoomTitle: true,
+  });
+</script>
+
+
 {{/section}}
 
 {{!-- Role của User, lưu để script lấy xài --}}
@@ -14,12 +48,21 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
+            {{#ifCond authUser.role '===' 'Sở VH-TT'}}
             <a role="button" href="/adsPoint/allPoints" class="btn btn-outline-dark mb-3">
                 <div id="buttonStyle">
                     <img src="public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
                     Trở về
                 </div>
             </a>
+            {{else}}
+            <a role="button" href="/adsPoint/assignedArea" class="btn btn-outline-dark mb-3">
+                <div id="buttonStyle">
+                    <img src="public/assets/icons/Back_icon.svg" alt="" width="24" height="24" />
+                    Trở về
+                </div>
+            </a>
+            {{/ifCond}}
             <div class="card w-100 mb-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -39,22 +82,20 @@
                             <colgroup>
                                 <col style="width: 3%">
                                 <col style="width: 20%">
+                                <col style="width: 12%">
                                 <col style="width: 10%">
-                                <col style="width: 10%">
-                                <col style="width: 20%">
-                                <col style="width: 15%">
-                                <col style="width: 15%">
+                                {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
+                                <col style="width: 13%">
+                                {{/ifCond}}
+                                <col style="width: 13%">
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Loại bảng quảng cáo</th>
-                                    <th scope="col">Kích thước</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Quận</th>
-                                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                        <th scope="col">Cấp phép</th>
-                                    {{else}}
+                                    <th scope="col">Hạn hợp đồng</th>
+                                    <th scope="col">Các yêu cầu cấp phép</th>
+                                    {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
                                         <th scope="col">Yêu cầu cấp phép</th>
                                     {{/ifCond}}
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
@@ -70,11 +111,12 @@
                                 <colgroup>
                                     <col style="width: 3%">
                                     <col style="width: 20%">
+                                    <col style="width: 12%">
                                     <col style="width: 10%">
-                                    <col style="width: 10%">
-                                    <col style="width: 20%">
-                                    <col style="width: 15%">
-                                    <col style="width: 15%">
+                                    {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
+                                    <col style="width: 13%">
+                                    {{/ifCond}}
+                                    <col style="width: 13%">
                                 </colgroup>
                                 <tbody id="body">
                                     {{#if this.empty}}
@@ -82,7 +124,7 @@
                                         <td class="card-body text-primary fw-semibold">Danh sách trống</td>
                                     </tr>
                                     {{else}}
-                                    {{#each this.adsBoards as |adsBoards index|}}
+                                    {{#each adsBoards as |adsBoards index|}}
                                     <tr>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <h6 class="fw-semibold mb-0">{{create_order @index}}
@@ -98,20 +140,44 @@
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
                                             <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <p class="mb-0 fw-normal">{{size.width}}m x {{size.height}}m</p>
+                                                <p class="mb-0 fw-normal">{{contractEndDate}}</p>
                                             </div>
                                         </td>
+                                        {{#if (getElement ../licenseRequestedAdsBoardNotEmpty @index)}}
+                                        {{#if (getElement ../verified @index)}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <p class="mb-0 fw-normal">{{quantity}}</p>
-                                            </div>
+                                            <button
+                                                type="button"
+                                                class="btn m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#licenseDetailModal-{{index}}">
+                                                <div>
+                                                    <img src="public/assets/icons/Tick_icon.svg" alt="" width="24" height="24" />
+                                                </div>
+                                            </button>
                                         </td>
+                                        {{else}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <p class="mb-0 fw-normal">Quận {{adsPoint.location.district}}</p>
+                                            <button
+                                                type="button"
+                                                class="btn m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#licenseDetailModal-{{index}}">
+                                                <div>
+                                                    <img src="public/assets/icons/Pending_icon.svg" alt="" width="24" height="24" />
+                                                </div>
+                                            </button>
+                                        </td>
+                                        {{/if}}
+                                        {{else}}
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <div>
+                                                <img src="public/assets/icons/Ban_icon.svg" alt="" width="24" height="24" />
                                             </div>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        {{/if}}
+                                        {{#ifCond ../authUser.role '!==' 'Sở VH-TT'}}
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-success m-1"
@@ -122,20 +188,19 @@
                                                 </div>
                                             </button>
                                         </td>
-                                        <td class="border-bottom-0">
+                                        {{/ifCond}}
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#requestEditAdsBoardModal-{{index}}">
+                                                data-bs-target="#requestEditAdsBoardModal-{{_id}}">
                                                 <div id="buttonStyle">
                                                     <img src="public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
                                                 </div>
                                             </button>
                                         </td>
                                     </tr>
-                                    
-
 
                                     {{!-- Detail AdsBoard Modal --}}
                                     <div
@@ -233,13 +298,17 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold'>Ngày hết hạn của hợp đồng quảng cáo</h5>
-                                                                    <p class='mb-0' id="contractEndDate">{{format_date contractEndDate}}</p>
+                                                                    <p class='mb-0' id="contractEndDate">{{contractEndDate}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold'>Hình ảnh</h5>
-                                                                    <p class='mb-0' id="adsBoardImages"></p>
+                                                                    {{#each adsBoardImages as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -248,16 +317,13 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                         
-                                        {{!-- Edit AdsBoard Modal --}}
+                                        {{!-- Edit AdsBoard Modal (Sở) --}}
                                     {{#ifCond ../authUser.role '===' 'Sở VH-TT'}}
                                     <div
-                                        class='modal fade'
-                                        id='requestEditAdsBoardModal-{{index}}'
+                                        class='modal fade requestEditAdsBoardModal'
+                                        id='requestEditAdsBoardModal-{{_id}}'
                                         tabindex='-1'
-                                        aria-labelledby='reportModalLabel'
                                         aria-hidden='true'
                                     >
                                         <div class='modal-dialog'>
@@ -267,7 +333,7 @@
                                                         src='public/assets/icons/Edit_icon_orange.svg'
                                                         style='height: 40px; width: 40px;'
                                                     />
-                                                    <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                    <h5 class='modal-Edit-title modal-requestEdit-title' id='reportModalLabel'>
                                                         Chỉnh sửa thông tin
                                                     </h5>
                                                     <button
@@ -278,60 +344,30 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='requestEditAdsBoardForm' enctype='multipart/form-data' data-id="{{_id}}">
-                                                        <div class='mb-3' id='adsBoardType'>
+                                                    <form id='requestEditAdsBoardForm-{{_id}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}" data-mode="Chỉnh sửa">
+                                                        <input type="hidden" id="edit_ward-{{_id}}" value="{{adsPoint.location.ward}}">
+                                                        <input type="hidden" id="edit_district-{{_id}}" value="{{adsPoint.location.district}}">
+                                                        <div class='mb-3'>
                                                             <div>
-                                                                <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div class="nowrap">Loại bảng quảng cáo</div>
                                                                         <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
-    <select class='form-select reportType' id='edit_adsBoardType-{{_id}}' required>
-        <option class='mb-0 softer-text fw-nomral' disabled>
-                -- Chọn loại bảng quảng cáo --
-        </option>
-        <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
-        <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
-        <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
-        <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
-        <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
-        <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
-        <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
-        <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
-
-    </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-row column-gap-3">
-                                                            <div class='mb-3' id='district'>
-                                                                <label for='district' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Quận</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'></p>
-                                                                    </div>
-                                                                </label>
-                                                                <select class='form-select districtType' id='edit_district-{{_id}}' required>
+                                                                <select class='form-select edit_adsBoardType' id='edit_adsBoardType-{{_id}}' required>
                                                                     <option class='mb-0 softer-text fw-nomral' disabled>
-                                                                            -- Chọn Quận --
+                                                                            -- Chọn loại bảng quảng cáo --
                                                                     </option>
-                                                                    {{#each ../districts}}
-                                                                        <option value={{districtName}} {{#ifCond districtName "===" ../adsPoint.location.district}}selected{{/ifCond}}>{{districtName}}</option>
-                                                                    {{/each}}
-                                                                </select>
-                                                            </div>
-                                                            <div class='mb-3' id='ward'>
-                                                                <label for='ward' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Phường</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'></p>
-                                                                    </div>
-                                                                </label>
-                                                                <select class='form-select wardType' id='edit_ward-{{_id}}' required>
-                                                                    <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                            -- Chọn Phường --
-                                                                    </option>
-                                                                    <option value={{adsPoint.location.ward}} selected>{{adsPoint.location.ward}}</option>
+                                                                    <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
+                                                                    <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
+                                                                    <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
+                                                                    <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
+                                                                    <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
+                                                                    <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
+                                                                    <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
+                                                                    <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
+
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -344,7 +380,7 @@
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_height-{{_id}}'
                                                                     value="{{size.height}}"
                                                                     required
@@ -358,47 +394,41 @@
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_width-{{_id}}'
                                                                     value="{{size.width}}"
                                                                     required
                                                                 />
                                                             </div>
-                                                            <div class='mb-3' id="quantity">
-                                                                <label for='quantity' class='form-label' style='font-family: Inter'>
+                                                            <div class='mb-3'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div>Số lượng</div>    
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
+                                                                    class='form-control'
                                                                     id='edit_quantity-{{_id}}'
                                                                     value="{{quantity}}"
                                                                     required
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div class='mb-3' id="contractEndDate">
-                                                            <label for='contractEndDate' class='form-label' style='font-family: Inter'>
+                                                        <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter'>
                                                                 <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                     <div>Ngày hết hạn của hợp đồng quảng cáo</div>  
                                                                 </div>
                                                             </label>
-                                                            <input type='text' class='edit_contractEndDate form-control edit_contractEndDate-{{_id}}' id='edit_contractEndDate-{{index}}' value="{{format_date contractEndDate}}" required />
+                                                            <input type='text' class='edit_contractEndDate form-control edit_contractEndDate-{{_id}}' id='edit_contractEndDate-{{index}}' value="{{contractEndDate}}" required />
                                                         </div>
-                                                        <div class='mb-3' id="adsBoardImages">
-                                                            <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
-                                                            <div class='card border mb-3'>
-                                                                <div class='card-body'>
-                                                                    <p class='mb-0' id="edit_adsBoardImage_1-{{_id}}">image_url_111.jpg</p>
-                                                                </div>
-                                                            </div>
+                                                        <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter'>Hình ảnh</label>
                                                             <input
                                                                 type='file'
-                                                                class='form-control reportImage'
-                                                                id="edit_adsBoardImages"
-                                                                accept='image/*'
+                                                                class='form-control image-input'
+                                                                id="image-input-{{_id}}"
                                                             />
                                                         </div>
                                                         <div class='button-container justify-content-center'>
@@ -412,9 +442,9 @@
                                                             <div class="d-flex justify-content-center">
                                                                 <div class='d-grid col-md-3 mx-2'>
                                                                     <button
-                                                                        id='deleteAdsBoardButton'
-                                                                        type='submit'
-                                                                        class='btn btn-outline-danger btn-block'
+                                                                        data-id="{{_id}}"
+                                                                        type="button"
+                                                                        class='btn btn-outline-danger btn-block delete-ads-board-btn'
                                                                         style='font-family: Inter'
                                                                     >
                                                                         XÓA
@@ -442,10 +472,10 @@
                                     {{else}}
 
 
-                                    {{!-- Request Edit AdsBoard Modal --}}
+                                    {{!-- Request Edit AdsBoard Modal (Phường Quận) --}}
                                     <div
                                         class='modal fade requestEditAdsBoardModal'
-                                        id='requestEditAdsBoardModal-{{index}}'
+                                        id='requestEditAdsBoardModal-{{_id}}'
                                         tabindex='-1'
                                         aria-labelledby='reportModalLabel'
                                         aria-hidden='true'
@@ -458,7 +488,7 @@
                                                         style='height: 40px; width: 40px;'
                                                     />
                                                     <h5 class='modal-requestEdit-title' id='reportModalLabel'>
-                                                        Chỉnh sửa thông tin
+                                                        Yêu cầu chỉnh sửa thông tin
                                                     </h5>
                                                     <button
                                                         type='button'
@@ -468,132 +498,99 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='requestEditAdsBoardForm' enctype='multipart/form-data' data-id="{{_id}}">
-                                                        <div class='mb-3' id='adsBoardType'>
+                                                    <form id='requestEditAdsBoardForm-{{_id}}' class="requestEditAdsBoardForm" enctype='multipart/form-data' data-id="{{_id}}" data-mode="Yêu cầu chỉnh sửa">
+                                                        <input type="hidden" id="edit_ward-{{_id}}" value="{{adsPoint.location.ward}}">
+                                                        <input type="hidden" id="edit_district-{{_id}}" value="{{adsPoint.location.district}}">
+                                                        <div class='mb-3'>
                                                             <div>
-                                                                <label for='adsBoardType' class='form-label' style='font-family: Inter'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div class="nowrap">Loại bảng quảng cáo</div>
                                                                         <p class='mb-0 softer-text fw-nomral'></p>    
                                                                     </div>
                                                                 </label>
-    <select class='form-select reportType' id='edit_adsBoardType-{{_id}}' required>
-        <option class='mb-0 softer-text fw-nomral' disabled>
-                -- Chọn loại bảng quảng cáo --
-        </option>
-        <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
-        <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
-        <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
-        <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
-        <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
-        <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
-        <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
-        <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
-
-    </select>
+                                                    <select class='form-select edit_adsBoardType' id="edit_adsBoardType-{{_id}}" required>
+                                                        <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                -- Chọn loại bảng quảng cáo --
+                                                        </option>
+                                                        <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
+                                                        <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>Trụ màn hình điện tử LED</option>
+                                                        <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
+                                                        <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
+                                                        <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
+                                                        <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
+                                                        <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
+                                                        <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
+                                                    </select>
                                                             </div>
                                                         </div>
                                                         <div class="d-flex flex-row column-gap-3">
-                                                            <div class='mb-3' id='district'>
-                                                                <label for='district' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Quận</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'></p>
-                                                                    </div>
-                                                                </label>
-                                                                <select class='form-select districtType' id='edit_district-{{_id}}' required>
-                                                                    <option class='mb-0 softer-text fw-nomral' disabled>
-                                                                            -- Chọn Quận --
-                                                                    </option>
-                                                                    {{#each ../districts}}
-                                                                        <option value={{districtName}} {{#ifCond districtName "===" ../adsPoint.location.district}}selected{{/ifCond}}>{{districtName}}</option>
-                                                                    {{/each}}
-                                                                </select>
-                                                            </div>
-                                                            <div class='mb-3' id='ward'>
-                                                                <label for='ward' class='form-label' style='font-family: Inter'>
-                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
-                                                                        <div class="nowrap">Phường</div>
-                                                                        <p class='mb-0 softer-text fw-nomral'></p>
-                                                                    </div>
-                                                                </label>
-                                                                <select class='form-select wardType' id='edit_ward-{{_id}}' required>
-                                                                    <option class='mb-0 softer-text fw-nomral' selected disabled>
-                                                                            -- Chọn Phường --
-                                                                    </option>
-                                                                    <option value={{adsPoint.location.ward}} selected>{{adsPoint.location.ward}}</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex flex-row column-gap-3">
-                                                            <div class='mb-3' id="height">
-                                                                <label for='height' class='form-label' style='font-family: Inter'>
+                                                            <div class='mb-3'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div>Chiều cao (m)</div>   
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
-                                                                    id='edit_height-{{_id}}'
+                                                                    id="edit_height-{{_id}}"
+                                                                    class='form-control'
                                                                     value="{{size.height}}"
                                                                     required
                                                                 />
                                                             </div>
-                                                            <div class='mb-3' id="width">
-                                                                <label for='width' class='form-label' style='font-family: Inter'>
+                                                            <div class='mb-3'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div>Chiều rộng (m)</div>
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
-                                                                    id='edit_width-{{_id}}'
+                                                                    id="edit_width-{{_id}}"
+                                                                    class='form-control'
                                                                     value="{{size.width}}"
                                                                     required
                                                                 />
                                                             </div>
-                                                            <div class='mb-3' id="quantity">
-                                                                <label for='quantity' class='form-label' style='font-family: Inter'>
+                                                            <div class='mb-3'>
+                                                                <label class='form-label' style='font-family: Inter'>
                                                                     <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                         <div>Số lượng</div>    
                                                                     </div>
                                                                 </label>
                                                                 <input
                                                                     type='text'
-                                                                    class='form-control fullNameReport'
-                                                                    id='edit_quantity-{{_id}}'
+                                                                    id = 'edit_quantity-{{_id}}'
+                                                                    class='form-control'
                                                                     value="{{quantity}}"
                                                                     required
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div class='mb-3' id="contractEndDate">
-                                                            <label for='contractEndDate' class='form-label' style='font-family: Inter'>
+                                                        <div class='mb-3'>
+                                                            <label class='form-label' style='font-family: Inter'>
                                                                 <div class='d-flex flex-row grid gap-0 column-gap-1'>
                                                                     <div>Ngày hết hạn của hợp đồng quảng cáo</div>  
                                                                 </div>
                                                             </label>
-                                                            <input type='text' class='edit_contractEndDate form-control edit_contractEndDate-{{_id}}' id='edit_contractEndDate-{{index}}' value="{{format_date contractEndDate}}" required />
+                                                            <input type='text' class='edit_contractEndDate edit_contractEndDate-{{_id}} form-control' id='edit_contractEndDate-{{index}}' value="{{contractEndDate}}" required />
                                                         </div>
-                                                        <div class='mb-3' id="adsBoardImages">
-                                                            <label for='adsBoardImages' class='form-label' style='font-family: Inter'>Hình ảnh</label>
-                                                            <div class='card border mb-3'>
-                                                                <div class='card-body'>
-                                                                    <p class='mb-0' id="edit_adsBoardImage_1-{{_id}}">image_url_111.jpg</p>
-                                                                </div>
+                                                        <div class='mb-3'>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Lý do chỉnh sửa</label>
+                                                                <input type="text" class="form-control edit_reason" id="edit_reason-{{_id}}" required>
                                                             </div>
-                                                            <input
-                                                                type='file'
-                                                                class='form-control reportImage'
-                                                                id="edit_adsBoardImages"
-                                                                accept='image/*'
-                                                            />
+                                                        </div>
+                                                        <div class='mb-3'>
+                                                            <div class="form-group">
+                                                                <label class='form-label' style='font-family: Inter'>Cập nhật hình ảnh</label>
+                                                                <input type="file" multiple class="image-input" id="image-input-{{_id}}">
+                                                            </div>
                                                         </div>
                                                         <div class='button-container justify-content-center'>
                                                             <div
-                                                                id='recaptcha'
+                                                                id='recaptcha-{{_id}}'
                                                                 class='g-recaptcha'
                                                                 data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
                                                                 data-callback='onSubmit'
@@ -601,7 +598,7 @@
                                                             ></div>
                                                             <div class='d-grid gap-2 col-3 mx-auto'>
                                                                 <button
-                                                                    id='submitEditButton'
+                                                                    id='submitEditButton{{_id}}'
                                                                     type='submit'
                                                                     class='btn btn-warning'
                                                                     style='font-family: Inter'
@@ -645,7 +642,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class='modal-body'>
-                                                    <form id='requestLicenseAdsBoardForm' enctype='multipart/form-data' data-id="{{_id}}">
+                                                    <form id='requestLicenseAdsBoardForm_{{_id}}' enctype='multipart/form-data' class="requestLicenseAdsBoardForm" data-id="{{_id}}">
                                                         <div class='mb-3' id='adsBoardType'>
                                                             <div>
                                                                 <label for='adsBoardType' class='form-label' style='font-family: Inter'>
@@ -653,21 +650,21 @@
                                                                         <div class="nowrap">Loại bảng quảng cáo</div>
                                                                     </div>
                                                                 </label>
-    <select class='form-select reportType' id='license_adsBoardType-{{_id}}' disabled>
-        <option class='mb-0 softer-text fw-nomral' disabled>
-                -- Chọn loại bảng quảng cáo --
-        </option>
-        <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
-        <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>
-            Trụ màn hình điện tử LED
-        </option>
-        <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
-        <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
-        <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
-        <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
-        <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
-        <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
-    </select>
+                                                                <select class='form-select reportType' id='license_adsBoardType-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                            -- Chọn loại bảng quảng cáo --
+                                                                    </option>
+                                                                    <option value='Trụ bảng hiflex' {{#ifCond adsBoardType "===" "Trụ bảng hiflex"}}selected{{/ifCond}}>Trụ bảng hiflex</option>
+                                                                    <option value='Trụ màn hình điện tử LED' {{#ifCond adsBoardType "===" "Trụ màn hình điện tử LED"}}selected{{/ifCond}}>
+                                                                        Trụ màn hình điện tử LED
+                                                                    </option>
+                                                                    <option value='Trụ hộp đèn' {{#ifCond adsBoardType "===" "Trụ hộp đèn"}}selected{{/ifCond}}>Trụ hộp đèn</option>
+                                                                    <option value='Cổng chào' {{#ifCond adsBoardType "===" "Cổng chào"}}selected{{/ifCond}}>Cổng chào</option>
+                                                                    <option value='Trụ/Cụm pano' {{#ifCond adsBoardType "===" "Trụ/Cụm pano"}}selected{{/ifCond}}>Trụ/Cụm pano</option>
+                                                                    <option value='Trụ treo băng rôn ngang' {{#ifCond adsBoardType "===" "Trụ treo băng rôn ngang"}}selected{{/ifCond}}>Trụ treo băng rôn ngang</option>
+                                                                    <option value='Trung tâm thương mại' {{#ifCond adsBoardType "===" "Trung tâm thương mại"}}selected{{/ifCond}}>Trung tâm thương mại</option>
+                                                                    <option value='Trụ treo băng rôn dọc' {{#ifCond adsBoardType "===" "Trụ treo băng rôn dọc"}}selected{{/ifCond}}>Trụ treo băng rôn dọc</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="d-flex flex-row column-gap-3">
@@ -678,7 +675,7 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_height-{{_id}}'
                                                                     value="{{size.height}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                             <div class='mb-3' id="width">
@@ -688,7 +685,7 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_width-{{_id}}'
                                                                     value="{{size.width}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                             <div class='mb-3' id="quantity">
@@ -698,18 +695,17 @@
                                                                     class='form-control fullNameReport'
                                                                     id='license_quantity-{{_id}}'
                                                                     value="{{quantity}}"
-                                                                    disabled
+                                                                    required
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div class='mb-3' id="license_adsBoardImages">
-                                                            <label for='locationImages' class='form-label' style='font-family: Inter'>Hình ảnh bảng quảng cáo</label>
-                                                            <div class='card border mb-3'>
-                                                                <div class='card-body'>
-                                                                    <p class='mb-0' id="license_adsBoardImage_1-{{_id}}">image_url_1.jpg</p>
-                                                                    <p class='mb-0' id="license_adsBoardImage_2-{{_id}}">image_url_2.jpg</p>
-                                                                </div>
-                                                            </div>
+                                                            <label class='form-label' style='font-family: Inter'>Hình ảnh bảng quảng cáo</label>
+                                                            {{#each adsBoardImages as |image|}}
+                                                            <img src="{{image}}" width="650" class="mb-2">
+                                                            {{else}}
+                                                            <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
+                                                            {{/each}}
                                                         </div>
                                                         <div class='mb-3' id="adsContent">
                                                             <label for='adsContent' class='form-label' style='font-family: Inter'>Nội dung quảng cáo</label>
@@ -730,7 +726,6 @@
                                                                     <label for='contractEndDate' class='form-label' style='font-family: Inter;'>Ngày hết hạn hợp đồng</label>
                                                                     <input type='text' class='license_contractEndDate form-control license_contractEndDate-{{_id}}' id="license_contractEndDate-{{index}}" required />
                                                                 </div>
-                                                                {{!-- <div id="error-msg" style="color: red;"></div> --}}
                                                             </div>
                                                         </div>
                                                         <div class='mb-3' id="companyName">
@@ -768,7 +763,7 @@
                                                                 style="height: 100px;"
                                                                 required
                                                             ></textarea>
-                                                            <div class="map-search-box"></div>
+                                                            <div class="map-search-box mt-2 rounded"></div>
                                                         </div>
                                                         <div class='button-container justify-content-center'>
                                                             <div
@@ -793,6 +788,35 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                    
+
+                                    {{!-- License Detail Modal --}}
+                                    {{!-- <div
+                                        class='modal fade licenseDetailModal'
+                                        id="licenseDetailModal-{{index}}"
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='public/assets/icons/Info_icon.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> --}}
                                     {{/each}}
                                     {{/if}}
                                 </tbody>
@@ -807,4 +831,4 @@
 
 <title>Danh sách bảng quảng cáo</title>
 
-{{> addAdsBoard}}
+{{> addAdsBoard adsPoint adsFormats=adsFormats adsBoardTypes=adsBoardTypes}}

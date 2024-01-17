@@ -19,6 +19,15 @@ const createAdsLicenseRequest = async (req, res) => {
             }
         });
 
+        // Parse the body
+        req.body = JSON.parse(req.body.data);
+
+        if (req.files) {
+            const imgArr = req.files.map((file) => file.path);
+            console.log(imgArr);
+            req.body.licenseRequestedAdsBoard.adsBoardImages = imgArr;
+            req.body.images = imgArr;
+        }
         req.body.wardAndDistrict = {
             ward: adsBoard.adsPoint.location.ward,
             district: adsBoard.adsPoint.location.district
@@ -40,7 +49,29 @@ const createAdsLicenseRequest = async (req, res) => {
 
 const getAllAdsLicenseRequests = async (req, res) => {
     try {
-        const adsLicenseRequests = await AdsLicenseRequest.find({}).lean();
+        const adsLicenseRequests = await AdsLicenseRequest.find({})
+            .populate({
+                path: 'licenseRequestedAdsBoard',
+                populate: {
+                    path: 'adsBoard',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: [
+                            {
+                                path: 'location',
+                                model: 'Location'
+                            },
+                            {
+                                path: 'adsFormat',
+                                model: 'AdsFormat'
+                            }
+                        ]
+                    }
+                }
+            })
+            .lean();
         // res.status(StatusCodes.OK).json({ adsLicenseRequests, count: adsLicenseRequests.length });
 
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
@@ -55,6 +86,7 @@ const getAllAdsLicenseRequests = async (req, res) => {
             adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
             districts: districts
         });
+        // res.status(StatusCodes.OK).json({ adsLicenseRequests_array, count: adsLicenseRequests_array.length });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -92,11 +124,33 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             query['wardAndDistrict.district'] = district;
         }
 
-        const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
+        const adsLicenseRequests = await AdsLicenseRequest.find(query)
+            .populate({
+                path: 'licenseRequestedAdsBoard',
+                populate: {
+                    path: 'adsBoard',
+                    model: 'AdsBoard',
+                    populate: {
+                        path: 'adsPoint',
+                        model: 'AdsPoint',
+                        populate: [
+                            {
+                                path: 'location',
+                                model: 'Location'
+                            },
+                            {
+                                path: 'adsFormat',
+                                model: 'AdsFormat'
+                            }
+                        ]
+                    }
+                }
+            })
+            .lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
 
         const role = req.user.role;
-        
+
         const adsLicenseRequests_array = adsLicenseRequests.filter(
             (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
         );
@@ -112,10 +166,9 @@ const getAdsLicenseByAssignedArea = async (req, res) => {
             res.render('vwAdsBoard/listLicenseAdsBoard', {
                 authUser: req.user,
                 adsLicenseRequests: adsLicenseRequests_array,
-                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0,
+                adsLicenseRequestsEmpty: adsLicenseRequests_array.length === 0
             });
         }
-        
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
@@ -143,7 +196,7 @@ const getAllAdsLicenseByAssignedArea = async (req, res) => {
             }
 
             const adsLicenseRequests = await AdsLicenseRequest.find(query).lean();
-            
+
             const adsLicenseRequests_array = adsLicenseRequests.filter(
                 (adsLicenseRequest) => adsLicenseRequest.activeStatus === 'Đang tồn tại'
             );
