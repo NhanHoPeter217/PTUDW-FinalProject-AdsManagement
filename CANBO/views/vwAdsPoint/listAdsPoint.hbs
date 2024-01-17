@@ -707,7 +707,44 @@
                         </div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-center">
+                <ul class="pagination">
+                {{#if this.hasPrevious}}
+                    <li class="page-item">
+                    <a class="page-link" href="/adsPoint/allPoints/?page={{previousPage}}">Previous</a>
+                    </li>
+                {{else}}
+                    <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                    </li>
+                {{/if}}
+                
+
+                {{#each this.pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="/adsPoint/allPoints/#">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="/adsPoint/allPoints/?page={{value}}">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                
+                {{#if this.hasNext}}
+                    <li class="page-item">
+                    <a class="page-link" href="/adsPoint/allPoints/?page={{nextPage}}">Next</a>
+                    </li>
+                {{else}}
+                    <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                    </li>
+                {{/if}}
+                </ul>
+                </div>
             </div>
+
         </div>
         <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-lg-2{{else}}col-lg-3{{/ifCond}} col-md-3">
             <div class="pe-4">

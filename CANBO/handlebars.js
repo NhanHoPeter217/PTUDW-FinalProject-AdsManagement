@@ -75,6 +75,9 @@ const engineWithHelpers = engine({
             return val + 1;
         },
 
+        delete_order(val) {
+            return val - 1;
+        },
         format_date(dateString) {
             const date = new Date(dateString);
             const day = date.getDate().toString().padStart(2, '0');

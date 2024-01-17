@@ -22,8 +22,27 @@ const createAdsPoint = async (req, res) => {
 };
 
 const getAllAdsPoints = async (req, res) => {
+    const page = req.query.page || 1;
+  
+    const limit = 6;
+    const offset = (page - 1) * limit;
+  
+    const total = await AdsPoint.find({}).countDocuments();
+    console.log(total);
+    const nPages = Math.ceil(total / limit);
+    const pageNumbers = [];
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isActive: i === +page
+      });
+    }
+  
+    const hasPrevious = page > 1;
+    const hasNext = page < nPages;
+    console.log(hasPrevious, hasNext);
     try {
-        const adsPoints = await AdsPoint.find({})
+        const adsPoints = await AdsPoint.find({}).limit(Number(limit)).skip(Number(offset))
             .populate({
                 path: 'adsBoard',
                 model: 'AdsBoard'
@@ -34,31 +53,63 @@ const getAllAdsPoints = async (req, res) => {
 
         const adsFormats = await AdsFormat.find({}).lean();
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
-
-        const role = req.user.role;
-
-        // if (role === 'Sở VH-TT') {
         res.render('vwAdsPoint/listAdsPoint', {
             layout: 'canbo_So',
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
             districts: districts,
-            authUser: req.user
+            authUser: req.user,
+            pageNumbers: pageNumbers,
+            currentPage: +page,
+            hasPrevious: hasPrevious,
+            hasNext: hasNext,
+            previousPage: +page - 1,
+            nextPage: +page + 1,
         });
-        // } else {
-        //     res.render('vwAdsPoint/listAdsPoint', {
-        //         adsPoints: adsPoints,
-        //         empty: adsPoints.length === 0,
-        //         adsFormats: adsFormats,
-        //         districts: districts,
-        //         authUser: req.user
-        //     });
-        // }
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+      res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
+
+// const getAllAdsPoints = async (req, res) => {
+//     try {
+//         const adsPoints = await AdsPoint.find({})
+//             .populate({
+//                 path: 'adsBoard',
+//                 model: 'AdsBoard'
+//             })
+//             .populate('adsFormat')
+//             .populate('location')
+//             .lean();
+
+//         const adsFormats = await AdsFormat.find({}).lean();
+//         const districts = await District.find({}).sort({ districtName: 1 }).lean();
+
+//         const role = req.user.role;
+
+//         // if (role === 'Sở VH-TT') {
+//         res.render('vwAdsPoint/listAdsPoint', {
+//             layout: 'canbo_So',
+//             adsPoints: adsPoints,
+//             empty: adsPoints.length === 0,
+//             adsFormats: adsFormats,
+//             districts: districts,
+//             authUser: req.user
+//         });
+//         // } else {
+//         //     res.render('vwAdsPoint/listAdsPoint', {
+//         //         adsPoints: adsPoints,
+//         //         empty: adsPoints.length === 0,
+//         //         adsFormats: adsFormats,
+//         //         districts: districts,
+//         //         authUser: req.user
+//         //     });
+//         // }
+//     } catch (error) {
+//         res.status(StatusCodes.BAD_REQUEST).send(error.message);
+//     }
+// };
 
 const getAllAdsPointsAPI = async (req, res) => {
     try {
