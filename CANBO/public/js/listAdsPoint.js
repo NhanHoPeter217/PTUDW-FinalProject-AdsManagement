@@ -1,6 +1,26 @@
 import initMapViewOnly from '/public/js/miniMap_viewonly.js';
 import initMapWithSearchBox from '/public/js/miniMap_searchBox.js';
 
+function validateDate(dateInput) {
+    var inputDate = dateInput;
+
+    var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (dateRegex.test(inputDate)) {
+        var parsedDate = new Date(inputDate.split('/').reverse().join('-'));
+
+        if (isNaN(parsedDate.getTime())) {
+            alert('Ngày không hợp lệ!');
+            return false;
+        }
+
+        return true;
+    } else {
+        alert('Thông tin ngày phải có dạng DD/MM/YYYY!');
+        return false;
+    }
+}
+
 function updateCheckbox() {
     // Get all the checkbox elements
     const checkboxes = document.querySelectorAll('.checkbox-input');
@@ -326,17 +346,19 @@ $('.requestLocationType').on('change', function () {
     $(`.requestLocationType option[value="${selectedLocationType}"]`).prop('selected', true);
 });
 
-// $('.requestEditPlanningStatus').on('change', function () {
-//     const selectedPlanningStatus = $(this).val();
-//     $(`.requestEditPlanningStatus option:selected`).removeAttr('selected');
-//     $(`.requestEditPlanningStatus option[value="${selectedPlanningStatus}"]`).prop('selected', true);
-// });
-
 $(document).ready(function () {
     $(document).on('submit', '#requestEditAdsPointForm', function (e) {
         e.preventDefault();
-
+        
         const adsObject = e.currentTarget.getAttribute('data-id');
+        const editRequestTime = document.getElementById(
+            `request_edit_editRequestTime-${adsObject}`
+        ).value;
+
+        if(!validateDate(editRequestTime)) {
+            return;
+        }
+
         const adsType = 'AdsPoint';
         const lat = document.getElementById(`lat-${adsObject}`).value;
         const lng = document.getElementById(`lng-${adsObject}`).value;
@@ -352,9 +374,6 @@ $(document).ready(function () {
         const adsFormat = document.getElementById(`request_edit_adsFormat-${adsObject}`).value;
         const planningStatus = document.getElementById(
             `request_edit_planningStatus-${adsObject}`
-        ).value;
-        const editRequestTime = document.getElementById(
-            `request_edit_editRequestTime-${adsObject}`
         ).value;
         const editReason = document.getElementById(`request_edit_editReason-${adsObject}`).value;
 
@@ -382,22 +401,15 @@ $(document).ready(function () {
             }
         };
 
-        // const jsonData = JSON.stringify(requestEditAdsPointData);
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
         requestEditAdsPointData.wardAndDistrict = JSON.stringify(
             requestEditAdsPointData.wardAndDistrict
         );
 
-        // console.log(requestEditAdsPointData);
-
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
             form_data.append(key, requestEditAdsPointData[key]);
         }
-
-        // const locationImages = document.getElementById(
-        //     `requestAddAdsPointImages-${adsObject}`
-        // ).textContent;
 
         const fileInput = $(`#requestAddAdsPointImages-${adsObject}`).prop('files');
 
@@ -416,7 +428,6 @@ $(document).ready(function () {
                 alert('Đã xảy ra lỗi!');
             }
         });
-        // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
     });
 
     $(document).on('submit', '#addAdsPointForm', function (e) {
