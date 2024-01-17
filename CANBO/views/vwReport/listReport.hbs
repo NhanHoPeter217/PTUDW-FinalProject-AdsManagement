@@ -293,6 +293,8 @@
                                                                     <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
                                                                     {{#each images as |image|}}
                                                                     <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
                                                                     {{/each}}
                                                                 </div>
                                                             </div>
