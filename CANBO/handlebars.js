@@ -88,6 +88,7 @@ const engineWithHelpers = engine({
         },
 
         includes(array, value) {
+            if (!array) return false;
             return array.includes(value);
         },
 
