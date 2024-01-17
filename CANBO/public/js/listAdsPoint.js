@@ -21,6 +21,10 @@ function validateDate(dateInput) {
     }
 }
 
+function isNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
 function updateCheckbox() {
     // Get all the checkbox elements
     const checkboxes = document.querySelectorAll('.checkbox-input');
@@ -377,6 +381,15 @@ $(document).ready(function () {
         ).value;
         const editReason = document.getElementById(`request_edit_editReason-${adsObject}`).value;
 
+        if (lat === null || lng === null) {
+            alert('Vui lòng chọn địa chỉ hợp lệ!');
+            return;
+        }
+        if (!validateDate(editRequestTime)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày yêu cầu chỉnh sửa! (DD/MM/YYYY)');
+            return;
+        }
+
         const requestEditAdsPointData = {
             adsObject: adsObject,
             adsType: adsType,
@@ -442,6 +455,11 @@ $(document).ready(function () {
         const locationType = document.getElementById(`add_locationType`).value;
         const adsFormat = document.getElementById(`add_adsType`).value;
         const planningStatus = document.getElementById(`add_planningStatus`).value;
+
+        if (lat === null || lng === null) {
+            alert('Vui lòng chọn địa chỉ hợp lệ!');
+            return;
+        }
 
         // console.log(lat);
         // console.log(lng);
@@ -521,6 +539,11 @@ $(document).ready(function () {
             const ward = document.getElementById(`edit_ward-${adsObject}`).value;
             const district = document.getElementById(`edit_district-${adsObject}`).value;
 
+            if (lat === null || lng === null) {
+                alert('Vui lòng chọn địa chỉ hợp lệ!');
+                return;
+            }
+
             const editAdsPointData = {
                 planningStatus: planningStatus,
                 locationType: locationType,
@@ -538,8 +561,6 @@ $(document).ready(function () {
             };
 
             editAdsPointData.location = JSON.stringify(editAdsPointData.location);
-
-            console.log(editAdsPointData);
 
             // editAdsPointData.newInfo = JSON.stringify(editAdsPointData.newInfo);
             // editAdsPointData.wardAndDistrict = JSON.stringify(editAdsPointData.wardAndDistrict);
