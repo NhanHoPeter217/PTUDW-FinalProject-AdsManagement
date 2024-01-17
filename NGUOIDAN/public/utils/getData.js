@@ -34,7 +34,7 @@ async function getAllAdsPoints() {
                         : `
                 <img src="/public/assets/icons/Info_icon_Blue.svg" class="icon" alt="" srcset=""/>`
                 }            
-                <div class="details" style="position: relative; padding-right: 130px;">
+                <div class="details" style="position: relative; padding-right: 170px;">
                 <div class="d-flex justify-content-between align-items-center column-gap-3">
                     <div style="flex: 1;">
                         <!-- location.locationName -->
@@ -45,15 +45,15 @@ async function getAllAdsPoints() {
                     <button
                         type="button"
                         class="btn btn-outline-danger reportExclamation"
-                        style="min-width: 111px; width: fit-content; position: absolute; right: 0; top: 0;"
+                        style="min-width: 111px; width: fit-content; position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 8px;"
                         data-relatedToType="AdsPoint"
                         data-relatedTo="${adPoint._id}"
                         data-ward="${adPoint.location.ward}"
                         data-district="${adPoint.location.district}"
                         onclick="reportButtonHandler(event)"
-                    >
+                    >                  
                         <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                        <span>Báo cáo</span>
+                        <span style="font-weight: 600">BÁO CÁO</span>
                     </button>
                 </div>
                 <!-- locationType -->

@@ -263,7 +263,7 @@
   
   /* Close Button */
   .btn-close {
-    background-size: 25%;
+    background-size: 40%;
   }
   
   .btn-close:focus {
@@ -387,9 +387,8 @@
     /* Search Bar */
   }
   
-  .header .toggle-sidebar-btn {
+  .toggle-sidebar-btn {
     font-size: 32px;
-    padding-left: 10px;
     cursor: pointer;
     color: #677001;
   }
@@ -409,7 +408,7 @@
     width: 50px;
     align-items: center;
     justify-content: center;
-    background-color: #012970;
+    background-color: #3366FF;
     border-start-start-radius: 10px;
     border-bottom-left-radius: 10px;
   }
@@ -420,6 +419,26 @@
 
   .white-text {
     color: #fff;
+  }
+
+  .close-left-bar {
+    color: #fff;
+    background-color: #3366FF;
+    height: 40px;
+    min-width: 40px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+  }
+
+  .reported-btn {
+    /* color: #fff; */
+    background-color: #ffffff;
+    height: 40px;
+    min-width: 40px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
   }
   
   @media (max-width: 1199px) {
@@ -636,6 +655,10 @@
     box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
     background-color: #f6f9ff;
   }
+
+  .background-sidebar {
+    background-color: #f6f9ff;
+  }
   
   .sidebar-header {
     /* position: fixed; */
@@ -667,7 +690,24 @@
     /* overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #aab7cf transparent; */
-    background-color: #012970;
+    background-color: #3366FF;
+    border-radius: 10px;
+  }
+
+  .sidebar-title-2 {
+    /* position: fixed; */
+    top: 90px;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    width: 250px;
+    z-index: 996;
+    transition: all 0.3s;
+    /* padding: 20px; */
+    /* overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #aab7cf transparent; */
+    background-color: #CC3333;
     border-radius: 10px;
   }
 
@@ -700,10 +740,33 @@
     .sidebar-body::-webkit-scrollbar-track {
         background-color: transparent;
     }
+
   
-  @media (max-width: 1199px) {
+  @media (max-width: 11909px) {
     .sidebar {
-      left: -450px;
+        left: -0px;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.closed {
+        left: -50%;
+    }
+
+    .sidebar-header,
+    .sidebar-body {
+        transition: margin-left 0.3s ease;
+    }
+
+    .search-bar {
+        width: calc(100% - 40px);
+    }
+
+    .toggle-sidebar-btn {
+        transition: transform 0.3s ease;
+    }
+
+    .closed .toggle-sidebar-btn {
+        transform: rotate(180deg);
     }
   }
   

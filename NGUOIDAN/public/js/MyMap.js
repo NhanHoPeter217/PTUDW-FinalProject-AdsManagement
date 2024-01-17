@@ -198,7 +198,7 @@ class InfoMarker extends MyMarker {
                 style="min-width: 111px; width: fit-content; margin-left: 20px;"
             >
                 <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">Báo cáo</span>
+                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">BÁO CÁO</span>
             </button>
         </div>
             `;

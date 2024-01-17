@@ -38,6 +38,7 @@
             font-size: medium;
             font-weight: 500;
         }
+
     </style>
 {{/section}}
 
@@ -71,8 +72,34 @@
 </div> --}}
 
 
-<aside id="sidebar" class="sidebar">
+{{!-- <aside id="sidebar" class="sidebar d-flex">
+    <!-- Your sidebar content goes here -->
+    <div>
+        <div class="sidebar-header" style="height: 100px">
+            <div class='input-group mb-3 flex-nowrap justify-content-center mt-3'>
+                <!-- ... your search bar content ... -->
+            </div>
 
+            <div class="sidebar-title d-flex align-items-center justify-content-center">
+                <div class="white-text text-center fw-semibold align-text-bottom">CÁC BẢNG QUẢNG CÁO</div>
+            </div>
+        </div>
+
+        <div class="sidebar-body">
+            <div id="boards-container" class="mt-4">
+                <!-- ... your board content ... -->
+            </div>
+        </div>
+    </div>
+
+    <div class="close-left-bar mt-5" onclick="toggleSidebar()">
+        <img src="public/assets/icons/Left_Arrow_icon.svg" alt="arrow-left" style="width: 30px; height: 30px; margin-right: 0px;" class="toggle-sidebar-btn mt-1">
+    </div>
+</aside> --}}
+
+<aside id="sidebar" class="sidebar d-flex">
+
+<div>
     <div class="sidebar-header" style="height: 100px">
         <div class='input-group mb-3 flex-nowrap justify-content-center mt-3'>
             <div class="search-icon">
@@ -94,8 +121,13 @@
     </div>
 
     <div class="sidebar-body">
-        <div id="boards-container" class="mt-4">
+        <div id="boards-container" class="mt-4 mb-5">
         </div>
+    </div>
+</div>
+
+    <div class="close-left-bar mt-5" onclick="toggleSidebar()">
+        <img src="public/assets/icons/Left_Arrow_icon.svg" alt="arrow-left" style="width: 30px; height: 30px; margin-right: 0px;" class="toggle-sidebar-btn mt-1 ms-1">
     </div>
 
 </aside>
@@ -109,17 +141,18 @@
 
 <button
     id='report-canvas-button'
-    class='btn btn-danger'
+    class='btn btn-outline-danger reported-btn'
+    style="font-weight: 600"
     type='button'
     data-bs-toggle='offcanvas'
     data-bs-target='#report-canvas'
     aria-controls='report-canvas'
 >
-    Báo cáo đã gửi
+   Báo cáo đã gửi
 </button>
 
 <div
-    class='offcanvas offcanvas-end'
+    class='background-sidebar offcanvas offcanvas-end'
     data-bs-backdrop='false'
     data-bs-scroll='true'
     tabindex='-1'
@@ -127,7 +160,10 @@
     aria-labelledby='report-canvasLabel'
 >
     <div class='offcanvas-header'>
-        <h5 class='offcanvas-title' id='report-canvasLabel'>Các báo cáo đã gửi</h5>
+        {{!-- <h5 class='offcanvas-title text-danger fw-semibold' id='report-canvasLabel'>CÁC BÁO CÁO ĐÃ GỬI</h5> --}}
+        <div class="sidebar-title-2 d-flex align-items-center justify-content-center">
+            <div class="white-text text-center fw-semibold align-text-bottom">CÁC BÁO CÁO ĐÃ GỬI</div>
+        </div>
         <button
             type='button'
             class='btn-close'
@@ -286,4 +322,14 @@
         async defer>
     </script>
     <script src="/public/js/main.js" type="module"></script>
+
+<script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var halfSidebarWidth = sidebar.offsetWidth;
+
+        sidebar.classList.toggle('closed');
+        sidebar.style.left = sidebar.classList.contains('closed') ? `calc(-${halfSidebarWidth}px)` : '0';
+    }
+</script>
 {{/section}}
