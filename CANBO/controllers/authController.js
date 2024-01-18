@@ -103,8 +103,31 @@ const getAllAccount = async (req, res) => {
     }
 };
 
+const editAnAccountById = async (req, res) => {
+    try {
+
+        const newUser = {
+            role: req.body.role,
+            assignedArea: {
+                ward: req.body.ward,
+                district: req.body.district
+            }
+        };
+        const user = await User.findByIdAndUpdate(req.params.id, newUser, {
+            new: true,
+            runValidators: true
+        });
+        res.status(StatusCodes.OK).json({
+            user
+        }); 
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 module.exports = {
     getAllAccount,
+    editAnAccountById,
     register,
     login,
     logout
