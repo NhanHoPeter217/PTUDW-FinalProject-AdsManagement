@@ -60,7 +60,6 @@ $(document).ready(function () {
     // const createAccountForm = $('.account_editForm');
 
     $('.account_editForm').on('submit', async function (e) {
-        console.log(1);
         e.preventDefault();
         const id = e.currentTarget.getAttribute('data-id');
         let role = document.getElementById(`account_edit_role-${id}`).value;
