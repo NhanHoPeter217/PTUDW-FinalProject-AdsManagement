@@ -1,3 +1,5 @@
+import initMapViewOnly from '/public/js/miniMap_viewonly.js';
+
 var urlParams = new URLSearchParams(window.location.search);
 var districtAssigned = urlParams.get('dist');
 var wardAssigned = [...new Set(urlParams.getAll('ward'))] || [];
@@ -8,6 +10,10 @@ console.log('District: ' + districtAssigned + ' Ward: ' + wardAssigned);
 $(document).ready(function () {
     initFilter();
     initSendReport();
+
+    // Init map view only
+    const detailModal = document.getElementsByClassName('detailReport');
+    initMapViewOnly(detailModal);
 });
 
 // Helper functions

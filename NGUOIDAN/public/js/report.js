@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (errorSpan) {
             errorSpan.textContent = errorMessage;
             errorSpan.style.display = 'block';
+            errorSpan.classList.add('show');
         }
     }
 
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (errorSpan) {
             errorSpan.textContent = '';
             errorSpan.style.display = 'none';
+            errorSpan.classList.remove('show');
         }
     }
 });
