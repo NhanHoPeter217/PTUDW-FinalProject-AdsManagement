@@ -1,6 +1,6 @@
 async function getAllAdsPoints() {
     try {
-        let result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
+        let result = await axios.get(`https://officer.haina.id.vn/adsPoint/allPoints/api/v1`);
         let AdsPoints = result.data.adsPoints;
 
         let AdsBoards = [];

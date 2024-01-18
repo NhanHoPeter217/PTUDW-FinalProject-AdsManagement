@@ -221,6 +221,7 @@
                                 -- Chọn hình thức báo cáo --
                             </option>
                         </select>
+                        <div class="mt-1 alert alert-danger alert-dismissible fade" style="display: none" id="reportFormat-error"></div>
                     </div>
                     <div class='mb-3'>
                         <label for='fullName' class='form-label' style='font-family: Inter;'>Họ và
@@ -231,6 +232,7 @@
                             id='fullName'
                             required
                         />
+                        <div class="mt-1 alert alert-danger alert-dismissible fade" style="display: none" id="fullName-error"></div>
                     </div>
                     <div class='mb-3'>
                         <label
@@ -239,6 +241,7 @@
                             style='font-family: Inter;'
                         >Email</label>
                         <input type='email' class='form-control reportEmail' id='email' required />
+                        <div class="mt-1 alert alert-danger alert-dismissible fade" style="display: none" id="email-error"></div>
                     </div>
                     <div class='mb-3'>
                         <label for='phone' class='form-label' style='font-family: Inter;'>Số điện
