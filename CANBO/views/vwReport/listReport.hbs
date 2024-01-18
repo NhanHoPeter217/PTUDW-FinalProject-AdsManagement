@@ -16,9 +16,9 @@
         <div class="col-md-1"></div>
         <div class=" {{#ifCond authUser.role '===' 'Phường'}}col-md-10{{else}}col-md-8{{/ifCond}}">
             <div class="card w-100">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">
-                        Danh sách các báo cáo
+                <div class="card-body ps-4 pt-2">
+                    <h5 class="card-title fw-semibold fs-5">
+                        DANH SÁCH CÁC BÁO CÁO
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
@@ -32,16 +32,16 @@
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Thời điểm gửi</th>
-                                    <th scope="col">Người gửi</th>
-                                    <th scope="col">Thông tin báo cáo</th>
-                                    <th scope="col">Tình trạng</th>
-                                    <th scope="col">Cập nhật</th>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thời điểm gửi</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Người gửi</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thông tin báo cáo</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Tình trạng</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Cập nhật</div></th>
                                 </tr>
                             </thead>
                         </table>
-                        <div class="table-body-container" style="height: 67vh; overflow-y: auto;">
+                        <div class="table-body-container" style="height: 63vh; overflow-y: auto;">
                             <table class="table table-bordered table-hover text-center">
                                 <colgroup>
                                 <col style="width: 5%">
@@ -127,8 +127,9 @@
                                                 class="btn btn-primary m-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#tackleMethod-{{_id}}">
-                                                <div class="d-flex">
-                                                <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
+                                                {{!-- <div class="d-flex justify-content-center align-items-center m-0"> --}}
+                                                <img src="public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" />
+                                                {{!-- </div> --}}
                                             </button>
                                             {{else}}
                                             <button
@@ -137,7 +138,7 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#updateTackleMethod-{{_id}}">
                                                 <div class="d-flex">
-                                                <img src="../../../public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="me-2" />
+                                                <img src="public/assets/icons/Verify_icon.svg" alt="" width="24" height="24" class="ms-2 me-2" />
                                                 <div style="color: white">Xử lý</div>
                                                 </div>
                                             </button>
@@ -171,13 +172,13 @@
                                                         <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Họ tên</h5>
+                                                                    <h5 class='card-title fw-semibold'>Họ tên</h5>
                                                                     <p class='mb-0 fw-semibold'>{{senderName}}</p>
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4'>Email</h5>
+                                                                    <h5 class='card-title fw-semibold'>Email</h5>
                                                                     <p class='mb-0'>{{email}}</p>
                                                                 </div>
                                                             </div>
@@ -241,22 +242,26 @@
                                                                 </div>
                                                                 {{/ifCond}}
                                                             </div>
-                                                            <div class='card border'>
+                                                            {{!-- {{#ifCond relatedToType '===' 'Location'}} --}}
                                                                 {{#ifCond relatedToType '===' 'AdsBoard'}}
+                                                            <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
                                                                     <p class='mb-0'>{{relatedTo.adsPoint.location.address}}</p>
                                                                     <div class="map-view-only mt-2"></div>
                                                                 </div>
+                                                            </div>
                                                                 {{/ifCond}}
                                                                 {{#ifCond relatedToType '===' 'AdsPoint'}}
+                                                            <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Địa chỉ</h5>
                                                                     <p class='mb-0'>{{relatedTo.location.address}}</p>
                                                                     <div class="map-view-only mt-2"></div>
                                                                 </div>
-                                                                {{/ifCond}}
                                                             </div>
+                                                                {{/ifCond}}
+                                                            {{!-- {{/ifCond}} --}}
                                                             <div class="row gx-2">
                                                                 <div class='col-md-6'>
                                                                     <div class='card border'>
@@ -339,9 +344,9 @@
                                     >
                                         <div class='modal-dialog'>
                                             <div class='modal-content'>
-                                                <div class='card border'>
+                                                <div class='card-last border'>
                                                     <div class='card-body'>
-                                                        <h5 class='card-title fw-semibold mb-4 text-primary'>Cách thức xử lý</h5>
+                                                        <h5 class='card-title fw-semibold mb-4'>Cách thức xử lý</h5>
                                                         <p class='mb-0'>{{{processingMethod}}}</p>
                                                     </div>
                                                 </div>
@@ -420,7 +425,7 @@
         {{#ifCond authUser.role '!==' 'Phường'}}
         <div class="col-lg-2 col-md-3">
             <div class="pe-4">
-                <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
+                <h3 class="card-title fw-bold text-center fs-4">LỌC DANH SÁCH</h3>
                 <div class="filter-container mb-3">
                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                     <select id="license_filter_district" class="list-select list-select-sm custom-select fw-bold">

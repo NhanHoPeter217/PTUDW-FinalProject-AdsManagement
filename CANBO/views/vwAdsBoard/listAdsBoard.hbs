@@ -64,9 +64,9 @@
             </a>
             {{/ifCond}}
             <div class="card w-100 mb-4">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title fw-semibold mb-4" id="tableName">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title fw-semibold" id="tableName">
                             <img src="public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
                             Danh sách bảng đặt quảng cáo
                         </h5>
@@ -91,17 +91,17 @@
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Loại bảng quảng cáo</th>
-                                    <th scope="col">Hạn hợp đồng</th>
-                                    <th scope="col">Các yêu cầu cấp phép</th>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Loại bảng quảng cáo</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Hạn hợp đồng</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Cấp phép yêu cầu</div></th>
                                     {{#ifCond authUser.role '!==' 'Sở VH-TT'}}
-                                        <th scope="col">Yêu cầu cấp phép</th>
+                                        <th scope="col"><div class="card-title fw-bold" >Yêu cầu cấp phép</div></th>
                                     {{/ifCond}}
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                        <th scope="col">Thao tác</th>
+                                        <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                     {{else}}
-                                        <th scope="col">Yêu cầu chỉnh sửa</th>
+                                        <th scope="col"><div class="card-title fw-bold" >Yêu cầu chỉnh sửa</div></th>
                                     {{/ifCond}}
                                 </tr>
                             </thead>
@@ -788,8 +788,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                    
 
                                     {{!-- License Detail Modal --}}
                                     {{!-- <div
