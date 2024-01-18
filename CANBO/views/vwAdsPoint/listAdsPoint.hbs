@@ -49,7 +49,7 @@
 
     function toPage(page) {
         urlParams.set('page', page);
-        window.location.href = '/adsPoint/allPoints?' + urlParams.toString();
+        window.location.href = '/adsPoint/assignedArea?' + urlParams.toString();
     }
 
     function nextPage() {
@@ -770,7 +770,11 @@
                     <select id="filter_district" class="list-select list-select-sm custom-select fw-bold">
                         <option selected disabled>-- Chọn Quận --</option>
                         {{#each districtList}}
+                            {{#ifCond districtName '===' ../districtAssigned}}
+                            <option value="{{districtName}}" selected>Quận {{districtName}}</option>
+                            {{else}}
                             <option value="{{districtName}}">Quận {{districtName}}</option>
+                            {{/ifCond}}
                         {{/each}}
                     </select>
                     {{/ifCond}}

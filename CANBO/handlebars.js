@@ -88,8 +88,14 @@ const engineWithHelpers = engine({
         },
 
         includes(array, value) {
-            if (!array) return false;
-            return array.includes(value);
+            // check type of array
+            console.log(typeof array, array, value, array.includes(value));
+            console.log("Inside includes")
+            if (typeof array === 'object' || typeof array === 'Array')
+                return array.includes(value);
+            if (typeof array === 'string')
+                return array === value;
+            else return false;
         },
 
         getElement(array, index) {

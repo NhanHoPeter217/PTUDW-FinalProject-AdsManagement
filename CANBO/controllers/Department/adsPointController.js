@@ -31,22 +31,22 @@ const getAllAdsPoints = async (req, res) => {
     if (role === 'Sở VH-TT') {
         // district = *, ward = *
         wardAssigned = req.query.ward;
-        districtAssigned = req.query.dist;
+        districtAssigned = req.query.dist || '*';
         districtAssigned &&
-            (wardList = districtList.find(
-                (district) => district.districtName == districtAssigned
-            ).wards);
+        (wardList = districtList.find(
+            (district) => district.districtName == districtAssigned
+        )?.wards);
     } else if (role === 'Quận') {
         // district assigned, ward = *
         districtAssigned = assignedArea.district;
-        wardAssigned = req.query.ward;
+        wardAssigned = req.query.ward || '*';
         wardList = districtList.find((district) => district.districtName == districtAssigned).wards;
     } else if (role === 'Phường') {
         // district assigned, ward assigned
         districtAssigned = assignedArea.district;
         wardAssigned = assignedArea.ward;
     } else throw new CustomError.BadRequestError('Invalid role');
-
+    console.log(role, districtAssigned, wardAssigned)
     const mongooseQuery = {};
 
     if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;

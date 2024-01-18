@@ -143,18 +143,16 @@ const getAllReportsByAssignedArea = async (req, res) => {
         if (role === 'Sở VH-TT') {
             // district = *, ward = *
             wardAssigned = req.query.ward;
-            districtAssigned = req.query.dist;
+            districtAssigned = req.query.dist || '*';
             districtAssigned &&
                 (wardList = districtList.find(
                     (district) => district.districtName == districtAssigned
-                ).wards);
+                )?.wards);
         } else if (role === 'Quận') {
             // district assigned, ward = *
             districtAssigned = assignedArea.district;
-            wardAssigned = req.query.ward;
-            wardList = districtList.find(
-                (district) => district.districtName == districtAssigned
-            ).wards;
+            wardAssigned = req.query.ward || '*';
+            wardList = districtList.find((district) => district.districtName == districtAssigned).wards;
         } else if (role === 'Phường') {
             // district assigned, ward assigned
             districtAssigned = assignedArea.district;

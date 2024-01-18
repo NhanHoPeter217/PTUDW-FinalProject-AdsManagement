@@ -20,10 +20,10 @@ const maxImages = 5;
 const upload = configureUpload(folderName, maxImages);
 
 router.route('/').post(authenticateUser, authorizePermissions('Sở VH-TT'), upload, createAdsPoint);
-router.route('/allPoints').get(authenticateUser, authorizePermissions('Sở VH-TT'), getAllAdsPoints);
+
 router.route('/allPoints/api/v1').get(getAllAdsPointsAPI);
 
-router.route('/assignedArea').get(authenticateUser, getAllAdsPointsByAssignedArea);
+router.route('/assignedArea').get(authenticateUser, getAllAdsPoints);
 
 // router
 //     .route('/dist/:distId/ward/:wardId')

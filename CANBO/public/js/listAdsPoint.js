@@ -2,17 +2,17 @@ import initMapViewOnly from '/public/js/miniMap_viewonly.js';
 import initMapWithSearchBox from '/public/js/miniMap_searchBox.js';
 
 var districtAssigned = urlParams.get('dist');
-var wardAssigned = urlParams.getAll('ward') || [];
+var wardAssigned = [...new Set(urlParams.getAll('ward'))] || [];
 
 console.log('District: ' + districtAssigned + ' Ward: ' + wardAssigned);
 
 function initFilter() {
     // District filter
     var districtFilter = $('#filter_district');
-    districtFilter.val(districtAssigned);
+    // districtFilter.val(districtAssigned);
     districtFilter.on('change', function () {
         var selectedDistrict = districtFilter.val();
-        window.location.href = '/adsPoint/allPoints?dist=' + selectedDistrict;
+        window.location.href = '/adsPoint/assignedArea?dist=' + selectedDistrict;
     });
 
     // Ward filter
@@ -24,7 +24,7 @@ function initFilter() {
             wardAssigned.splice(wardAssigned.indexOf(this.getAttribute('data-ward')), 1);
         }
         window.location.href =
-            '/adsPoint/allPoints?dist=' + districtAssigned + '&ward=' + wardAssigned.join('&ward=');
+            '/adsPoint/assignedArea?dist=' + districtAssigned + '&ward=' + wardAssigned.join('&ward=');
     });
 }
 
