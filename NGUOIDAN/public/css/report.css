@@ -53,11 +53,13 @@ body {
 .form-label,
 .form-control,
 .form-select {
-    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Poppins', sans-serif;
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: left; */
+    min-width: 360px;
+    /* padding: 0 20px; */
 }
 .form-label {
     font-weight: 600;

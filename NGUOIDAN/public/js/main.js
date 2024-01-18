@@ -60,3 +60,26 @@ async function main() {
     }
 }
 main();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const leftBar = document.getElementById('left-bar');
+    const map = document.getElementById('map');
+    const toggleButton = document.getElementById('toggleLeftBar');
+    const openButton = document.getElementById('openLeftBar');
+
+    toggleButton.addEventListener('click', function() {
+        if (leftBar.style.left === '-250px') {
+            leftBar.style.left = '0';
+            map.style.marginLeft = '250px';
+        } else {
+            leftBar.style.left = '-250px';
+            map.style.marginLeft = '0';
+        }
+    });
+
+    openButton.addEventListener('click', function() {
+        leftBar.style.left = '0';
+        map.style.marginLeft = '250px';
+    });
+});
+

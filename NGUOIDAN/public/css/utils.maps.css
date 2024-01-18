@@ -5,9 +5,9 @@ enable-shadows body {
 }
 
 #root {
-    margin: 0;
+    /* margin: 0; */
     display: grid;
-    grid-template-columns: 400px auto;
+    /* grid-template-columns: 400px 400px auto; */
     width: 100vw;
 }
 
@@ -49,7 +49,6 @@ enable-shadows body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     overflow: auto;
 }
 
