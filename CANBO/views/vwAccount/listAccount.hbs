@@ -3,6 +3,14 @@
 <link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<style>
+    #buttonStyle {
+        transition: filter 0.1s ease-in-out;
+    }
+    #buttonStyle:hover {
+        filter: brightness(0) invert(1);
+    }
+</style>
 {{/section}}
 
 {{#section 'js'}}
@@ -34,7 +42,7 @@
                                     <th scope="col"><div class="card-title fw-bold" >Tài khoản</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Phân hệ cán bộ</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Vùng quản lý</div></th>
-                                    <th scope="col"><div class="card-title fw-bold" >Chỉnh sửa</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                 </tr>
                             </thead>
                         </table>
@@ -80,15 +88,18 @@
                                                 Tất cả Quận
                                             </td>
                                         {{/ifCond}}
-                                        {{!-- <td class="border-bottom-0 text-center align-middle">
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#moreUserInfo-{{_id}}">
-                                                {{username}}
+                                                data-bs-target="#editUserAccount-{{_id}}">
+                                                <div class="d-flex" id="buttonStyle" >
+                                                <img src="public/assets/icons/Edit_icon.svg"alt="" width="24" height="24" class="ms-2 me-2" />
+                                                <div style="color: #FFCC00">Cập nhật</div>
+                                                </div>
                                             </button>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                     <div
                                         class='modal fade'
