@@ -1,6 +1,6 @@
 var urlParams = new URLSearchParams(window.location.search);
 var districtAssigned = urlParams.get('dist');
-var wardAssigned = urlParams.getAll('ward') || [];
+var wardAssigned = [...new Set(urlParams.getAll('ward'))] || [];
 
 console.log('District: ' + districtAssigned + ' Ward: ' + wardAssigned);
 

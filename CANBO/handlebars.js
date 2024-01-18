@@ -75,6 +75,9 @@ const engineWithHelpers = engine({
             return val + 1;
         },
 
+        delete_order(val) {
+            return val - 1;
+        },
         format_date(dateString) {
             const date = new Date(dateString);
             const day = date.getDate().toString().padStart(2, '0');
@@ -85,8 +88,12 @@ const engineWithHelpers = engine({
         },
 
         includes(array, value) {
-            if (!array) return false;
-            return array.includes(value);
+            // check type of array
+            if (typeof array === 'object' || typeof array === 'Array')
+                return array.includes(value);
+            if (typeof array === 'string')
+                return array === value;
+            else return false;
         },
 
         getElement(array, index) {

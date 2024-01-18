@@ -1,6 +1,7 @@
-import { MyMap, MarkerManager, MySearchBox } from './MyMap.js';
+import { MyMap, MarkerManager, MySearchBox, ReportMarkerManager } from './MyMap.js';
 
 let markerManager = null;
+let reportMarkerManager = null;
 
 async function main() {
     if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -27,12 +28,35 @@ async function main() {
         // Init Marker Manager
         markerManager = new MarkerManager(map, adPointElements);
 
+        // Init Report Marker Manager
+        const reportElements = $('.report-element');
+        if (reportElements)
+            reportMarkerManager = new ReportMarkerManager(map, reportElements);
+
+        // Init Offcanvas
+        const offcanvas_btn = document.getElementById('report-canvas-button');
+        const offcanvas = document.getElementById('report-canvas');
+        offcanvas_btn.addEventListener('click', function () {
+            reportElements.show();
+        });
+        offcanvas.addEventListener('hidden.bs.offcanvas', function () {
+            reportElements.attr('style', 'display: none !important')
+        });
+        
+
         // Init Filter Switch
         $('#filterButton').change(function () {
             if ($(this).is(':checked')) {
                 markerManager = new MarkerManager(map, adPointElements);
             } else {
                 markerManager.destroy();
+            }
+        });
+        $('#reportFilterButton').change(function () {
+            if ($(this).is(':checked')) {
+                reportMarkerManager = new ReportMarkerManager(map, reportElements);
+            } else {
+                reportMarkerManager.destroy();
             }
         });
 

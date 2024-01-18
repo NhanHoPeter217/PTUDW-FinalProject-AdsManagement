@@ -54,7 +54,7 @@ $(document).ready(function () {
 
                         $('.wardType').empty();
                         $('.wardType').append(
-                            `<option class='mb-0 softer-text fw-nomral' selected disabled>-- Chọn Phường --</option>`
+                            `<option class='mb-0 softer-text fw-nomral' disabled>-- Chọn Phường --</option>`
                         );
 
                         wards.forEach(function (ward) {
