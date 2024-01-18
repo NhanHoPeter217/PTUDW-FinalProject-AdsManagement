@@ -99,7 +99,7 @@ app.use('/api/v1/adsFormat', adsFormatRouter);
 app.use('/api/v1/reportFormat', reportFormatRouter);
 app.use('/adsInfoEditingRequest', adsInfoEditingRequestRouter);
 app.use('/adsLicenseRequest', adsLicenseRequestRouter);
-app.use('/api/v1/location', locationRouter); // Không xóa để NGUOIDAN xài
+app.use('/api/v1/location', locationRouter); 
 
 // FRONT END
 // Setup handlebars view engine

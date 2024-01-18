@@ -91,7 +91,20 @@ const logout = async (req, res) => {
     res.redirect('/auth/login');
 };
 
+const getAllAccount = async (req, res) => {
+    try {
+        const users = await User.find({ role: { $ne: 'Sở VH-TT' } }).select('-password');
+        res.status(StatusCodes.OK).json({
+            users
+        });
+
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
+    }
+};
+
 module.exports = {
+    getAllAccount,
     register,
     login,
     logout
