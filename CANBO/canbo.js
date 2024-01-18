@@ -19,7 +19,9 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 
 var whitelist = [
-    `http://localhost:${process.env.PORT_NGUOIDAN || 3000}` /** other domains if any */
+    `http://localhost:${process.env.PORT_NGUOIDAN || 3000}` /** other domains if any */,
+    'https://app-elqojddmka-de.a.run.app',
+    'https://asia-east1-adsmanagement-webapp.cloudfunctions.net'
 ];
 var corsOptions = {
     credentials: true,

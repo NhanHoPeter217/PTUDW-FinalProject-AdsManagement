@@ -78,9 +78,18 @@ const port = process.env.PORT_NGUOIDAN || 3000;
 
 const start = async () => {
     try {
-        app.listen(port, () =>
-            console.log('Ads Management NGUOI DAN is running at http://localhost:' + port)
-        );
+        if (process.env.NODE_ENV === 'development') {
+            const port = process.env.PORT || 3000;
+            app.listen(port, () => {
+                console.log('Ads Management NGUOI DAN is running at http://localhost:' + port)
+            });
+        }
+        else{
+            const { setGlobalOptions } = require("firebase-functions/v2/options");
+            setGlobalOptions({maxInstances: 10});
+            const { onRequest } = require("firebase-functions/v2/https");
+            exports.app = onRequest({region: "asia-east1"}, app);
+        }
     } catch (error) {
         console.log(error);
     }
