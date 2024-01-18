@@ -1,5 +1,5 @@
 async function getAllReportFormats() {
-    const res = await axios.get(`http://localhost:4000/api/v1/reportFormat`);
+    const res = await axios.get(`https://officer.haina.id.vn/api/v1/reportFormat`);
 
     const reportFormats = res.data.reportFormats;
     reportFormats.forEach((reportFormat) => {
@@ -131,7 +131,7 @@ function onSubmit(token) {
     }
 
     // Gửi dữ liệu đến máy chủ
-    axios('http://localhost:4000/report/resident/api/v1', {
+    axios('https://officer.haina.id.vn/report/resident/api/v1', {
         method: 'POST',
         withCredentials: true,
         data: formData
