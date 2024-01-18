@@ -134,8 +134,12 @@ $(document).ready(function () {
         const email = document.getElementById(`license_companyEmail-${id}`).value;
         const phone = document.getElementById(`license_companyPhone-${id}`).value;
         const address = document.getElementById(`license_companyAddress-${id}`).value;
-        const lat = document.getElementById(`license_companyAddress-${id}`).getAttribute('data-lat');
-        const lng = document.getElementById(`license_companyAddress-${id}`).getAttribute('data-lng');
+        const lat = document
+            .getElementById(`license_companyAddress-${id}`)
+            .getAttribute('data-lat');
+        const lng = document
+            .getElementById(`license_companyAddress-${id}`)
+            .getAttribute('data-lng');
         if (!isNumber(width)) {
             alert('Vui lòng nhập số cho Chiều rộng!');
             return;

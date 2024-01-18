@@ -353,13 +353,13 @@ $('.requestLocationType').on('change', function () {
 $(document).ready(function () {
     $(document).on('submit', '#requestEditAdsPointForm', function (e) {
         e.preventDefault();
-        
+
         const adsObject = e.currentTarget.getAttribute('data-id');
         const editRequestTime = document.getElementById(
             `request_edit_editRequestTime-${adsObject}`
         ).value;
 
-        if(!validateDate(editRequestTime)) {
+        if (!validateDate(editRequestTime)) {
             return;
         }
 
