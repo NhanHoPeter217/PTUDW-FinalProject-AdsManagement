@@ -89,7 +89,7 @@ const getAllAdsPoints = async (req, res) => {
 
         const adsFormats = await AdsFormat.find({}).lean();
         res.render('vwAdsPoint/listAdsPoint', {
-            layout: 'canbo_So',
+            layout: role === 'Sở VH-TT' ? 'canbo_So' : 'canbo',
             adsPoints: adsPoints,
             empty: adsPoints.length === 0,
             adsFormats: adsFormats,
