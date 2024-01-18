@@ -8,7 +8,6 @@ const createAdsBoard = async (req, res) => {
     try {
         req.body = JSON.parse(req.body.data);
         if (req.files) req.body.adsBoardImages = req.files.map((file) => file.path);
-        console.log(req.body);
         const adsBoard = await AdsBoard.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsBoard });
     } catch (error) {

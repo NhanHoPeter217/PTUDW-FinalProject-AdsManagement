@@ -46,7 +46,6 @@ const getAllAdsPoints = async (req, res) => {
         districtAssigned = assignedArea.district;
         wardAssigned = assignedArea.ward;
     } else throw new CustomError.BadRequestError('Invalid role');
-    console.log(role, districtAssigned, wardAssigned)
     const mongooseQuery = {};
 
     if (districtAssigned && districtAssigned !== '*') mongooseQuery.district = districtAssigned;
@@ -61,7 +60,6 @@ const getAllAdsPoints = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const total = await Location.find({ ...mongooseQuery, reportRelated: false }).countDocuments();
-    console.log(total);
     const nPages = Math.ceil(total / limit);
     const pageNumbers = [];
     for (let i = 1; i <= nPages; i++) {
@@ -73,7 +71,6 @@ const getAllAdsPoints = async (req, res) => {
 
     const hasPrevious = page > 1;
     const hasNext = page < nPages;
-    console.log(hasPrevious, hasNext);
     try {
         const locations = await Location.find({ ...mongooseQuery, reportRelated: false })
             .limit(Number(limit))

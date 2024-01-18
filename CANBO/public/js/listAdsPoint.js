@@ -171,20 +171,6 @@ $(document).ready(function () {
     }
 });
 
-$('#detailAdsPointModal').on('show.bs.modal', function (event) {
-    const button = $(event.relatedTarget);
-    const index = button.data('bs-index');
-
-    // Fetch the adsPoint data based on the index or any other logic you use
-    const adsPoint = this.adsPoints[index];
-
-    // Update modal content dynamically based on the adsPoint data
-    const modal = $(this);
-    modal.find('.modal-content #locationName').text(adsPoint.location.locationName);
-    modal.find('.modal-content #district').text(adsPoint.location.district);
-    modal.find('.modal-content #ward').text(adsPoint.location.ward);
-});
-
 $('.requestLocationType').on('change', function () {
     const selectedLocationType = $(this).val();
     $(`.requestLocationType option:selected`).removeAttr('selected');
