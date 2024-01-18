@@ -6,6 +6,7 @@ const { attachCookiesToResponse, createTokenUser } = require('../utils');
 const crypto = require('crypto');
 const { BadRequestError } = require('../errors');
 const { readdir } = require('fs');
+const District = require('../models/Department/District');
 
 const register = async (req, res) => {
     try {
@@ -18,6 +19,28 @@ const register = async (req, res) => {
         });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Registration failed' });
+    }
+};
+
+const editAnAccountById = async (req, res) => {
+    console.log(req.body);
+    try {
+        const newUser = {
+            role: req.body.role,
+            assignedArea: {
+                ward: req.body.ward,
+                district: req.body.district
+            }
+        };
+        const user = await User.findByIdAndUpdate(req.params.id, newUser, {
+            new: true,
+            runValidators: true
+        });
+        res.status(StatusCodes.OK).json({
+            user
+        }); 
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
 };
 
@@ -91,19 +114,15 @@ const logout = async (req, res) => {
     res.redirect('/auth/login');
 };
 
-module.exports = {
-    register,
-    login,
-    logout
-};
+
 
 const getAllAccount = async (req, res) => {
+    var districtList;
+    districtList = await District.find({}).sort({ districtName: 1 }).lean();
         try {
             const users = await User.find({ role: { $ne: 'Sở VH-TT' } }).select('-password').lean();
 
-            console.log(users);
-
-            res.render('vwAccount/listAccount', { users: users });
+            res.render('vwAccount/listAccount', { users: users, districtList: districtList });
 
         } catch (error) {
             res.status(StatusCodes.BAD_REQUEST).send(error.message);
@@ -112,7 +131,8 @@ const getAllAccount = async (req, res) => {
 
     module.exports = {
         getAllAccount,
+        editAnAccountById,
         register,
         login,
         logout
-};
+    };

@@ -3,11 +3,19 @@
 <link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
 <link rel="stylesheet" href="public/css/adpointInfo.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<style>
+    #buttonStyle {
+        transition: filter 0.1s ease-in-out;
+    }
+    #buttonStyle:hover {
+        filter: brightness(0) invert(1);
+    }
+</style>
 {{/section}}
 
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="../../public/js/listLicenseAdsBoard.js" type="module"></script>
+<script src="public/js/listAccount.js" type="module"></script>
 {{/section}}
 
 <div class="container-fluid mt-3">
@@ -34,7 +42,7 @@
                                     <th scope="col"><div class="card-title fw-bold" >Tài khoản</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Phân hệ cán bộ</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Vùng quản lý</div></th>
-                                    <th scope="col"><div class="card-title fw-bold" >Chỉnh sửa</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                 </tr>
                             </thead>
                         </table>
@@ -80,15 +88,18 @@
                                                 Tất cả Quận
                                             </td>
                                         {{/ifCond}}
-                                        {{!-- <td class="border-bottom-0 text-center align-middle">
+                                        <td class="border-bottom-0 text-center align-middle">
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-warning m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#moreUserInfo-{{_id}}">
-                                                {{username}}
+                                                data-bs-target="#editUserAccount-{{_id}}">
+                                                <div class="d-flex" id="buttonStyle" >
+                                                <img src="public/assets/icons/Edit_icon.svg"alt="" width="24" height="24" class="ms-2 me-2" />
+                                                <div style="color: #FFCC00">Cập nhật</div>
+                                                </div>
                                             </button>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                     <div
                                         class='modal fade'
@@ -181,6 +192,99 @@
                                             </div>
                                         </div>
                                     </div>
+                                        <div
+                                            class='modal fade editAdsPointModal'
+                                            id='editUserAccount-{{_id}}'
+                                            tabindex='-1'
+                                            aria-labelledby='reportModalLabel'
+                                            aria-hidden='true'
+                                        >
+                                            <div class='modal-dialog'>
+                                                <div class='modal-content'>
+                                                    <div class='modal-header'>
+                                                        <img
+                                                            src='../public/assets/icons/Edit_icon_orange.svg'
+                                                            style='height: 40px; width: 40px;'
+                                                        />
+                                                        <h5 class='modal-requestEdit-title' id='reportModalLabel'>
+                                                            Chỉnh sửa vai trò
+                                                        </h5>
+                                                        <button
+                                                            type='button'
+                                                            class='btn-close'
+                                                            data-bs-dismiss='modal'
+                                                            aria-label='Close'
+                                                        ></button>
+                                                    </div>
+                                                    <div class='modal-body'>
+                                                        <form id='account_editForm-{{_id}}' enctype='multipart/form-data' class="account_editForm" data-id="{{_id}}">
+                                                            <div class='mb-3' id='district'>
+                                                                <label for='district' class='form-label' style='font-family: Inter'>
+                                                                    <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                        <div class="nowrap">Vai trò</div>
+                                                                        <p class='mb-0 softer-text fw-nomral'></p>
+                                                                    </div>
+                                                                </label>
+                                                                <select class='form-select account_edit_role' id='account_edit_role-{{_id}}' required>
+                                                                    <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                            -- Chọn vai trò --
+                                                                    </option>
+                                                                    <option value="Phường" {{#ifCond role "===" "Phường"}}selected{{/ifCond}}>Phường</option>
+                                                                    <option value="Quận" {{#ifCond role "===" "Quận"}}selected{{/ifCond}}>Quận</option>
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                            <div class="d-flex flex-row column-gap-3">
+                                                                <div class='mb-3' id='district'>
+                                                                    <label for='district' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Quận</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select account_edit_district' id='account_edit_district-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                                -- Chọn Quận --
+                                                                        </option>
+                                                                        {{#each ../districtList}}
+                                                                             <option value="{{districtName}}" {{#ifCond districtName "===" assignedArea.district}}selected{{/ifCond}}>{{districtName}}</option>
+                                                                        {{/each}}
+                                                                    </select>
+                                                                </div>
+                                                                <div class='mb-3' id='ward'>
+                                                                    <label for='ward' class='form-label' style='font-family: Inter'>
+                                                                        <div class='d-flex flex-row grid gap-1 column-gap-1'>
+                                                                            <div class="nowrap">Phường</div>
+                                                                            <p class='mb-0 softer-text fw-nomral'></p>
+                                                                        </div>
+                                                                    </label>
+                                                                    <select class='form-select account_edit_ward' id='account_edit_ward-{{_id}}' required>
+                                                                        <option class='mb-0 softer-text fw-nomral' disabled>
+                                                                                -- Chọn Phường --
+                                                                        </option>
+                                                                        <option value={{assignedArea.ward}} selected>{{assignedArea.ward}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class='button-container justify-content-center'>
+                                                                <div class="d-flex justify-content-center">
+                                                                    <div class='d-grid col-md-3 mx-2'>
+                                                                        <button
+                                                                            id='updateAccount'
+                                                                            type='submit'
+                                                                            class='btn btn-success btn-block'
+                                                                            style='font-family: Inter'
+                                                                        >
+                                                                            CẬP NHẬT
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     {{/each}}
                                 </tbody>
                             </table>
