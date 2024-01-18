@@ -9,7 +9,6 @@ const app = express();
 
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/connect');
-const axios = require('axios');
 
 // security and connection
 const morgan = require('morgan');
@@ -56,7 +55,7 @@ const adsInfoEditingRequestRouter = require('./routes/WardAndDistrict/adsInfoEdi
 const adsLicenseRequestRouter = require('./routes/WardAndDistrict/adsLicenseRequestRoutes');
 const reportProcessingRouter = require('./routes/WardAndDistrict/reportProcessingRoutes');
 const locationRouter = require('./routes/locationRoutes');
-
+const homeController = require('./controllers/homeController');
 // const adsBoardRoute = require('./routes/ads-board.route');
 const typeRouter = require('./routes/typeRoutes.js');
 
@@ -121,26 +120,7 @@ app.get('/resetPassword', function (req, res) {
 });
 
 app.use(authenticateUser);
-app.get('/', async (req, res) => {
-    async function getAllAdsPoints() {
-        try {
-            var result = await axios.get(`http://localhost:4000/adsPoint/allPoints/api/v1`);
-            let AdsPoints = result.data.adsPoints;
-
-            let AdsBoards = [];
-
-            AdsPoints.forEach((adsPoint) => {
-                AdsBoards.push(...adsPoint.adsBoard);
-            });
-
-            return { AdsPoints, AdsBoards };
-        } catch (err) {
-            console.log(err);
-        }
-    }
-    const { AdsPoints, AdsBoards } = await getAllAdsPoints();
-    res.render('home', { AdsPoints, AdsBoards });
-});
+app.get('/', homeController);
 
 app.get('/updateInfo', function (req, res) {
     res.render('commonFeatures/updateInfo', { layout: false });

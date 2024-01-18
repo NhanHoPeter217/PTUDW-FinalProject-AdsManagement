@@ -380,3 +380,46 @@ export class MySearchBox {
         });
     }
 }
+
+class ReportMarker extends MyMarker {
+    reportProcessing;
+    map;
+    constructor(myMap, coords, reportProcessing) {
+        const originalMarker = new AdvancedMarkerElement({
+            map: myMap.map,
+            position: new google.maps.LatLng(coords.lat, coords.lng),
+            content: $(
+                `<img src="public/assets/icons/triangle-danger-f.svg" alt="reportMarker">`
+            )[0],
+            zIndex: google.maps.Marker.MAX_ZINDEX + 2
+        });
+        super(originalMarker, myMap.map);
+    }
+}
+
+export class ReportMarkerManager {
+    reportMarkers = [];
+    constructor(myMap, reportProcessings) {
+        const bsOffcanvas = new bootstrap.Offcanvas('#report-canvas');
+
+        reportProcessings.each((index) => {
+            $(reportProcessings[index]).attr('style', 'display: none !important')
+            const lat = parseFloat(reportProcessings[index].getAttribute('data-lat'));
+            const lng = parseFloat(reportProcessings[index].getAttribute('data-lng'));
+
+            const reportMarker = new ReportMarker(myMap, {lat, lng}, this);
+            
+            reportMarker.marker.addListener('click', () => {
+                reportProcessings.attr('style', 'display: none !important')
+                $(reportProcessings[index]).show();
+                bsOffcanvas.show();
+            });
+            this.reportMarkers.push(reportMarker);
+        });
+    }
+    destroy() {
+        this.reportMarkers.forEach((reportMarker) => {
+            reportMarker.hide();
+        });
+    }
+}
