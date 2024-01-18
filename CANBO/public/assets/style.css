@@ -147,10 +147,6 @@ h6 {
   line-height: 0;
 }
 
-.dropdown-menu .dropdown-item:hover {
-  background-color: #f6f9ff;
-}
-
 @media (min-width: 768px) {
   .dropdown-menu-arrow::before {
     content: "";
