@@ -41,14 +41,13 @@
                                     <p class='mb-0 softer-text fw-nomral'></p>
                                 </div>
                             </label>
-                            <select class='form-select addDistrictType' id='add_district' required>
-                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                            <select class='form-select editDistrict' id='add_district' required>
+                                <option class='mb-0 softer-text fw-nomral' disabled>
                                         -- Chọn Quận --
                                 </option>
-                                {{!-- {{#each ../districts}}
-                                        <option value="{{districtName}}" {{#ifCond districtName "===" ../location.district}}selected{{/ifCond}}>{{districtName}}</option>
-                                {{/each}} --}}
-
+                                {{#each districtList}}
+                                        <option value="{{districtName}}">{{districtName}}</option>
+                                {{/each}}
                             </select>
                         </div>
                         <div class='mb-3' id='addWard'>
@@ -58,11 +57,10 @@
                                     <p class='mb-0 softer-text fw-nomral'></p>
                                 </div>
                             </label>
-                            <select class='form-select addWardType' id='add_ward' required>
-                                <option class='mb-0 softer-text fw-nomral' selected disabled>
+                            <select class='form-select editWard' id='add_ward' required>
+                                <option class='mb-0 softer-text fw-nomral' disabled>
                                         -- Chọn Phường --
                                 </option>
-                                <option value={{location.ward}} selected>{{location.ward}}</option>
                             </select>
                         </div>
                     </div>
@@ -107,6 +105,9 @@
                                 selected
                             > --- Chọn hình thức ---
                             </option>
+                            {{#each adsFormats}}
+                                <option value={{this._id}}>{{this.name}}</option>
+                            {{/each}}
                         </select>
                     </div>
                     <div class='mb-3'>
@@ -128,13 +129,6 @@
                         </div>
                     </div>
                     <div class='button-container justify-content-center'>
-                        <div
-                            id='recaptcha'
-                            class='g-recaptcha'
-                            data-sitekey='6Lc_OSwpAAAAAKbiLyvfB0hp7ORpvoRcMqTXv7qb'
-                            data-callback='onSubmit'
-                            data-size='invisible'
-                        ></div>
                         <div class='d-grid gap-2 col-3 mx-auto'>
                             <button
                                 id='addButton'

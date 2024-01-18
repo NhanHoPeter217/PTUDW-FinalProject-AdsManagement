@@ -8,7 +8,6 @@ const createAdsBoard = async (req, res) => {
     try {
         req.body = JSON.parse(req.body.data);
         if (req.files) req.body.adsBoardImages = req.files.map((file) => file.path);
-        console.log(req.body);
         const adsBoard = await AdsBoard.create(req.body);
         res.status(StatusCodes.CREATED).json({ adsBoard });
     } catch (error) {
@@ -67,7 +66,7 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
         const districts = await District.find({}).sort({ districtName: 1 }).lean();
         const licenseRequestedAdsBoardNotEmpty = [];
         const verified = [];
-        
+
         const adsBoardTypes = [
             'Trụ bảng hiflex',
             'Trụ màn hình điện tử LED',
@@ -91,7 +90,10 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             verified.push(false);
 
             for (let j = 0; j < adsBoards[i].licenseRequestedAdsBoard.length; j++) {
-                if (adsBoards[i].licenseRequestedAdsBoard[j].adsLicenseRequest[0].requestApprovalStatus === 'Đã được duyệt') {
+                if (
+                    adsBoards[i].licenseRequestedAdsBoard[j].adsLicenseRequest[0]
+                        .requestApprovalStatus === 'Đã được duyệt'
+                ) {
                     verified[i] = true;
                     break;
                 }
@@ -110,7 +112,6 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             authUser: req.user,
             licenseRequestedAdsBoardNotEmpty: licenseRequestedAdsBoardNotEmpty,
             verified: verified
-
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
