@@ -176,34 +176,31 @@ class InfoMarker extends MyMarker {
                 district: data.district
             };
             const content = `
-                <div class="d-flex align-items-center column-gap-2 info-board mb-2">
-                <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g>
-                    <path id="" d="M26.5455 14.2727C26.5455 23.8182 14.2727 32 14.2727 32C14.2727 32 2 23.8182 2 14.2727C2 11.0178 3.29302 7.89618 5.5946 5.5946C7.89618 3.29302 11.0178 2 14.2727 2C17.5277 2 20.6493 3.29302 22.9509 5.5946C25.2524 7.89618 26.5455 11.0178 26.5455 14.2727Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path id="" d="M14.2727 18.3636C16.532 18.3636 18.3636 16.5321 18.3636 14.2727C18.3636 12.0134 16.532 10.1818 14.2727 10.1818C12.0133 10.1818 10.1818 12.0134 10.1818 14.2727C10.1818 16.5321 12.0133 18.3636 14.2727 18.3636Z" stroke="var(--Green2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </g>
-                </svg>
-                <div class="d-flex flex-column">
-                    <h6 class="mb-1">${location.locationName}</h6>
-                    <p>Phường <b>${location.ward}</b>\t Quận <b>${location.district}</b></p>
-                </div>
-                </div>
-                <!-- Button to trigger the modal -->
-                <button
-                    type="button"
-                    class="btn btn-outline-danger d-flex justify-content-center align-items-center column-gap-2 reportExclamation"
-                    onclick="reportButtonHandler(event)"
-                    data-relatedToType="Location"
-                    data-relatedTo='${JSON.stringify(location)}'
-                    data-ward="${location.ward}"
-                    data-district="${location.district}"
-                    style="width: fit-content;"
-                >
-                    <img src='public/assets/icons/Report_icon.svg' fill="none"/>
-                    <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">
-                        Báo cáo
-                    </span>
-                </button>
+            <div class="info-board mb-2" style="display: flex; align-items: center; position: relative;">
+            <svg width="20" height="33" viewBox="0 0 29 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"><path fill="#f33" d="M6 .5A4.5 4.5 0 0 1 10.5 5c0 1.863-1.42 3.815-4.2 5.9a.5.5 0 0 1-.6 0C2.92 8.815 1.5 6.863 1.5 5A4.5 4.5 0 0 1 6 .5m0 3a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3"/></svg>
+                </g>
+            </svg>
+            <div style="flex-grow: 1; margin-left: 10px;">
+                <h6 class="mb-1">${location.locationName}</h6>
+                <p>Phường <b>${location.ward}</b> Quận <b>${location.district}</b></p>
+            </div>
+            <!-- Button to trigger the modal -->
+            <button
+                type="button"
+                class="btn btn-outline-danger reportExclamation"
+                onclick="reportButtonHandler(event)"
+                data-relatedToType="Location"
+                data-relatedTo='${JSON.stringify(location)}'
+                data-ward="${location.ward}"
+                data-district="${location.district}"
+                style="min-width: 111px; width: fit-content; margin-left: 20px;"
+            >
+                <img src='public/assets/icons/Report_icon.svg' fill="none"/>
+                <span style="font-size: 14px; font-family: Inter; font-weight: 600; text-align: center; padding-top: 2px;">BÁO CÁO</span>
+            </button>
+        </div>
             `;
             return content;
         }

@@ -1,10 +1,32 @@
 import initMapViewOnly from '/public/js/miniMap_viewonly.js';
 import initMapWithSearchBox from '/public/js/miniMap_searchBox.js';
 
+function validateDate(dateInput) {
+    var inputDate = dateInput;
+
+    var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (dateRegex.test(inputDate)) {
+        var parsedDate = new Date(inputDate.split('/').reverse().join('-'));
+
+        if (isNaN(parsedDate.getTime())) {
+            alert('Ngày không hợp lệ!');
+            return false;
+        }
+
+        return true;
+    } else {
+        alert('Thông tin ngày phải có dạng DD/MM/YYYY!');
+        return false;
+    }
+}
+
+function isNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
 var districtAssigned = urlParams.get('dist');
 var wardAssigned = [...new Set(urlParams.getAll('ward'))] || [];
-
-console.log('District: ' + districtAssigned + ' Ward: ' + wardAssigned);
 
 function initFilter() {
     // District filter
@@ -174,6 +196,14 @@ $(document).ready(function () {
         e.preventDefault();
 
         const adsObject = e.currentTarget.getAttribute('data-id');
+        const editRequestTime = document.getElementById(
+            `request_edit_editRequestTime-${adsObject}`
+        ).value;
+
+        if (!validateDate(editRequestTime)) {
+            return;
+        }
+
         const adsType = 'AdsPoint';
         const lat = document.getElementById(`lat-${adsObject}`).value;
         const lng = document.getElementById(`lng-${adsObject}`).value;
@@ -190,10 +220,16 @@ $(document).ready(function () {
         const planningStatus = document.getElementById(
             `request_edit_planningStatus-${adsObject}`
         ).value;
-        const editRequestTime = document.getElementById(
-            `request_edit_editRequestTime-${adsObject}`
-        ).value;
         const editReason = document.getElementById(`request_edit_editReason-${adsObject}`).value;
+
+        if (lat === null || lng === null) {
+            alert('Vui lòng chọn địa chỉ hợp lệ!');
+            return;
+        }
+        if (!validateDate(editRequestTime)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày yêu cầu chỉnh sửa! (DD/MM/YYYY)');
+            return;
+        }
 
         const requestEditAdsPointData = {
             adsObject: adsObject,
@@ -219,22 +255,15 @@ $(document).ready(function () {
             }
         };
 
-        // const jsonData = JSON.stringify(requestEditAdsPointData);
         requestEditAdsPointData.newInfo = JSON.stringify(requestEditAdsPointData.newInfo);
         requestEditAdsPointData.wardAndDistrict = JSON.stringify(
             requestEditAdsPointData.wardAndDistrict
         );
 
-        // console.log(requestEditAdsPointData);
-
         var form_data = new FormData();
         for (var key in requestEditAdsPointData) {
             form_data.append(key, requestEditAdsPointData[key]);
         }
-
-        // const locationImages = document.getElementById(
-        //     `requestAddAdsPointImages-${adsObject}`
-        // ).textContent;
 
         const fileInput = $(`#requestAddAdsPointImages-${adsObject}`).prop('files');
 
@@ -253,7 +282,6 @@ $(document).ready(function () {
                 alert('Đã xảy ra lỗi!');
             }
         });
-        // const ward = document.getElementById(`edit_ward-${adsObject}`).value;
     });
 
     $(document).on('submit', '#addAdsPointForm', function (e) {
@@ -268,6 +296,11 @@ $(document).ready(function () {
         const locationType = document.getElementById(`add_locationType`).value;
         const adsFormat = document.getElementById(`add_adsType`).value;
         const planningStatus = document.getElementById(`add_planningStatus`).value;
+
+        if (lat === null || lng === null) {
+            alert('Vui lòng chọn địa chỉ hợp lệ!');
+            return;
+        }
 
         // console.log(lat);
         // console.log(lng);
@@ -347,6 +380,11 @@ $(document).ready(function () {
             const ward = document.getElementById(`edit_ward-${adsObject}`).value;
             const district = document.getElementById(`edit_district-${adsObject}`).value;
 
+            if (lat === null || lng === null) {
+                alert('Vui lòng chọn địa chỉ hợp lệ!');
+                return;
+            }
+
             const editAdsPointData = {
                 planningStatus: planningStatus,
                 locationType: locationType,
@@ -364,8 +402,6 @@ $(document).ready(function () {
             };
 
             editAdsPointData.location = JSON.stringify(editAdsPointData.location);
-
-            console.log(editAdsPointData);
 
             // editAdsPointData.newInfo = JSON.stringify(editAdsPointData.newInfo);
             // editAdsPointData.wardAndDistrict = JSON.stringify(editAdsPointData.wardAndDistrict);
