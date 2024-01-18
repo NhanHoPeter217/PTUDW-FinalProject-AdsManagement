@@ -27,7 +27,6 @@
     dropZoneEnabled: true,
     maxFileCount: 5,
     allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
-    allowedFileExtensions: ['jpg', 'png', 'pdf', 'jpeg'],
     language: 'vi',
     theme: 'fas',
     initialPreviewAsData: true,
@@ -146,27 +145,15 @@
                                         {{#if (getElement ../licenseRequestedAdsBoardNotEmpty @index)}}
                                         {{#if (getElement ../verified @index)}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <button
-                                                type="button"
-                                                class="btn m-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#licenseDetailModal-{{index}}">
-                                                <div>
-                                                    <img src="public/assets/icons/Tick_icon.svg" alt="" width="24" height="24" />
-                                                </div>
-                                            </button>
+                                            <a href="license/adsPoint/{{adsPoint._id}}?adsBoard_order={{index}}">
+                                                <img src="public/assets/icons/Tick_icon.svg" alt="" width="24" height="24" />
+                                            </a>
                                         </td>
                                         {{else}}
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <button
-                                                type="button"
-                                                class="btn m-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#licenseDetailModal-{{index}}">
-                                                <div>
-                                                    <img src="public/assets/icons/Pending_icon.svg" alt="" width="24" height="24" />
-                                                </div>
-                                            </button>
+                                            <a href="license/adsPoint/{{adsPoint._id}}?adsBoard_order={{index}}">
+                                                <img src="public/assets/icons/Pending_icon.svg" alt="" width="24" height="24" />
+                                            </a>
                                         </td>
                                         {{/if}}
                                         {{else}}
