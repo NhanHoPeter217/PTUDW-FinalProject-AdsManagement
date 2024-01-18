@@ -37,7 +37,11 @@
                                     <th scope="col"><div class="card-title fw-bold" >Người gửi</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Thông tin báo cáo</div></th>
                                     <th scope="col"><div class="card-title fw-bold" >Tình trạng</div></th>
+                                    {{#ifCond authUser.role '===' 'Sở VH-TT'}}
+                                    <th scope="col"><div class="card-title fw-bold" >Xem</div></th>
+                                    {{else}}
                                     <th scope="col"><div class="card-title fw-bold" >Cập nhật</div></th>
+                                    {{/ifCond}}
                                 </tr>
                             </thead>
                         </table>

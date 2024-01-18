@@ -45,6 +45,9 @@
                     </div>
                     <div class="table-responsive">
                         <div class="table-body-container" style="height: 75vh; overflow-y: auto;">
+                            {{#if licenseRequestedAdsBoardEmpty}}
+                                <div class="card-body text-primary fw-semibold">Không có yêu cầu cấp phép nào</div>
+                            {{else}}
                             {{#each adsBoard.licenseRequestedAdsBoard as |licenseRequestedAdsBoard index|}}
                             <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
                                 <div class="fw-bold text-warning fs-4">YÊU CẦU CẤP PHÉP {{create_order index}}</div>
@@ -176,6 +179,7 @@
                                 </div>
                             </div>
                             {{/each}}
+                            {{/if}}
                         </div>
                     </div>
                 </div>

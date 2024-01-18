@@ -77,9 +77,8 @@ const getAllAdsBoardsByAdsPointId = async (req, res) => {
             adsBoardTypes: adsBoardTypes,
             districts: districts,
             authUser: req.user,
-            licenseRequestedAdsBoardNotEmpty: licenseRequestedAdsBoardNotEmpty[query.adsBoard_order],
+            licenseRequestedAdsBoardEmpty: licenseRequestedAdsBoardNotEmpty[query.adsBoard_order] === false,
             verified: verified[query.adsBoard_order],
-
         });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).send(error.message);
