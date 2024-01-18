@@ -293,6 +293,8 @@
                                                                     <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
                                                                     {{#each images as |image|}}
                                                                     <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
                                                                     {{/each}}
                                                                 </div>
                                                             </div>
@@ -444,12 +446,21 @@
                     </div>
                     <div class="scrollable-list">
                         {{#each wardList}}
-                        <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                        <label class="checkbox-container">
-                            <input type="checkbox" class="checkbox-input" data-ward="{{this}}">
-                            <span>Phường {{this}}</span>
-                        </label>
-                        </div>
+                        {{#if (includes ../wardAssigned this)}}
+                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-input" data-ward="{{this}}" checked>
+                                <span>Phường {{this}}</span>
+                            </label>
+                            </div>
+                        {{else}}
+                            <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-input" data-ward="{{this}}">
+                                <span>Phường {{this}}</span>
+                            </label>
+                            </div>
+                        {{/if}}
                         {{/each}}
                     </div>
                     <div class="list-group-item d-flex list-group-item-action justify-content-between align-items-center active">

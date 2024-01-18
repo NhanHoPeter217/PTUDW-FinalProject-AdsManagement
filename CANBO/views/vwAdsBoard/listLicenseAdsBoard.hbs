@@ -178,7 +178,11 @@
                                                             <div class='card border'>
                                                                 <div class='card-body'>
                                                                     <h5 class='card-title fw-semibold mb-4'>Hình ảnh</h5>
-                                                                    <p class='mb-0'>This is a sample page</p>
+                                                                    {{#each licenseRequestedAdsBoard.adsBoardImages as |image|}}
+                                                                    <img src="{{image}}" width="650" class="mb-2">
+                                                                    {{else}}
+                                                                    <p class='mb-0 text-warning fw-semibold'>Không có hình ảnh</p>
+                                                                    {{/each}}
                                                                 </div>
                                                             </div>
                                                             <div class='card border'>

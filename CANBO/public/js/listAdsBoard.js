@@ -2,13 +2,66 @@ import initMapViewOnly from './miniMap_viewonly.js';
 import initMapWithSearchBox from './miniMap_searchBox.js';
 
 var date = new Date();
+
+function isNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+function validateDate(dateInput) {
+    var inputDate = dateInput;
+
+    var dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (dateRegex.test(inputDate)) {
+        var parsedDate = new Date(inputDate.split('/').reverse().join('-'));
+
+        if (isNaN(parsedDate.getTime())) {
+            alert('Ngày không hợp lệ!');
+            return false;
+        }
+
+        return true;
+    } else {
+        alert('Thông tin ngày phải có dạng DD/MM/YYYY!');
+        return false;
+    }
+}
+
+function validateEmail(email) {
+    var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+}
+
 const formattedDate = () => {
     var year = date.getFullYear();
-    var month = date.getMonth() + 1; // getMonth() returns a zero-based value (0-11)
+    var month = date.getMonth() + 1;
     var day = date.getDate();
 
     return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
 };
+
+function validatePhoneNumber(phoneNumber) {
+    var phoneRegex = /^\d{10}$/;
+
+    return phoneRegex.test(phoneNumber);
+}
+
+function validateDateRange(startDate, endDate) {
+    const startDateObj = new parseDate(startDate);
+    const endDateObj = new parseDate(endDate);
+
+    return startDateObj < endDateObj;
+}
+
+function parseDate(dateString) {
+    // Assuming the date string is in the "DD/MM/YYYY" format
+    const parts = dateString.split('/');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1] - 1, 10);
+    const year = parseInt(parts[2], 10);
+
+    return new Date(year, month, day);
+}
 
 $(document).ready(function () {
     const inputContractEndDate = $('.license_contractEndDate');
@@ -81,6 +134,48 @@ $(document).ready(function () {
         const email = document.getElementById(`license_companyEmail-${id}`).value;
         const phone = document.getElementById(`license_companyPhone-${id}`).value;
         const address = document.getElementById(`license_companyAddress-${id}`).value;
+        const lat = document
+            .getElementById(`license_companyAddress-${id}`)
+            .getAttribute('data-lat');
+        const lng = document
+            .getElementById(`license_companyAddress-${id}`)
+            .getAttribute('data-lng');
+        if (!isNumber(width)) {
+            alert('Vui lòng nhập số cho Chiều rộng!');
+            return;
+        }
+        if (!isNumber(height)) {
+            alert('Vui lòng nhập số cho Chiều cao!');
+            return;
+        }
+        if (!isNumber(quantity)) {
+            alert('Vui lòng nhập số cho Số lượng!');
+            return;
+        }
+        if (!validateDate(contractEndDate)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày hết hạn hợp đồng! (DD/MM/YYYY)');
+            return;
+        }
+        if (!validateDate(contractStartDate)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày bắt đầu hợp đồng! (DD/MM/YYYY)');
+            return;
+        }
+        if (!validateDateRange(contractStartDate, contractEndDate)) {
+            alert('Ngày hết hạn hợp đồng phải sau ngày bắt đầu hợp đồng!');
+            return;
+        }
+        if (!validateEmail(email)) {
+            alert('Vui lòng nhập email hợp lệ!');
+            return;
+        }
+        if (!validatePhoneNumber(phone)) {
+            alert('Vui lòng nhập số điện thoại hợp lệ!');
+            return;
+        }
+        if (lat === null || lng === null) {
+            alert('Vui lòng chọn địa chỉ hợp lệ!');
+            return;
+        }
 
         const licenseRequestData = {
             licenseRequestedAdsBoard: {
@@ -139,6 +234,23 @@ $(document).ready(function () {
         const contractEndDate = document.getElementsByClassName(
             `edit_contractEndDate-${adsObject}`
         )[0].value;
+
+        if (!isNumber(width)) {
+            alert('Vui lòng nhập số cho Chiều rộng!');
+            return;
+        }
+        if (!isNumber(height)) {
+            alert('Vui lòng nhập số cho Chiều cao!');
+            return;
+        }
+        if (!isNumber(quantity)) {
+            alert('Vui lòng nhập số cho Số lượng!');
+            return;
+        }
+        if (!validateDate(contractEndDate)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày hết hạn hợp đồng! (DD/MM/YYYY)');
+            return;
+        }
 
         let reason, ward, district;
         if (mode === 'Yêu cầu chỉnh sửa') {
@@ -235,6 +347,23 @@ $(document).ready(function () {
             for (let file of files) {
                 formData.append('images[]', file);
             }
+        }
+
+        if (!isNumber(width)) {
+            alert('Vui lòng nhập số cho Chiều rộng!');
+            return;
+        }
+        if (!isNumber(height)) {
+            alert('Vui lòng nhập số cho Chiều cao!');
+            return;
+        }
+        if (!isNumber(quantity)) {
+            alert('Vui lòng nhập số cho Số lượng!');
+            return;
+        }
+        if (!validateDate(contractEndDate)) {
+            alert('Vui lòng nhập ngày hợp lệ cho Ngày hết hạn hợp đồng! (DD/MM/YYYY)');
+            return;
         }
 
         const adsBoardData = {
