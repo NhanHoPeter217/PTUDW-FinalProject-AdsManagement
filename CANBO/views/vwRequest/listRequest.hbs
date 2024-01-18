@@ -6,53 +6,45 @@
 <script src="../../public/js/listRequest.js"></script>
 {{/section}}
 
-<div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách các yêu cầu</h5>
-            <div class="card w-100 mt-3">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4" id="tableName">
-                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+<div class="container-fluid">
+    <h5 class="card-title fw-semibold fs-5 d-flex justify-content-center align-items-center">DANH SÁCH CÁC YÊU CẦU</h5>
+    <div class="d-flex justify-content-center">
+        {{!-- <div class="col-md-1"></div> --}}
+        {{!-- <div class="col-md-10"> --}}
+            {{!-- <div class="row"> --}}
+        <div class="card me-3 ms-5">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold" id="tableName">
+                        <img src="public/assets/icons/AdsBoard_icon.svg" alt="" width="24" height="24" />
                         Bảng quảng cáo
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                             <colgroup>
-                                <col style="width: 3%">
-                                <col style="width: 21%">
-                                <col style="width: 12.5%">
-                                <col style="width: 10%">
-                                <col style="width: 12.5%">
-                                <col style="width: 12.5%">
-                                <col style="width: 15%">
-                                <col style="width: 12.5%">
+                                <col style="width: 5%">
+                                <col style="width: 38%">
+                                <col style="width: 12%">
+                                <col style="width: 25%">
+                                <col style="width: 20%">
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Loại bảng quảng cáo</th>
-                                    <th scope="col">Kích thước</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Quận</th>
-                                    <th scope="col">Hết hạn hợp đồng</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col">Thao tác</th>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Loại bảng quảng cáo</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Quận</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Trạng thái</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                 </tr>
                             </thead>
                         </table>
-                        <div class="table-body-container" style="height: 18vh; overflow-y: auto;">
+                        <div class="table-body-container" style="height: 58vh; overflow-y: auto;">
                             <table class="table table-bordered table-hover text-center">
                                 <colgroup>
-                                    <col style="width: 3%">
-                                    <col style="width: 21%">
-                                    <col style="width: 12.5%">
-                                    <col style="width: 10%">
-                                    <col style="width: 12.5%">
-                                    <col style="width: 12.5%">
-                                    <col style="width: 15%">
-                                    <col style="width: 12.5%">
+                                    <col style="width: 5%">
+                                    <col style="width: 38%">
+                                    <col style="width: 12%">
+                                    <col style="width: 25%">
+                                    <col style="width: 20%">
                                 </colgroup>
                                 <tbody id="body">
                                 {{#if adsBoardRequestedEditsEmpty}}
@@ -67,16 +59,7 @@
                                             <p class="mb-0 fw-semibold">{{adsObject.adsBoardType}}</p>
                                         </td>
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{adsObject.size.width}}m x {{adsObject.size.height}}m</p>
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{adsObject.quantity}}</p>
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
                                             <p class="mb-0 fw-normal">{{wardAndDistrict.district}}</p>
-                                        </td>
-                                        <td class="border-bottom-0 text-center align-middle">
-                                            <p class="mb-0 fw-normal">{{adsObject.contractEndDate}}</p>
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                             <td class="border-bottom-0 text-center align-middle">
@@ -229,7 +212,7 @@
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4 text-danger'>Hình cũ</h5>
+                                                                    <h5 class='card-title fw-semibold text-danger'>Hình cũ</h5>
                                                                     {{#each adsObject.adsBoardImages as |image|}}
                                                                     <img src="{{image}}" width="650" class="mb-2">
                                                                     {{/each}}
@@ -237,7 +220,7 @@
                                                             </div>
                                                             <div class='card border'>
                                                                 <div class='card-body'>
-                                                                    <h5 class='card-title fw-semibold mb-4 text-primary'>Hình mới</h5>
+                                                                    <h5 class='card-title fw-semibold text-primary'>Hình mới</h5>
                                                                     {{#each newInfo.adsBoardImages as |image|}}
                                                                     <img src="{{image}}" width="650" class="mb-2">
                                                                     {{/each}}
@@ -301,45 +284,40 @@
                     </div>
                 </div>
             </div>
-            <div class="card w-100 mt-3">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4" id="tableName">
-                        <img src="../../../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
+            {{!-- <div class="ms-1 me-1"></div> --}}
+        <div class="card me-5">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold" id="tableName">
+                        <img src="public/assets/icons/Location_Red.svg" alt="" width="24" height="24" />
                         Điểm quảng cáo
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                             <colgroup>
-                                <col style="width: 3%">
-                                <col style="width: 20%">
-                                <col style="width: 17%">
-                                <col style="width: 13%">
+                                <col style="width: 5%">
+                                <col style="width: 35%">
+                                <col style="width: 10%">
+                                <col style="width: 25%">
                                 <col style="width: 15%">
-                                <col style="width: 13%">
-                                <col style="width: 12%">
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Điểm quảng cáo</th>
-                                    <th scope="col">Loại vị trí</th>
-                                    <th scope="col">Quận</th>
-                                    <th scope="col">Trạng thái quy hoạch</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col">Thao tác</th>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Điểm quảng cáo</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Quận</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Trạng thái</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                 </tr>
                             </thead>
                         </table>
-                        <div class="table-body-container" style="height: 18vh; overflow-y: auto;">
+                        <div class="table-body-container" style="height: 58vh; overflow-y: auto;">
                             <table class="table table-bordered table-hover text-center">
                                 <colgroup>
-                                    <col style="width: 3%">
-                                    <col style="width: 20%">
-                                    <col style="width: 17%">
-                                    <col style="width: 13%">
+                                    <col style="width: 5%">
+                                    <col style="width: 35%">
+                                    <col style="width: 10%">
+                                    <col style="width: 25%">
                                     <col style="width: 15%">
-                                    <col style="width: 13%">
-                                    <col style="width: 12%">
                                 </colgroup>
                             <tbody id="body">
                                 {{#if adsPointRequestedEditsEmpty}}
@@ -354,28 +332,8 @@
                                         <p class="mb-0 fw-semibold">{{adsObject.location.locationName}}</p>
                                     </td>
                                     <td class="border-bottom-0 text-center align-middle">
-                                        <p class="mb-0 fw-normal">{{adsObject.locationType}}</p>
-                                    </td>
-                                    <td class="border-bottom-0 text-center align-middle">
                                         <p class="mb-0 fw-normal">{{adsObject.location.district}}</p>
                                     </td>
-                                    {{#ifCond adsObject.planningStatus '===' 'Đã quy hoạch'}}
-                                    <td class="border-bottom-0 text-center align-middle">
-                                        <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                            <span class="badge bg-primary rounded-3 fw-semibold"
-                                                >Đã quy hoạch</span
-                                            >
-                                        </div>
-                                    </td>
-                                    {{else}}
-                                    <td class="border-bottom-0 text-center align-middle">
-                                        <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                            <span class="badge bg-danger rounded-3 fw-semibold"
-                                                >Chưa quy hoạch</span
-                                            >
-                                        </div>
-                                    </td>
-                                    {{/ifCond}}
                                     {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                         <td class="border-bottom-0 text-center align-middle">
                                             <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
@@ -513,7 +471,7 @@
                                                         </div>
                                                         <div class='card border'>
                                                             <div class='card-body'>
-                                                                <h5 class='card-title fw-semibold mb-4 text-danger'>Hình cũ</h5>
+                                                                <h5 class='card-title fw-semibold text-danger'>Hình cũ</h5>
                                                                 {{#each adsObject.locationImages as |image|}}
                                                                 <img src="{{image}}" width="650" class="mb-2">
                                                                 {{/each}}
@@ -521,7 +479,7 @@
                                                         </div>
                                                         <div class='card border'>
                                                             <div class='card-body'>
-                                                                <h5 class='card-title fw-semibold mb-4 text-primary'>Hình mới</h5>
+                                                                <h5 class='card-title fw-semibold text-primary'>Hình mới</h5>
                                                                 {{#each newInfo.locationImages as |image|}}
                                                                 <img src="{{image}}" width="650" class="mb-2">
                                                                 {{/each}}
@@ -584,8 +542,17 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        {{!-- </div> --}}
+        {{!-- <div class="col-md-1"></div> --}}
     </div>
 </div>
 
 <title>Danh sách điểm quảng cáo</title>
+
+{{!-- <div class="row px-5">
+    <div class="col-md-1"></div>
+    <div class="card col-md-5 me-5">Table1</div>
+    <div class="card col-md-5 me-5">Table2</div>
+    <div class="col-md-1"></div>
+</div> --}}

@@ -1,0 +1,201 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css" />
+<link rel="stylesheet" href="http://localhost:4000/public/css/report.css" />
+<link rel="stylesheet" href="public/css/adpointInfo.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="../../public/js/listLicenseAdsBoard.js" type="module"></script>
+{{/section}}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class=" col-md-10">
+            <div class="card w-100">
+                <div class="card-body ps-4 pt-2">
+                    <h5 class="card-title fw-semibold fs-5">
+                        DANH SÁCH CÁC TÀI KHOẢN
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
+                            <colgroup>
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                                <col style="width: 20%">
+                            </colgroup>
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Tài khoản</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Phân hệ cán bộ</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Vùng quản lý</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Chỉnh sửa</div></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="table-body-container" style="height: 63vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center">
+                                <colgroup>
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                    <col style="width: 20%">
+                                </colgroup>
+                                <tbody id="body">
+                                    {{#each users as |user index|}}
+                                    <tr>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <h6 class="mb-0">{{create_order index}}</h6>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#moreUserInfo-{{_id}}">
+                                                {{username}}
+                                            </button>
+                                        </td>
+                                        <td class="border-bottom-0 text-center align-middle">
+                                            {{role}}
+                                        </td>
+                                        {{#ifCond role '===' 'Phường'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                Phường {{assignedArea.ward}}, Quận {{assignedArea.district}}
+                                            </td>
+                                        {{/ifCond}}
+                                        {{#ifCond role '===' 'Quận'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                Quận {{assignedArea.district}}
+                                            </td>
+                                        {{/ifCond}}
+                                        {{#ifCond role '===' 'Sở VH-TT'}}
+                                            <td class="border-bottom-0 text-center align-middle">
+                                                Tất cả Quận
+                                            </td>
+                                        {{/ifCond}}
+                                        {{!-- <td class="border-bottom-0 text-center align-middle">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-warning m-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#moreUserInfo-{{_id}}">
+                                                {{username}}
+                                            </button>
+                                        </td> --}}
+                                    </tr>
+                                    <div
+                                        class='modal fade'
+                                        id='moreUserInfo-{{_id}}'
+                                        tabindex='-1'
+                                        aria-labelledby='reportModalLabel'
+                                        aria-hidden='true'
+                                    >
+                                        <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                            <div class='modal-content'>
+                                                <div class='modal-header'>
+                                                    <img
+                                                        src='../../../public/assets/icons/Info_icon.svg'
+                                                        style='height: 40px; width: 40px;'
+                                                    />
+                                                    <h5 class='modal-detail-title' id='reportModalLabel'>Thông tin chi tiết tài khoản</h5>
+                                                    <button
+                                                        type='button'
+                                                        class='btn-close'
+                                                        data-bs-dismiss='modal'
+                                                        aria-label='Close'
+                                                    ></button>
+                                                </div>
+                                                <div class='modal-detail-body'>
+                                                    <form id='detailResident' enctype='multipart/form-data'>
+                                                        <div class='mb-3 d-grid gap-2 me-2 ms-2 mt-2'>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Tài khoản</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{username}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Họ tên</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{fullName}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Ngày sinh</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{dateOfBirth}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold'>Email</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{email}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Số điện thoại</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{phone}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class='card border'>
+                                                                <div class='card-body'>
+                                                                    <h5 class='card-title fw-semibold mb-4'>Cán bộ</h5>
+                                                                    <p class='mb-0 fw-semibold'>{{role}}</p>
+                                                                </div>
+                                                            </div>
+                                                            {{#ifCond role '===' 'Phường'}}
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Vùng quản lý</h5>
+                                                                        <p class='mb-0 fw-semibold'>Phường {{assignedArea.ward}}, Quận {{assignedArea.district}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            {{/ifCond}}
+                                                            {{#ifCond role '===' 'Quận'}}
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Vùng quản lý</h5>
+                                                                        <p class='mb-0 fw-semibold'>Quận {{assignedArea.district}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            {{/ifCond}}
+                                                            {{#ifCond role '===' 'Sở VH-TT'}}
+                                                                <div class='card border'>
+                                                                    <div class='card-body'>
+                                                                        <h5 class='card-title fw-semibold mb-4'>Vùng quản lý</h5>
+                                                                        <p class='mb-0 fw-semibold'>Tất cả Quận</p>
+                                                                    </div>
+                                                                </div>
+                                                            {{/ifCond}}
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+
+<title>Danh sách các cấp phép</title>
+
+{{> detailAdsBoard}}
+{{> detailAdsPoint}}
+{{> detailLicenseAdsBoard}}
+{{> requestEditAdsBoard}}
