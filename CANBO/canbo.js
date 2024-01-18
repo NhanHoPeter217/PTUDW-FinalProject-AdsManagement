@@ -44,6 +44,7 @@ const jobsRouter = require('./routes/jobs');
 const userRouter = require('./routes/userRoutes');
 const otpRouter = require('./routes/otp');
 const forgotpwRouter = require('./routes/forgotpw');
+const licenseRouter = require('./routes/licenseRoutes');
 
 const adsBoardRouter = require('./routes/Department/adsBoardRoutes');
 const adsFormatRouter = require('./routes/Department/adsFormatRoutes');
@@ -91,6 +92,7 @@ app.use('/api/v1/jobs', jobsRouter);
 app.use('/api/v1/user', userRouter);
 
 app.use('/adsBoard', adsBoardRouter);
+app.use('/license', licenseRouter);
 app.use('/adsPoint', adsPointRouter);
 app.use('/district', districtRouter);
 app.use('/types', typeRouter);

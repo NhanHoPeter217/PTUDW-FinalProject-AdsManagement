@@ -96,3 +96,23 @@ module.exports = {
     login,
     logout
 };
+
+const getAllAccount = async (req, res) => {
+        try {
+            const users = await User.find({ role: { $ne: 'Sở VH-TT' } }).select('-password').lean();
+
+            console.log(users);
+
+            res.render('vwAccount/listAccount', { users: users });
+
+        } catch (error) {
+            res.status(StatusCodes.BAD_REQUEST).send(error.message);
+        }
+    };
+
+    module.exports = {
+        getAllAccount,
+        register,
+        login,
+        logout
+};

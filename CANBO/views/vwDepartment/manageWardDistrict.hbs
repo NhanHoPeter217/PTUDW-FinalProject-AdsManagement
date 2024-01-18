@@ -2,48 +2,63 @@
     <link rel='stylesheet' href='../../public/css/report.css' />
 {{/section}}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-9 col-md-8">
-            <h5 class="card-title fw-bold mb-4">Quản lý Phường / Quận</h5>
-            <div class="card shadow-sm">
+            <h5 class="card-title fw-semibold fs-5">QUẢN LÝ PHƯỜNG / QUẬN</h5>
+            <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold mb-0">Các phường của quận {{currentDistName}}</h5>
-                        <button id='add-ward-button' type='button' class='btn btn-success add-ward'>
-                            <i class="bi bi-building-add me-2"></i>
+                    <div class="d-flex justify-content-between align-items-center card-title fw-semibold" id="tableName">
+                        <h5 class="fw-bold mb-0">Các phường của Quận {{currentDistName}}</h5>
+                        <button id='add-ward-button' type='button' class='btn btn-success add-ward mt-2'>
+                            <i class="bi bi-building-add"></i>
                             Thêm phường mới
                         </button>
                     </div>
                     <div class="table-responsive overflow-auto" style="max-height: 67vh;">
                         <table class="table table-bordered table-hover">
-                            <thead class="bg-light">
+                            <colgroup>
+                                <col style="width: 5%">
+                                <col style="width: 45%">
+                                <col style="width: 45%">
+                            </colgroup>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="text-center">#</th>
-                                    <th class="text-center">Tên phường</th>
-                                    <th class="text-center">Thao tác</th>
+                                    <th class="text-center"><div class="card-title fw-bold" >#</div></th>
+                                    <th class="text-center"><div class="card-title fw-bold" >Tên phường</div></th>
+                                    <th class="text-center"><div class="card-title fw-bold" >Thao tác</div></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {{#each wards}}
-                                    <tr>
-                                        <td class="text-center">{{inc @index}}</td>
-                                        <td>Phường {{this}}</td>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-warning edit-ward" data-name="{{this}}">
-                                                <div id="buttonStyle">
-                                                    <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
-                                                    Chỉnh sửa
-                                                </div>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                {{else}}
-                                    <tr>
-                                        <td colspan="3" class="text-center">Không có phường</td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
+                        </table>
+                        <div class="table-body-container" style="height: 63vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover text-center">
+                                <colgroup>
+                                    <col style="width: 5%">
+                                    <col style="width: 45%">
+                                    <col style="width: 45%">
+                                </colgroup>
+                                <tbody id="body">
+                                    {{#each wards}}
+                                        <tr>
+                                            <td class="text-center align-middle">{{inc @index}}</td>
+                                            <td class="align-middle">Phường {{this}}</td>
+                                            <td class="text-center align-middle">
+                                                <button class="btn btn-sm btn-outline-warning edit-ward" data-name="{{this}}">
+                                                    <div id="buttonStyle">
+                                                        <img src="../../../public/assets/icons/Edit_icon.svg" alt="" width="24" height="24" />
+                                                        Chỉnh sửa
+                                                    </div>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {{else}}
+                                        <tr>
+                                            <td colspan="3" class="text-center">Không có phường</td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                                </table>
+                                </div>
                         </table>
                     </div>
                 </div>
@@ -52,7 +67,7 @@
 
         <div class="col-lg-3 col-md-4">
             <div class="pe-4">
-                <h3 class="fw-bold mb-4 text-center">Danh sách các quận</h3>
+                <h3 class="fw-bold mt-4 text-center fs-5">DANH SÁCH CÁC QUẬN</h3>
                 <button id='add-dist-button' type='button' class='btn btn-primary mb-3' style='width: 100%' data-bs-toggle="modal" data-bs-target="#addDistModal">
                     <i class="bi bi-building-add me-2"></i>
                     Thêm quận mới

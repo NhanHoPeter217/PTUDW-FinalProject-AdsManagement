@@ -15,14 +15,14 @@
         <div class="col-md-1"></div>
         <div class=" {{#ifCond authUser.role '===' 'Phường'}}col-md-10{{else}}col-md-8{{/ifCond}}">
             <div class="card w-100">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-4">
-                        Danh sách các yêu cầu cấp phép
+                <div class="card-body ps-4 pt-2">
+                    <h5 class="card-title fw-semibold fs-5">
+                        DANH SÁCH CÁC YÊU CẦU CẤP PHÉP
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center" style="table-layout: fixed; width: 100%;">
                             <colgroup>
-                                <col style="width: 3%">
+                                <col style="width: 3.5%">
                                 <col style="width: 28%">
                                 <col style="width: 29%">
                                 <col style="width: 23%">
@@ -30,19 +30,19 @@
                             </colgroup>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Loại bảng quảng cáo</th>
-                                    <th scope="col">Địa điểm</th>
-                                    <th scope="col">Tình trạng</th>
+                                    <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Loại bảng quảng cáo</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Địa điểm</div></th>
+                                    <th scope="col"><div class="card-title fw-bold" >Tình trạng</div></th>
                                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                        <th scope="col">Xét duyệt</th>
+                                        <th scope="col"><div class="card-title fw-bold" >Xét duyệt</div></th>
                                     {{else}}
-                                        <th scope="col">Yêu cầu</th>
+                                        <th scope="col"><div class="card-title fw-bold" >Yêu cầu</div></th>
                                     {{/ifCond}}
                                 </tr>
                             </thead>
                         </table>
-                        <div class="table-body-container" style="height: 67vh; overflow-y: auto;">
+                        <div class="table-body-container" style="height: 63vh; overflow-y: auto;">
                             <table class="table table-bordered table-hover text-center">
                                 <colgroup>
                                     <col style="width: 3%">
@@ -58,24 +58,24 @@
                                     {{#each adsLicenseRequests as |adsLicenseRequests index|}}
                                     <tr>
                                         <td class="border-bottom-0 text-center align-middle">
-                                            <h6 class="fw-semibold mb-0">{{create_order index}}</h6>
+                                            <h6 class="mb-0">{{create_order index}}</h6>
                                         </td>
-                                        <td class="border-bottom-0 text-center align-middle fw-semibold">
+                                        <td class="border-bottom-0 text-center align-middle">
                                             {{licenseRequestedAdsBoard.adsBoardType}}
                                         </td>
-                                        <td class="border-bottom-0 text-center align-middle fw-semibold">
+                                        <td class="border-bottom-0 text-center align-middle">
                                             {{licenseRequestedAdsBoard.adsBoard.adsPoint.location.locationName}}
                                         </td>
                                         {{#ifCond requestApprovalStatus '===' 'Đã được duyệt'}}
                                         <td class="border-bottom-0 text-center align-middle">
                                             <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <span class="badge bg-success rounded-3 fw-semibold">Đã được duyệt</span>
+                                                <span class="badge bg-success rounded-3">Đã được duyệt</span>
                                             </div>
                                         </td>
                                         {{else}}
                                         <td class="border-bottom-0 text-center align-middle">
                                             <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
-                                                <span class="badge bg-warning rounded-3 fw-semibold">Chưa được duyệt</span>
+                                                <span class="badge bg-warning rounded-3">Chưa được duyệt</span>
                                             </div>
                                         </td>
                                         {{/ifCond}}

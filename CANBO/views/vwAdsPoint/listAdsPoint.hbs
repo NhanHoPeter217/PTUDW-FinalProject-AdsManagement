@@ -68,10 +68,10 @@
             <div class="col-md-1"></div>
         {{/ifCond}}
         <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-md-8{{else}}col-md-9{{/ifCond}}">
-            <h5 class="card-title fw-bold mb-4">Quản lý quảng cáo</h5>
-            <div class="card w-100 mb-4 shadow-sm">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title fw-bold fs-5">QUẢN LÝ QUẢNG CÁO</h5>
+            <div class="card w-100 mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title fw-semibold" id="tableName">
                             <img src="../public/assets/icons/List_icon.svg" alt="" width="24" height="24" />
                             Danh sách các điểm đặt quảng cáo
@@ -93,17 +93,17 @@
                         </colgroup>
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Tên điểm quảng cáo</th>
-                                <th scope="col">Bảng quảng cáo</th>
+                                <th scope="col"><div class="card-title fw-bold" >#</div></th>
+                                <th scope="col"><div class="card-title fw-bold" >Tên điểm quảng cáo</div></th>
+                                <th scope="col"><div class="card-title fw-bold" >Bảng quảng cáo</div></th>
                                 {{#ifCond authUser.role '===' 'Sở VH-TT'}}
-                                    <th scope="col">Thao tác</th>
+                                    <th scope="col"><div class="card-title fw-bold" >Thao tác</div></th>
                                 {{/ifCond}}
                                 {{#ifCond authUser.role '===' 'Quận'}}
-                                    <th scope="col">Yêu cầu chỉnh sửa</th>
+                                    <th scope="col"><div class="card-title fw-bold" >Yêu cầu chỉnh sửa</div></th>
                                 {{/ifCond}}
                                 {{#ifCond authUser.role '===' 'Phường'}}
-                                    <th scope="col">Yêu cầu chỉnh sửa</th>
+                                    <th scope="col"><div class="card-title fw-bold" >Yêu cầu chỉnh sửa</div></th>
                                 {{/ifCond}}
                             </tr>
                         </thead>
@@ -764,7 +764,7 @@
         </div>
         <div class="{{#ifCond authUser.role '!==' 'Sở VH-TT'}}col-lg-2{{else}}col-lg-3{{/ifCond}} col-md-3">
             <div class="pe-4">
-                <h3 class="fw-bold mb-4 text-center">Lọc danh sách</h3>
+                <h3 class="fw-bold mt-4 text-center fs-5">LỌC DANH SÁCH</h3>
                 <div class="filter-container mb-3">
                     {{#ifCond authUser.role '===' 'Sở VH-TT'}}
                     <select id="filter_district" class="list-select list-select-sm custom-select fw-bold">
