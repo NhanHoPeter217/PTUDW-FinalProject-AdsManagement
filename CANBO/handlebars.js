@@ -89,8 +89,6 @@ const engineWithHelpers = engine({
 
         includes(array, value) {
             // check type of array
-            console.log(typeof array, array, value, array.includes(value));
-            console.log("Inside includes")
             if (typeof array === 'object' || typeof array === 'Array')
                 return array.includes(value);
             if (typeof array === 'string')
