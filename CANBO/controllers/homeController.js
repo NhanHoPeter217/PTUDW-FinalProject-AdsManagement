@@ -127,7 +127,7 @@ async function homeController (req, res) {
         res.render('home', {
             AdsPoints,
             AdsBoards,
-            Reports,
+            Reports: role !== 'Sở VH-TT' ? Reports : [],
             districtList,
             wardList,
             auth: req.user

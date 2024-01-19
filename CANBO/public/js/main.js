@@ -30,18 +30,19 @@ async function main() {
 
         // Init Report Marker Manager
         const reportElements = $('.report-element');
-        if (reportElements)
+        if (reportElements.length > 0){
             reportMarkerManager = new ReportMarkerManager(map, reportElements);
-
-        // Init Offcanvas
-        const offcanvas_btn = document.getElementById('report-canvas-button');
-        const offcanvas = document.getElementById('report-canvas');
-        offcanvas_btn.addEventListener('click', function () {
-            reportElements.show();
-        });
-        offcanvas.addEventListener('hidden.bs.offcanvas', function () {
-            reportElements.attr('style', 'display: none !important')
-        });
+    
+            // Init Offcanvas
+            const offcanvas_btn = document.getElementById('report-canvas-button');
+            const offcanvas = document.getElementById('report-canvas');
+            offcanvas_btn.addEventListener('click', function () {
+                reportElements.show();
+            });
+            offcanvas.addEventListener('hidden.bs.offcanvas', function () {
+                reportElements.attr('style', 'display: none !important')
+            });
+        }
         
 
         // Init Filter Switch
