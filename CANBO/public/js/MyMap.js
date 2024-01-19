@@ -373,6 +373,10 @@ export class MySearchBox {
                 location,
                 place.geometry.location.toJSON()
             );
+
+            this.map.setCenter(place.geometry.location);
+            this.map.setZoom(17);
+            
             this.activeInfoMarker.marker.open();
             this.input.setAttribute('data-lat', place.geometry.location.lat());
             this.input.setAttribute('data-lng', place.geometry.location.lng());
