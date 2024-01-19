@@ -393,6 +393,10 @@ export class MySearchBox {
                 location,
                 place.geometry.location.toJSON()
             );
+
+            this.map.setCenter(place.geometry.location);
+            this.map.setZoom(17);
+            
             this.activeInfoMarker.marker.open();
         });
     }

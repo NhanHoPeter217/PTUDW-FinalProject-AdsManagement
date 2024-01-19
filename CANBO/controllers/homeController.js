@@ -92,36 +92,36 @@ async function homeController (req, res) {
                 }
             ])
             .lean();
+        if (role !== 'Sở VH-TT') {
+            const reportLocation = await ReportProcessing.find({
+                ...mongooseQuery,
+                relatedToType: 'Location'
+            })
+                .populate([
+                    {
+                        path: 'relatedTo',
+                        model: 'Location'
+                    },
+                    {
+                        path: 'reportFormat',
+                        model: 'ReportFormat'
+                    }
+                ])
+                .lean();
 
-        const reportLocation = await ReportProcessing.find({
-            ...mongooseQuery,
-            relatedToType: 'Location'
-        })
-            .populate([
-                {
-                    path: 'relatedTo',
-                    model: 'Location'
-                },
-                {
-                    path: 'reportFormat',
-                    model: 'ReportFormat'
+            const Reports = reportAdsBoard
+                .concat(reportAdsPoint)
+                .concat(reportLocation)
+                .sort((a, b) => {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+
+            Reports.forEach((report) => {
+                for (let i = 0; i < report.images.length; i++) {
+                    report.images[i] = report.images[i].replace(/\\/g, '/');
                 }
-            ])
-            .lean();
-
-        const Reports = reportAdsBoard
-            .concat(reportAdsPoint)
-            .concat(reportLocation)
-            .sort((a, b) => {
-                return new Date(b.createdAt) - new Date(a.createdAt);
             });
-
-        Reports.forEach((report) => {
-            for (let i = 0; i < report.images.length; i++) {
-                report.images[i] = report.images[i].replace(/\\/g, '/');
-            }
-        });
-
+        }
     
     
         res.render('home', {
