@@ -49,6 +49,8 @@ async function homeController (req, res) {
             AdsBoards.push(...adsPoint.adsBoard);
         });
 
+        let Reports = [];
+
         const reportAdsBoard = await ReportProcessing.find({
             ...mongooseQuery,
             relatedToType: 'AdsBoard'
@@ -93,45 +95,53 @@ async function homeController (req, res) {
             ])
             .lean();
 
-        const reportLocation = await ReportProcessing.find({
-            ...mongooseQuery,
-            relatedToType: 'Location'
-        })
-            .populate([
-                {
-                    path: 'relatedTo',
-                    model: 'Location'
-                },
-                {
-                    path: 'reportFormat',
-                    model: 'ReportFormat'
-                }
-            ])
-            .lean();
+        if (role !== 'Sở VH-TT') { // Phường quận
+            const reportLocation = await ReportProcessing.find({
+                ...mongooseQuery,
+                relatedToType: 'Location'
+            })
+                .populate([
+                    {
+                        path: 'relatedTo',
+                        model: 'Location'
+                    },
+                    {
+                        path: 'reportFormat',
+                        model: 'ReportFormat'
+                    }
+                ])
+                .lean();
 
-        const Reports = reportAdsBoard
-            .concat(reportAdsPoint)
-            .concat(reportLocation)
-            .sort((a, b) => {
-                return new Date(b.createdAt) - new Date(a.createdAt);
-            });
+                Reports = reportAdsBoard
+                    .concat(reportAdsPoint)
+                    .concat(reportLocation)
+                    .sort((a, b) => {
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
+
+            } else { // Sở
+                Reports = reportAdsBoard
+                    .concat(reportAdsPoint)
+                    .sort((a, b) => {
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
+            }
 
         Reports.forEach((report) => {
             for (let i = 0; i < report.images.length; i++) {
                 report.images[i] = report.images[i].replace(/\\/g, '/');
             }
         });
-
-    
-    
         res.render('home', {
             AdsPoints,
             AdsBoards,
-            Reports,
+            Reports: role !== 'Sở VH-TT' ? Reports : [],
             districtList,
             wardList,
             auth: req.user
         });
+    
+    
     } catch (error) {
         console.log(error);
     }

@@ -92,7 +92,7 @@ function reportButtonHandler(event) {
     submitButton.attr('data-ward', ward);
     submitButton.attr('data-district', district);
 
-    $('.modal-body .alert b').text(relatedToType === 'AdsBoard' ? 'Bảng quảng cáo' : 'Điểm quảng cáo');
+    $('.modal-body .alert b').text(relatedToType === 'AdsBoard' ? 'Bảng quảng cáo' : (relatedToType === 'AdsPoint' ? 'Điểm quảng cáo' : 'Địa điểm'));
     $('#reportModal').modal('show');
 }
 
