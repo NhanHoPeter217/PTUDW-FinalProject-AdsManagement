@@ -46,7 +46,9 @@
 {{!-- This is script for paging --}}
 <script>
     var urlParams = new URLSearchParams(window.location.search);
-
+    if (!urlParams.has('page')) {
+        urlParams.set('page', 1);
+    }
     function toPage(page) {
         urlParams.set('page', page);
         window.location.href = '/adsPoint/assignedArea?' + urlParams.toString();
