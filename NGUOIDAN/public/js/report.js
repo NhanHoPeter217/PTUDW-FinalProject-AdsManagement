@@ -141,8 +141,7 @@ function onSubmit(token) {
             // Xử lý phản hồi từ máy chủ nếu cần
             console.log(res.data);
             alert('Báo cáo đã được gửi thành công!');
-            $('#reportModal').modal('hide');
-            $('#reportForm').trigger('reset');
+            window.location.reload();
         })
         .catch((error) => {
             // Xử lý lỗi nếu có
