@@ -36,7 +36,7 @@ const attachIdentiferToResponse = ({ res, resident }) => {
     res.cookie('identifier', identifier, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        samesite: 'none',
+        sameSite: 'None',
         signed: true,
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 300) // 300 days
     });
