@@ -34,7 +34,7 @@
         ? console.warn(p + ' only loads once. Ignoring:', g)
         : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
 })({
-    key: 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I',
+    key: 'HIDDEN_API_KEY',
     v: 'weekly',
     language: 'vi'
     // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).

@@ -16,7 +16,7 @@ export class MyMap {
     center = { lat: 10.7625216, lng: 106.6823262 }; // default center at HCMUS
 
     constructor(activeInfoMarker) {
-        this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
+        this.apiKey = 'HIDDEN_API_KEY';
         this.activeInfoMarker = activeInfoMarker;
     }
 

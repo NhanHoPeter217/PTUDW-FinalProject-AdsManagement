@@ -15,7 +15,7 @@ export class MyMap {
     places_service;
 
     constructor(activeInfoMarker) {
-        this.apiKey = 'AIzaSyAZP9odw7JOw7LqqIJXcfNxZIh4qxpEK6I';
+        this.apiKey = 'HIDDEN_API_KEY';
         this.activeInfoMarker = activeInfoMarker;
     }
 
